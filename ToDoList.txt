@@ -1,0 +1,13 @@
+
+#to-do, sql-engine
+
+:: ---- :: Develop a utility library to facilitate work.
+:: ---- :: Develop a database management library.
+:: ---- :: Develop a library of possible functionality with an SQL database.
+:: ---- :: Develop a library of SQL queries and functionality.
+:: ---- :: Implement a CLI application that works with JSON files.
+:: ---- :: Carry out testing for the library.
+:: ---- :: Prepare the CI/CD (Continuous Integration/Continuous Deployment) pipeline.
+:: ---- :: Implement a GUI application in C++.
+:: ---- :: Prepare the CLI library.
+:: ---- :: Implement an installer using the Qt Installer Framework for our components.
