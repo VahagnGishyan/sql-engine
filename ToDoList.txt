@@ -1,13 +1,17 @@
 
-#to-do, sql-engine
+#to-do, sql-engine, pre-production
 
-:: ---- :: Develop a utility library to facilitate work.
-:: ---- :: Develop a database management library.
-:: ---- :: Develop a library of possible functionality with an SQL database.
-:: ---- :: Develop a library of SQL queries and functionality.
-:: ---- :: Implement a CLI application that works with JSON files.
-:: ---- :: Carry out testing for the library.
-:: ---- :: Prepare the CI/CD (Continuous Integration/Continuous Deployment) pipeline.
-:: ---- :: Implement a GUI application in C++.
-:: ---- :: Prepare the CLI library.
-:: ---- :: Implement an installer using the Qt Installer Framework for our components.
+:: ---- :: Develop a utility library in Python to facilitate work.
+:: ---- :: Develop a database management library in Python.
+        :: done :: Element
+        :: done :: Column
+        :: done :: Constraints
+        :: ---- :: Table
+        :: ---- :: DataBase
+:: ---- :: Develop a library of possible functionality with an SQL database in Python.
+:: ---- :: Develop a library of SQL queries and functionality in Python.
+:: ---- :: Implement a CLI application in Python that works with JSON files.
+:: ---- :: Carry out testing for the Python library.
+:: ---- :: Prepare the CI/CD (Continuous Integration/Continuous Deployment) pipeline for the Python project.
+:: ---- :: Implement a GUI application in Python.
+:: ---- :: Prepare the CLI library in Python.
