@@ -1,16 +1,19 @@
 
-import element as db
+from database import element as db
 
 class Column:
-    def __init__(self, name, data_type, constraints=None):
+    def __init__(self, name, type, constraints=None):
         self.name = name
-        self.data_type = data_type
+        self.type = type
         self.elements = []
         self.constraints = constraints or []
 
+    def len(self):
+        return len(self.elements)
+
     def apply_constraints(self, element_value):
         for constraint in self.constraints:
-            element_value = constraint.check(element_value)
+            element_value = constraint.check(self, element_value, self.type)
         return element_value
     
     def add_element(self, value, type):
