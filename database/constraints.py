@@ -3,8 +3,8 @@
 #############################################################
 
 
-class CheckConstraintException(Exception):
-    def __init__(self, element_name, constraint_name):
+class ConstraintException(Exception):
+    def __init(self, element_name, constraint_name):
         super().__init(f"{element_name} constraint '{constraint_name}' violation.")
 
 
@@ -14,7 +14,7 @@ class CheckConstraintException(Exception):
 class CheckNotNull:
     def check(self, column, element_value, element_type):
         if element_value is None:
-            raise CheckConstraintException(self.element_value, "NOT NULL")
+            raise ConstraintException(element_value, "NOT NULL")
         return element_value
 
 
@@ -27,7 +27,7 @@ class CheckUnique:
 
     def check(self, column, element_value, element_type):
         if element_value in self.values:
-            raise CheckConstraintException(element_value, "UNIQUE")
+            raise ConstraintException(element_value, "UNIQUE")
         self.values.add(element_value)
         return (element_value)
 
@@ -39,7 +39,7 @@ class CheckPrimaryKey(CheckUnique):
     def check(self, column, element_value, element_type):
         super().check(column, element_value, element_type)
         if element_value is None:
-            raise CheckConstraintException(element_value, "PRIMARY KEY")
+            raise ConstraintException(element_value, "PRIMARY KEY")
         return (element_value)
 
 
@@ -55,7 +55,7 @@ class ConstraintForeignKey:
         # Implement logic to check if the reference exists in the reference_table
         # Return the element_value if the reference exists, otherwise raise an exception
         if not reference_exists(element_value, self.reference_table, self.referenced_element):
-            raise CheckConstraintException(element_value, "Foreign KEY")
+            raise ConstraintException(element_value, "Foreign KEY")
         return element_value
 
 
@@ -76,7 +76,7 @@ class ConstraintCheck:
 
     def check(self, column, element_value, element_type):
         if not self.check_func(column, element_value, element_type):
-            raise CheckConstraintException(element_value, "CHECK")
+            raise ConstraintException(element_value, "CHECK")
         return element_value
 
 
