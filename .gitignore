@@ -1,11 +1,30 @@
-CMakeLists.txt.user
+# Ignore C++ object files and executables
+*.o
+*.obj
+*.exe
+*.out
+
+# Ignore compiled output files
+build/
+bin/
+lib/
+
+# Ignore generated CMake files
+CMakeFiles/
 CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
+CMakeScripts/
 cmake_install.cmake
 install_manifest.txt
+Makefile
+*.make
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+.ccls-cache/
 compile_commands.json
-CTestTestfile.cmake
-_deps
+
+# Ignore Conan-CMake
+CMakeUserPresets.json
+
+# Ignore project-specific directories (modify as needed)
