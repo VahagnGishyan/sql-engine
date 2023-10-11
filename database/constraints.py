@@ -11,17 +11,17 @@ class ConstraintException(Exception):
 #############################################################
 
 
-class CheckNotNull:
+class ConstraintNotNull:
     def check(self, column, element_value, element_type):
         if element_value is None:
-            raise ConstraintException(element_value, "NOT NULL")
+            raise ConstraintException("NULL", "NOT NULL")
         return element_value
 
 
 #############################################################
     
 
-class CheckUnique:
+class ConstraintUnique:
     def __init__(self):
         self.values = set()
 
@@ -35,7 +35,7 @@ class CheckUnique:
 #############################################################
 
 
-class CheckPrimaryKey(CheckUnique):
+class ConstraintPrimaryKey(ConstraintUnique):
     def check(self, column, element_value, element_type):
         super().check(column, element_value, element_type)
         if element_value is None:
