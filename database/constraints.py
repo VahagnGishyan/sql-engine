@@ -87,7 +87,7 @@ class ConstraintDefault:
     def __init__(self, default_value):
         self.default_value = default_value
 
-    def check(self, element_value, column, element_type):
+    def check(self, column, element_value, element_type):
         if element_value is None:
             return self.default_value
         return element_value
