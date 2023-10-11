@@ -8,9 +8,6 @@ class Column:
         self.elements = []
         self.constraints = constraints or []
 
-    def __len__(self):
-        return len(self.elements)
-
     def apply_constraints(self, element_value):
         for constraint in self.constraints:
             element_value = constraint.check(self, element_value, self.type)
@@ -36,3 +33,13 @@ class Column:
                 element_to_update.type = new_type
         else:
             raise ValueError(f"Element with value '{old_value}' not found in the column.")
+        
+    def get_element(self, index):
+        if 0 <= index < len(self.elements):
+            return self.elements[index]
+        else:
+            raise IndexError("Index is out of range.")
+
+    def __len__(self):
+        return len(self.elements)
+
