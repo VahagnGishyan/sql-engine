@@ -17,7 +17,7 @@ my_column.add_element(20, "int")
 my_column.add_element(30, "int")
 
 # Remove elements by value
-my_column.remove_element_by_value(20)
+my_column.remove_element(20)
 
 # Add another element
 my_column.add_element(40, "int")
