@@ -22,10 +22,6 @@ database:
         create-table:
             name
             template
-            or
-            table-template
-            or
-            table
         drop-table:
             name
 
@@ -34,7 +30,7 @@ table:
         add-column:
             name
             type
-            constraints
+            constraints=None
         insert:
             list<column-name, values>
         drop-column:
