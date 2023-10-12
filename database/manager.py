@@ -11,6 +11,7 @@ from database import database as db
 
 #############################################################
 
+
 class DatabaseManager:
     def __init__(self):
         self.databases = {}
@@ -62,3 +63,29 @@ class DatabaseManager:
 #                                                           #
 #############################################################
 
+
+dbmanager = DatabaseManager()
+
+
+def create_database(name):
+    return dbmanager.create_database(name)
+
+
+def drop_database(name):
+    return dbmanager.drop_database(name)
+
+# temp
+# def backup_database(name, path):
+#     Implement backup logic here
+
+# temp
+# def connect(name):
+#     Implement backup logic here
+
+
+def get_database(name):
+    return dbmanager.get_database(name)
+
+
+def database_exists(name):
+    return dbmanager.database_exists(name)
