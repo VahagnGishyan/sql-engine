@@ -11,14 +11,9 @@ class Database:
         new_table = db.Table(table_name)  # Assuming you have a Table class
         self.tables.append(new_table)
 
-    # def drop_table(self, table_name):
-    #     table = self.get_table(table_name)
-    #     self.tables.remove(table)
-
     def drop_table(self, table_name):
         # Get the table by name
         table = self.get_table(table_name)
-        # Remove the table from the list
         self.tables.remove(table)
 
     def get_table(self, table_name):
@@ -35,13 +30,3 @@ class Database:
     def table_exists(self, table_name):
         # Check if a table with the given name exists in the database
         return table_name in self.list_tables()
-
-    def describe_table(self, table_name):
-        # Describe the structure of a table
-        table = self.get_table(table_name)
-        if table:
-            print(f"Table: {table_name}")
-            for column in table.columns:
-                print(f"Column: {column.name}, Type: {column.type}")
-        else:
-            print(f"Table '{table_name}' not found in the database.")
