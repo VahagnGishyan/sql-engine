@@ -1,6 +1,5 @@
 
 import os
-from utlity import file
 from database import database as db
 
 #############################################################
@@ -31,14 +30,16 @@ class DatabaseManager:
         else:
             raise ValueError("Database not found.")
 
-    def backup_database(self, name, path):
-        # Backup a database to a specified path
-        if self.database_exists(name):
-            database = self.databases[name]
-            # Implement backup logic here
-        else:
-            raise ValueError("Database not found.")
+    # temp
+    # def backup_database(self, name, path):
+    #     # Backup a database to a specified path
+    #     if self.database_exists(name):
+    #         database = self.databases[name]
+    #         # Implement backup logic here
+    #     else:
+    #         raise ValueError("Database not found.")
 
+    # temp
     # def connect(self, name):
     #     # Connect to a database by name
     #     if self.database_exists(name):
