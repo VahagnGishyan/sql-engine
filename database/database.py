@@ -1,5 +1,6 @@
- 
+
 from database import table as db
+
 
 class Database:
     def __init__(self, name):
@@ -10,6 +11,7 @@ class Database:
         # Create a new table and add it to the database
         new_table = db.Table(table_name)  # Assuming you have a Table class
         self.tables.append(new_table)
+        return (new_table)
 
     def drop_table(self, table_name):
         # Get the table by name

@@ -1,5 +1,6 @@
 
-from database import column as db;
+from database import column as db
+
 
 class Table:
     def __init__(self, name):
@@ -20,7 +21,8 @@ class Table:
         if len(data) > len(self.columns):
             raise ValueError("Too many values provided in the data list.")
 
-        new_row = [{"column-name": column.name, "value": None, "type": column.type} for column in self.columns]
+        new_row = [{"column-name": column.name, "value": None,
+                    "type": column.type} for column in self.columns]
         for column_name, value in data:
             for entry in new_row:
                 if entry["column-name"] == column_name:
@@ -37,6 +39,17 @@ class Table:
                 self.columns.remove(column)
                 return
         raise ValueError(f"Column '{column_name}' not found in the table.")
+
+    def get_rows(self):
+        # Get rows from columns
+        rows = []
+        if not self.columns:
+            return rows  # Return an empty list if there are no columns
+        num_rows = len(self.columns[0].elements)
+        for i in range(num_rows):
+            row = [column.elements[i] for column in self.columns]
+            rows.append(row)
+        return rows
 
     def __len__(self):
         return len(self.columns)
