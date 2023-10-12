@@ -11,6 +11,9 @@ database-mabager:
             params: 
                 name
                 path
+        connect:
+            params: 
+                name
         get-database:
             params: 
                 name
