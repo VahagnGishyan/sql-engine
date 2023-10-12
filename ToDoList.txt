@@ -2,12 +2,12 @@
 #to-do, sql-engine, pre-production
 
 :: ---- :: Develop a utility library in Python to facilitate work.
-:: ---- :: Develop a database management library in Python.
+:: done :: Develop a database management library in Python.
         :: done :: Element
         :: done :: Column
         :: done :: Constraints
-        :: ---- :: Table
-        :: ---- :: DataBase
+        :: done :: Table
+        :: done :: DataBase
 :: ---- :: Develop a library of possible functionality with an SQL database in Python.
 :: ---- :: Develop a library of SQL queries and functionality in Python.
 :: ---- :: Implement a CLI application in Python that works with JSON files.
