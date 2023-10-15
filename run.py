@@ -1,8 +1,8 @@
 
 
 # Import the necessary modules
-from database import manager as dbm
 from database import database as db
+from database import file_manager as fm
 from database import table as tbl
 from database import column as col
 from database import constraints as cstr
@@ -12,7 +12,8 @@ from database import constraints as cstr
 #############################################################
 
 # Step 0: Set data names
-db_name = "ToDoListDB"
+db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+db_name = "MyDatabase"
 table_name = "ToDoList"
 
 #############################################################
@@ -20,7 +21,7 @@ table_name = "ToDoList"
 #############################################################
 
 # Step 1: Create a database
-todo_db = db.Database(dbm.create_database(db_name))
+todo_db = db.Database.create(db_name, db_path, connect=True)
 
 
 # Step 2: Create a table for the to-do list tasks
