@@ -119,18 +119,18 @@ class Database:
             data = table.get_rows()
             tableFile = path + '/' + table.get_name()
             tableFile = self.filem.fix_file_extension(tableFile)
-            self.filem.save(data, tableFile)
+            self.filem.save_row_list(data, tableFile)
 
     def save_info(self, path):
         utfile.assert_dir_exists(path)
         info = self.get_info()
-        self.filem.save(info, path + self.get_info_file_name())
+        self.filem.save(info, path + '/' + self.get_info_file_name())
 
     def save(self, path=None):
         if path is None:
             path = self.get_path()
-        # self.save_info(path)
-        # self.save_tables(path)
+        self.save_info(path)
+        self.save_tables(path)
 
     def load_tables(self):
         tables_dir = self.get_tables_dir_path()
@@ -160,6 +160,8 @@ class Database:
     def create(dbname, path=None, connect=False):
         if path is None:
             path = fm.DataSaver.get_db_default_dir()
+        if utfile.is_path_exists(path) is False:
+            utfile.mkdir(path)
 
         # make files and dris
         db = Database(dbname, path)

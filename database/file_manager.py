@@ -49,6 +49,17 @@ class DataSaver:
         except Exception as e:
             raise ValueError(f"Error saving JSON data to {path}: {e}")
 
+    def save_row_list(self, rows, path):
+        list_of_dicts = []
+
+        for row in rows:
+            row_dict = {}
+            for element in row.row_elements:
+                row_dict[element.column] = element.value
+            list_of_dicts.append(row_dict)
+
+        self.save(list_of_dicts, path)
+
     def load(self, path):
         try:
             with open(path, 'r') as file:

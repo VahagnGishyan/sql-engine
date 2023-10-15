@@ -1,5 +1,6 @@
 
 from database import column as db
+from database import row
 
 #############################################################
 #                                                           #
@@ -25,8 +26,8 @@ class Table:
 
     #########################################################
 
-    def add_column(self, name, data_type, constraints=None):
-        column = db.Column(name, data_type, constraints)
+    def add_column(self, name, type, constraints=None):
+        column = db.Column(name, type, constraints)
         self.columns.append(column)
 
     def drop_column(self, column_name):
@@ -48,12 +49,18 @@ class Table:
     def get_rows(self):
         # Get rows from columns
         rows = []
-        if not self.columns:
-            return rows  # Return an empty list if there are no columns
-        num_rows = len(self.columns[0].elements)
+
+        # Determine the number of rows (use the first column as a reference)
+        num_rows = len(self.columns[0].elements) if self.columns else 0
+
         for i in range(num_rows):
-            row = [column.elements[i] for column in self.columns]
-            rows.append(row)
+            row_instance = row.Row()
+            for column in self.columns:
+                element = column.elements[i]
+                row_instance.add_element(
+                    column.get_name(), element.value, element.type)
+            rows.append(row_instance)
+
         return rows
 
     #########################################################

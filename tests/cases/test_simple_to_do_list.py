@@ -6,7 +6,7 @@ from database import constraints as cstr
 
 
 # Step 0: Set data names
-db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+db_path = fm.DataSaver.get_work_dir() + '/' + "to-do-list"
 db_name = "MyDatabase"
 table_name = "ToDoList"
 
@@ -49,6 +49,8 @@ class DatabaseConnectionState(unittest.TestCase):
             todo_table.insert_data(task)
 
         self.assertEqual(len(todo_table.get_rows()), 4)
+
+        todo_db.disconnect()
 
 
 if __name__ == '__main__':

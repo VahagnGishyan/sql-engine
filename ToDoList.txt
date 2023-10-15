@@ -1,11 +1,11 @@
 
 #to-do 
-sql-engine[pre-production] version 0.2.1
+sql-engine[pre-production] version 0.2.2
 
 :: ---- :: Develop a utility library in Python to facilitate work.
 :: done :: Develop a database management library in Python.
-        :: done :: Element
         :: done :: Column
+        :: done :: Row
         :: done :: Constraints
         :: done :: Table
         :: done :: DataBase
