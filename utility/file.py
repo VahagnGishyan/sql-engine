@@ -122,7 +122,7 @@ def mkdir(path):
 
 
 def rmdir(path):
-    os.remove(path, exist_ok=True)
+    shutil.rmtree(path)
 
 
 def create_empty_file(path):
