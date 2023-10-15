@@ -3,11 +3,12 @@ import unittest
 from database import database as db
 from database import file_manager as fm
 from database import constraints as cstr
+from utility import file as utfile
 
 
 # Step 0: Set data names
-db_path = fm.DataSaver.get_work_dir() + '/' + "to-do-list"
-db_name = "MyDatabase"
+db_path = fm.DataSaver.get_work_dir()
+db_name = "ToDoListDB"
 table_name = "ToDoList"
 
 
@@ -50,7 +51,11 @@ class DatabaseConnectionState(unittest.TestCase):
 
         self.assertEqual(len(todo_table.get_rows()), 4)
 
+        db_work_dir = todo_db.get_path()
+        db_tables_dir = todo_db.get_tables_dir_path()
         todo_db.disconnect()
+        self.assertFalse(utfile.is_dir_empty(db_tables_dir))
+        utfile.rmdir(db_work_dir)
 
 
 if __name__ == '__main__':
