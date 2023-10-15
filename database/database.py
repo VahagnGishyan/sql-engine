@@ -1,8 +1,8 @@
 
 # from database import table as db
 from database import file_manager as fm
-from utlity import file as utfile
-# from utlity import core as utcore
+from utility import file as utfile
+# from utility import core as utcore
 
 import os
 
@@ -12,16 +12,16 @@ import os
 
 
 class Database:
-    def __init__(self, name, path, datasever=fm.DataSaver()):
+    def __init__(self, name, path, filem=fm.DataSaver()):
         self.path = None
         self.name = None
-        self.datasever = None
+        self.filem = None
         self.connected = None
         self.tables = []
 
         self.set_name(name)
         self.set_path(path)
-        self.set_datasaver(datasever)
+        self.set_datasaver(filem)
         self.set_connected(False)
 
     #########################################################
@@ -60,10 +60,10 @@ class Database:
             self.path = new_path
         self.name = name
 
-    def set_datasaver(self, datasaver):
-        if not isinstance(datasaver, fm.DataSaver):
-            raise ValueError("datasaver must be a DataSaver obj")
-        self.datasaver = datasaver
+    def set_datasaver(self, file_manager):
+        if not isinstance(file_manager, fm.DataSaver):
+            raise ValueError("file-manager must be a DataSaver obj")
+        self.filem = file_manager
 
     #########################################################
 
@@ -73,11 +73,15 @@ class Database:
     def get_tables_dir_path(self):
         return os.path.join(self.get_path(), self.get_tables_dir_name())
 
-    def get_info_file_name(self):
+    def get_data_file_name_without_extension(self):
         return "db-info"
 
-    def get_info_file_path(self):
-        return os.path.join(self.get_path(), self.get_info_file_name())
+    def get_data_file_name(self):
+        return self.filem.fix_file_extension(
+            self.get_data_file_name_without_extension())
+
+    def get_data_file_path(self):
+        return os.path.join(self.get_path(), self.get_data_file_name())
 
     def list_tables(self):
         # Return a list of table names in the database
@@ -99,12 +103,41 @@ class Database:
 
     #########################################################
 
+    def get_data(self):
+        info = {
+            "name": self.get_name(),
+            "access": "public"
+        }
+        return info
+
+    def save_data(self, path=None):
+        if path is None:
+            path = self.get_data_file_path()
+        info = self.get_data()
+        self.filem.save(info, path)
+
+    def load_data(self):
+        info = self.filem.load(self.get_data_file_path())
+        # list and add tables
+        pass
+
+    #########################################################
+
     @staticmethod
     def create(dbname, path=None, connect=False):
         if path is None:
             path = fm.DataSaver.get_db_default_dir()
+
         # make files and dris
         db = Database(dbname, path)
+        tblDir = db.get_tables_dir_path()
+        dbDataFile = db.get_data_file_path()
+
+        if not utfile.is_path_exists(dbDataFile):
+            utfile.mkdir(tblDir)
+            utfile.create_empty_file(dbDataFile)
+            db.save_data()
+
         if connect:
             db.connect()
         return db
@@ -122,11 +155,14 @@ class Database:
     def connect(self):
         self.assert_not_connected()
         self.set_connected(True)
+        self.load_data()
         pass
 
     def disconnect(self, save=True):
         self.assert_connected()
         self.set_connected(False)
+        if save is True:
+            self.save_data()
         pass
 
     #########################################################

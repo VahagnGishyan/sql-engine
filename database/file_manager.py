@@ -1,17 +1,18 @@
 import json
-from utlity import core as utcore
+from utility import core as utcore
+from utility import file as utfile
+import os
 
-
-def json_default(obj):
-    if isinstance(obj, list):
-        return ",".join(map(str, obj))
-    else:
-        raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+#############################################################
+#                                                           #
+#############################################################
 
 
 class DataSaver:
     # def __init__(self, file_path):
     #     self.file_path = file_path
+
+    #########################################################
 
     @staticmethod
     def get_work_dir():
@@ -21,18 +22,43 @@ class DataSaver:
     def get_db_default_dir():
         return DataSaver.get_work_dir() + "/main"
 
-    # def save_data(self, data):
-    #     try:
-    #         with open(self.file_path, 'w') as file:
-    #             json.dump(data, file, indent=4, default=json_default)
-    #         print("Data saved successfully to:", self.file_path)
-    #     except Exception as e:
-    #         print("Error saving data:", str(e)
+    #########################################################
 
-    # def load_data(self):
-    #     try:
-    #         with open(self.file_path, 'r') as file:
-    #             data = json.load(file)
-    #         return data
-    #     except Exception as e:
-    #         print("Error loading data:", str(e))
+    def get_data_file_extension(self):
+        return "json"
+
+    def fix_file_extension(self, path):
+        extension = self.get_data_file_extension()
+        if extension is not None:
+            # Check if the provided path already has the correct extension
+            base, ext = os.path.splitext(path)
+            if ext == '.' + extension:
+                return path  # The extension is correct; no changes needed
+            else:
+                # If not, append the correct extension
+                return path + '.' + extension
+        return path  # Return the original path if extension retrieval failed
+
+    #########################################################
+
+    def get_data_file_name(self, path):
+        return (self.fix_file_extension(path))
+
+    #########################################################
+
+    def save(self, data, path):
+        try:
+            with open(path, 'w') as file:
+                json.dump(data, file, indent=4)
+        except Exception as e:
+            raise ValueError(f"Error saving JSON data to {path}: {e}")
+
+    def load(self, path):
+        try:
+            with open(path, 'r') as file:
+                data = json.load(file)
+                return data
+        except FileNotFoundError:
+            return None  # File doesn't exist, return None
+        except Exception as e:
+            raise ValueError(f"Error loading JSON data from {path}: {e}")
