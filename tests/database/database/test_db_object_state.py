@@ -2,11 +2,16 @@ import unittest
 # Import the Database class and the 'table' alias from the 'database' module
 from database import database as db
 from database import file_manager as fm
-from utlity import file as utfile
+from utility import file as utfile
+import os
 
-db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+current_module_path = os.path.abspath(__file__)
+test_module_path = os.path.dirname(
+    os.path.dirname(os.path.dirname(current_module_path)))
+
+db_path = test_module_path + "/samples/test-dbase-dir"
+db_new_path = test_module_path + "/samples/test-dbase-dir-new"
 db_name = "TestDB"
-db_new_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir-new"
 
 
 class TestDatabaseTableOperations(unittest.TestCase):
