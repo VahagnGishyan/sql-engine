@@ -1,5 +1,5 @@
 
-from utlity import console
+from utility import console
 
 import os
 import shutil
@@ -115,6 +115,16 @@ def mkdir(path):
 
 def rmdir(path):
     os.remove(path, exist_ok=True)
+
+
+def create_empty_file(path):
+    with open(path, 'w') as file:
+        pass
+
+
+def remove(path):
+    if os.path.exists(path):
+        os.remove(path)
 
 #############################################################
 #                                                           #
