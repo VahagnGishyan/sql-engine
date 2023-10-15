@@ -10,6 +10,8 @@ import os
 
 class Database:
     def __init__(self, name, path):
+        self.path = None
+        self.name = None
         self.set_name(name)
         self.set_path(path)
         # Initialize as not connected
@@ -39,17 +41,18 @@ class Database:
     def set_name(self, name):
         if name is None or ' ' in name:
             raise ValueError("Name cannot be None or contain white spaces")
-        # Extract the parent directory from the current path
-        parent_dir = os.path.dirname(self.path)
-        # Create the new path with the updated name
-        new_path = os.path.join(parent_dir, name)
-        # Check if the new path already exists
-        if os.path.exists(new_path):
-            raise ValueError(
-                "A database with the same name already exists in the parent directory.")
-        # Update the name and path
+        if self.path is not None:
+            # Extract the parent directory from the current path
+            parent_dir = os.path.dirname(self.path)
+            # Create the new path with the updated name
+            new_path = os.path.join(parent_dir, name)
+            # Check if the new path already exists
+            if os.path.exists(new_path):
+                raise ValueError(
+                    "A database with the same name already exists in the parent directory.")
+            # Update the name and path
+            self.path = new_path
         self.name = name
-        self.path = new_path
 
     #########################################################
 
