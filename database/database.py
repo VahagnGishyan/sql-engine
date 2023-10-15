@@ -1,6 +1,6 @@
 
 # from database import table as db
-from database import data_saver as ds
+from database import file_manager as fm
 from utlity import file as utfile
 # from utlity import core as utcore
 
@@ -12,7 +12,7 @@ import os
 
 
 class Database:
-    def __init__(self, name, path, datasever=ds.DataSaver()):
+    def __init__(self, name, path, datasever=fm.DataSaver()):
         self.path = None
         self.name = None
         self.datasever = None
@@ -61,7 +61,7 @@ class Database:
         self.name = name
 
     def set_datasaver(self, datasaver):
-        if not isinstance(datasaver, ds.DataSaver):
+        if not isinstance(datasaver, fm.DataSaver):
             raise ValueError("datasaver must be a DataSaver obj")
         self.datasaver = datasaver
 
@@ -102,7 +102,7 @@ class Database:
     @staticmethod
     def create(dbname, path=None, connect=False):
         if path is None:
-            path = ds.DataSaver.get_db_default_dir()
+            path = fm.DataSaver.get_db_default_dir()
         # make files and dris
         db = Database(dbname, path)
         if connect:
