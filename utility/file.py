@@ -89,6 +89,14 @@ def list_files_in_dir(path):
     return [f for f in os.listdir(path) if is_file(os.path.join(path, f))]
 
 
+def list_files_in_dir_with_extension(directory, extension):
+    file_list = []
+    for filename in os.listdir(directory):
+        if filename.endswith(extension):
+            file_list.append(filename)
+    return file_list
+
+
 def list_dir(path):
     # List names of all files and directories in a given directory.
     return os.listdir(path)
