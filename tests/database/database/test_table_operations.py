@@ -2,6 +2,7 @@ import unittest
 # Import the Database class and the 'table' alias from the 'database' module
 from database import database as db
 from database import file_manager as fm
+from database import constraints as cstr
 
 db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
 db_name = "MyDatabase"
