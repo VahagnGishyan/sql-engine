@@ -9,10 +9,6 @@ import os
 
 
 class DataSaver:
-    # def __init__(self, file_path):
-    #     self.file_path = file_path
-
-    #########################################################
 
     @staticmethod
     def get_work_dir():
@@ -58,7 +54,5 @@ class DataSaver:
             with open(path, 'r') as file:
                 data = json.load(file)
                 return data
-        except FileNotFoundError:
-            return None  # File doesn't exist, return None
         except Exception as e:
             raise ValueError(f"Error loading JSON data from {path}: {e}")
