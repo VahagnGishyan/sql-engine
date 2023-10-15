@@ -1,6 +1,9 @@
 
-from database import table as db
-from utlity import file as utf
+# from database import table as db
+from database import data_saver as ds
+from utlity import file as utfile
+# from utlity import core as utcore
+
 import os
 
 #############################################################
@@ -9,14 +12,17 @@ import os
 
 
 class Database:
-    def __init__(self, name, path):
+    def __init__(self, name, path, datasever=ds.DataSaver()):
         self.path = None
         self.name = None
+        self.datasever = None
+        self.connected = None
+        self.tables = []
+
         self.set_name(name)
         self.set_path(path)
-        # Initialize as not connected
+        self.set_datasaver(datasever)
         self.set_connected(False)
-        self.tables = []
 
     #########################################################
 
@@ -32,7 +38,7 @@ class Database:
         return self.path
 
     def set_path(self, path):
-        utf.assert_dir_exists(path)
+        utfile.assert_dir_exists(path)
         self.path = path + '/' + self.name  # Update path with the new directory
 
     def get_name(self):
@@ -53,6 +59,11 @@ class Database:
             # Update the name and path
             self.path = new_path
         self.name = name
+
+    def set_datasaver(self, datasaver):
+        if not isinstance(datasaver, ds.DataSaver):
+            raise ValueError("datasaver must be a DataSaver obj")
+        self.datasaver = datasaver
 
     #########################################################
 
@@ -78,20 +89,44 @@ class Database:
 
     #########################################################
 
-    @staticmethod
-    def create(dbname, path=None):
-        pass
+    def assert_connected(self):
+        if not self.connected:
+            raise ValueError("Database is not connected")
+
+    def assert_not_connected(self):
+        if self.connected:
+            raise ValueError("Database is already connected")
+
+    #########################################################
 
     @staticmethod
-    def destroy(dbname, path=None):
-        pass
+    def create(dbname, path=None, connect=False):
+        if path is None:
+            path = ds.DataSaver.get_db_default_dir()
+        # make files and dris
+        db = Database(dbname, path)
+        if connect:
+            db.connect()
+        return db
+
+    @staticmethod
+    def destroy(db):
+        if not isinstance(db, Database):
+            raise ValueError("Database.destroy: arg db must be a Database obj")
+        if db.is_connected():
+            db.disconnect(save=False)
+        # remove files and dris
 
     #########################################################
 
     def connect(self):
+        self.assert_not_connected()
+        self.set_connected(True)
         pass
 
     def disconnect(self):
+        self.assert_connected()
+        self.set_connected(False)
         pass
 
     #########################################################

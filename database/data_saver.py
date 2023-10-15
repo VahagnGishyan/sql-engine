@@ -1,5 +1,6 @@
-import json 
+import json
 from utlity import core as utcore
+
 
 def json_default(obj):
     if isinstance(obj, list):
@@ -7,13 +8,18 @@ def json_default(obj):
     else:
         raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
+
 class DataSaver:
     # def __init__(self, file_path):
     #     self.file_path = file_path
 
     @staticmethod
     def get_work_dir():
-        return utcore.get_default_appdata_path() + '/' + "sql-engine"
+        return utcore.get_default_appdata_path() + "/sql-engine"
+
+    @staticmethod
+    def get_db_default_dir():
+        return DataSaver.get_work_dir() + "/main"
 
     # def save_data(self, data):
     #     try:
