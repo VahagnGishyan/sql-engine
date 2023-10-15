@@ -64,6 +64,12 @@ def assert_is_dir(path):
     # Assert that a path is a directory or raise a ValueError.
     if not is_dir(path):
         raise ValueError(f"'{path}' is not a directory.")
+    
+def assert_dir_exists(path):
+    if not (assert_path_exists(path) and assert_is_dir(path)):
+        raise ValueError("Directory does not exist or path is not a directory.")
+
+
 
 def list_dirs_in_dir(path):
     # List directories in a given directory.
