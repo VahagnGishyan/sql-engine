@@ -1,5 +1,5 @@
 
-# from database import table as db
+from database import table as tb
 from database import file_manager as fm
 from utility import file as utfile
 # from utility import core as utcore
@@ -73,15 +73,15 @@ class Database:
     def get_tables_dir_path(self):
         return os.path.join(self.get_path(), self.get_tables_dir_name())
 
-    def get_data_file_name_without_extension(self):
+    def get_info_file_name_without_extension(self):
         return "db-info"
 
-    def get_data_file_name(self):
+    def get_info_file_name(self):
         return self.filem.fix_file_extension(
-            self.get_data_file_name_without_extension())
+            self.get_info_file_name_without_extension())
 
-    def get_data_file_path(self):
-        return os.path.join(self.get_path(), self.get_data_file_name())
+    def get_info_file_path(self):
+        return os.path.join(self.get_path(), self.get_info_file_name())
 
     def list_tables(self):
         # Return a list of table names in the database
@@ -103,22 +103,55 @@ class Database:
 
     #########################################################
 
-    def get_data(self):
+    def get_info(self):
         info = {
             "name": self.get_name(),
             "access": "public"
         }
         return info
 
-    def save_data(self, path=None):
-        if path is None:
-            path = self.get_data_file_path()
-        info = self.get_data()
-        self.filem.save(info, path)
+    def save_tables(self, path):
+        utfile.assert_dir_exists(path)
+        path = path + '/' + self.get_tables_dir_name()
+        for table in self.tables:
+            if not isinstance(table, tb.Table):
+                raise ValueError("element in list tables is not obj of Table")
+            data = table.get_rows()
+            tableFile = path + '/' + table.get_name()
+            tableFile = self.filem.fix_file_extension(tableFile)
+            self.filem.save(data, tableFile)
 
-    def load_data(self):
-        info = self.filem.load(self.get_data_file_path())
-        # list and add tables
+    def save_info(self, path):
+        utfile.assert_dir_exists(path)
+        info = self.get_info()
+        self.filem.save(info, path + self.get_info_file_name())
+
+    def save(self, path=None):
+        if path is None:
+            path = self.get_path()
+        # self.save_info(path)
+        # self.save_tables(path)
+
+    def load_tables(self):
+        tables_dir = self.get_tables_dir_path()
+        extension = self.filem.get_data_file_extension()
+        tables = utfile.list_files_in_dir_with_extension(
+            tables_dir, extension)
+        for table_name in tables:
+            table_path = f"{tables_dir}/{table_name}"
+            table_data = self.filem.load(table_path)
+            print(table_data)
+            # I have not Idea what to do
+            None.lenght
+        pass
+
+    def load_info(self):
+        info = self.filem.load(self.get_info_file_path())
+        pass
+
+    def load(self):
+        # self.load_info()
+        # self.load_tables()
         pass
 
     #########################################################
@@ -131,12 +164,12 @@ class Database:
         # make files and dris
         db = Database(dbname, path)
         tblDir = db.get_tables_dir_path()
-        dbDataFile = db.get_data_file_path()
+        dbDataFile = db.get_info_file_path()
 
         if not utfile.is_path_exists(dbDataFile):
             utfile.mkdir(tblDir)
             utfile.create_empty_file(dbDataFile)
-            db.save_data()
+            db.save()
 
         if connect:
             db.connect()
@@ -155,30 +188,35 @@ class Database:
     def connect(self):
         self.assert_not_connected()
         self.set_connected(True)
-        self.load_data()
+        self.load()
         pass
 
     def disconnect(self, save=True):
         self.assert_connected()
         self.set_connected(False)
         if save is True:
-            self.save_data()
+            self.save()
         pass
 
     #########################################################
 
     def create_table(self, table_name):
-        # # Create a new table and add it to the database
-        # new_table = db.Table(table_name)  # Assuming you have a Table class
-        # self.tables.append(new_table)
-        # return (new_table)
-        pass
+        # Create a new table and add it to the database
+        new_table = tb.Table(table_name)  # Assuming you have a Table class
+        self.tables.append(new_table)
+        return (new_table)
 
     def drop_table(self, table_name):
         # Get the table by name
-        # table = self.get_table(table_name)
-        # self.tables.remove(table)
-        pass
+        table = self.get_table(table_name)
+        self.tables.remove(table)
+
+    def get_table(self, table_name):
+        # Retrieve a table from the database by its name using a for loop
+        for table in self.tables:
+            if table.name == table_name:
+                return table
+        raise ValueError(f"Table '{table_name}' not found in the database.")
 
     def execute(self, query):
         pass
