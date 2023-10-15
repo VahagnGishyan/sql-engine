@@ -124,7 +124,7 @@ class Database:
         self.set_connected(True)
         pass
 
-    def disconnect(self):
+    def disconnect(self, save=True):
         self.assert_connected()
         self.set_connected(False)
         pass

@@ -5,8 +5,8 @@ from database import data_saver as ds
 from utlity import file as utfile
 
 db_path = ds.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
-db_new_path = ds.DataSaver.get_work_dir() + '/' + "test-dbase-dir-new"
 db_name = "TestDB"
+db_new_path = ds.DataSaver.get_work_dir() + '/' + "test-dbase-dir-new"
 
 
 class TestDatabaseTableOperations(unittest.TestCase):
