@@ -1,6 +1,7 @@
 
 from database import column as db
-from database import row
+from database import row as rw
+from utility import console
 
 #############################################################
 #                                                           #
@@ -54,7 +55,7 @@ class Table:
         num_rows = len(self.columns[0].elements) if self.columns else 0
 
         for i in range(num_rows):
-            row_instance = row.Row()
+            row_instance = rw.Row()
             for column in self.columns:
                 element = column.elements[i]
                 row_instance.add_element(
@@ -66,6 +67,8 @@ class Table:
     #########################################################
 
     def insert_data(self, data):
+        if len(data) == 0:
+            return
         if len(data) > len(self.columns):
             raise ValueError("Too many values provided in the data list.")
 
@@ -80,6 +83,11 @@ class Table:
         for entry in new_row:
             column = self.get_column_by_name(entry["column-name"])
             column.add_element(entry["value"], entry["type"])
+
+    def insert_rows(self, rows):
+        dataList = rw.rows_to_tuple_list(rows)
+        for data in dataList:
+            self.insert_data(data)
 
     #########################################################
 
