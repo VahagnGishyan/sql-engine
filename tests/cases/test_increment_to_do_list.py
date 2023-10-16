@@ -21,15 +21,14 @@ class DatabaseConnectionState(unittest.TestCase):
         self.assertTrue(todo_db.is_connected())
 
         self.assertEqual(len(todo_db.list_tables()), 1)
-        table_name = todo_db.list_tables(table_name)[0]
+        table_name = todo_db.list_tables()[0]
         table = todo_db.get_table(table_name)
         if not isinstance(table, tb.Table):
             raise ValueError("Table must be instance of class Table.")
         self.assertEqual(len(table), 4)
 
-        text = "to-do-list-42"
         pattern = r'\d+'
-        match = re.search(pattern, text)
+        match = re.search(pattern, table_name)
 
         number = None
         if match:
@@ -39,17 +38,24 @@ class DatabaseConnectionState(unittest.TestCase):
             raise ValueError("No number found in the name of table.")
 
         new_index = number + 1
-        new_table_name = f"{table_name_pattern}-{number}"
+        new_table_name = f"{table_name_pattern}-{new_index}"
         new_table = todo_db.create_table(new_table_name)
         self.assertEqual(len(todo_db.list_tables()), 2)
 
-        rows = table.get_rows()
-        new_table.insert_rows(rows)
+        pathTest0 = f"{todo_db.get_path()}/../test-0"
+        pathTest1 = f"{todo_db.get_path()}/../test-1"
+
+        table.save(pathTest0)
+        info = table.get_info()
+        new_table.reset_by_info(info)
         self.assertEqual(len(new_table), 4)
         self.assertEqual(len(todo_db.list_tables()), 2)
+        new_table.save(pathTest1)
 
         todo_db.drop_table(table_name)
         self.assertEqual(len(todo_db.list_tables()), 1)
+
+        todo_db.disconnect()
 
 
 if __name__ == '__main__':

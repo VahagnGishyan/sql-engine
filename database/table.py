@@ -76,10 +76,10 @@ class Table:
 
         new_row = [{"column-name": column.name, "value": None,
                     "type": column.type} for column in self.columns]
-        for column_name, value in data:
+        for element in data:
             for entry in new_row:
-                if entry["column-name"] == column_name:
-                    entry["value"] = value
+                if entry["column-name"] == element["column-name"]:
+                    entry["value"] = element["value"]
                     break
 
         for entry in new_row:
@@ -93,7 +93,7 @@ class Table:
 
     #########################################################
 
-    def table_to_table_info_columns(self):
+    def get_info_columns(self):
         # Convert columns
         columns = []
         for column in self.columns:
@@ -112,14 +112,14 @@ class Table:
             columns.append(column_json)
         return columns
 
-    def table_to_table_info_rows(self):
+    def get_info_rows(self):
         # Convert rows
         rows = []
         for row in self.get_rows():
             row_json = []
             for element in row.row_elements:
                 row_element_json = {
-                    "column": element.column,
+                    "column-name": element.column,
                     # "type": element.type,
                     "value": element.value
                 }
@@ -128,19 +128,26 @@ class Table:
             rows.append(row_json)
         return rows
 
-    def table_to_table_info(self):
+    def get_info(self):
         table_json = {
             "table": self.get_name(),
             "columns": [],
             "rows": []
         }
-        table_json["columns"] = self.table_to_table_info_columns()
-        table_json["rows"] = self.table_to_table_info_rows()
+        table_json["columns"] = self.get_info_columns()
+        table_json["rows"] = self.get_info_rows()
         return table_json
+
+    def reset_by_info(self, info):
+        for column in info["columns"]:
+            self.add_column(column["name"], column["type"])
+        for row in info["rows"]:
+            self.insert_data(row)
 
     def save(self, path, filem=fm.FileManager()):
         utfile.assert_dir_exists(path)
-        data = self.table_to_table_info()
+
+        data = self.get_info()
         tableFile = path + '/' + self.get_name()
         tableFile = filem.fix_file_extension(tableFile)
         filem.save(data, tableFile)
@@ -148,11 +155,7 @@ class Table:
     def load(self, path, filem=fm.FileManager()):
         utfile.assert_file_exists(path)
         data = filem.load(path)
-        self.set_name(data["table"])
-        for column in data["columns"]:
-            self.add_column(column["name"], column["type"])
-        for row in data["rows"]:
-            self.insert_data(row)
+        self.reset_by_info(data)
 
     #########################################################
 

@@ -12,8 +12,8 @@ db_name = "to-do-list-inc-db"
 table_name = "to-do-list-0"
 
 
-class ToDoListIncDB(unittest.TestCase):
-    def test_to_do_list_db_inc(self):
+class DatabaseConnectionState(unittest.TestCase):
+    def test_to_do_list_db_empty(self):
         # Step 1: Create a database
         todo_db = db.Database.create(db_name, db_path, connect=True)
 
@@ -37,15 +37,32 @@ class ToDoListIncDB(unittest.TestCase):
 
         # Step 4: Add data to columns
         taskList = [
-            [("Name", "Task 1"), ("Description", "Description 1"),
-             ("DueDate", "2023-10-15"), ("Completed", False)],
-            [("Name", "Task 2"), ("Description", "Description 2"),
-             ("DueDate", "2023-10-16"), ("Completed", True)],
-            [("Name", "Task 3"), ("Description", "Description 3"),
-             ("DueDate", "2023-10-17"), ("Completed", False)],
-            [("Name", "Task 4"), ("Description", "Description 4"),
-             ("DueDate", "2023-10-18"), ("Completed", True)],
+            [
+                {"column-name": "Name", "value": "Task 1"},
+                {"column-name": "Description", "value": "Description 1"},
+                {"column-name": "DueDate", "value": "2023-10-15"},
+                {"column-name": "Completed", "value": False},
+            ],
+            [
+                {"column-name": "Name", "value": "Task 2"},
+                {"column-name": "Description", "value": "Description 2"},
+                {"column-name": "DueDate", "value": "2023-10-16"},
+                {"column-name": "Completed", "value": True},
+            ],
+            [
+                {"column-name": "Name", "value": "Task 3"},
+                {"column-name": "Description", "value": "Description 3"},
+                {"column-name": "DueDate", "value": "2023-10-17"},
+                {"column-name": "Completed", "value": False},
+            ],
+            [
+                {"column-name": "Name", "value": "Task 4"},
+                {"column-name": "Description", "value": "Description 4"},
+                {"column-name": "DueDate", "value": "2023-10-18"},
+                {"column-name": "Completed", "value": True}
+            ]
         ]
+
         for task in taskList:
             todo_table.insert_data(task)
 
@@ -55,7 +72,6 @@ class ToDoListIncDB(unittest.TestCase):
         db_tables_dir = todo_db.get_tables_dir_path()
         todo_db.disconnect()
         self.assertFalse(utfile.is_dir_empty(db_tables_dir))
-        # utfile.rmdir(db_work_dir)
 
 
 if __name__ == '__main__':

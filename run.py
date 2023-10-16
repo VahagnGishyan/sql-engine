@@ -36,15 +36,24 @@ todo_table.add_column("Completed", "boolean", [
 
 # Step 4: Add data to columns
 taskList = [
-    [("Name", "Task 1"), ("Description", "Description 1"),
-     ("DueDate", "2023-10-15"), ("Completed", False)],
-    [("Name", "Task 2"), ("Description", "Description 2"),
-     ("DueDate", "2023-10-16"), ("Completed", True)],
-    [("Name", "Task 3"), ("Description", "Description 3"),
-     ("DueDate", "2023-10-17"), ("Completed", False)],
-    [("Name", "Task 4"), ("Description", "Description 4"),
-     ("DueDate", "2023-10-18"), ("Completed", True)],
+    {"column-name": "Name", "value": "Task 1"},
+    {"column-name": "Description", "value": "Description 1"},
+    {"column-name": "DueDate", "value": "2023-10-15"},
+    {"column-name": "Completed", "value": False},
+    {"column-name": "Name", "value": "Task 2"},
+    {"column-name": "Description", "value": "Description 2"},
+    {"column-name": "DueDate", "value": "2023-10-16"},
+    {"column-name": "Completed", "value": True},
+    {"column-name": "Name", "value": "Task 3"},
+    {"column-name": "Description", "value": "Description 3"},
+    {"column-name": "DueDate", "value": "2023-10-17"},
+    {"column-name": "Completed", "value": False},
+    {"column-name": "Name", "value": "Task 4"},
+    {"column-name": "Description", "value": "Description 4"},
+    {"column-name": "DueDate", "value": "2023-10-18"},
+    {"column-name": "Completed", "value": True}
 ]
+
 for task in taskList:
     todo_table.insert_data(task)
 

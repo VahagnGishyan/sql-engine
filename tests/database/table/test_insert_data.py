@@ -2,6 +2,7 @@ import unittest
 from database import table as db
 from database import constraints as dbcstrs
 
+
 class TestTableInsert(unittest.TestCase):
     def test_insert(self):
         # Create a table
@@ -17,7 +18,11 @@ class TestTableInsert(unittest.TestCase):
         my_table.add_column("Age", "int", [constraint_default])
 
         # Insert data into the table
-        data = [("ID", 1), ("Name", "John")]
+        data = [
+            {"column-name": "ID", "value": 1},
+            {"column-name": "Name", "value": "John"},
+        ]
+
         my_table.insert_data(data)
 
         # Verify the data in the table
@@ -29,6 +34,7 @@ class TestTableInsert(unittest.TestCase):
         self.assertEqual(elements[0].value, 1)
         self.assertEqual(elements[1].value, "John")
         self.assertEqual(elements[2].value, default_value)
+
 
 if __name__ == '__main__':
     unittest.main()
