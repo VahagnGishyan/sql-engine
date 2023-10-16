@@ -5,7 +5,8 @@
 
 class ConstraintException(Exception):
     def __init(self, element_name, constraint_name):
-        super().__init(f"{element_name} constraint '{constraint_name}' violation.")
+        super().__init(
+            f"{element_name} constraint '{constraint_name}' violation.")
 
 
 #############################################################
@@ -17,9 +18,13 @@ class ConstraintNotNull:
             raise ConstraintException("NULL", "NOT NULL")
         return element_value
 
+    def get_info(self):
+        constraint_info = {
+            "name": "not-null"
+        }
 
 #############################################################
-    
+
 
 class ConstraintUnique:
     def __init__(self):
@@ -31,6 +36,10 @@ class ConstraintUnique:
         self.values.add(element_value)
         return (element_value)
 
+    def get_info(self):
+        constraint_info = {
+            "name": "unique"
+        }
 
 #############################################################
 
@@ -41,6 +50,11 @@ class ConstraintPrimaryKey(ConstraintUnique):
         if element_value is None:
             raise ConstraintException(element_value, "PRIMARY KEY")
         return (element_value)
+
+    def get_info(self):
+        constraint_info = {
+            "name": "primary-key"
+        }
 
 
 #############################################################
@@ -58,13 +72,19 @@ class ConstraintForeignKey:
             raise ConstraintException(element_value, "Foreign KEY")
         return element_value
 
+    def get_info(self):
+        constraint_info = {
+            "name": "foreign-key"
+        }
+
 
 def reference_exists(element_value, reference_table, referenced_element):
     # Implement logic to check if the reference exists in the reference_table
     # Return True if the reference exists, otherwise return False
     # Need to define this logic based on your database or data structure
-    raise NotImplementedError("ConstraintForeignKey::reference_exists(), function not yet implemented")
-    #temp
+    raise NotImplementedError(
+        "ConstraintForeignKey::reference_exists(), function not yet implemented")
+    # temp
 
 
 #############################################################
@@ -79,6 +99,10 @@ class ConstraintCheck:
             raise ConstraintException(element_value, "CHECK")
         return element_value
 
+    def get_info(self):
+        raise NotImplementedError(
+            "ConstraintCheck::get_info(), function not yet implemented")
+
 
 #############################################################
 
@@ -91,7 +115,12 @@ class ConstraintDefault:
         if element_value is None:
             return self.default_value
         return element_value
-    
+
+    def get_info(self):
+        constraint_info = {
+            "name": "default",
+            "value": self.default_value
+        }
 
 #############################################################
 
@@ -102,7 +131,12 @@ class ConstraintCreateIndex:
 
     def check(self, element_value, column, element_type):
         # Implement logic to create an index in the specified database and column
-        raise NotImplementedError("ConstraintCreateIndex::check(), method not yet implemented")
-        #temp
+        raise NotImplementedError(
+            "ConstraintCreateIndex::check(), method not yet implemented")
+        # temp
+
+    def get_info(self):
+        raise NotImplementedError(
+            "ConstraintCreateIndex::get_info(), method not yet implemented")
 
 #############################################################
