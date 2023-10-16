@@ -55,7 +55,7 @@ class CaseToDoListEmpty(unittest.TestCase):
         db_tables_dir = todo_db.get_tables_dir_path()
         todo_db.disconnect()
         self.assertFalse(utfile.is_dir_empty(db_tables_dir))
-        # utfile.rmdir(db_work_dir)
+        utfile.rmdir(db_work_dir)
 
 
 if __name__ == '__main__':
