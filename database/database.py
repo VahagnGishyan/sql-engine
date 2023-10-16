@@ -207,6 +207,7 @@ class Database:
         # Get the table by name
         table = self.get_table(table_name)
         self.tables.remove(table)
+        utfile.remove(self.get_table_path(table_name))
 
     def get_table(self, table_name):
         # Retrieve a table from the database by its name using a for loop
@@ -214,6 +215,12 @@ class Database:
             if table.name == table_name:
                 return table
         raise ValueError(f"Table '{table_name}' not found in the database.")
+
+    def get_table_path(self, table_name):
+        path = self.get_tables_dir_path()
+        path = f"{path}/{table_name}"
+        path = self.filem.fix_file_extension(path)
+        return path
 
     def execute(self, query):
         pass
