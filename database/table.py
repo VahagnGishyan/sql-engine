@@ -3,6 +3,7 @@ from database import column as db
 from database import row as rw
 from database import file_manager as fm
 from utility import console
+from utility import file as utfile
 
 #############################################################
 #                                                           #
@@ -138,13 +139,20 @@ class Table:
         return table_json
 
     def save(self, path, filem=fm.FileManager()):
+        utfile.assert_dir_exists(path)
         data = self.table_to_table_info()
         tableFile = path + '/' + self.get_name()
         tableFile = filem.fix_file_extension(tableFile)
         filem.save(data, tableFile)
 
     def load(self, path, filem=fm.FileManager()):
-        pass
+        utfile.assert_file_exists(path)
+        data = filem.load(path)
+        self.set_name(data["table"])
+        for column in data["columns"]:
+            self.add_column(column["name"], column["type"])
+        for row in data["rows"]:
+            self.insert_data(row)
 
     #########################################################
 

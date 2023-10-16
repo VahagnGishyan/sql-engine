@@ -139,33 +139,17 @@ class Database:
             print(f"table-list: {tables}")
 
         for table_name in tables:
-            table_path = f"{tables_dir}/{table_name}"
-            table_data = self.filem.load(table_path)
-
-            rows = []
-            for row_data in table_data:
-                row = rw.Row()
-                for element_data in row_data:
-                    element = rw.RowElement(
-                        element_data["column"], element_data["value"], element_data["type"])
-                    row.row_elements.append(element)
-                rows.append(row)
-
             table = self.create_table(table_name)
-            for element in rows[0].row_elements:
-                table.add_column(element.column, element.type)
-                # temp, also add constraints
-
-            table.insert_rows(rows)
+            table_path = f"{tables_dir}/{table_name}"
+            table.load(table_path)
 
     def load_info(self):
         info = self.filem.load(self.get_info_file_path())
         # do-something
 
     def load(self):
-        # self.load_info()
-        # self.load_tables()
-        pass
+        self.load_info()
+        self.load_tables()
 
     #########################################################
 
