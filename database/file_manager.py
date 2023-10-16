@@ -49,22 +49,6 @@ class FileManager:
         except Exception as e:
             raise ValueError(f"Error saving JSON data to {path}: {e}")
 
-    def save_row_list(self, rows, path):
-        list_of_lists = []
-
-        for row in rows:
-            row_list = []
-            for element in row.row_elements:
-                row_dict = {
-                    "column": element.column,
-                    "value": element.value,
-                    "type": element.type
-                }
-                row_list.append(row_dict)
-            list_of_lists.append(row_list)
-
-        self.save(list_of_lists, path)
-
     def load(self, path):
         utfile.assert_is_file(path)
         try:

@@ -92,6 +92,62 @@ class Table:
 
     #########################################################
 
+    def table_to_table_info_columns(self):
+        # Convert columns
+        columns = []
+        for column in self.columns:
+            column_json = {
+                "name": column.name,
+                "type": column.type,
+                # "constraints": []
+            }
+            # for constraint in column.constraints:
+            #     constraint_json = {
+            #         "name": constraint.name
+            #     }
+            #     if constraint.value is not None:
+            #         constraint_json["value"] = constraint.value
+            #     column_json["constraints"].append(constraint_json)
+            columns.append(column_json)
+        return columns
+
+    def table_to_table_info_rows(self):
+        # Convert rows
+        rows = []
+        for row in self.get_rows():
+            row_json = []
+            for element in row.row_elements:
+                row_element_json = {
+                    "column": element.column,
+                    # "type": element.type,
+                    "value": element.value
+                }
+                row_json.append(row_element_json)
+
+            rows.append(row_json)
+        return rows
+
+    def table_to_table_info(self):
+        table_json = {
+            "table": self.get_name(),
+            "columns": [],
+            "rows": []
+        }
+        table_json["columns"] = self.table_to_table_info_columns()
+        table_json["rows"] = self.table_to_table_info_rows()
+        return table_json
+
+    def save(self, path, filem=fm.FileManager()):
+        data = self.table_to_table_info()
+        tableFile = path + '/' + self.get_name()
+        tableFile = filem.fix_file_extension(tableFile)
+        filem.save(data, tableFile)
+
+    def load(self, path, filem=fm.FileManager()):
+        pass
+
+    #########################################################
+
     def __len__(self):
         return len(self.columns)
 

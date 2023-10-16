@@ -117,10 +117,7 @@ class Database:
         for table in self.tables:
             if not isinstance(table, tb.Table):
                 raise ValueError("element in list tables is not obj of Table")
-            data = table.get_rows()
-            tableFile = path + '/' + table.get_name()
-            tableFile = self.filem.fix_file_extension(tableFile)
-            self.filem.save_row_list(data, tableFile)
+            table.save(path)
 
     def save_info(self, path):
         utfile.assert_dir_exists(path)
