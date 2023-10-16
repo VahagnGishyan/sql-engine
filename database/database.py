@@ -2,6 +2,7 @@
 from database import table as tb
 from database import file_manager as fm
 from utility import file as utfile
+from database import row as rw
 # from utility import core as utcore
 
 import os
@@ -137,17 +138,32 @@ class Database:
         extension = self.filem.get_data_file_extension()
         tables = utfile.list_files_in_dir_with_extension(
             tables_dir, extension)
+        if len(tables):
+            print(f"table-list: {tables}")
+
         for table_name in tables:
             table_path = f"{tables_dir}/{table_name}"
             table_data = self.filem.load(table_path)
-            print(table_data)
-            # I have not Idea what to do
-            None.lenght
-        pass
+
+            rows = []
+            for row_data in table_data:
+                row = rw.Row()
+                for element_data in row_data:
+                    element = rw.RowElement(
+                        element_data["column"], element_data["value"], element_data["type"])
+                    row.row_elements.append(element)
+                rows.append(row)
+
+            table = self.create_table(table_name)
+            for element in rows[0].row_elements:
+                table.add_column(element.column, element.type)
+                # temp, also add constraints
+
+            table.insert_rows(rows)
 
     def load_info(self):
         info = self.filem.load(self.get_info_file_path())
-        pass
+        # do-something
 
     def load(self):
         # self.load_info()
@@ -168,7 +184,7 @@ class Database:
         tblDir = db.get_tables_dir_path()
         dbDataFile = db.get_info_file_path()
 
-        if not utfile.is_path_exists(dbDataFile):
+        if not utfile.is_path_exists(dbDataFile) or utfile.is_file_empty_or_spaces(dbDataFile):
             utfile.mkdir(tblDir)
             utfile.create_empty_file(dbDataFile)
             db.save()
@@ -189,16 +205,14 @@ class Database:
 
     def connect(self):
         self.assert_not_connected()
-        self.set_connected(True)
         self.load()
-        pass
+        self.set_connected(True)
 
     def disconnect(self, save=True):
         self.assert_connected()
-        self.set_connected(False)
         if save is True:
             self.save()
-        pass
+        self.set_connected(False)
 
     #########################################################
 
