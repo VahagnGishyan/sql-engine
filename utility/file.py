@@ -92,6 +92,11 @@ def assert_dir_exists(path):
     assert_is_dir(path)
 
 
+def assert_file_exists(path):
+    assert_path_exists(path)
+    assert_is_file(path)
+
+
 def list_dirs_in_dir(path):
     # List directories in a given directory.
     return [d for d in os.listdir(path) if is_dir(os.path.join(path, d))]
