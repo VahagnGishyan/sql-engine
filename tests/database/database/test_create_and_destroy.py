@@ -2,7 +2,7 @@ import unittest
 from database import database as db
 from database import file_manager as fm
 
-db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+db_path = fm.FileManager.get_work_dir() + '/' + "test-dbase-dir"
 db_name = "TestDB"
 
 

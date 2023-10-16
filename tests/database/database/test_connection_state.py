@@ -6,7 +6,7 @@ from database import file_manager as fm
 class TestDatabaseConnectionState(unittest.TestCase):
     def setUp(self):
         db_name = "SampleDB"
-        db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+        db_path = fm.FileManager.get_work_dir() + '/' + "test-dbase-dir"
         self.db = db.Database(db_name, db_path)
 
     def test_connect(self):

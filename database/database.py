@@ -13,7 +13,7 @@ import os
 
 
 class Database:
-    def __init__(self, name, path, filem=fm.DataSaver()):
+    def __init__(self, name, path, filem=fm.FileManager()):
         self.path = None
         self.name = None
         self.filem = None
@@ -62,8 +62,8 @@ class Database:
         self.name = name
 
     def set_datasaver(self, file_manager):
-        if not isinstance(file_manager, fm.DataSaver):
-            raise ValueError("file-manager must be a DataSaver obj")
+        if not isinstance(file_manager, fm.FileManager):
+            raise ValueError("file-manager must be a FileManager obj")
         self.filem = file_manager
 
     #########################################################
@@ -175,7 +175,7 @@ class Database:
     @staticmethod
     def create(dbname, path=None, connect=False):
         if path is None:
-            path = fm.DataSaver.get_db_default_dir()
+            path = fm.FileManager.get_db_default_dir()
         if utfile.is_path_exists(path) is False:
             utfile.mkdir(path)
 

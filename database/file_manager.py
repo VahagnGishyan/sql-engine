@@ -8,7 +8,7 @@ import os
 #############################################################
 
 
-class DataSaver:
+class FileManager:
 
     @staticmethod
     def get_work_dir():
@@ -16,7 +16,7 @@ class DataSaver:
 
     @staticmethod
     def get_db_default_dir():
-        return DataSaver.get_work_dir() + "/main"
+        return FileManager.get_work_dir() + "/main"
 
     #########################################################
 

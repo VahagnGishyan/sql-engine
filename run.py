@@ -12,7 +12,7 @@ from database import constraints as cstr
 #############################################################
 
 # Step 0: Set data names
-db_path = fm.DataSaver.get_work_dir() + '/' + "test-dbase-dir"
+db_path = fm.FileManager.get_work_dir() + '/' + "test-dbase-dir"
 db_name = "MyDatabase"
 table_name = "ToDoList"
 
