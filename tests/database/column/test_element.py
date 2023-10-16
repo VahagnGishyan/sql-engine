@@ -1,8 +1,10 @@
 import unittest
 from database import column as db
 
-def create_column(name, data_type):
-    return db.Column(name, data_type)
+
+def create_column(name, type):
+    return db.Column(name, type)
+
 
 class TestColumnElement(unittest.TestCase):
     def test_add_elements(self):
@@ -21,7 +23,7 @@ class TestColumnElement(unittest.TestCase):
         self.assertEqual(my_column.elements[0].value, 10)
         self.assertEqual(my_column.elements[1].value, 20)
         self.assertEqual(my_column.elements[2].value, 30)
-    
+
     def test_remove_elements(self):
         # Create a column
         my_column = create_column("my_column", "int")
@@ -97,6 +99,7 @@ class TestColumnElement(unittest.TestCase):
         # Attempt to get an element with an out-of-range index
         with self.assertRaises(IndexError):
             my_column.get_element(3)
+
 
 if __name__ == '__main__':
     unittest.main()

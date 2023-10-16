@@ -53,13 +53,26 @@ def assert_path_exists(path):
 
 
 def is_file(path):
+    assert_path_exists(path)
     # Check if a path is a file.
     return os.path.isfile(path)
 
 
 def is_dir(path):
+    assert_path_exists(path)
     # Check if a path is a directory.
     return os.path.isdir(path)
+
+
+def is_file_empty_or_spaces(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                if line.strip():  # If line is not empty or contains non-space characters
+                    return False
+        return True  # All lines were empty or contained only spaces
+    except FileNotFoundError:
+        return True  # File not found is considered empty
 
 
 def assert_is_file(path):
@@ -89,10 +102,14 @@ def list_files_in_dir(path):
     return [f for f in os.listdir(path) if is_file(os.path.join(path, f))]
 
 
+def check_file_extension(path, extension):
+    return path.endswith(extension)
+
+
 def list_files_in_dir_with_extension(directory, extension):
     file_list = []
     for filename in os.listdir(directory):
-        if filename.endswith(extension):
+        if check_file_extension(filename, extension):
             file_list.append(filename)
     return file_list
 

@@ -8,12 +8,12 @@ from utility import file as utfile
 
 # Step 0: Set data names
 db_path = fm.DataSaver.get_work_dir()
-db_name = "ToDoListDB"
+db_name = "ToDoListEmptyDB"
 table_name = "ToDoList"
 
 
-class DatabaseConnectionState(unittest.TestCase):
-    def test_to_do_list_db(self):
+class CaseToDoListEmpty(unittest.TestCase):
+    def test_to_do_list_db_empty(self):
         # Step 1: Create a database
         todo_db = db.Database.create(db_name, db_path, connect=True)
 
@@ -55,7 +55,7 @@ class DatabaseConnectionState(unittest.TestCase):
         db_tables_dir = todo_db.get_tables_dir_path()
         todo_db.disconnect()
         self.assertFalse(utfile.is_dir_empty(db_tables_dir))
-        utfile.rmdir(db_work_dir)
+        # utfile.rmdir(db_work_dir)
 
 
 if __name__ == '__main__':
