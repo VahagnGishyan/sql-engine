@@ -42,15 +42,10 @@ class DatabaseConnectionState(unittest.TestCase):
         new_table = todo_db.create_table(new_table_name)
         self.assertEqual(len(todo_db.list_tables()), 2)
 
-        pathTest0 = f"{todo_db.get_path()}/../test-0"
-        pathTest1 = f"{todo_db.get_path()}/../test-1"
-
-        table.save(pathTest0)
         info = table.get_info()
         new_table.reset_by_info(info)
         self.assertEqual(len(new_table), 4)
         self.assertEqual(len(todo_db.list_tables()), 2)
-        new_table.save(pathTest1)
 
         todo_db.drop_table(table_name)
         self.assertEqual(len(todo_db.list_tables()), 1)
