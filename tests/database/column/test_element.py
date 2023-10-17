@@ -37,7 +37,7 @@ class TestColumnElement(unittest.TestCase):
         self.assertEqual(len(my_column.elements), 3)
 
         # Remove an element
-        my_column.remove_element(20)
+        my_column.remove_elements_by_value(20)
 
         # Check the updated element count
         self.assertEqual(len(my_column.elements), 2)
