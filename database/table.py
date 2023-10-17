@@ -40,7 +40,7 @@ class Table:
 
     def add_column(self, name, type, constraints=None):
         column = clm.Column(name, type, constraints)
-        self.columns.append(column)
+        self.insert_column(column)
         return column
 
     def drop_column(self, column_name):
@@ -52,12 +52,15 @@ class Table:
 
     #########################################################
 
+    def list_columns(self):
+        return [column.name for column in self.columns]
+
     def get_column_by_name(self, column_name):
         for column in self.columns:
             if column.name == column_name:
                 return column
-        # temp, throw and exception
-        return None  # Return None if the column is not found
+        # If the column is not found, raise an exception
+        raise ValueError(f"Column with name '{column_name}' not found.")
 
     def get_rows(self):
         # Get rows from columns
@@ -77,6 +80,11 @@ class Table:
         return rows
 
     #########################################################
+
+    def insert_column(self, column):
+        if not isinstance(column, clm.Column):
+            raise ValueError("Input must be a Column object.")
+        self.columns.append(column)
 
     def insert_data(self, data):
         if len(data) == 0:
@@ -101,6 +109,17 @@ class Table:
         dataList = self.get_info_rows()
         for data in dataList:
             self.insert_data(data)
+
+    def remove_row(self, index):
+        # Check if the table is empty or the index is out of range
+        if not self.columns:
+            raise ValueError("Table is empty.")
+        if index < 0 or index >= len(self.columns[0].elements):
+            raise ValueError("Invalid row index provided.")
+
+        # Remove each element from all columns at the given index
+        for column in self.columns:
+            del column.elements[index]
 
     #########################################################
 
