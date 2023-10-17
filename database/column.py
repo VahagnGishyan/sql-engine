@@ -2,7 +2,12 @@
 class ColumnElement:
     def __init__(self, value):
         self.value = value
-        self.type = type
+
+    def get_value(self):
+        return self.value
+
+    def set_value(self, value):
+        self.value = value
 
     def copy(self):
         newclm = ColumnElement(self.value)
@@ -60,11 +65,28 @@ class Column:
         element = ColumnElement(value)
         self.elements.append(element)
 
-    def remove_element(self, value):
+    def remove_elements_by_value(self, value):
         elements_to_remove = [
             element for element in self.elements if element.value == value]
         for element in elements_to_remove:
             self.elements.remove(element)
+
+    def remove_elements_except_value(self, value):
+        elements_to_remove = [
+            element for element in self.elements if element.value != value]
+        for element in elements_to_remove:
+            self.elements.remove(element)
+
+    def remove_element_by_index(self, index):
+        if index < 0 or index >= len(self.elements):
+            raise ValueError("Index is out of range")
+        removed_element = self.elements.pop(index)
+        return removed_element
+
+    def remove_element_by_index_list(self, index_list):
+        index_list.sort(reverse=True)
+        for index in index_list:
+            self.remove_element_by_index(index)
 
     def update_element(self, old_value, new_value):
         element_to_update = next(

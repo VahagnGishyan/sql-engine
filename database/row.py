@@ -29,7 +29,7 @@ class Row:
                     element.type = new_data_type
                 return
 
-    def remove_element(self, column):
+    def remove_elements_by_value(self, column):
         self.row_elements = [
             element for element in self.row_elements if element.column != column]
 
