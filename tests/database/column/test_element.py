@@ -12,9 +12,9 @@ class TestColumnElement(unittest.TestCase):
         my_column = create_column("my_column", "int")
 
         # Add elements with values
-        my_column.add_element(10, "int")
-        my_column.add_element(20, "int")
-        my_column.add_element(30, "int")
+        my_column.add_element(10)
+        my_column.add_element(20)
+        my_column.add_element(30)
 
         # Check the element count
         self.assertEqual(len(my_column.elements), 3)
@@ -29,9 +29,9 @@ class TestColumnElement(unittest.TestCase):
         my_column = create_column("my_column", "int")
 
         # Add elements
-        my_column.add_element(10, "int")
-        my_column.add_element(20, "int")
-        my_column.add_element(30, "int")
+        my_column.add_element(10)
+        my_column.add_element(20)
+        my_column.add_element(30)
 
         # Check the initial element count
         self.assertEqual(len(my_column.elements), 3)
@@ -51,16 +51,15 @@ class TestColumnElement(unittest.TestCase):
         my_column = create_column("my_column", "int")
 
         # Add elements
-        my_column.add_element(10, "int")
-        my_column.add_element(20, "int")
-        my_column.add_element(30, "int")
+        my_column.add_element(10)
+        my_column.add_element(20)
+        my_column.add_element(30)
 
         # Update an existing element
-        my_column.update_element(20, 25, "int")
+        my_column.update_element(20, 25)
 
         # Check the updated element value and type
         self.assertEqual(my_column.elements[1].value, 25)
-        self.assertEqual(my_column.elements[1].type, "int")
 
     def test_update_element_not_found(self):
         # Create a column
@@ -68,16 +67,16 @@ class TestColumnElement(unittest.TestCase):
 
         # Attempt to update a non-existent element
         with self.assertRaises(ValueError):
-            my_column.update_element(50, 60, "int")
+            my_column.update_element(50, 60)
 
     def test_get_element_by_index(self):
         # Create a column
         my_column = create_column("my_column", "int")
 
         # Add elements
-        my_column.add_element(10, "int")
-        my_column.add_element(20, "int")
-        my_column.add_element(30, "int")
+        my_column.add_element(10)
+        my_column.add_element(20)
+        my_column.add_element(30)
 
         # Get elements by index
         element_1 = my_column.get_element(0)
@@ -86,11 +85,8 @@ class TestColumnElement(unittest.TestCase):
 
         # Check the values and types of the retrieved elements
         self.assertEqual(element_1.value, 10)
-        self.assertEqual(element_1.type, "int")
         self.assertEqual(element_2.value, 20)
-        self.assertEqual(element_2.type, "int")
         self.assertEqual(element_3.value, 30)
-        self.assertEqual(element_3.type, "int")
 
     def test_get_element_by_index_out_of_range(self):
         # Create a column

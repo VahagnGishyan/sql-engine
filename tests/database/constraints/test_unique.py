@@ -16,8 +16,8 @@ class TestColumnConstraintsUnique(unittest.TestCase):
 
         try:
             # Add elements with unique values
-            my_column.add_element(10, "int")
-            my_column.add_element(20, "int")
+            my_column.add_element(10)
+            my_column.add_element(20)
         except dbcstrs.ConstraintException:
             self.fail(
                 "ConstraintException should not be raised for unique values.")
@@ -30,8 +30,8 @@ class TestColumnConstraintsUnique(unittest.TestCase):
 
         try:
             # Add elements with non-unique values
-            my_column.add_element(10, "int")
-            my_column.add_element(10, "int")
+            my_column.add_element(10)
+            my_column.add_element(10)
         except dbcstrs.ConstraintException as e:
             pass
         else:

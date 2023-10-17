@@ -1,8 +1,12 @@
 
 class ColumnElement:
-    def __init__(self, value, type):
+    def __init__(self, value):
         self.value = value
         self.type = type
+
+    def copy(self):
+        newclm = ColumnElement(self.value)
+        return newclm
 
 
 class Column:
@@ -13,6 +17,15 @@ class Column:
         self.constraints = constraints or []
 
         self.set_name(name)
+
+    def copy(self):
+        constraints = []
+        for constraint in self.constraints:
+            constraints.append(constraint.copy())
+        newclm = Column(self.get_name(), self.type, constraints)
+        for element in self.elements:
+            newclm.add_element(element.copy())
+        return newclm
 
     #########################################################
 
@@ -26,15 +39,25 @@ class Column:
 
     #########################################################
 
+    def get_type(self):
+        return self.type
+
+    def set_type(self, type):
+        if type is None or ' ' in type:
+            raise ValueError("Type cannot be None or contain white spaces")
+        self.type = type
+
+    #########################################################
+
     def apply_constraints(self, element_value):
         for constraint in self.constraints:
             element_value = constraint.check(self, element_value, self.type)
         return element_value
 
-    def add_element(self, value, type):
+    def add_element(self, value):
         value = self.apply_constraints(value)
         # Initialize with None, allowing data to be set later
-        element = ColumnElement(value, type)
+        element = ColumnElement(value)
         self.elements.append(element)
 
     def remove_element(self, value):
@@ -43,14 +66,12 @@ class Column:
         for element in elements_to_remove:
             self.elements.remove(element)
 
-    def update_element(self, old_value, new_value, new_type=None):
+    def update_element(self, old_value, new_value):
         element_to_update = next(
             (element for element in self.elements if element.value == old_value), None
         )
         if element_to_update:
             element_to_update.value = self.apply_constraints(new_value)
-            if new_type:
-                element_to_update.type = new_type
         else:
             raise ValueError(
                 f"ColumnElement with value '{old_value}' not found in the column.")
@@ -60,6 +81,11 @@ class Column:
             return self.elements[index]
         else:
             raise IndexError("Index is out of range.")
+
+    def get_elements(self):
+        return self.elements
+
+    #########################################################
 
     def __len__(self):
         return len(self.elements)

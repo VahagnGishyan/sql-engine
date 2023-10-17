@@ -13,6 +13,13 @@ class ConstraintException(Exception):
 
 
 class ConstraintNotNull:
+
+    def copy(self):
+        constraint = ConstraintNotNull()
+        return constraint
+
+    #########################################################
+
     def check(self, column, element_value, element_type):
         if element_value is None:
             raise ConstraintException("NULL", "NOT NULL")
@@ -30,6 +37,12 @@ class ConstraintUnique:
     def __init__(self):
         self.values = set()
 
+    def copy(self):
+        constraint = ConstraintUnique()
+        return constraint
+
+    #########################################################
+
     def check(self, column, element_value, element_type):
         if element_value in self.values:
             raise ConstraintException(element_value, "UNIQUE")
@@ -45,6 +58,13 @@ class ConstraintUnique:
 
 
 class ConstraintPrimaryKey(ConstraintUnique):
+
+    def copy(self):
+        constraint = ConstraintPrimaryKey()
+        return constraint
+
+    #########################################################
+
     def check(self, column, element_value, element_type):
         super().check(column, element_value, element_type)
         if element_value is None:
@@ -64,6 +84,13 @@ class ConstraintForeignKey:
     def __init__(self, reference_table, referenced_element):
         self.reference_table = reference_table
         self.referenced_element = referenced_element
+
+    def copy(self):
+        constraint = ConstraintForeignKey(
+            self.reference_table, self.referenced_element)
+        return constraint
+
+    #########################################################
 
     def check(self, column, element_value, element_type):
         # Implement logic to check if the reference exists in the reference_table
@@ -94,6 +121,12 @@ class ConstraintCheck:
     def __init__(self, check_func):
         self.check_func = check_func
 
+    def copy(self):
+        constraint = ConstraintCheck(self.check_func)
+        return constraint
+
+    #########################################################
+
     def check(self, column, element_value, element_type):
         if not self.check_func(column, element_value, element_type):
             raise ConstraintException(element_value, "CHECK")
@@ -110,6 +143,12 @@ class ConstraintCheck:
 class ConstraintDefault:
     def __init__(self, default_value):
         self.default_value = default_value
+
+    def copy(self):
+        constraint = ConstraintDefault(self.default_value)
+        return constraint
+
+    #########################################################
 
     def check(self, column, element_value, element_type):
         if element_value is None:
@@ -128,6 +167,12 @@ class ConstraintDefault:
 class ConstraintCreateIndex:
     def __init__(self, index_name):
         self.index_name = index_name
+
+    def copy(self):
+        constraint = ConstraintCreateIndex(self.index_name)
+        return constraint
+
+    #########################################################
 
     def check(self, element_value, column, element_type):
         # Implement logic to create an index in the specified database and column

@@ -84,7 +84,7 @@ class Table:
 
         for entry in new_row:
             column = self.get_column_by_name(entry["column-name"])
-            column.add_element(entry["value"], entry["type"])
+            column.add_element(entry["value"])
 
     def insert_rows(self, rows):
         dataList = rw.rows_to_tuple_list(rows)

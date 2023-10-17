@@ -16,7 +16,7 @@ class TestColumnConstraintsDefault(unittest.TestCase):
             "my_column", "int", [constraint_default])
 
         # Add an element without specifying a value
-        my_column.add_element(None, "int")
+        my_column.add_element(None)
 
         # Check the element count
         self.assertEqual(len(my_column.elements), 1)
@@ -32,9 +32,9 @@ class TestColumnConstraintsDefault(unittest.TestCase):
             "my_column", "int", [constraint_default])
 
         # Add multiple elements without specifying values
-        my_column.add_element(None, "int")
-        my_column.add_element(None, "int")
-        my_column.add_element(None, "int")
+        my_column.add_element(None)
+        my_column.add_element(None)
+        my_column.add_element(None)
 
         # Check the element count
         self.assertEqual(len(my_column.elements), 3)

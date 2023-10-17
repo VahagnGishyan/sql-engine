@@ -20,11 +20,11 @@ class TestColumnConstraintsCheck(unittest.TestCase):
 
     def test_constraint_check(self):
         # Add some elements
-        self.my_column.add_element(10, "int")
+        self.my_column.add_element(10)
         self.assertEqual(len(self.my_column.elements), 1)
-        self.my_column.add_element(20, "int")
+        self.my_column.add_element(20)
         self.assertEqual(len(self.my_column.elements), 2)
-        self.my_column.add_element(30, "int")
+        self.my_column.add_element(30)
         self.assertEqual(len(self.my_column.elements), 3)
 
     def test_constraint_check_pass(self):
@@ -34,7 +34,7 @@ class TestColumnConstraintsCheck(unittest.TestCase):
             "my_column", "int", [constraint_check])
 
         # Add an element with a value that should pass the check
-        my_column.add_element(15, "int")
+        my_column.add_element(15)
 
         # The element should be added successfully
         self.assertEqual(len(my_column.elements), 1)
@@ -47,7 +47,7 @@ class TestColumnConstraintsCheck(unittest.TestCase):
 
         try:
             # Add an element with a value that should fail the check
-            my_column.add_element(0, "int")
+            my_column.add_element(0)
         except dbcstrs.ConstraintException as e:
             # The element should raise a ConstraintException due to the check
             self.assertEqual(len(my_column.elements), 0)

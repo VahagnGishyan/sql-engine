@@ -16,7 +16,7 @@ class TestColumnConstraintsNotNull(unittest.TestCase):
 
         try:
             # Add an element with a non-null value
-            my_column.add_element(10, "int")
+            my_column.add_element(10)
         except dbcstrs.ConstraintException:
             self.fail(
                 "ConstraintException should not be raised for a non-null value.")
@@ -29,7 +29,7 @@ class TestColumnConstraintsNotNull(unittest.TestCase):
 
         try:
             # Add an element with a null value
-            my_column.add_element(None, "int")
+            my_column.add_element(None)
         except dbcstrs.ConstraintException as e:
             pass
         else:
