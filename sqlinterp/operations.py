@@ -3,6 +3,7 @@ from sqlinterp import conditions as sqlcnd
 from database.table import Table
 from database.column import Column
 from database.row import Row
+# from utility import console
 
 #############################################################
 #                                                           #
@@ -18,7 +19,7 @@ class Operation:
 
 
 class InsertInto(Operation):
-    def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor]):
+    def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor] = []):
         self.values = values
 
     def execute(self, table: Table):
@@ -42,7 +43,7 @@ class InsertInto(Operation):
 
 
 class ConditionalBasedOperation(Operation):
-    def __init__(self, condExecList: list[sqlcnd.ConditionExecutor]):
+    def __init__(self, condExecList: list[sqlcnd.ConditionExecutor] = []):
         self.condExecList = condExecList
 
     def add_condition_executor(self, condExec: sqlcnd.ConditionExecutor):
@@ -53,7 +54,9 @@ class ConditionalBasedOperation(Operation):
     def get_filtered_indexes(self, table: Table):
         # If the condExecList is empty, return an empty list
         if not self.condExecList:
-            return []
+            n = len(table.columns[0])
+            index_list = [i for i in range(n)]
+            return index_list
 
         # Initialize the index_list with the indices from the first condition
         index_list = self.condExecList[0].execute(table)
@@ -81,13 +84,17 @@ class ConditionalBasedOperation(Operation):
 
 
 class Select(ConditionalBasedOperation):
-    def __init__(self, column_list: list[Column], condExecList: list[sqlcnd.ConditionExecutor]):
-        super.__init(condExecList)
+    def __init__(self, column_list: list[Column], condExecList: list[sqlcnd.ConditionExecutor] = []):
+        super().__init__(condExecList)
         self.column_list = column_list
 
     def execute(self, table: Table):
         if not self.column_list:
             raise ValueError("No columns selected in the query.")
+
+        if self.column_list[0] == "*":
+            self.column_list = table.list_columns()
+        print()
 
         index_list = self.get_filtered_indexes(table)
 
@@ -105,8 +112,8 @@ class Select(ConditionalBasedOperation):
 
 
 class Delete(ConditionalBasedOperation):
-    def __init__(self, condExecList: list[sqlcnd.ConditionExecutor]):
-        super.__init(condExecList)
+    def __init__(self, condExecList: list[sqlcnd.ConditionExecutor] = []):
+        super.__init__(condExecList)
 
     def execute(self, table: Table):
         # Get the indexes to delete based on the condition
@@ -119,8 +126,8 @@ class Delete(ConditionalBasedOperation):
 
 
 class Update(ConditionalBasedOperation):
-    def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor]):
-        super.__init(condExecList)
+    def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor] = []):
+        super.__init__(condExecList)
         self.values = values
 
     def execute(self, table: Table):
