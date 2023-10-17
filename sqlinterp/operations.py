@@ -19,23 +19,13 @@ class Operation:
 
 
 class InsertInto(Operation):
-    def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor] = []):
+    def __init__(self, values: list):
         self.values = values
 
     def execute(self, table: Table):
         if not self.values:
             raise ValueError("No values provided for insert.")
-        new_rows = []
-        for value in self.valuesvalues:
-            new_row = Row()
-            for column_name, new_value in value.items():
-                column: Column = table.get_column_by_name(column_name)
-                if column:
-                    new_row.add_element(column_name, new_value)
-
-            new_rows.append(new_row)
-
-        table.insert_rows(new_rows)
+        table.insert_data(self.values)
         return table
 
 
@@ -94,7 +84,6 @@ class Select(ConditionalBasedOperation):
 
         if self.column_list[0] == "*":
             self.column_list = table.list_columns()
-        print()
 
         index_list = self.get_filtered_indexes(table)
 
