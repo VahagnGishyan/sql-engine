@@ -116,11 +116,11 @@ class Equal(Comparison):
 
 
 class NotEqual(Comparison):
-    def __init__(self, *args):
-        self.cond = Not(Equal(args))
+    def __init__(self, value):
+        self.cond = Not(Equal(value))
 
-    def check(self, *args):
-        return self.cond.check(args)
+    def check(self, value):
+        return self.cond.check(value)
 
 
 #############################################################
@@ -131,40 +131,40 @@ class GreaterThan(Comparison):
         self.value = value
 
     def check(self, value):
-        return self.value > value
+        return value > self.value
 
 
 #############################################################
 
 
 class GreaterThanOrEqualTo(Comparison):
-    def __init__(self, *args):
-        self.cond = Or(GreaterThan(args), Equal(args))
+    def __init__(self, value):
+        self.cond = Or(GreaterThan(value), Equal(value))
 
-    def check(self, *args):
-        return self.cond.check(args)
+    def check(self, value):
+        return self.cond.check(value)
 
 
 #############################################################
 
 
 class LessThan(Comparison):
-    def __init__(self, *args):
-        self.cond = Not(GreaterThanOrEqualTo(*args))
+    def __init__(self, value):
+        self.cond = Not(GreaterThanOrEqualTo(value))
 
-    def check(self, *args):
-        return self.cond.check(args)
+    def check(self, value):
+        return self.cond.check(value)
 
 
 #############################################################
 
 
 class LessThanOrEqualTo(Comparison):
-    def __init__(self, *args):
-        self.cond = Not(GreaterThan(*args))
+    def __init__(self, value):
+        self.cond = Not(GreaterThan(value))
 
-    def check(self, *args):
-        return self.cond.check(args)
+    def check(self, value):
+        return self.cond.check(value)
 
 
 #############################################################
