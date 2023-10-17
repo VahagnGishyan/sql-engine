@@ -135,8 +135,6 @@ class Database:
         extension = self.filem.get_data_file_extension()
         tables = utfile.list_files_in_dir_with_extension(
             tables_dir, extension)
-        if len(tables):
-            print(f"table-list: {tables}")
 
         for table_name in tables:
             table = self.create_table(table_name)
