@@ -33,11 +33,15 @@ class Row:
         self.row_elements = [
             element for element in self.row_elements if element.column != column]
 
+    def get_info(self):
+        # Convert rows
+        row_data = []
+        for element in self.row_elements:
+            row_element = {
+                "column-name": element.column,
+                # "type": element.type,
+                "value": element.value
+            }
+            row_data.append(row_element)
 
-def rows_to_tuple_list(rows):
-    result = []
-    for row in rows:
-        tuple_list = [(element.column, element.value, element.type)
-                      for element in row.row_elements]
-        result.append(tuple_list)
-    return result
+        return row_data

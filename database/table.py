@@ -1,5 +1,5 @@
 
-from database import column as db
+from database import column as clm
 from database import row as rw
 from database import file_manager as fm
 from utility import console
@@ -17,6 +17,15 @@ class Table:
 
         self.set_name(name)
 
+    def copy(self):
+        newtb = Table(self.get_name())
+        for column in self.columns:
+            newtb.add_column(column.get_name(), column.get_type())
+        data = self.get_info_rows()
+        for data in data:
+            newtb.insert_data(data)
+        return newtb
+
     #########################################################
 
     def get_name(self):
@@ -30,7 +39,7 @@ class Table:
     #########################################################
 
     def add_column(self, name, type, constraints=None):
-        column = db.Column(name, type, constraints)
+        column = clm.Column(name, type, constraints)
         self.columns.append(column)
         return column
 
@@ -77,6 +86,7 @@ class Table:
 
         new_row = [{"column-name": column.name, "value": None,
                     "type": column.type} for column in self.columns]
+
         for element in data:
             for entry in new_row:
                 if entry["column-name"] == element["column-name"]:
@@ -88,7 +98,7 @@ class Table:
             column.add_element(entry["value"])
 
     def insert_rows(self, rows):
-        dataList = rw.rows_to_tuple_list(rows)
+        dataList = self.get_info_rows()
         for data in dataList:
             self.insert_data(data)
 
@@ -117,16 +127,8 @@ class Table:
         # Convert rows
         rows = []
         for row in self.get_rows():
-            row_json = []
-            for element in row.row_elements:
-                row_element_json = {
-                    "column-name": element.column,
-                    # "type": element.type,
-                    "value": element.value
-                }
-                row_json.append(row_element_json)
-
-            rows.append(row_json)
+            row_data = row.get_info()
+            rows.append(row_data)
         return rows
 
     def get_info(self):
