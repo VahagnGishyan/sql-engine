@@ -32,6 +32,7 @@ class Table:
     def add_column(self, name, type, constraints=None):
         column = db.Column(name, type, constraints)
         self.columns.append(column)
+        return column
 
     def drop_column(self, column_name):
         for column in self.columns:
