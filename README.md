@@ -14,4 +14,4 @@ To get started with this project, check out the code in the "pre-production" bra
 
 ### License
 
-This project is licensed under the [MIT License](LICENSE) - see the [LICENSE.md](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
