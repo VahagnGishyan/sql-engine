@@ -6,6 +6,12 @@ class RowElement:
         self.value = value
         self.type = type
 
+    def get_value(self):
+        return self.value
+
+    def set_value(self, value):
+        self.value = value
+
 
 class Row:
     def __init__(self):
@@ -24,7 +30,7 @@ class Row:
     def update_element(self, column, new_value, new_data_type=None):
         for element in self.row_elements:
             if element.column == column:
-                element.value = new_value
+                element.set_value(new_value)
                 if new_data_type:
                     element.type = new_data_type
                 return

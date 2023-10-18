@@ -31,9 +31,9 @@ class TestTableInsert(unittest.TestCase):
             elements.extend(column.elements)
 
         self.assertEqual(len(elements), 3)
-        self.assertEqual(elements[0].value, 1)
-        self.assertEqual(elements[1].value, "John")
-        self.assertEqual(elements[2].value, default_value)
+        self.assertEqual(elements[0].get_value(), 1)
+        self.assertEqual(elements[1].get_value(), "John")
+        self.assertEqual(elements[2].get_value(), default_value)
 
 
 if __name__ == '__main__':

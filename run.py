@@ -67,5 +67,5 @@ print()
 
 # Print rows
 for row in todo_table.get_rows():
-    row_values = [str(element.value) for element in row]
+    row_values = [str(element.get_value()) for element in row]
     print(f"{row_values}")

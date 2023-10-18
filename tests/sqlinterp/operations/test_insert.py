@@ -32,9 +32,9 @@ class TestInsertOperation(unittest.TestCase):
         self.assertEqual(len(table.columns[0]), 1)
 
         inserted_row: Row = table.get_rows()[0]
-        self.assertEqual(inserted_row.row_elements[0].value, "John")
-        self.assertEqual(inserted_row.row_elements[1].value, 30)
-        self.assertEqual(inserted_row.row_elements[2].value, True)
+        self.assertEqual(inserted_row.row_elements[0].get_value(), "John")
+        self.assertEqual(inserted_row.row_elements[1].get_value(), 30)
+        self.assertEqual(inserted_row.row_elements[2].get_value(), True)
 
 
 if __name__ == '__main__':

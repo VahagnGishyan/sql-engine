@@ -22,7 +22,7 @@ class TestColumnConstraintsDefault(unittest.TestCase):
         self.assertEqual(len(my_column.elements), 1)
 
         # Check the default value
-        self.assertEqual(my_column.elements[0].value, default_value)
+        self.assertEqual(my_column.elements[0].get_value(), default_value)
 
     def test_add_elements_with_defaults(self):
         # Create a column with a ConstraintDefault
@@ -41,7 +41,7 @@ class TestColumnConstraintsDefault(unittest.TestCase):
 
         # Check that all elements have the default value
         for element in my_column.elements:
-            self.assertEqual(element.value, default_value)
+            self.assertEqual(element.get_value(), default_value)
 
 
 if __name__ == '__main__':

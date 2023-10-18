@@ -35,9 +35,9 @@ class TestUpdateOperation(unittest.TestCase):
         update_operation.execute(table)
 
         updated_row: Row = table.get_rows()[0]
-        self.assertEqual(updated_row.row_elements[0].value, "John")
-        self.assertEqual(updated_row.row_elements[1].value, 35)
-        self.assertEqual(updated_row.row_elements[2].value, False)
+        self.assertEqual(updated_row.row_elements[0].get_value(), "John")
+        self.assertEqual(updated_row.row_elements[1].get_value(), 35)
+        self.assertEqual(updated_row.row_elements[2].get_value(), False)
 
 
 if __name__ == '__main__':

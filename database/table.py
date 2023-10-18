@@ -74,7 +74,7 @@ class Table:
             for column in self.columns:
                 element = column.elements[i]
                 row_instance.add_element(
-                    column.get_name(), element.value, column.get_type())
+                    column.get_name(), element.get_value(), column.get_type())
             rows.append(row_instance)
 
         return rows

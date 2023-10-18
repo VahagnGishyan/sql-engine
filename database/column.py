@@ -1,7 +1,8 @@
 
 class ColumnElement:
     def __init__(self, value):
-        self.value = value
+        self.value = None
+        self.set_value(value)
 
     def get_value(self):
         return self.value
@@ -10,7 +11,7 @@ class ColumnElement:
         self.value = value
 
     def copy(self):
-        newclm = ColumnElement(self.value)
+        newclm = ColumnElement(self.get_value())
         return newclm
 
 
@@ -29,7 +30,7 @@ class Column:
             constraints.append(constraint.copy())
         newclm = Column(self.get_name(), self.type, constraints)
         for element in self.elements:
-            newclm.add_element(element.copy())
+            newclm.add_element(element.get_value())
         return newclm
 
     #########################################################
@@ -60,6 +61,8 @@ class Column:
         return element_value
 
     def add_element(self, value):
+        if isinstance(value, ColumnElement):
+            value = value.get_value()
         value = self.apply_constraints(value)
         # Initialize with None, allowing data to be set later
         element = ColumnElement(value)
@@ -67,13 +70,13 @@ class Column:
 
     def remove_elements_by_value(self, value):
         elements_to_remove = [
-            element for element in self.elements if element.value == value]
+            element for element in self.elements if element.get_value() == value]
         for element in elements_to_remove:
             self.elements.remove(element)
 
     def remove_elements_except_value(self, value):
         elements_to_remove = [
-            element for element in self.elements if element.value != value]
+            element for element in self.elements if element.get_value() != value]
         for element in elements_to_remove:
             self.elements.remove(element)
 
@@ -90,10 +93,10 @@ class Column:
 
     def update_element(self, old_value, new_value):
         element_to_update = next(
-            (element for element in self.elements if element.value == old_value), None
+            (element for element in self.elements if element.get_value() == old_value), None
         )
         if element_to_update:
-            element_to_update.value = self.apply_constraints(new_value)
+            element_to_update.set_value(self.apply_constraints(new_value))
         else:
             raise ValueError(
                 f"ColumnElement with value '{old_value}' not found in the column.")

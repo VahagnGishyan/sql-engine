@@ -20,9 +20,9 @@ class TestColumnElement(unittest.TestCase):
         self.assertEqual(len(my_column.elements), 3)
 
         # Check the values of the elements
-        self.assertEqual(my_column.elements[0].value, 10)
-        self.assertEqual(my_column.elements[1].value, 20)
-        self.assertEqual(my_column.elements[2].value, 30)
+        self.assertEqual(my_column.elements[0].get_value(), 10)
+        self.assertEqual(my_column.elements[1].get_value(), 20)
+        self.assertEqual(my_column.elements[2].get_value(), 30)
 
     def test_remove_elements(self):
         # Create a column
@@ -43,8 +43,8 @@ class TestColumnElement(unittest.TestCase):
         self.assertEqual(len(my_column.elements), 2)
 
         # Check the values of the remaining elements
-        self.assertEqual(my_column.elements[0].value, 10)
-        self.assertEqual(my_column.elements[1].value, 30)
+        self.assertEqual(my_column.elements[0].get_value(), 10)
+        self.assertEqual(my_column.elements[1].get_value(), 30)
 
     def test_update_element_existing(self):
         # Create a column
@@ -84,9 +84,9 @@ class TestColumnElement(unittest.TestCase):
         element_3 = my_column.get_element(2)
 
         # Check the values and types of the retrieved elements
-        self.assertEqual(element_1.value, 10)
-        self.assertEqual(element_2.value, 20)
-        self.assertEqual(element_3.value, 30)
+        self.assertEqual(element_1.get_value(), 10)
+        self.assertEqual(element_2.get_value(), 20)
+        self.assertEqual(element_3.get_value(), 30)
 
     def test_get_element_by_index_out_of_range(self):
         # Create a column
