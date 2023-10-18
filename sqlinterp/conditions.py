@@ -39,7 +39,7 @@ class ConditionExecutor:
     def execute(self, table):
         column = table.get_column_by_name(self.column_name)
         index_list = []
-        index = 0
+        index = -1
         for element in column.elements:  # Iterate through elements in the column
             index += 1
             # Evaluate the condition against the element's value
