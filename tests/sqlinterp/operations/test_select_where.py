@@ -10,7 +10,7 @@ from sqlinterp.conditions import Equal, ConditionExecutor, GreaterThan
 class TestSelect(unittest.TestCase):
     def setUp(self):
         self.db = Database.create("MyDatabase")
-        self.table = self.db.create_table("ToDoList")
+        self.table = self.db.create_table("MyTable")
         self.table.add_column("Name", "text")
         self.table.add_column("Age", "integer")
         self.table.add_column("City", "date")
