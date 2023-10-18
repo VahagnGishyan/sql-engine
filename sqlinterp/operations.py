@@ -1,7 +1,7 @@
 
 from sqlinterp import conditions as sqlcnd
 from database.table import Table
-from database.column import Column
+from database.column import Column, ColumnElement
 from database.row import Row
 # from utility import console
 
@@ -116,7 +116,7 @@ class Delete(ConditionalBasedOperation):
 
 class Update(ConditionalBasedOperation):
     def __init__(self, values: list, condExecList: list[sqlcnd.ConditionExecutor] = []):
-        super.__init__(condExecList)
+        super().__init__(condExecList)
         self.values = values
 
     def execute(self, table: Table):
@@ -125,12 +125,9 @@ class Update(ConditionalBasedOperation):
         index_list = self.get_filtered_indexes(table)
         for index in index_list:
             for value in self.values:
-                for column_name, new_value in value.items():
-                    column = table.get_column_by_name(column_name)
-                    if column:
-                        element = column.get_element(index)
-                        if element:
-                            element.set_value(new_value)
+                column: Column = table.get_column_by_name(value["column-name"])
+                element: ColumnElement = column.elements[index]
+                element.set_value(value["value"])
 
 
 #############################################################
