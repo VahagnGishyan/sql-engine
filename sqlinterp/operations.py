@@ -102,7 +102,7 @@ class Select(ConditionalBasedOperation):
 
 class Delete(ConditionalBasedOperation):
     def __init__(self, condExecList: list[sqlcnd.ConditionExecutor] = []):
-        super.__init__(condExecList)
+        super().__init__(condExecList)
 
     def execute(self, table: Table):
         # Get the indexes to delete based on the condition
