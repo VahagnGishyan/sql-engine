@@ -1,6 +1,6 @@
 
 #to-do 
-sql-engine[pre-production] version 0.3.2
+sql-engine[pre-production] version 0.3.3
 
 :: ---- :: Develop a utility library in Python to facilitate work.
 :: done :: Develop a database management library in Python.
@@ -13,8 +13,7 @@ sql-engine[pre-production] version 0.3.2
         :: done :: Load from file | json
 :: ---- :: Develop a library of SQL queries and functionality in Python.
         :: done :: sql query conditions | where
-        :: ---- :: sql query operators  | select, insert into, delete, update
-        :: ---- :: sql query executor
+        :: done :: sql query operators  | select, insert into, delete, update
         :: ---- :: sql query parser
 
 :: ---- :: Implement a CLI application in Python that works with JSON files.
