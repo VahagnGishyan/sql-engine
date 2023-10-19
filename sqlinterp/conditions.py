@@ -28,6 +28,10 @@ class Condition:
     def check(self, value):
         pass
 
+    # for debug
+    def print(self):
+        pass
+
 #############################################################
 
 
@@ -48,6 +52,11 @@ class ConditionExecutor:
 
         return index_list
 
+    # for debug
+    def print(self):
+        print(f"[ConditionExecutor] column-name: {self.column_name}, ", end="")
+        self.cond.print()
+        print()
 
 #############################################################
 #                                                           #
@@ -69,6 +78,13 @@ class And(Logical):
     def check(self, value):
         return self.leftCond.check(value) and self.rightCond.check(value)
 
+    # for debug
+    def print(self):
+        print(f"And, left: ", end="")
+        self.leftCond.print()
+        print(f"And, right: ", end="")
+        self.rightCond.print()
+
 
 #############################################################
 
@@ -81,6 +97,13 @@ class Or(Logical):
     def check(self, value):
         return self.leftCond.check(value) or self.rightCond.check(value)
 
+    # for debug
+    def print(self):
+        print(f"Or, left: ", end="")
+        self.leftCond.print()
+        print(f"Or, right: ", end="")
+        self.rightCond.print()
+
 #############################################################
 
 
@@ -90,6 +113,11 @@ class Not(Logical):
 
     def check(self, value):
         return not self.cond.check(value)
+
+    # for debug
+    def print(self):
+        print(f"Not, ", end="")
+        self.cond.print()
 
 
 #############################################################
@@ -112,6 +140,10 @@ class Equal(Comparison):
     def check(self, value):
         return self.value == value
 
+    # for debug
+    def print(self):
+        print(f"Equal, value: {self.value}", end="")
+
 #############################################################
 
 
@@ -121,6 +153,11 @@ class NotEqual(Comparison):
 
     def check(self, value):
         return self.cond.check(value)
+
+    # for debug
+    def print(self):
+        print(f"NotEqual: ", end="")
+        self.cond.print()
 
 
 #############################################################
@@ -133,6 +170,10 @@ class GreaterThan(Comparison):
     def check(self, value):
         return value > self.value
 
+    # for debug
+    def print(self):
+        print(f"GreaterThan, value: {self.value}", end="")
+
 
 #############################################################
 
@@ -143,6 +184,11 @@ class GreaterThanOrEqualTo(Comparison):
 
     def check(self, value):
         return self.cond.check(value)
+
+    # for debug
+    def print(self):
+        print(f"GreaterThanOrEqualTo: ", end="")
+        self.cond.print()
 
 
 #############################################################
@@ -155,6 +201,11 @@ class LessThan(Comparison):
     def check(self, value):
         return self.cond.check(value)
 
+    # for debug
+    def print(self):
+        print(f"LessThan: ", end="")
+        self.cond.print()
+
 
 #############################################################
 
@@ -165,6 +216,11 @@ class LessThanOrEqualTo(Comparison):
 
     def check(self, value):
         return self.cond.check(value)
+
+    # for debug
+    def print(self):
+        print(f"LessThanOrEqualTo: ", end="")
+        self.cond.print()
 
 
 #############################################################
