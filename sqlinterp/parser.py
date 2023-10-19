@@ -102,40 +102,68 @@ class SQLQuerySimpleParser:
         }
 
         for token in conds:
-            print(f"token: {token} type: ", end="")
             if self.token_is_operator(token):
-                print("operator")
                 info["operator"].append(token)
                 continue
             if self.token_is_logic_operator(token):
-                print("logic-operator")
                 info["logic-operator"].append(token)
                 continue
             info["operands"].append(token)
 
         return info
 
-    def get_operation(self, parsed_conds: map) -> (map, list[str]):
+    def lex_sql_query(self, query):
+        # Define regular expressions for various SQL components
+        keywords = r'(SELECT|INSERT|UPDATE|DELETE|FROM|INTO|SET|VALUES|WHERE)'
+        identifiers = r'(\w+)'
+        strings = r"'(.*?)'"
+        numbers = r'(\d+)'
+        operators = r'([=<>]+)'
+        punctuation = r'([(),;])'
+
+        # Combine regular expressions into a single pattern
+        pattern = f'{keywords}|{identifiers}|{strings}|{numbers}|{operators}|{punctuation}'
+
+        # Use re.findall to tokenize the query
+        tokens = re.findall(pattern, query, re.IGNORECASE)
+
+        # Flatten the list of tuples into a list of strings
+        tokens = [token for group in tokens for token in group if token]
+
+        return tokens
+
+    def get_next_operation(self, parsed_conds: map) -> (map, list[str]):
         operands: list = parsed_conds["operands"]
         value = operands.pop()
         column_name = operands.pop()
         operators: list = parsed_conds["operator"]
         operator = operators.pop()
-        return [value, column_name, operator]
+        return (parsed_conds, [value, column_name, operator])
 
     def parsed_conds_to_ast_list(self, parsed_conds: map) -> list[str]:
         ast_list: list[str]
-        parsed_conds, ast_list = self.get_operation(parsed_conds)
+        parsed_conds, ast_list = self.get_next_operation(parsed_conds)
         while parsed_conds["logic-operator"]:
             logic_operator = parsed_conds["logic-operator"].pop()
-            parsed_conds, next_oper = self.get_operation(parsed_conds)
+            parsed_conds, next_oper = self.get_next_operation(parsed_conds)
             ast_list = ast_list + next_oper
             ast_list.append(logic_operator)
         return ast_list
 
+    def convert_value(self, param: str):
+        if param.lower() == "true":
+            return True
+        elif param.lower() == "false":
+            return False
+        try:
+            value = int(param)
+            return value
+        except ValueError:
+            return param
+
     def get_next_condition_operands(self, tokens: list):
         column_name = tokens.pop()
-        value = tokens.pop()
+        value = self.convert_value(tokens.pop())
         return (column_name, value, tokens)
 
     def get_next_condition(self, tokens: list):
@@ -216,7 +244,9 @@ class SQLQuerySimpleParser:
 
     def parse_select_operation(self, tokens: list[str]) -> op.Operation:
         result = self.get_parsed_select_query(tokens)
-        condition = self.parse_conditions(result["conditions"])
+        conditionStr = result["parsed-query"]["conditions"]
+        condition_tokens = self.lex_sql_query(conditionStr)
+        condition = self.parse_conditions(condition_tokens)
         operation = op.Select(result["parsed-query"]["columns"], [condition])
         return ({"table-name": result["table-name"], "operation": operation})
 
