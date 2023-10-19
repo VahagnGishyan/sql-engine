@@ -11,7 +11,7 @@ from database.row import Row
 
 
 class Operation:
-    def execute(self):
+    def execute(self, table: Table):
         pass
 
 
