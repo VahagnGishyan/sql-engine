@@ -1,6 +1,7 @@
 
 import re
 from sqlinterp import operations as op
+from sqlinterp.conditions import ConditionExecutor
 
 #############################################################
 #                                                           #
@@ -10,10 +11,8 @@ from sqlinterp import operations as op
 # sql_query = "SELECT column1, column2 FROM table1 WHERE column3 = 'value';"
 # sql_query = """
 # INSERT INTO employees (first_name, last_name, job_title, salary)
-# VALUES ('John', 'Doe', 'Software Engineer', 75000),
-#        ('Jane', 'Smith', 'Data Analyst', 60000),
-#        ('Bob', 'Johnson', 'Project Manager', 85000);
-#        """
+# VALUES ('John', 'Doe', 'Software Engineer', 75000);
+#    """
 # sql_query = "UPDATE employees SET salary = 75000 WHERE department = 'Engineering';"
 # sql_query = "DELETE FROM employees WHERE department = 'engineering' AND salary < 60000;"
 
@@ -83,6 +82,72 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
+
+    def token_is_operator(self, token: str) -> bool:
+        operators = ['==', '!=', '<', '>', '<=', '>=']
+        return token in operators
+
+
+    def token_is_logic_operator(self, token: str) -> bool:
+        logic_operators = ['and', 'or']
+        return token in logic_operators
+
+
+    def lex_conds(self, conds: list[str]) -> list:
+        info = {
+            "operands": [],
+            "operator": [],
+            "logic-operator": []
+        }
+
+        for token in conds:
+            print(f"token: {token} type: ", end="")
+            if self.token_is_operator(token):
+                print("operator")
+                info["operator"].append(token)
+                continue
+            if self.token_is_logic_operator(token):
+                print("logic-operator")
+                info["logic-operator"].append(token)
+                continue
+            info["operands"].append(token)
+
+        return info
+    
+    def get_operation(self, parsed_conds: map) -> (map, list[str]):
+        operands: list = parsed_conds["operands"]
+        value = operands.pop()
+        column_name = operands.pop()
+        operators: list = parsed_conds["operator"]
+        operator = operators.pop()
+        return [value, column_name, operator]
+
+    
+    def parsed_conds_to_ast_list(self, parsed_conds: map) -> list[str]:
+        ast_list: list[str]
+        parsed_conds, ast_list = self.get_operation(parsed_conds)
+        while parsed_conds["logic-operator"]:
+            logic_operator = parsed_conds["logic-operator"].pop()
+            parsed_conds, next_oper = self.get_operation(parsed_conds)
+            ast_list = ast_list + next_oper
+            ast_list.append(logic_operator)
+        ast_list.reverse()
+        return ast_list
+
+
+    def parse_conditions(self, conds: list[str]) -> list[ConditionExecutor]:
+        parsed_conds = self.lex_conds(conds)
+        ast_list = self.parsed_conds_to_ast_list(parsed_conds)
+
+        condParsedTokens = []
+        for token in condParsedTokens:
+            if token == "or":
+                get_first
+
+        pass
+
+    #########################################################
+
     def parse_select_operation(self, tokens: list[str]) -> op.Operation:
         # Initialize variables to store parsed information
         operation = None
@@ -97,22 +162,21 @@ class SQLQuerySimpleParser:
                 columns = []
                 j = i + 1
                 while j < len(tokens) and tokens[j] != 'from':
-                    columns.append(tokens[j])
+                    if tokens[j] != ',':
+                        columns.append(tokens[j])
                     j += 1
             elif token == 'from':
                 table = tokens[i + 1]
             elif token == 'where':
                 conditions = ' '.join(tokens[i + 1:])
 
-        if operation == 'select':
-            return {
-                'operation': operation,
-                'columns': columns,
-                'table': table,
-                'conditions': conditions
-            }
-        else:
-            raise ValueError('Invalid SQL statement')
+        parsed_data = {
+            'operation': operation,
+            'columns': columns,
+            'table': table,
+            'conditions': conditions
+        }
+        return ({"table-name": table, "operation":  op.Select(columns, [ConditionExecutor()])})
 
     #########################################################
 
