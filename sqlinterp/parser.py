@@ -1,8 +1,12 @@
 
 import re
 from sqlinterp import operations as op
-from sqlinterp.conditions import ConditionExecutor
 
+from sqlinterp.conditions import ConditionExecutor
+from sqlinterp.conditions import And, Or, Not
+from sqlinterp.conditions import Equal, NotEqual
+from sqlinterp.conditions import GreaterThan, GreaterThanOrEqualTo
+from sqlinterp.conditions import LessThan, LessThanOrEqualTo
 #############################################################
 #                                                           #
 #############################################################
@@ -82,16 +86,13 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
-
     def token_is_operator(self, token: str) -> bool:
         operators = ['==', '!=', '<', '>', '<=', '>=']
         return token in operators
 
-
     def token_is_logic_operator(self, token: str) -> bool:
         logic_operators = ['and', 'or']
         return token in logic_operators
-
 
     def lex_conds(self, conds: list[str]) -> list:
         info = {
@@ -113,7 +114,7 @@ class SQLQuerySimpleParser:
             info["operands"].append(token)
 
         return info
-    
+
     def get_operation(self, parsed_conds: map) -> (map, list[str]):
         operands: list = parsed_conds["operands"]
         value = operands.pop()
@@ -122,7 +123,6 @@ class SQLQuerySimpleParser:
         operator = operators.pop()
         return [value, column_name, operator]
 
-    
     def parsed_conds_to_ast_list(self, parsed_conds: map) -> list[str]:
         ast_list: list[str]
         parsed_conds, ast_list = self.get_operation(parsed_conds)
@@ -131,20 +131,56 @@ class SQLQuerySimpleParser:
             parsed_conds, next_oper = self.get_operation(parsed_conds)
             ast_list = ast_list + next_oper
             ast_list.append(logic_operator)
-        ast_list.reverse()
         return ast_list
 
+    def get_next_condition_operands(self, tokens: list):
+        column_name = tokens.pop()
+        value = tokens.pop()
+        return (column_name, value, tokens)
+
+    def get_next_condition(self, tokens: list):
+        token = tokens.pop()
+
+        if token == 'and':
+            tokens, condition = self.get_next_condition(tokens)
+            tokens, second_condition = self.get_next_condition(tokens)
+            return (tokens, And(condition, second_condition))
+        elif token == 'or':
+            tokens, condition = self.get_next_condition(tokens)
+            tokens, second_condition = self.get_next_condition(tokens)
+            return (tokens, Or(condition, second_condition))
+        elif token == 'not':
+            tokens, condition = self.get_next_condition(tokens)
+            return (tokens, Not(condition))
+
+        column_name, value, tokens = self.get_next_condition_operands(tokens)
+
+        if token == '==':
+            return (tokens, ConditionExecutor(column_name, Equal(value)))
+        elif token == '!=':
+            return (tokens, ConditionExecutor(column_name, NotEqual(value)))
+        elif token == '>':
+            return (tokens, ConditionExecutor(column_name, GreaterThan(value)))
+        elif token == '>=':
+            return (tokens, ConditionExecutor(column_name, GreaterThanOrEqualTo(value)))
+        elif token == '<':
+            return (tokens, ConditionExecutor(column_name, LessThan(value)))
+        elif token == '<=':
+            return (tokens, ConditionExecutor(column_name, LessThanOrEqualTo(value)))
+        else:
+            raise ValueError(f"Unsupported token: {token}")
+
+    def get_condition(self, tokens: list):
+        tokens, condition = self.get_next_condition(tokens)
+        if tokens:
+            raise Exception("tokens is not empty.")
+        return condition
 
     def parse_conditions(self, conds: list[str]) -> list[ConditionExecutor]:
         parsed_conds = self.lex_conds(conds)
         ast_list = self.parsed_conds_to_ast_list(parsed_conds)
-
-        condParsedTokens = []
-        for token in condParsedTokens:
-            if token == "or":
-                get_first
-
-        pass
+        condition = self.get_condition(ast_list)
+        return condition
 
     #########################################################
 
