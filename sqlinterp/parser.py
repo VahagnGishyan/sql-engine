@@ -184,7 +184,7 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
-    def parse_select_operation(self, tokens: list[str]) -> op.Operation:
+    def get_parsed_select_query(self, tokens: list[str]) -> map:
         # Initialize variables to store parsed information
         operation = None
         columns = None
@@ -212,7 +212,13 @@ class SQLQuerySimpleParser:
             'table': table,
             'conditions': conditions
         }
-        return ({"table-name": table, "operation":  op.Select(columns, [ConditionExecutor()])})
+        return ({"table-name": table, "parsed-query":  parsed_data})
+
+    def parse_select_operation(self, tokens: list[str]) -> op.Operation:
+        result = self.get_parsed_select_query(tokens)
+        condition = self.parse_conditions(result["conditions"])
+        operation = op.Select(result["parsed-query"]["columns"], [condition])
+        return ({"table-name": result["table-name"], "operation": operation})
 
     #########################################################
 
