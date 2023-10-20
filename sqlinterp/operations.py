@@ -3,7 +3,7 @@ from sqlinterp import conditions as sqlcnd
 from database.table import Table
 from database.column import Column, ColumnElement
 from database.row import Row
-# from utility import console
+from utility import console
 
 #############################################################
 #                                                           #
@@ -12,6 +12,10 @@ from database.row import Row
 
 class Operation:
     def execute(self, table: Table):
+        pass
+
+    # for debug
+    def print(self):
         pass
 
 
@@ -27,6 +31,11 @@ class InsertInto(Operation):
             raise ValueError("No values provided for insert.")
         table.insert_data(self.values)
         return table
+
+    # for debug
+    def print(self):
+        console.PrintInfo("[InsertInto]")
+        print(f"values: {self.values}")
 
 
 #############################################################
@@ -96,6 +105,15 @@ class Select(ConditionalBasedOperation):
 
         return result
 
+    # for debug
+    def print(self):
+        console.PrintInfo("[Select]")
+        print(f"column-list: {self.column_list}")
+        if self.condExecList:
+            condExec = self.condExecList[0]
+            print(f"condExecList: ", end="")
+            condExec.print()
+
 
 #############################################################
 
@@ -110,6 +128,14 @@ class Delete(ConditionalBasedOperation):
         # Remove rows with the obtained indexes
         for index in reversed(index_list):
             table.remove_row(index)
+
+    # for debug
+    def print(self):
+        console.PrintInfo("[Delete]")
+        if self.condExecList:
+            condExec = self.condExecList[0]
+            print(f"condExecList: ", end="")
+            condExec.print()
 
 #############################################################
 
@@ -128,6 +154,15 @@ class Update(ConditionalBasedOperation):
                 column: Column = table.get_column_by_name(value["column-name"])
                 element: ColumnElement = column.elements[index]
                 element.set_value(value["value"])
+
+    # for debug
+    def print(self):
+        console.PrintInfo("[Update]")
+        print(f"values: {self.values}")
+        if self.condExecList:
+            condExec = self.condExecList[0]
+            print(f"condExecList: ", end="")
+            condExec.print()
 
 
 #############################################################
