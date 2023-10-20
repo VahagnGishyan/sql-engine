@@ -73,6 +73,9 @@ class SQLQuerySimpleParser:
         # Split the SQL statement into words and remove extra whitespace
         tokens = self.lex(query)
 
+        if tokens[-1] == ';':
+            tokens = tokens[:-1]
+
         # Check if the query is empty or doesn't start with a recognized SQL operation
         if not tokens:
             raise ValueError("Empty SQL query")
@@ -97,7 +100,7 @@ class SQLQuerySimpleParser:
         logic_operators = ['and', 'or']
         return token in logic_operators
 
-    def lex_conds(self, conds: list[str]) -> list:
+    def lex_conds(self, conds: list[str]) -> map:
         info = {
             "operands": [],
             "operator": [],
@@ -208,8 +211,15 @@ class SQLQuerySimpleParser:
         return condition
 
     def parse_conditions(self, conds: list[str]) -> list[ConditionExecutor]:
+        # console.PrintDebug("conds[list]:  " + " ".join(conds))
         parsed_conds = self.lex_conds(conds)
+        # console.PrintDebug("parsed[list]")
+        # console.PrintDebug("\toperands: " + " ".join(parsed_conds["operands"]))
+        # console.PrintDebug("\toperator: " + " ".join(parsed_conds["operator"]))
+        # console.PrintDebug("\tlogic-operator: " +
+        #    " ".join(parsed_conds["logic-operator"]))
         ast_list = self.parsed_conds_to_ast_list(parsed_conds)
+        # console.PrintDebug("ast[list]:    " + " ".join(ast_list))
         condition = self.get_condition(ast_list)
         return condition
 
@@ -334,7 +344,7 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
-    def parse_delete_operation(self, tokens: list[str]) -> op.Operation:
+    def get_parsed_delete_query(self, tokens: list[str]) -> map:
         # Initialize variables to store parsed information
         operation = None
         table = None
@@ -372,14 +382,19 @@ class SQLQuerySimpleParser:
 
             i += 1
 
-        if operation == 'DELETE':
-            return {
-                'operation': operation,
-                'table': table,
-                'conditions': conditions
-            }
-        else:
-            raise ValueError('Invalid SQL DELETE statement')
+        return {
+            'operation': operation,
+            'table': table,
+            'conditions': conditions
+        }
+
+    def parse_delete_operation(self, tokens: list[str]) -> op.Operation:
+        result = self.get_parsed_delete_query(tokens)
+        conditionStr = result["conditions"]
+        condition_tokens = self.lex_sql_query(conditionStr)
+        condition = self.parse_conditions(condition_tokens)
+        operation = op.Delete([condition])
+        return ({"table-name": result["table"], "operation": operation})
 
 #############################################################
 #                                                           #
