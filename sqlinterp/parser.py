@@ -7,6 +7,9 @@ from sqlinterp.conditions import And, Or, Not
 from sqlinterp.conditions import Equal, NotEqual
 from sqlinterp.conditions import GreaterThan, GreaterThanOrEqualTo
 from sqlinterp.conditions import LessThan, LessThanOrEqualTo
+
+from utility import console
+
 #############################################################
 #                                                           #
 #############################################################
@@ -341,17 +344,18 @@ class SQLQuerySimpleParser:
         i = 0
         while i < len(tokens):
             token = tokens[i]
+            console.PrintDebug(f"token: {token}")
 
             if token.upper() == 'DELETE':
                 operation = 'DELETE'
 
                 # Check if the next token is 'FROM'
                 if i + 1 < len(tokens) and tokens[i + 1].upper() == 'FROM':
-                    i += 2  # Skip 'FROM' keyword
+                    i += 1  # Skip 'FROM' keyword
 
                     # The next token should be the table name
                     if i < len(tokens):
-                        table = tokens[i]
+                        table = tokens[i + 1]
                     else:
                         raise ValueError(
                             'Invalid DELETE statement: Table name missing')
@@ -361,6 +365,7 @@ class SQLQuerySimpleParser:
                         'Invalid DELETE statement: "FROM" keyword missing')
 
             if token.upper() == 'WHERE':
+                console.PrintDebug(f"type: condition")
                 # The rest of the tokens are part of the conditions
                 conditions = ' '.join(tokens[i + 1:])
                 break  # No need to continue parsing
