@@ -105,8 +105,12 @@ class Delete(ConditionalBasedOperation):
         super().__init__(condition)
 
     def execute(self, table: Table):
+        # console.PrintInfo("Delete")
+        # self.print()
         # Get the indexes to delete based on the condition
         index_list = self.get_filtered_indexes(table)
+        # index_list_str = [str(x) for x in index_list]
+        # console.PrintInfo(f"index-list: {index_list_str}")
 
         # Remove rows with the obtained indexes
         for index in reversed(index_list):
@@ -116,9 +120,8 @@ class Delete(ConditionalBasedOperation):
     def print(self):
         console.PrintInfo("[Delete]")
         if self.condition:
-            condExec = self.condition[0]
             print(f"condition: ", end="")
-            condExec.print()
+            self.condition.print()
 
 #############################################################
 

@@ -39,7 +39,6 @@ class TestSQLQueryParser(unittest.TestCase):
             ]
         ]
 
-
         for row in taskList:
             self.large_table.insert_data(row)
 
@@ -73,8 +72,8 @@ class TestSQLQueryParser(unittest.TestCase):
 
         # Example: Check if all rows meet the condition column2 <= 54
         for row in result.get_rows():
-            
-            column2_value = row.row_elements[1].get_value()
+
+            column2_value = row.elements[1].get_value()
             self.assertLessEqual(column2_value, 54)  # Modify as needed
 
         # Add more assertions based on your specific query and expectations

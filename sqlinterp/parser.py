@@ -210,7 +210,7 @@ class SQLQuerySimpleParser:
             raise Exception("tokens is not empty.")
         return condition
 
-    def parse_conditions(self, conds: list[str]) -> Condition:
+    def parse_condition(self, conds: list[str]) -> Condition:
         # console.PrintDebug("conds[list]:  " + " ".join(conds))
         parsed_conds = self.lex_conds(conds)
         # console.PrintDebug("parsed[list]")
@@ -259,9 +259,8 @@ class SQLQuerySimpleParser:
         result = self.get_parsed_select_query(tokens)
         conditionStr = result["parsed-query"]["conditions"]
         condition_tokens = self.lex_sql_query(conditionStr)
-        condition = self.parse_conditions(condition_tokens)
-        condition.print()
-        operation = op.Select(result["parsed-query"]["columns"], [condition])
+        condition = self.parse_condition(condition_tokens)
+        operation = op.Select(result["parsed-query"]["columns"], condition)
         return ({"table-name": result["table-name"], "operation": operation})
 
     #########################################################
@@ -390,9 +389,8 @@ class SQLQuerySimpleParser:
         result = self.get_parsed_delete_query(tokens)
         conditionStr = result["conditions"]
         condition_tokens = self.lex_sql_query(conditionStr)
-        condition = self.parse_conditions(condition_tokens)
-        operation = op.Delete([condition])
-        condition.print()
+        condition = self.parse_condition(condition_tokens)
+        operation = op.Delete(condition)
         return ({"table-name": result["table"], "operation": operation})
 
 

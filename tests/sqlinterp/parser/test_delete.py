@@ -43,7 +43,6 @@ class TestSQLQueryParser(unittest.TestCase):
             self.large_table.insert_data(row)
 
     def test_delete_query(self):
-
         # Generate a SELECT SQL query
         query = "DELETE FROM employees WHERE column3 == 'bar' AND column2 > 62;"
 
@@ -53,29 +52,22 @@ class TestSQLQueryParser(unittest.TestCase):
         operation = parsed_query["operation"]
 
         # Execute the parsed operation on the large table
-        result = operation.execute(self.large_table)
-
-        # Check the result using assertions
-        self.assertIsNotNone(result)  # Ensure the result is not None
-
-        # Check that the result is of the correct type, e.g., a Table
-        self.assertIsInstance(result, Table)
+        operation.execute(self.large_table)
 
         # Check the number of columns in the result
-        self.assertEqual(len(result.columns), 3)
+        self.assertEqual(len(self.large_table.columns), 3)
 
         # Check the number of rows in the result
-        self.assertGreaterEqual(len(result.get_rows()), 0)
+        self.assertEqual(len(self.large_table.get_rows()), 3)
 
         # Add more specific assertions based on your expectations
         # For example, check if the rows in the result meet your conditions
 
         # Example: Check if all rows meet the condition column2 > 54
-        for row in result.get_rows():
-            column2_value = row.row_elements[1].get_value()
-            self.assertLessEqual(column2_value, 62)  # Modify as needed
-
-        # Add more assertions based on your specific query and expectations
+        for row in self.large_table.get_rows():
+            column2_value = row.elements[1].get_value()
+            column3_value = row.elements[2].get_value()
+            self.assertFalse(column3_value == "bar" and column2_value > 62)
 
 
 if __name__ == '__main__':

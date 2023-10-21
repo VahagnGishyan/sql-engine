@@ -29,12 +29,12 @@ class TestInsertOperation(unittest.TestCase):
 
         # Check if the data was inserted correctly
         self.assertTrue(result)
-        self.assertEqual(len(table.columns[0]), 1)
+        self.assertEqual(len(result.columns[0]), 1)
 
-        inserted_row: Row = table.get_rows()[0]
-        self.assertEqual(inserted_row.row_elements[0].get_value(), "John")
-        self.assertEqual(inserted_row.row_elements[1].get_value(), 30)
-        self.assertEqual(inserted_row.row_elements[2].get_value(), True)
+        inserted_row: Row = result.get_rows()[0]
+        self.assertEqual(inserted_row.elements[0].get_value(), "John")
+        self.assertEqual(inserted_row.elements[1].get_value(), 30)
+        self.assertEqual(inserted_row.elements[2].get_value(), True)
 
 
 if __name__ == '__main__':
