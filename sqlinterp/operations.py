@@ -42,7 +42,7 @@ class InsertInto(Operation):
 
 
 class ConditionalBasedOperation(Operation):
-    def __init__(self, condition: Condition = None):
+    def __init__(self, condition: Condition):
         self.condition = condition
 
     def set_condition(self, condExec: Condition):
@@ -93,9 +93,8 @@ class Select(ConditionalBasedOperation):
         console.PrintInfo("[Select]")
         print(f"column-list: {self.column_list}")
         if self.condition:
-            condExec = self.condition[0]
             print(f"condition: ", end="")
-            condExec.print()
+            self.condition.print()
 
 
 #############################################################
