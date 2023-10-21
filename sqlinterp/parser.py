@@ -2,7 +2,7 @@
 import re
 from sqlinterp import operations as op
 
-from sqlinterp.conditions import ConditionExecutor
+from sqlinterp.conditions import Condition
 from sqlinterp.conditions import And, Or, Not
 from sqlinterp.conditions import Equal, NotEqual
 from sqlinterp.conditions import GreaterThan, GreaterThanOrEqualTo
@@ -190,17 +190,17 @@ class SQLQuerySimpleParser:
         column_name, value, tokens = self.get_next_condition_operands(tokens)
 
         if token == '==':
-            return (tokens, ConditionExecutor(column_name, Equal(value)))
+            return (tokens, Equal(column_name, value))
         elif token == '!=':
-            return (tokens, ConditionExecutor(column_name, NotEqual(value)))
+            return (tokens, NotEqual(column_name, value))
         elif token == '>':
-            return (tokens, ConditionExecutor(column_name, GreaterThan(value)))
+            return (tokens, GreaterThan(column_name, value))
         elif token == '>=':
-            return (tokens, ConditionExecutor(column_name, GreaterThanOrEqualTo(value)))
+            return (tokens, GreaterThanOrEqualTo(column_name, value))
         elif token == '<':
-            return (tokens, ConditionExecutor(column_name, LessThan(value)))
+            return (tokens, LessThan(column_name, value))
         elif token == '<=':
-            return (tokens, ConditionExecutor(column_name, LessThanOrEqualTo(value)))
+            return (tokens, LessThanOrEqualTo(column_name, value))
         else:
             raise ValueError(f"Unsupported token: {token}")
 
@@ -210,7 +210,7 @@ class SQLQuerySimpleParser:
             raise Exception("tokens is not empty.")
         return condition
 
-    def parse_conditions(self, conds: list[str]) -> list[ConditionExecutor]:
+    def parse_conditions(self, conds: list[str]) -> Condition:
         # console.PrintDebug("conds[list]:  " + " ".join(conds))
         parsed_conds = self.lex_conds(conds)
         # console.PrintDebug("parsed[list]")
@@ -260,6 +260,7 @@ class SQLQuerySimpleParser:
         conditionStr = result["parsed-query"]["conditions"]
         condition_tokens = self.lex_sql_query(conditionStr)
         condition = self.parse_conditions(condition_tokens)
+        condition.print()
         operation = op.Select(result["parsed-query"]["columns"], [condition])
         return ({"table-name": result["table-name"], "operation": operation})
 
@@ -354,8 +355,6 @@ class SQLQuerySimpleParser:
         i = 0
         while i < len(tokens):
             token = tokens[i]
-            console.PrintDebug(f"token: {token}")
-
             if token.upper() == 'DELETE':
                 operation = 'DELETE'
 
@@ -375,7 +374,6 @@ class SQLQuerySimpleParser:
                         'Invalid DELETE statement: "FROM" keyword missing')
 
             if token.upper() == 'WHERE':
-                console.PrintDebug(f"type: condition")
                 # The rest of the tokens are part of the conditions
                 conditions = ' '.join(tokens[i + 1:])
                 break  # No need to continue parsing
@@ -394,7 +392,9 @@ class SQLQuerySimpleParser:
         condition_tokens = self.lex_sql_query(conditionStr)
         condition = self.parse_conditions(condition_tokens)
         operation = op.Delete([condition])
+        condition.print()
         return ({"table-name": result["table"], "operation": operation})
+
 
 #############################################################
 #                                                           #

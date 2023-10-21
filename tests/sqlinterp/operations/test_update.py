@@ -2,7 +2,7 @@ import unittest
 from sqlinterp.operations import Update
 from database.table import Table
 from database.row import Row
-from sqlinterp.conditions import Equal, ConditionExecutor
+from sqlinterp.parser import Equal
 
 
 class TestUpdateOperation(unittest.TestCase):
@@ -28,8 +28,7 @@ class TestUpdateOperation(unittest.TestCase):
         ]
 
         # Create an instance of the Update operation
-        update_operation = Update(data_to_update, [
-                                  ConditionExecutor("Name", Equal("John"))])
+        update_operation = Update(data_to_update, Equal("Name", "John"))
 
         # Execute the update operation
         update_operation.execute(table)

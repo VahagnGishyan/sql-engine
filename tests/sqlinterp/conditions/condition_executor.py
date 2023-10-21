@@ -1,6 +1,5 @@
 import unittest
 from sqlinterp.conditions import Equal, NotEqual
-from sqlinterp.conditions import ConditionExecutor
 from sqlinterp.conditions import GreaterThan, LessThan, GreaterThanOrEqualTo, LessThanOrEqualTo
 from database.database import Database
 from database.file_manager import FileManager
@@ -34,39 +33,33 @@ class TestConditionExecutor(unittest.TestCase):
             self.name_column.add_element(element)
 
     def test_equal_condition(self):
-        equal_condition = Equal(30)
-        executor = ConditionExecutor("Age", equal_condition)
-        result = executor.execute(self.table)
+        condition = Equal("Age", 30)
+        result = condition.execute(self.table)
         self.assertEqual(result, [1, 2, 4])
 
     def test_not_equal_condition(self):
-        not_equal_condition = NotEqual(30)
-        executor = ConditionExecutor("Age", not_equal_condition)
-        result = executor.execute(self.table)
+        condition = NotEqual("Age", 30)
+        result = condition.execute(self.table)
         self.assertEqual(result, [0, 3])
 
     def test_greater_than_condition(self):
-        greater_than_condition = GreaterThan(30)
-        executor = ConditionExecutor("Age", greater_than_condition)
-        result = executor.execute(self.table)
+        condition = GreaterThan("Age", 30)
+        result = condition.execute(self.table)
         self.assertEqual(result, [3])
 
     def test_greater_than_or_equal_condition(self):
-        greater_than_or_equal_condition = GreaterThanOrEqualTo(30)
-        executor = ConditionExecutor("Age", greater_than_or_equal_condition)
-        result = executor.execute(self.table)
+        condition = GreaterThanOrEqualTo("Age", 30)
+        result = condition.execute(self.table)
         self.assertEqual(result, [1, 2, 3, 4])
 
     def test_less_than_condition(self):
-        less_than_condition = LessThan(35)
-        executor = ConditionExecutor("Age", less_than_condition)
-        result = executor.execute(self.table)
+        condition = LessThan("Age", 35)
+        result = condition.execute(self.table)
         self.assertEqual(result, [0, 1, 2, 4])
 
     def test_less_than_or_equal_condition(self):
-        less_than_or_equal_condition = LessThanOrEqualTo(35)
-        executor = ConditionExecutor("Age", less_than_or_equal_condition)
-        result = executor.execute(self.table)
+        condition = LessThanOrEqualTo("Age", 35)
+        result = condition.execute(self.table)
         self.assertEqual(result, [0, 1, 2, 3, 4])
 
 

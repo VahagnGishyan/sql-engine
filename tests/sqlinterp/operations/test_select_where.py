@@ -4,8 +4,8 @@ from database.database import Database
 from database.table import Table
 from database.column import Column, ColumnElement
 from sqlinterp.operations import Select
-from sqlinterp.conditions import ConditionExecutor
 from sqlinterp.conditions import Equal, NotEqual
+from sqlinterp.conditions import And
 from sqlinterp.conditions import GreaterThan, GreaterThanOrEqualTo, LessThanOrEqualTo
 
 
@@ -44,9 +44,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_specific_columns(self):
         # Test for selecting specific columns with a condition
-        query = Select(["Name", "City"], [
-            ConditionExecutor("Name", Equal("John"))
-        ])
+        query = Select(["Name", "City"], Equal("Name", "John"))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 1)
@@ -57,8 +55,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_age_greater_than_30(self):
         # Test for selecting rows with Age greater than 30
-        query = Select(["Name", "Age"], [
-            ConditionExecutor("Age", Equal(35))])
+        query = Select(["Name", "Age"], Equal("Age", 35))
         result = query.execute(self.table)
 
         # Assert the result based on the condition
@@ -75,8 +72,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_completed_tasks(self):
         # Test for selecting rows where Completed is True
-        query = Select(["Name", "Completed"], [
-            ConditionExecutor("Completed", Equal(True))])
+        query = Select(["Name", "Completed"], Equal("Completed", True))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 2)
@@ -91,9 +87,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_specific_columns(self):
         # Test for selecting specific columns with a condition
-        query = Select(["Name", "City"], [
-            ConditionExecutor("Name", Equal("John"))
-        ])
+        query = Select(["Name", "City"], Equal("Name", "John"))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 1)
@@ -104,9 +98,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_age_greater_than_30(self):
         # Test for selecting rows with Age greater than 30
-        query = Select(["Name", "Age"], [
-            ConditionExecutor("Age", GreaterThan(30))
-        ])
+        query = Select(["Name", "Age"], GreaterThan("Age", 30))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 1)
@@ -117,9 +109,8 @@ class TestSelect(unittest.TestCase):
 
     def test_select_completed_tasks(self):
         # Test for selecting rows where Completed is True
-        query = Select(["Name", "Completed"], [
-            ConditionExecutor("Completed", Equal(True))
-        ])
+        query = Select(["Name", "Completed"],
+                       Equal("Completed", True))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 2)
@@ -134,10 +125,8 @@ class TestSelect(unittest.TestCase):
 
     def test_select_age_between_25_and_35(self):
         # Test for selecting rows where Age is between 25 and 35
-        query = Select(["Name", "Age"], [
-            ConditionExecutor("Age", GreaterThanOrEqualTo(25)),
-            ConditionExecutor("Age", LessThanOrEqualTo(35)),
-        ])
+        query = Select(["Name", "Age"],
+                       And(GreaterThanOrEqualTo("Age", 25), LessThanOrEqualTo("Age", 35)))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 3)
@@ -150,9 +139,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select_city_not_chicago(self):
         # Test for selecting rows where City is not "Chicago"
-        query = Select(["Name", "City"], [
-            ConditionExecutor("City", NotEqual("Chicago"))
-        ])
+        query = Select(["Name", "City"], NotEqual("City", "Chicago"))
         result = query.execute(self.table)
         # Assert the result based on the condition
         self.assertEqual(len(result.get_rows()), 2)

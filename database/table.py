@@ -13,8 +13,7 @@ from utility import file as utfile
 class Table:
     def __init__(self, name):
         self.name = None
-        self.columns = []
-
+        self.columns: list[clm.Column] = []
         self.set_name(name)
 
     def copy(self):

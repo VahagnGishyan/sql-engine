@@ -1,7 +1,7 @@
 import unittest
 from sqlinterp.operations import Delete
 from database.table import Table
-from sqlinterp.conditions import Equal, ConditionExecutor
+from sqlinterp.conditions import Equal
 
 
 class TestDeleteOperation(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestDeleteOperation(unittest.TestCase):
         table.insert_data(data_to_insert)
 
         # Create an instance of the Delete operation
-        delete_operation = Delete([ConditionExecutor("Name", Equal("John"))])
+        delete_operation = Delete(Equal("Name", "John"))
 
         # Execute the delete operation
         delete_operation.execute(table)
