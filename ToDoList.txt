@@ -14,8 +14,30 @@ sql-engine[pre-production] version 0.3.7
 :: ---- :: Develop a library of SQL queries and functionality in Python.
         :: done :: sql query conditions | where
         :: done :: sql query operators  | select, insert into, delete, update
-        :: ---- :: sql query parser
+        :: ---- :: sql query parser     | select, insert into, delete, update
 
 :: ---- :: Implement a CLI application in Python that works with JSON files.
 :: ---- :: Carry out testing for the Python library.
 :: ---- :: Prepare the CLI library in Python.
+
+#############################################
+
+Issues
+
+:: ---- :: The issue arises when rows containing columns that are not present
+           in the table are added. In such cases, an error should occur, but 
+           it currently doesn't. Here's an example to illustrate the problem:
+
+           self.table = Table("MyTable")
+           self.table.add_column("Name", "text")
+           self.table.add_column("Age", "integer")
+           self.table.add_column("City", "date")
+           self.table.add_column("Completed", "boolean")   
+           data_to_insert = [
+               [
+                   {"column-name": "Name", "value": "John"},
+                   {"column-name": "Age", "value": 30},
+                   {"column-name": "Active", "value": True},
+               ],
+               # More rows with "Active" column, which is not defined in the table
+           ]
