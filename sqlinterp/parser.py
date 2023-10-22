@@ -298,49 +298,69 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
-    def parse_update_operation(self, tokens: list[str]) -> op.Operation:
+    def get_parsed_update_query(self, tokens: list[str]) -> map:
         # Initialize variables to store parsed information
         operation = None
         table = None
-        set_values = {}
+        values = []
         conditions = None
 
         # Iterate through the tokens to identify the operation and extract relevant information
-        i = 0
+        # console.PrintSignal("parse_update_operation")
+        i = -1
         while i < len(tokens):
+            i += 1
             token = tokens[i]
-
             if token.upper() == 'UPDATE':
+                # console.PrintInfo(f"token: {token}, type-is: operation")
                 operation = 'UPDATE'
-                table = tokens[i + 1]
-                i += 2  # Skip the table name
-
+                i += 1  # get the table name
+                table = tokens[i]
+                # console.PrintInfo(f"token: {table}, type-is: table")
+                continue
             if token.upper() == 'SET':
+                # console.PrintInfo(f"token: {token}, type-is: set")
                 i += 1  # Skip 'SET' keyword
-
                 # Parse the column-value pairs in the 'SET' clause
-                while i < len(tokens) and tokens[i].upper() != 'WHERE':
+                while i < len(tokens):
                     column = tokens[i]
                     i += 2  # Skip column name and '='
                     value = tokens[i]
-                    set_values[column] = value
+                    values.append({"column-name": column, "value": value})
+                    # console.PrintInfo(f"column-name: {column}, value: {value}")
                     i += 1  # Move to the next token
-
+                    token = tokens[i]
+                    # console.PrintInfo(f"SET, next token is: {token}")
+                    if token == ',':
+                        i += 1  # Move to the next token
+                    if tokens[i].upper() == 'WHERE':
+                        i -= 1  # Move to the next token
+                        break
+                continue
             if token.upper() == 'WHERE':
+                # console.PrintInfo(f"token: {token}, type-is: WHERE")
                 conditions = ' '.join(tokens[i + 1:])
                 break  # No need to continue parsing
 
-            i += 1
+            i += 1  # get the table name
 
-        if operation == 'UPDATE':
-            return {
-                'operation': operation,
-                'table': table,
-                'set_values': set_values,
-                'conditions': conditions
-            }
-        else:
-            raise ValueError('Invalid SQL UPDATE statement')
+            console.PrintInfo(f"token: {token}, unexpected token")
+            raise Exception(f"token: {token}, unexpected token")
+
+        return {
+            'operation': operation,
+            'table': table,
+            'values': values,
+            'conditions': conditions
+        }
+
+    def parse_update_operation(self, tokens: list[str]) -> op.Operation:
+        result = self.get_parsed_update_query(tokens)
+        conditionStr = result["conditions"]
+        condition_tokens = self.lex_sql_query(conditionStr)
+        condition = self.parse_condition(condition_tokens)
+        operation = op.Update(result["values"],  condition)
+        return ({"table-name": result["table"], "operation": operation})
 
     #########################################################
 

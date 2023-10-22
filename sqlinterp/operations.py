@@ -146,9 +146,8 @@ class Update(ConditionalBasedOperation):
         console.PrintInfo("[Update]")
         print(f"values: {self.values}")
         if self.condition:
-            condExec = self.condition[0]
             print(f"condition: ", end="")
-            condExec.print()
+            self.condition.print()
 
 
 #############################################################

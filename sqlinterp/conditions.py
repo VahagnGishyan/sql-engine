@@ -202,7 +202,7 @@ class Equal(ComparisonImpl):
 
     # for debug
     def print(self):
-        print(f"Equal, value: {self.value}")
+        print(f"Equal, column-name: {self.column_name} value: {self.value}")
 
 
 #############################################################
@@ -217,7 +217,7 @@ class GreaterThan(ComparisonImpl):
 
     # for debug
     def print(self):
-        print(f"GreaterThan, value: {self.value}")
+        print(f"GreaterThan, column-name: {self.column_name}, value: {self.value}")
 
 
 #############################################################
