@@ -43,8 +43,9 @@ class TestSQLQueryParser(unittest.TestCase):
             self.large_table.insert_data(row)
 
     def test_delete_query(self):
-        # Generate a SELECT SQL query
         query = "DELETE FROM employees WHERE column3 == 'bar' AND column2 > 62;"
+
+
 
         # Parse the query using the parser
         # return ({"table-name": result["table-name"], "operation": operation})

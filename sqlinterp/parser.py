@@ -32,7 +32,7 @@ class SQLQueryParser:
     def lex(self, query: str) -> list[str]:
         pass
 
-    def parse(self, query: str) -> op.Operation:
+    def parse(self, query: str) -> map:
         pass
 
 
@@ -66,9 +66,9 @@ class SQLQuerySimpleParser:
 
         return tokens
 
-    def parse(self, query: str) -> op.Operation:
+    def parse(self, query: str) -> map:
         # Convert the query to lowercase
-        query = query.lower()
+        # query = query.lower()
 
         # Split the SQL statement into words and remove extra whitespace
         tokens = self.lex(query)
@@ -79,13 +79,13 @@ class SQLQuerySimpleParser:
         # Check if the query is empty or doesn't start with a recognized SQL operation
         if not tokens:
             raise ValueError("Empty SQL query")
-        if tokens[0] == "select":
+        if tokens[0].lower() == "select":
             return self.parse_select_operation(tokens)
-        if tokens[0] == "insert":
+        if tokens[0].lower() == "insert":
             return self.parse_insert_operation(tokens)
-        if tokens[0] == "update":
+        if tokens[0].lower() == "update":
             return self.parse_update_operation(tokens)
-        if tokens[0] == "delete":
+        if tokens[0].lower() == "delete":
             return self.parse_delete_operation(tokens)
         else:
             raise ValueError("Unsupported SQL operation")
@@ -98,7 +98,7 @@ class SQLQuerySimpleParser:
 
     def token_is_logic_operator(self, token: str) -> bool:
         logic_operators = ['and', 'or']
-        return token in logic_operators
+        return token.lower() in logic_operators
 
     def lex_conds(self, conds: list[str]) -> map:
         info = {
@@ -129,6 +129,9 @@ class SQLQuerySimpleParser:
 
         # Combine regular expressions into a single pattern
         pattern = f'{keywords}|{identifiers}|{strings}|{numbers}|{operators}|{punctuation}'
+
+        if not isinstance(query, str):
+            raise ValueError("The 'query' must be a string.")
 
         # Use re.findall to tokenize the query
         tokens = re.findall(pattern, query, re.IGNORECASE)
@@ -172,18 +175,18 @@ class SQLQuerySimpleParser:
         value = self.convert_value(tokens.pop())
         return (column_name, value, tokens)
 
-    def get_next_condition(self, tokens: list):
+    def get_next_condition(self, tokens: list[str]):
         token = tokens.pop()
 
-        if token == 'and':
+        if token.lower() == 'and':
             tokens, condition = self.get_next_condition(tokens)
             tokens, second_condition = self.get_next_condition(tokens)
             return (tokens, And(condition, second_condition))
-        elif token == 'or':
+        elif token.lower() == 'or':
             tokens, condition = self.get_next_condition(tokens)
             tokens, second_condition = self.get_next_condition(tokens)
             return (tokens, Or(condition, second_condition))
-        elif token == 'not':
+        elif token.lower() == 'not':
             tokens, condition = self.get_next_condition(tokens)
             return (tokens, Not(condition))
 
@@ -234,17 +237,17 @@ class SQLQuerySimpleParser:
 
         # Loop through the tokens to identify the operation and extract relevant information
         for i, token in enumerate(tokens):
-            if token == 'select':
+            if token.lower() == 'select':
                 operation = 'select'
                 columns = []
                 j = i + 1
-                while j < len(tokens) and tokens[j] != 'from':
+                while j < len(tokens) and tokens[j].lower() != 'from':
                     if tokens[j] != ',':
                         columns.append(tokens[j])
                     j += 1
-            elif token == 'from':
+            elif token.lower() == 'from':
                 table = tokens[i + 1]
-            elif token == 'where':
+            elif token.lower() == 'where':
                 conditions = ' '.join(tokens[i + 1:])
 
         parsed_data = {
@@ -255,7 +258,7 @@ class SQLQuerySimpleParser:
         }
         return ({"table-name": table, "parsed-query":  parsed_data})
 
-    def parse_select_operation(self, tokens: list[str]) -> op.Operation:
+    def parse_select_operation(self, tokens: list[str]) -> map:
         result = self.get_parsed_select_query(tokens)
         conditionStr = result["parsed-query"]["conditions"]
         condition_tokens = self.lex_sql_query(conditionStr)
@@ -265,36 +268,57 @@ class SQLQuerySimpleParser:
 
     #########################################################
 
-    def parse_insert_operation(self, tokens: list[str]) -> op.Operation:
-        operation = 'insert'
+    def get_parsed_insert_query(self, tokens: list[str]) -> map:
+        # Initialize variables
+        operation = None
         table = None
-        columns = None
-        values = None
+        columns = []
+        values = []
 
-        # Find the table name
-        table_index = tokens.index('into') + 1
-        table = tokens[table_index]
+        # Iterate through tokens
+        i = 0
+        while i < len(tokens):
+            token = tokens[i]
 
-        # Find the start and end positions of the column names
-        columns_start = tokens.index('(')
-        columns_end = tokens.index(')')
+            if token.upper() == 'INSERT':
+                operation = 'INSERT'
+            elif token.upper() == 'INTO':
+                # Next token should be the table name
+                table = tokens[i + 1]
+                i += 1
+            elif token == '(':
+                # Collect columns within parentheses
+                i += 1
+                while tokens[i] != ')':
+                    if tokens[i] != ',':
+                        columns.append(tokens[i])
+                    i += 1
+            elif token.upper() == 'VALUES':
+                # Collect values within parentheses
+                i += 2
+                while tokens[i] != ')':
+                    if tokens[i] != ',':
+                        values.append(tokens[i])
+                    i += 1
+            i += 1
 
-        # Extract column names from tokens
-        columns = tokens[columns_start + 1:columns_end]
+        column_value_list = []
+        assert (len(columns) == len(values))
+        for i in range(len(columns)):
+            column_value_list.append(
+                {"column-name": columns[i], "value": values[i]})
 
-        # Find the start and end positions of the values
-        values_start = tokens.index('values') + 1
-        values_end = tokens.index(';')
-
-        # Extract values from tokens
-        values = tokens[values_start:values_end]
-
-        return {
+        # Create the parsed_data object
+        parsed_data = {
             'operation': operation,
-            'table': table,
-            'columns': columns,
-            'values': values
+            'values': column_value_list
         }
+        return ({"table-name": table, "parsed-query":  parsed_data})
+
+    def parse_insert_operation(self, tokens: list[str]) -> map:
+        result = self.get_parsed_insert_query(tokens)
+        operation = op.InsertInto(result["parsed-query"]["values"])
+        return ({"table-name": result["table-name"], "operation": operation})
 
     #########################################################
 
@@ -354,7 +378,7 @@ class SQLQuerySimpleParser:
             'conditions': conditions
         }
 
-    def parse_update_operation(self, tokens: list[str]) -> op.Operation:
+    def parse_update_operation(self, tokens: list[str]) -> map:
         result = self.get_parsed_update_query(tokens)
         conditionStr = result["conditions"]
         condition_tokens = self.lex_sql_query(conditionStr)
@@ -374,11 +398,11 @@ class SQLQuerySimpleParser:
         i = 0
         while i < len(tokens):
             token = tokens[i]
-            if token.upper() == 'DELETE':
-                operation = 'DELETE'
+            if token.lower() == 'delete':
+                operation = token
 
                 # Check if the next token is 'FROM'
-                if i + 1 < len(tokens) and tokens[i + 1].upper() == 'FROM':
+                if i + 1 < len(tokens) and tokens[i + 1].lower() == 'from':
                     i += 1  # Skip 'FROM' keyword
 
                     # The next token should be the table name
@@ -392,7 +416,7 @@ class SQLQuerySimpleParser:
                     raise ValueError(
                         'Invalid DELETE statement: "FROM" keyword missing')
 
-            if token.upper() == 'WHERE':
+            if token.lower() == 'where':
                 # The rest of the tokens are part of the conditions
                 conditions = ' '.join(tokens[i + 1:])
                 break  # No need to continue parsing
@@ -405,11 +429,17 @@ class SQLQuerySimpleParser:
             'conditions': conditions
         }
 
-    def parse_delete_operation(self, tokens: list[str]) -> op.Operation:
+    def parse_delete_operation(self, tokens: list[str]) -> map:
         result = self.get_parsed_delete_query(tokens)
+        # console.PrintSignal(f"tokens: {tokens}")
+        # console.PrintSignal(f"result: {result}")
         conditionStr = result["conditions"]
+        # console.PrintSignal(f"conditionStr: {conditionStr}")
         condition_tokens = self.lex_sql_query(conditionStr)
+        # console.PrintSignal(f"condition_tokens: {condition_tokens}")
         condition = self.parse_condition(condition_tokens)
+        # console.PrintSignal(f"condition: ")
+        # condition.print()
         operation = op.Delete(condition)
         return ({"table-name": result["table"], "operation": operation})
 
