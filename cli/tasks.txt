@@ -1,11 +1,23 @@
 
-> create database name;
+> create-db name
+  create database name;
   CREATE DATABASE databasename
-> drop database name;
+
+> drop-db name
+  drop database name;
   DROP DATABASE databasename;
 
-> connect database name
-> disconnect database name
+> list-db
+  List existing databases
+
+########################################
+
+> connect-db name
+  connect database name
+> disconnect-db name
+  disconnect database name
+
+########################################
 
 > create table name (list of <column-name type>)
     CREATE TABLE table_name (
