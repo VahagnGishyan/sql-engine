@@ -298,7 +298,7 @@ class SQLQuerySimpleParser:
                 i += 2
                 while tokens[i] != ')':
                     if tokens[i] != ',':
-                        values.append(tokens[i])
+                        values.append(self.convert_value(tokens[i]))
                     i += 1
             i += 1
 
