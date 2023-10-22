@@ -1,0 +1,30 @@
+
+> create database name;
+  CREATE DATABASE databasename
+> drop database name;
+  DROP DATABASE databasename;
+
+> connect database name
+> disconnect database name
+
+> create table name (list of <column-name type>)
+    CREATE TABLE table_name (
+        column1 datatype,
+        column2 datatype,
+        column3 datatype,
+    ....
+    );
+> drop table name
+    DROP TABLE table_name;
+    
+> alter table name add column-name datatype
+    ALTER TABLE table_name
+    ADD column_name datatype;
+> alter table name drop column-name
+    ALTER TABLE Persons
+    DROP COLUMN DateOfBirth;
+> alter table name rename column-name-old to column-name-new
+    ALTER TABLE table_name
+    RENAME COLUMN old_name to new_name;
+
+> execute query
