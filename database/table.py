@@ -49,6 +49,13 @@ class Table:
                 return
         raise ValueError(f"Column '{column_name}' not found in the table.")
 
+    def rename_column(self, old_name, new_name):
+        for column in self.columns:
+            if column.name == old_name:
+                column.name = new_name
+                return
+        raise ValueError(f"Column '{old_name}' not found in the table.")
+
     #########################################################
 
     def list_columns(self):
