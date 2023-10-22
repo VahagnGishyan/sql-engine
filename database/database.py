@@ -4,6 +4,7 @@ from database import file_manager as fm
 from utility import file as utfile
 from database import row as rw
 # from utility import core as utcore
+from sqlinterp.parser import SQLQuerySimpleParser
 
 import os
 
@@ -19,6 +20,7 @@ class Database:
         self.filem = None
         self.connected = None
         self.tables = []
+        self.parser = SQLQuerySimpleParser()  # temp
 
         self.set_name(name)
         self.set_path(path)
@@ -178,7 +180,8 @@ class Database:
             raise ValueError("Database.destroy: arg db must be a Database obj")
         if db.is_connected():
             db.disconnect(save=False)
-        # remove files and dris
+        path = db.get_path()
+        utfile.rmdir(path)
 
     #########################################################
 
@@ -220,8 +223,12 @@ class Database:
         path = self.filem.fix_file_extension(path)
         return path
 
-    def execute(self, query):
-        pass
+    def execute(self, query: str):
+        result = self.parser.parse(query)
+        table_name = result["table-name"]
+        operation = result["operation"]
+        table = self.get_table(table_name)
+        return operation.execute(table)
 
 
 #############################################################
