@@ -96,6 +96,14 @@ class Database:
 
     #########################################################
 
+    def assert_table_exists(self, table_name):
+        if not self.table_exists(table_name):
+            raise ValueError(f"table: {table_name} does not exists")
+
+    def assert_table_not_exists(self, table_name):
+        if self.table_exists(table_name):
+            raise ValueError(f"table: {table_name} exists")
+
     def assert_connected(self):
         if not self.connected:
             raise ValueError("Database is not connected")
@@ -138,9 +146,10 @@ class Database:
         tables = utfile.list_files_in_dir_with_extension(
             tables_dir, extension)
 
-        for table_name in tables:
+        for table_full_name in tables:
+            table_name, ext = os.path.splitext(table_full_name)
             table = self.create_table(table_name)
-            table_path = f"{tables_dir}/{table_name}"
+            table_path = f"{tables_dir}/{table_full_name}"
             table.load(table_path)
 
     def load_info(self):
@@ -199,18 +208,21 @@ class Database:
     #########################################################
 
     def create_table(self, table_name):
+        self.assert_table_not_exists(table_name)
         # Create a new table and add it to the database
         new_table = tb.Table(table_name)  # Assuming you have a Table class
         self.tables.append(new_table)
         return (new_table)
 
     def drop_table(self, table_name):
+        self.assert_table_exists(table_name)
         # Get the table by name
         table = self.get_table(table_name)
-        self.tables.remove(table)
         utfile.remove(self.get_table_path(table_name))
+        self.tables.remove(table)
 
     def get_table(self, table_name):
+        self.assert_table_exists(table_name)
         # Retrieve a table from the database by its name using a for loop
         for table in self.tables:
             if table.name == table_name:
@@ -218,6 +230,7 @@ class Database:
         raise ValueError(f"Table '{table_name}' not found in the database.")
 
     def get_table_path(self, table_name):
+        self.assert_table_exists(table_name)
         path = self.get_tables_dir_path()
         path = f"{path}/{table_name}"
         path = self.filem.fix_file_extension(path)
@@ -226,6 +239,7 @@ class Database:
     def execute(self, query: str):
         result = self.parser.parse(query)
         table_name = result["table-name"]
+        self.assert_table_exists(table_name)
         operation = result["operation"]
         table = self.get_table(table_name)
         return operation.execute(table)
