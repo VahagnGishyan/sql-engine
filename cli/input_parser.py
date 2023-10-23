@@ -37,10 +37,6 @@ class InputParser:
         drop_db_parser.add_argument(
             "name", help="Name of the database to drop")
 
-        # Create subparser for the "list-database" command
-        list_db_parser = subparsers.add_parser(
-            "list-db", help="List existing databases")
-
         #####################################################
 
         connect_db_parser = subparsers.add_parser(
@@ -54,6 +50,20 @@ class InputParser:
             "name", help="Name of the database to disconnect")
 
         #####################################################
+
+        # Create subparser for the "list-database" command
+        list_db_parser = subparsers.add_parser(
+            "list-db", help="List existing databases")
+
+        # Create subparser for the "list-database" command
+        list_connected_db_parser = subparsers.add_parser(
+            "list-connected-db", help="List existing databases")
+
+        # Create subparser for the "list-database" command
+        list_db_table_parser = subparsers.add_parser(
+            "list-table", help="List existing databases")
+        list_db_table_parser.add_argument(
+            "name", help="Name of the database to list tales")
 
         #####################################################
 

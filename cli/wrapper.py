@@ -22,6 +22,12 @@ class DBWrapper:
     def drop(self, name):
         pass
 
+    def list_db(self):
+        pass
+
+    def list_connected_db(self):
+        pass
+
     #########################################################
 
     def connect(self, dbname):
@@ -81,6 +87,12 @@ class DBWrapperPythonLib:
 
     def drop(self, name):
         self.db_manager.drop_database(name)
+
+    def list_db(self):
+        return self.db_manager.list_database()
+
+    def list_connected_db(self):
+        return self.db_manager.list_connected_database()
 
     #########################################################
 

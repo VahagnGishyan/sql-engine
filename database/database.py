@@ -237,6 +237,7 @@ class Database:
         return path
 
     def execute(self, query: str):
+        self.assert_connected()
         result = self.parser.parse(query)
         table_name = result["table-name"]
         self.assert_table_exists(table_name)

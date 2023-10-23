@@ -34,6 +34,15 @@ class DatabaseManager:
 
     #########################################################
 
+    def list_database(self):
+        return list(self.databases)
+
+    def list_connected_database(self):
+        connected_dbs_names = list(self.connected_dbs.keys())
+        return connected_dbs_names
+
+    #########################################################
+
     def assert_db_exists(self, name):
         if not self.database_exists(name):
             raise ValueError(
@@ -96,7 +105,7 @@ class DatabaseManager:
         del self.connected_dbs[name]
 
     def disconnect_all_dbs(self):
-        connected_dbs_names = list(self.connected_dbs.keys())
+        connected_dbs_names = self.list_connected_database()
         for dbname in connected_dbs_names:
             self.disconnect(dbname)
 
