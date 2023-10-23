@@ -16,7 +16,11 @@ sql-engine[pre-production] version 0.4.4
         :: done :: sql query operators  | select, insert into, delete, update
         :: done :: sql query parser     | select, insert into, delete, update
 :: done :: Carry out testing for the Python library.
-:: ---- :: Implement a CLI application in Python that works with JSON files.
+:: ---- :: Implement a CLI application in Python.
+        :: done :: wrapper
+        :: done :: loop | state | parser-i | executor-i
+        :: ---- :: user input parser and cmd executor
+        :: ---- :: [bug] do not exit if user input is not correct
 
 #############################################
 
