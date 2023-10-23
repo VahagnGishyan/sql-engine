@@ -77,6 +77,11 @@ class DBWrapperPythonLib:
 
     #########################################################
 
+    def work_dir(self):
+        return self.db_manager.get_work_dir()
+
+    #########################################################
+
     def database_exists(self, name):
         return self.db_manager.database_exists(name)
 

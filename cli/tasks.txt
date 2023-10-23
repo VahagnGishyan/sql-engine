@@ -19,16 +19,20 @@
 
 ########################################
 
-> create table name (list of <column-name type>)
+> create-tb name column-name0 type-0 column-name1 type-1 column-name2 type-2
+  create table name (list of <column-name type>)
     CREATE TABLE table_name (
         column1 datatype,
         column2 datatype,
         column3 datatype,
     ....
     );
-> drop table name
+> drop-tb db-name tb-name
+  drop table name
     DROP TABLE table_name;
     
+########################################
+
 > alter table name add column-name datatype
     ALTER TABLE table_name
     ADD column_name datatype;
@@ -38,5 +42,7 @@
 > alter table name rename column-name-old to column-name-new
     ALTER TABLE table_name
     RENAME COLUMN old_name to new_name;
+
+########################################
 
 > execute query

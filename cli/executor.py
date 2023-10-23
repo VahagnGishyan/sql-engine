@@ -61,6 +61,30 @@ class Executor:
     #                                                       #
     #########################################################
 
+    def cmd_create_tb(self, task: dict):
+        db_name = task["db-name"]
+        tb_name = task["tb-name"]
+        command = task["command"]
+        columns = task["columns"]
+        console.PrintInfo(
+            f"db: {db_name}, tb: {tb_name}, command: {command}, columns: {columns}")
+        self.executor.create_table(db_name, tb_name, columns)
+
+    def cmd_drop_tb(self, task: dict):
+        command = task["command"]
+        db_name = task["db-name"]
+        tb_name = task["tb-name"]
+        self.executor.drop_table(db_name, tb_name)
+
+    #########################################################
+    #                                                       #
+    #########################################################
+
+    def cmd_work_dir(self, task: dict):
+        command = task["command"]
+        work_dir = self.executor.work_dir()
+        console.PrintInfo(f"current-work-dir: {work_dir}") 
+
     #########################################################
 
     def cmd_exit(self, task: dict):
@@ -83,6 +107,10 @@ class Executor:
             "list-connected-db": self.cmd_list_connected_db,
             "list-table": self.cmd_list_table,
 
+            "create-tb": self.cmd_create_tb,
+            "drop-tb": self.cmd_drop_tb,
+
+            "work-dir": self.cmd_work_dir,
             "exit": self.cmd_exit,
         }
         if command not in cmd_executor_runner_list:
