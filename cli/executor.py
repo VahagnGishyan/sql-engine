@@ -80,10 +80,43 @@ class Executor:
     #                                                       #
     #########################################################
 
+
+# > add-column db-name tb-name column-name datatype
+# > remove-column db-name tb-name column-name
+# > rename-column db-name tb-name column-name-old column-name-new
+
+    def cmd_add_column(self, task: dict):
+        command = task["command"]
+        db_name = task["db-name"]
+        tb_name = task["tb-name"]
+        clm_name = task["column-name"]
+        clm_type = task["column-type"]
+        self.executor.alter_table_add(db_name, tb_name, clm_name, clm_type)
+
+    def cmd_remove_column(self, task: dict):
+        command = task["command"]
+        db_name = task["db-name"]
+        tb_name = task["tb-name"]
+        clm_name = task["column-name"]
+        self.executor.alter_table_drop(db_name, tb_name, clm_name)
+
+    def cmd_rename_column(self, task: dict):
+        command = task["command"]
+        db_name = task["db-name"]
+        tb_name = task["tb-name"]
+        clmn_name_old = task["column-name-old"]
+        clmn_name_new = task["column-name-new"]
+        self.executor.alter_table_rename(
+            db_name, tb_name, clmn_name_old, clmn_name_new)
+
+    #########################################################
+    #                                                       #
+    #########################################################
+
     def cmd_work_dir(self, task: dict):
         command = task["command"]
         work_dir = self.executor.work_dir()
-        console.PrintInfo(f"current-work-dir: {work_dir}") 
+        console.PrintInfo(f"current-work-dir: {work_dir}")
 
     #########################################################
 
@@ -109,6 +142,10 @@ class Executor:
 
             "create-tb": self.cmd_create_tb,
             "drop-tb": self.cmd_drop_tb,
+
+            "add-column": self.cmd_add_column,
+            "remove-column": self.cmd_remove_column,
+            "rename-column": self.cmd_rename_column,
 
             "work-dir": self.cmd_work_dir,
             "exit": self.cmd_exit,

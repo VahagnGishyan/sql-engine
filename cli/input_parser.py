@@ -100,6 +100,39 @@ class InputParser:
 
         #####################################################
 
+        add_column_parser = subparsers.add_parser(
+            "add-column", help="Add column to table by given name and type")
+        add_column_parser.add_argument(
+            "db-name", help="Name of the database")
+        add_column_parser.add_argument(
+            "tb-name", help="Name of the table")
+        add_column_parser.add_argument(
+            "column-name", help="Name of the column")
+        add_column_parser.add_argument(
+            "column-type", help="Type of the column")
+
+        remove_column_parser = subparsers.add_parser(
+            "remove-column", help="Remove column in table")
+        remove_column_parser.add_argument(
+            "db-name", help="Name of the database")
+        remove_column_parser.add_argument(
+            "tb-name", help="Name of the table")
+        remove_column_parser.add_argument(
+            "column-name", help="Name of the column")
+
+        rename_column_parser = subparsers.add_parser(
+            "rename-column", help="Rename column in table")
+        rename_column_parser.add_argument(
+            "db-name", help="Name of the database")
+        rename_column_parser.add_argument(
+            "tb-name", help="Name of the table")
+        rename_column_parser.add_argument(
+            "column-name-old", help="Old name of the column")
+        rename_column_parser.add_argument(
+            "column-name-new", help="New name of the column")
+
+        #####################################################
+
         # Create subparser for the "create" command
         work_dir_parser = subparsers.add_parser(
             "work-dir", help="Get current database dir")

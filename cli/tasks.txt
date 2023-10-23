@@ -33,13 +33,16 @@
     
 ########################################
 
-> alter table name add column-name datatype
+> add-column db-name tb-name column-name datatype
+  alter table name add column-name datatype
     ALTER TABLE table_name
     ADD column_name datatype;
-> alter table name drop column-name
+> remove-column db-name tb-name column-name
+  alter table name drop column-name
     ALTER TABLE Persons
     DROP COLUMN DateOfBirth;
-> alter table name rename column-name-old to column-name-new
+> rename-column db-name tb-name column-name-old column-name-new
+  alter table name rename column-name-old to column-name-new
     ALTER TABLE table_name
     RENAME COLUMN old_name to new_name;
 
