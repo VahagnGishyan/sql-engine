@@ -169,8 +169,7 @@ class Executor:
             "exit": self.cmd_exit,
         }
         if command not in cmd_executor_runner_list:
-            console.PrintWarning(f"command: {command} is not supported yet.")
-            return
+            raise ValueError(f"command: {command} is not supported.")
 
         return cmd_executor_runner_list[command](task)
 
