@@ -22,7 +22,6 @@ sql-engine[pre-production] version 0.4.9
         :: done :: input-reader
         :: done :: visitor
         :: ---- :: user input parser and cmd executor
-        :: ---- :: [bug] do not exit if user input is not correct
 
 #############################################
 
@@ -45,5 +44,6 @@ Issues
                ],
                # More rows with "Active" column, which is not defined in the table
            ]
-:: ---- :: Table names cannot contain the '-' symbol, for example, 'test-tb', 
+:: ---- :: do not exit if user input is not correct
+:: done :: Table names cannot contain the '-' symbol, for example, 'test-tb', 
            as the lexer splits it.
