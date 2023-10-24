@@ -19,6 +19,8 @@ sql-engine[pre-production] version 0.4.7
 :: ---- :: Implement a CLI application in Python.
         :: done :: wrapper
         :: done :: loop | state | parser-i | executor-i
+        :: done :: input-reader
+        :: done :: visitor
         :: ---- :: user input parser and cmd executor
         :: ---- :: [bug] do not exit if user input is not correct
 
