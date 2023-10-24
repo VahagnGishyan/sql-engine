@@ -5,6 +5,7 @@ from cli.input_parser import InputParser
 from cli.executor import Executor
 from cli.state import State
 from cli.visitor import Visitor, DefaultVisitor
+from cli.input_reader import InputReader, ConsoleInputReader
 
 #############################################################
 #                                                           #
@@ -17,12 +18,12 @@ class CLILoop:
         self.input_parser = InputParser(state)
         self.executor = Executor(state)
         self.visitor: Visitor = DefaultVisitor(state)
+        self.ireader: InputReader = ConsoleInputReader(state)
 
     #########################################################
 
     def read_user_input(self) -> str:
-        user_input = input("Enter a command: ")
-        return user_input
+        return self.ireader.read()
 
     #########################################################
 
