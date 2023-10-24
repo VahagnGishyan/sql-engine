@@ -1,5 +1,4 @@
 
-from cli.state import State
 from utility import console
 
 #############################################################
@@ -32,8 +31,8 @@ class Visitor:
 #############################################################
 
 class DefaultVisitor:
-    def __init__(self, state: State):
-        self.state = state
+    def __init__(self, loop):
+        self.loop = loop
 
     #########################################################
 
@@ -59,7 +58,7 @@ class DefaultVisitor:
         pass
 
     def close_loop(self):
-        pass
+        self.loop.executor.close()
 
 
 #############################################################

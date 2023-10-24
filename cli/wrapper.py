@@ -137,7 +137,7 @@ class DBWrapperPythonLib:
     def alter_table_drop(self, dbname, tbname, column_name):
         database: Database = self.db_manager.get_database(dbname)
         table: Table = database.get_table(tbname)
-        table.drop_column(column_name, column_name)
+        table.drop_column(column_name)
 
     def alter_table_rename(self, dbname, tbname, old_name, new_name):
         database: Database = self.db_manager.get_database(dbname)

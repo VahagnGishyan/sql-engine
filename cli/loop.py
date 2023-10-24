@@ -17,8 +17,8 @@ class CLILoop:
         self.state = state
         self.input_parser = InputParser(state)
         self.executor = Executor(state)
-        self.visitor: Visitor = DefaultVisitor(state)
         self.ireader: InputReader = ConsoleInputReader(state)
+        self.visitor: Visitor = DefaultVisitor(self)
 
     #########################################################
 
@@ -62,5 +62,3 @@ class CLILoop:
 #############################################################
 #                                                           #
 #############################################################
-
-
