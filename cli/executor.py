@@ -108,6 +108,16 @@ class Executor:
     #                                                       #
     #########################################################
 
+    def cmd_execute(self, task: dict):
+        command = task["command"]
+        db_name = task["db-name"]
+        query = task["query"]
+        return self.executor.execute(db_name, query)
+
+    #########################################################
+    #                                                       #
+    #########################################################
+
     def cmd_work_dir(self, task: dict):
         command = task["command"]
         work_dir = self.executor.work_dir()
@@ -141,6 +151,8 @@ class Executor:
             "add-column": self.cmd_add_column,
             "remove-column": self.cmd_remove_column,
             "rename-column": self.cmd_rename_column,
+
+            "execute": self.cmd_execute,
 
             "work-dir": self.cmd_work_dir,
             "exit": self.cmd_exit,

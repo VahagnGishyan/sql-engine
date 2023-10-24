@@ -5,7 +5,7 @@ from cli.input_parser import InputParser
 from cli.executor import Executor
 from cli.state import State
 from cli.visitor import Visitor, DefaultVisitor
-from cli.input_reader import InputReader, ConsoleInputReader
+from cli.io_manager import IOManager, ConsoleIOManager
 
 #############################################################
 #                                                           #
@@ -17,13 +17,13 @@ class CLILoop:
         self.state = state
         self.input_parser = InputParser(state)
         self.executor = Executor(state)
-        self.ireader: InputReader = ConsoleInputReader(state)
+        self.io: IOManager = ConsoleIOManager(state)
         self.visitor: Visitor = DefaultVisitor(self)
 
     #########################################################
 
     def read_user_input(self) -> str:
-        return self.ireader.read()
+        return self.io.read()
 
     #########################################################
 
@@ -50,7 +50,10 @@ class CLILoop:
                 task = self.parse_input(user_input)
                 self.visitor.parsed_input(task)
 
-                self.execute(task)
+                result = self.execute(task)
+
+                self.io.print(result)
+                
 
                 self.visitor.close_iter()
             except Exception as e:

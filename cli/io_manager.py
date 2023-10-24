@@ -1,14 +1,18 @@
 
 from cli.state import State
 from utility import console
+from database.table import Table
 
 #############################################################
 #                                                           #
 #############################################################
 
 
-class InputReader:
+class IOManager:
     def read(self):
+        pass
+
+    def print(self):
         pass
 
 
@@ -16,7 +20,7 @@ class InputReader:
 #                                                           #
 #############################################################
 
-class ConsoleInputReader:
+class ConsoleIOManager:
     def __init__(self, state: State):
         self.state = state
 
@@ -27,6 +31,21 @@ class ConsoleInputReader:
         return user_input
 
     #########################################################
+
+    def print_table(self, table: Table):
+        console.PrintInfo(f"table: {table.get_name()}")
+        console.PrintInfo(f"columns: {table.list_columns()}")
+
+        console.PrintInfo(f"rows: ")
+        rows = table.get_info_rows()
+        index = -1
+        for row in rows:
+            index += 1
+            console.PrintInfo(f"\t[{index}] row: {row}")
+
+    def print(self, result):
+        if result is not None and isinstance(result, Table):
+            self.print_table(result)
 
 
 #############################################################

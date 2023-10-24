@@ -89,7 +89,7 @@ class InputParser:
         create_tb_parser = subparsers.add_parser(
             "create-tb", help="Create table by given name")
         create_tb_parser.add_argument(
-            "columns", nargs='*', action=CreateTableAction, metavar="column-pairs")
+            "columns", nargs='*', action=CreateTableAction)
 
         drop_tb_parser = subparsers.add_parser(
             "drop-tb", help="Create table by given name")
@@ -130,6 +130,23 @@ class InputParser:
             "column-name-old", help="Old name of the column")
         rename_column_parser.add_argument(
             "column-name-new", help="New name of the column")
+
+        #####################################################
+
+        class ExecuteAction(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                # print(f"values: {values}")
+
+                db_name = values.pop(0)
+                query = " ".join(values)
+
+                setattr(namespace, "db-name", db_name)
+                setattr(namespace, self.dest, query)
+
+        create_tb_parser = subparsers.add_parser(
+            "execute", help="Execute query for database")
+        create_tb_parser.add_argument(
+            "query", nargs='*', action=ExecuteAction)
 
         #####################################################
 
