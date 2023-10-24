@@ -69,7 +69,7 @@ class InputParser:
 
         class CreateTableAction(argparse.Action):
             def __call__(self, parser, namespace, values, option_string=None):
-                print(f"values: {values}")
+                # print(f"values: {values}")
 
                 db_name = values.pop(0)
                 tb_name = values.pop(0)
@@ -148,7 +148,7 @@ class InputParser:
         parser = self.get_parser()
         result_ns = parser.parse_args(cmd_list)
         result = vars(result_ns)
-        console.PrintSignal(f"task: {result}")
+        # console.PrintSignal(f"task: {result}")
         return result
 
     #########################################################

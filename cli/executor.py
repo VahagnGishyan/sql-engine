@@ -80,11 +80,6 @@ class Executor:
     #                                                       #
     #########################################################
 
-
-# > add-column db-name tb-name column-name datatype
-# > remove-column db-name tb-name column-name
-# > rename-column db-name tb-name column-name-old column-name-new
-
     def cmd_add_column(self, task: dict):
         command = task["command"]
         db_name = task["db-name"]
