@@ -32,6 +32,11 @@ class ConsoleIOManager:
 
     #########################################################
 
+    def print_str(self, result: str):
+        console.PrintInfo(result)
+
+    #########################################################
+
     def print_table(self, table: Table):
         console.PrintInfo(f"table: {table.get_name()}")
         console.PrintInfo(f"columns: {table.list_columns()}")
@@ -43,10 +48,28 @@ class ConsoleIOManager:
             index += 1
             console.PrintInfo(f"\t[{index}] row: {row}")
 
-    def print(self, result):
-        if result is not None and isinstance(result, Table):
-            self.print_table(result)
+    #########################################################
 
+    def try_to_print(self, result):
+        console.PrintInfo(f"result: {result}")
+
+    #########################################################
+
+    def print(self, result):
+        if result is None:
+            return
+
+        if isinstance(result, str):
+            self.print_str(result)
+            return
+
+        if isinstance(result, Table):
+            self.print_table(result)
+            return
+
+        self.try_to_print(result)
+
+    #########################################################
 
 #############################################################
 #                                                           #

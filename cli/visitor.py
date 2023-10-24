@@ -19,6 +19,9 @@ class Visitor:
     def parsed_input(self, task):
         pass
 
+    def execution_result(self, result):
+        pass
+
     def close_iter(self):
         pass
 
@@ -52,6 +55,9 @@ class DefaultVisitor:
         pass
 
     def parsed_input(self, task):
+        pass
+
+    def execution_result(self, result):
         pass
 
     def close_iter(self):

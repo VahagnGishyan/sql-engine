@@ -33,7 +33,8 @@ class CLILoop:
     #########################################################
 
     def execute(self, task: dict):
-        self.executor.execute(task)
+        result = self.executor.execute(task)
+        return result
 
     #########################################################
 
@@ -51,11 +52,11 @@ class CLILoop:
                 self.visitor.parsed_input(task)
 
                 result = self.execute(task)
-
+                self.visitor.execution_result(result)
                 self.io.print(result)
-                
 
                 self.visitor.close_iter()
+
             except Exception as e:
                 console.PrintError(f"{__name__}, loop(), error-message: {e}")
 
