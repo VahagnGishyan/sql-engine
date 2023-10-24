@@ -54,11 +54,13 @@ class DatabaseManager:
                 f"Dtabase with the same name: {name}  already exists.")
 
     def assert_db_connected(self, name):
+        self.assert_db_exists(name)
         if not self.database_connected(name):
             raise ValueError(
                 f"Database with the name: {name} is not connected.")
 
     def assert_db_not_connected(self, name):
+        self.assert_db_exists(name)
         if self.database_connected(name):
             raise ValueError(
                 f"Database with the name: {name} is already connected.")

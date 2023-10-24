@@ -135,7 +135,6 @@ class InputParser:
 
         class ExecuteAction(argparse.Action):
             def __call__(self, parser, namespace, values, option_string=None):
-                # print(f"values: {values}")
 
                 db_name = values.pop(0)
                 query = " ".join(values)

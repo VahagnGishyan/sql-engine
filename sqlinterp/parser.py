@@ -45,7 +45,7 @@ class SQLQuerySimpleParser:
     def lex(self, query: str) -> list[str]:
         # Define regular expressions for various SQL components
         keywords = r'(SELECT|INSERT|UPDATE|DELETE|FROM|INTO|SET|VALUES|WHERE)'
-        identifiers = r'(\w+)'
+        identifiers = r'(\w+(-\w+)*)'
         strings = r"'(.*?)'"
         numbers = r'(\d+)'
         operators = r'([=<>]+)'
@@ -119,6 +119,9 @@ class SQLQuerySimpleParser:
         return info
 
     def lex_sql_query(self, query):
+        if query is None:
+            return
+
         # Define regular expressions for various SQL components
         keywords = r'(SELECT|INSERT|UPDATE|DELETE|FROM|INTO|SET|VALUES|WHERE)'
         identifiers = r'(\w+)'
@@ -131,7 +134,8 @@ class SQLQuerySimpleParser:
         pattern = f'{keywords}|{identifiers}|{strings}|{numbers}|{operators}|{punctuation}'
 
         if not isinstance(query, str):
-            raise ValueError("The 'query' must be a string.")
+            raise ValueError(
+                f"The 'query' must be a string, but it is: {type(query)}.")
 
         # Use re.findall to tokenize the query
         tokens = re.findall(pattern, query, re.IGNORECASE)
@@ -214,6 +218,8 @@ class SQLQuerySimpleParser:
         return condition
 
     def parse_condition(self, conds: list[str]) -> Condition:
+        if conds is None:
+            return
         # console.PrintDebug("conds[list]:  " + " ".join(conds))
         parsed_conds = self.lex_conds(conds)
         # console.PrintDebug("parsed[list]")

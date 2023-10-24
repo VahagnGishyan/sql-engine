@@ -5,6 +5,7 @@ from utility import file as utfile
 from database import row as rw
 # from utility import core as utcore
 from sqlinterp.parser import SQLQuerySimpleParser
+from utility import console
 
 import os
 

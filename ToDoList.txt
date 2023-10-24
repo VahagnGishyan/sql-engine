@@ -45,3 +45,5 @@ Issues
                ],
                # More rows with "Active" column, which is not defined in the table
            ]
+:: ---- :: Table names cannot contain the '-' symbol, for example, 'test-tb', 
+           as the lexer splits it.
