@@ -33,7 +33,7 @@ The primary goal of this project is to build a substantial portfolio and validat
 
 ### Tested Operating Systems
 
-- [ ] Ubuntu
+- [x] Ubuntu
 - [ ] Windows 10
 
 ### Dependencies
