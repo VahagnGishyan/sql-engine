@@ -132,7 +132,7 @@ Python 3's `unittest` framework has been utilized for running these tests. To ex
 python3 -m unittest discover
 ```
 
-Result:
+Result: <br>
 ![Result of Tests](./docs/tests.jpg)
 
 ---
