@@ -58,7 +58,7 @@ class CLILoop:
                 self.visitor.close_iter()
 
             except Exception as e:
-                console.PrintError(f"{__name__}, loop(), error-message: {e}")
+                console.PrintError(f"loop(), error-message: {e}")
 
         self.visitor.close_loop()
 

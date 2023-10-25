@@ -19,13 +19,13 @@ class Executor:
 
     def cmd_create_db(self, task: dict):
         command = task["command"]
-        dbname = task["name"]
+        dbname = task["db-name"]
         self.executor.create(dbname)
         return self.cmd_list_db(task)
 
     def cmd_drop_db(self, task: dict):
         command = task["command"]
-        dbname = task["name"]
+        dbname = task["db-name"]
         self.executor.drop(dbname)
         return self.cmd_list_db(task)
 
@@ -33,13 +33,13 @@ class Executor:
 
     def cmd_connect_db(self, task: dict):
         command = task["command"]
-        dbname = task["name"]
+        dbname = task["db-name"]
         self.executor.connect(dbname)
         return self.cmd_list_connected_db(task)
 
     def cmd_disconnect_db(self, task: dict):
         command = task["command"]
-        dbname = task["name"]
+        dbname = task["db-name"]
         self.executor.disconnect(dbname)
         return self.cmd_list_connected_db(task)
 
@@ -57,7 +57,8 @@ class Executor:
 
     def cmd_list_table(self, task: dict):
         # command = task["command"]
-        dbname = task["name"]
+        # console.PrintWarning(f"task: {task}")
+        dbname = task["db-name"]
         list_tb = self.executor.list_tables(dbname)
         return f"db: {dbname}, list-table: {list_tb}"
 
@@ -70,8 +71,8 @@ class Executor:
         tb_name = task["tb-name"]
         command = task["command"]
         columns = task["columns"]
-        console.PrintInfo(
-            f"db: {db_name}, tb: {tb_name}, command: {command}, columns: {columns}")
+        # console.PrintInfo(
+        #     f"db: {db_name}, tb: {tb_name}, command: {command}, columns: {columns}")
         self.executor.create_table(db_name, tb_name, columns)
         return self.cmd_list_table(task)
 

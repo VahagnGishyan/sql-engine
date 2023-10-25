@@ -29,25 +29,25 @@ class InputParser:
         create_db_parser = subparsers.add_parser(
             "create-db", help="Create database by given name")
         create_db_parser.add_argument(
-            "name", help="Name of the database to create")
+            "db-name", help="Name of the database to create")
 
         # Create subparser for the "drop" command
         drop_db_parser = subparsers.add_parser(
             "drop-db", help="Drop database by given name")
         drop_db_parser.add_argument(
-            "name", help="Name of the database to drop")
+            "db-name", help="Name of the database to drop")
 
         #####################################################
 
         connect_db_parser = subparsers.add_parser(
             "connect-db", help="Connect to database by given name")
         connect_db_parser.add_argument(
-            "name", help="Name of the database to connect")
+            "db-name", help="Name of the database to connect")
 
         disconnect_db_parser = subparsers.add_parser(
             "disconnect-db", help="Disconnect to database by given name")
         disconnect_db_parser.add_argument(
-            "name", help="Name of the database to disconnect")
+            "db-name", help="Name of the database to disconnect")
 
         #####################################################
 
@@ -63,7 +63,7 @@ class InputParser:
         list_db_table_parser = subparsers.add_parser(
             "list-table", help="List existing tables in database")
         list_db_table_parser.add_argument(
-            "name", help="Name of the database to list tales")
+            "db-name", help="Name of the database to list tales")
 
         #####################################################
 
@@ -92,7 +92,7 @@ class InputParser:
             "columns", nargs='*', action=CreateTableAction)
 
         drop_tb_parser = subparsers.add_parser(
-            "drop-tb", help="Create table by given name")
+            "drop-tb", help="Drop table by given name")
         drop_tb_parser.add_argument(
             "db-name", help="Name of the database")
         drop_tb_parser.add_argument(
@@ -151,7 +151,7 @@ class InputParser:
 
         # Create subparser for the "create" command
         work_dir_parser = subparsers.add_parser(
-            "work-dir", help="Get current database dir")
+            "work-dir", help="Get current work-dir")
 
         # Create subparser for the "exit" command
         exit_parser = subparsers.add_parser("exit", help="Exit the program")
