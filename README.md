@@ -1,11 +1,39 @@
 # sql-engine
 ## Branch: Pre-Production
 
-
 ### Status: Prototype for Pre-Production
 
 **Start Date:** October 11, 2023  
 **End Date:** October 24, 2023
+
+### Introduction
+
+In this section, you can see the results of executing the following commands in the CLI.
+
+Command list:
+```
+create-db my-db
+connect-db my-db
+create-tb my-db todo name text completed boolean
+
+execute my-db insert into todo (name, completed) values (something, False)
+execute my-db insert into todo (name, completed) values (task1, True)
+execute my-db insert into todo (name, completed) values (engine, False)
+
+execute my-db select name, completed from todo where completed == False
+execute my-db select name, completed from todo where completed == True
+
+disconnect-db my-db
+list-db
+exit
+```
+
+
+The Results:
+#### Command Results (Part 1)
+![List of Commands in Introduction - Part 1](./docs/intro-first.jpg)
+#### Command Results (Part 2)
+![List of Commands in Introduction - Part 2](./docs/intro-second.jpg)
 
 ### Description
 

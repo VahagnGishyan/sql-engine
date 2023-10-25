@@ -1,0 +1,15 @@
+
+create-db my-db
+connect-db my-db
+create-tb my-db todo name text completed boolean
+
+execute my-db insert into todo (name, completed) values (something, False)
+execute my-db insert into todo (name, completed) values (task1, True)
+execute my-db insert into todo (name, completed) values (engine, False)
+
+execute my-db select name, completed from todo where completed == False
+execute my-db select name, completed from todo where completed == True
+
+disconnect-db my-db
+list-db
+exit
