@@ -59,7 +59,7 @@ class Database:
             # Check if the new path already exists
             if os.path.exists(new_path):
                 raise ValueError(
-                    "A database with the same name already exists in the parent directory.")
+                    "A database with the same name exists in the parent directory.")
             # Update the name and path
             self.path = new_path
         self.name = name
@@ -111,7 +111,7 @@ class Database:
 
     def assert_not_connected(self):
         if self.connected:
-            raise ValueError("Database is already connected")
+            raise ValueError("Database is connected")
 
     #########################################################
 

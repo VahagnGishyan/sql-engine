@@ -15,6 +15,8 @@ class DatabaseManager:
 
         if path is None:
             path = self.file_manager.get_db_default_dir()
+        if not utfile.is_path_exists(path):
+            utfile.mkdir(path)
         utfile.assert_dir_exists(path)
         self.path = path
 
@@ -51,7 +53,7 @@ class DatabaseManager:
     def assert_db_not_exists(self, name):
         if self.database_exists(name):
             raise ValueError(
-                f"Dtabase with the same name: {name}  already exists.")
+                f"Dtabase with the same name: {name} exists.")
 
     def assert_db_connected(self, name):
         self.assert_db_exists(name)
@@ -63,7 +65,7 @@ class DatabaseManager:
         self.assert_db_exists(name)
         if self.database_connected(name):
             raise ValueError(
-                f"Database with the name: {name} is already connected.")
+                f"Database with the name: {name} is connected.")
 
     #########################################################
 
@@ -75,6 +77,7 @@ class DatabaseManager:
 
     def drop_database(self, name):
         self.assert_db_exists(name)
+        self.assert_db_not_connected(name)
         database = Database.create(name, self.get_work_dir())
         Database.destroy(database)
         self.databases.remove(name)

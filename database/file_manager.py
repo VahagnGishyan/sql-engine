@@ -16,7 +16,7 @@ class FileManager:
 
     @staticmethod
     def get_db_default_dir():
-        return FileManager.get_work_dir() + "/main"
+        return FileManager.get_work_dir() + "/base"
 
     #########################################################
 
