@@ -8,9 +8,7 @@
 
 ### Introduction
 
-In this section, you can see the results of executing the following commands in the CLI.
-
-Command list:
+#### An illustration of database creation and utilization.
 ```
 create-db my-db
 connect-db my-db
