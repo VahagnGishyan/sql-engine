@@ -27,6 +27,9 @@ sql-engine[pre-production] version 1.0.0
 
 Issues
 
+:: ---- :: some-test are working if some dir or files exists. fix this  
+:: done :: Table names cannot contain the '-' symbol, for example, 'test-tb', 
+           as the lexer splits it.
 :: ---- :: The issue arises when rows containing columns that are not present
            in the table are added. In such cases, an error should occur, but 
            it currently doesn't. Here's an example to illustrate the problem:
@@ -45,5 +48,3 @@ Issues
                # More rows with "Active" column, which is not defined in the table
            ]
 :: ---- :: do not exit if user input is not correct
-:: done :: Table names cannot contain the '-' symbol, for example, 'test-tb', 
-           as the lexer splits it.
