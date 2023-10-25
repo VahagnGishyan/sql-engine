@@ -41,7 +41,7 @@ class DefaultVisitor:
 
     def print_application_description(self):
         console.PrintSignal("sql-engine")
-        console.PrintInfo("version: 0.4.9")
+        console.PrintInfo("version: 1.0.0")
         task = {"command": "list-db"}
         console.PrintInfo(self.loop.executor.execute(task))
 
