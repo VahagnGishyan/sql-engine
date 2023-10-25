@@ -26,6 +26,7 @@ Makefile
 .idea/
 .ccls-cache/
 compile_commands.json
+.obsidian
 
 # Ignore Conan-CMake
 CMakeUserPresets.json
