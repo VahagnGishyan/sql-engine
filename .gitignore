@@ -1,5 +1,5 @@
 # Ignore project-specific directories (modify as needed)
-# empty
+local
 
 # Ignore C++ object files and executables
 *.o

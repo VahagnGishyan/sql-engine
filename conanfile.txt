@@ -1,0 +1,12 @@
+# This project uses conan2
+
+[requires]
+boost/1.81.0
+
+[options]
+boost/1.81.0:header_only=False
+boost/1.81.0:shared=False
+
+[generators]
+CMakeToolchain
+CMakeDeps
