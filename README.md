@@ -1,10 +1,11 @@
-# sql-engine
-## Branch: Pre-Production
+# SQL Engine Library
 
-### Status: Prototype for Pre-Production
+## Status: Prototype for Pre-Production
 
 **Start Date:** October 11, 2023  
 **End Date:** October 24, 2023
+
+The SQL Engine Library, in development since October 2023, offers a wide array of tools for database management, SQL query execution, and data manipulation. The primary goal of this project is to create a substantial portfolio and validate my programming knowledge and skills.
 
 ### Introduction
 
@@ -26,16 +27,11 @@ list-db
 exit
 ```
 
-
-The Results:
-#### Command Results (Part 1)
+#### The Results:
 ![List of Commands in Introduction - Part 1](./docs/intro-first.jpg)
-#### Command Results (Part 2)
 ![List of Commands in Introduction - Part 2](./docs/intro-second.jpg)
 
 ### Description
-
-The SQL Engine Library offers a comprehensive set of tools for database management, SQL query execution, and data manipulation.
 
 The prototype of the engine consists of three main components:
 
@@ -119,7 +115,7 @@ When you run the CLI for the first time, you'll likely see an empty list of exis
 
 ### Saved Files
 
-If the CLI isn't sufficient to explore the library's functionality, you can examine the file hierarchy. To do so, run the `work-dir` command and navigate to the specified path. There, you will find the database manager and your database files. You can check the values by inspecting the table data in the files.
+If the CLI isn't sufficient to explore the library's functionality, you can examine the file hierarchy. To do this, run the `work-dir` command and navigate to the specified path. There, you will find the database manager and your database files. You can check the values by inspecting the table data in the files.
 
 ---
 ## Testing
