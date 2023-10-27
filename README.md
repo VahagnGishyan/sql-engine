@@ -119,7 +119,7 @@ When you run the CLI for the first time, you'll likely see an empty list of exis
 
 ### Saved Files
 
-If the CLI isn't sufficient to explore the library's functionality, you can examine the file hierarchy. To do so, run the `work-dir` command and navigate to the specified path. There, you will find the database manager and your database files. You can check the values by inspecting the table data in the files.
+If the CLI isn't sufficient to explore the library's functionality, you can examine the file hierarchy. To do this, run the `work-dir` command and navigate to the specified path. There, you will find the database manager and your database files. You can check the values by inspecting the table data in the files.
 
 ---
 ## Testing
