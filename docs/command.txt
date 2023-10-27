@@ -1,0 +1,44 @@
+
+database-mabager:
+    public:
+        create-database:
+            params:
+                name
+        drop-database:
+            params: 
+                name
+        backup-database:
+            params: 
+                name
+                path
+        connect:
+            params: 
+                name
+        get-database:
+            params: 
+                name
+            returns:
+                database
+
+database:
+    public:
+        create-table:
+            name
+            template
+        drop-table:
+            name
+
+table:
+    public:
+        add-column:
+            name
+            type
+            constraints=None
+        insert:
+            list<column-name, values>
+        drop-column:
+            name
+        rename-column:
+            name
+            new-name
+

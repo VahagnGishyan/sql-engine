@@ -1,0 +1,51 @@
+
+> create-db name
+  create database name;
+  CREATE DATABASE databasename
+
+> drop-db name
+  drop database name;
+  DROP DATABASE databasename;
+
+> list-db
+  List existing databases
+
+########################################
+
+> connect-db name
+  connect database name
+> disconnect-db name
+  disconnect database name
+
+########################################
+
+> create-tb name column-name0 type-0 column-name1 type-1 column-name2 type-2
+  create table name (list of <column-name type>)
+    CREATE TABLE table_name (
+        column1 datatype,
+        column2 datatype,
+        column3 datatype,
+    ....
+    );
+> drop-tb db-name tb-name
+  drop table name
+    DROP TABLE table_name;
+    
+########################################
+
+> add-column db-name tb-name column-name datatype
+  alter table name add column-name datatype
+    ALTER TABLE table_name
+    ADD column_name datatype;
+> remove-column db-name tb-name column-name
+  alter table name drop column-name
+    ALTER TABLE Persons
+    DROP COLUMN DateOfBirth;
+> rename-column db-name tb-name column-name-old column-name-new
+  alter table name rename column-name-old to column-name-new
+    ALTER TABLE table_name
+    RENAME COLUMN old_name to new_name;
+
+########################################
+
+> execute query

@@ -1,11 +1,99 @@
-CMakeLists.txt.user
+# Ignore project-specific directories (modify as needed)
+# empty
+
+# Ignore C++ object files and executables
+*.o
+*.obj
+*.exe
+*.out
+
+# Ignore compiled output files
+build/
+bin/
+lib/
+
+# Ignore generated CMake files
+CMakeFiles/
 CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
+CMakeScripts/
 cmake_install.cmake
 install_manifest.txt
+Makefile
+*.make
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+.ccls-cache/
 compile_commands.json
-CTestTestfile.cmake
-_deps
+.obsidian
+
+# Ignore Conan-CMake
+CMakeUserPresets.json
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+.pyre/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
