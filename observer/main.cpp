@@ -18,7 +18,7 @@ namespace SQLEngine::Observer
 
     int Main(const int count, char **values)
     {
-        SQLEngine::Utility::Print();
+        std::cout << "Path is : " << SQLEngine::Utility::GetDefaultDataPath() << std::endl;
         return (0);
     }
 
