@@ -24,6 +24,7 @@ namespace SQLEngine::Logging
         Message,
         Info,
         Signal,
+        Default = Signal,
         Warning,
         Debug,
         Error,
@@ -69,10 +70,6 @@ namespace SQLEngine::Logging
     public:
         virtual auto GetMode() const -> const Mode = 0;
         virtual void SetMode(const Mode &) = 0;
-
-    public:
-        virtual void SetLogDir(const std::string &path) = 0;
-        virtual auto GetLogDir() const -> const std::string = 0;
     };
 
     using ULogger = std::unique_ptr<ILogger>;
