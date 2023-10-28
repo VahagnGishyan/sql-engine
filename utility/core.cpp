@@ -3,7 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "utility.hpp"
+#include "core.hpp"
 
 #include <boost/filesystem.hpp>
 #include <iostream>

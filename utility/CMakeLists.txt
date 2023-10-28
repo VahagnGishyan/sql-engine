@@ -8,7 +8,7 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     filesystem.cpp
-    utility.cpp
+    core.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
