@@ -1,22 +1,61 @@
-#include <fmt/core.h>
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
+#include "utility/core.hpp"
 
-using namespace std;
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 
-int main()
+namespace SQLEngine::Observer
 {
-    // Declare variables
-    int num = 42;
-    std::string name = "John";
+    //////////////////////////////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////////////////////////////
 
-    // Use std::format to format a string with placeholders
-    // for variables
-    std::string formatted_str = fmt::format(
-        "My name is {} and my favorite number is {}", name,
-        num);
+    void CheckCore()
+    {
+        std::cout << "Path is    " << Utility::GetEnvironmentValue("PATH") << std::endl;
+        std::cout << "WorkDir is " << Utility::GetDefaultDataPath() << std::endl;
+    }
 
-    // Print formatted string to console
-    std::cout << formatted_str << std::endl;
+    int Main(const int count, char **values)
+    {
+        return (0);
+    }
 
-    return 0;
+    //////////////////////////////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////////////////////////////
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
+int main(const int argc, char **argv)
+{
+    int returnKey = 1;
+    try
+    {
+        std::cout << "Start Main()" << std::endl;
+        returnKey = SQLEngine::Observer::Main(argc, argv);
+        std::cout << "Close Main()" << std::endl;
+    }
+    catch (std::exception &err)
+    {
+        std::cout << std::string("Catch exception, type is std::exception, message is ") + err.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cout << "Unknown type exception was not handled" << std::endl;
+    }
+    return (returnKey);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////

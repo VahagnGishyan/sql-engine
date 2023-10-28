@@ -7,7 +7,7 @@ project(observer)
 find_package(fmt REQUIRED)
 
 include_directories( 
-    ../utility/
+    ../
 )
 
 set(SOURCES
@@ -20,5 +20,4 @@ target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(${PROJECT_NAME} fmt::fmt)
-# target_link_libraries(${PROJECT_NAME}  sql-engine-utility)
+target_link_libraries(${PROJECT_NAME} fmt::fmt sql-engine-utility)
