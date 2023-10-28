@@ -1,9 +1,9 @@
 # SQL Engine Library
-## Status: db-manager development
+
+## Branch:  [development](docs/branch-development).
+## Status: [utility](docs/utility)
 
 **Start Date:** October 27, 2023  
-
-## New Branch: sql-engine-development
 
 ### Description
 This branch has been newly created to kickstart the development of our SQL engine in C++. Stay tuned for updates and progress in this branch.
