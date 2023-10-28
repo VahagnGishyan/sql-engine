@@ -80,6 +80,13 @@ namespace SQLEngine::Logging
 
     //////////////////////////////////////////////////////////////////////
 
+    auto EasyLog::GetLogPath() -> const std::string
+    {
+        return (FileLog::GetDefaultLogPath());
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
     auto EasyLog::GetDefaultLogPath() -> const std::string
     {
         return FileLog::GetDefaultLogPath();

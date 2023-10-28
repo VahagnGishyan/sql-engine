@@ -9,9 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <string>
-#include <memory>
-#include <vector>
+#include "log-core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -19,41 +17,6 @@
 
 namespace SQLEngine::Logging
 {
-    enum class Mode
-    {
-        Message,
-        Info,
-        Signal,
-        Default = Signal,
-        Warning,
-        Debug,
-        Error,
-    };
-
-    namespace ModeConvert
-    {
-        auto GetModeStrList() -> const std::vector<std::pair<Mode, std::string>> &;
-        auto ModeAsString(const Mode &mode) -> const std::string;
-        auto StringAsMode(const std::string strmode) -> const Mode;
-    };
-
-    enum class Color
-    {
-        Unset,
-        Default,
-        Green,
-        Yellow,
-        Blue,
-        Red
-    };
-
-    namespace ColorConvert
-    {
-        auto GetColorStrList() -> const std::vector<std::pair<Color, std::string>> &;
-        auto ColorAsString(const Color &color) -> const std::string;
-        auto StringAsColor(const std::string strclr) -> const Color;
-    };
-
     class ILogger
     {
     public:
@@ -70,6 +33,9 @@ namespace SQLEngine::Logging
     public:
         virtual auto GetMode() const -> const Mode = 0;
         virtual void SetMode(const Mode &) = 0;
+
+    public:
+        virtual auto GetLogPath() -> const std::string = 0;
     };
 
     using ULogger = std::unique_ptr<ILogger>;

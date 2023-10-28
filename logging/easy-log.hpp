@@ -41,6 +41,9 @@ namespace SQLEngine::Logging
         auto GetMode() const -> const Mode override;
         void SetMode(const Mode &mode) override;
 
+    public:
+        virtual auto GetLogPath() -> const std::string override;
+
         //////////////////////////////////////////////////////////////////
 
     public:

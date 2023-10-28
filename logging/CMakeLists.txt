@@ -15,7 +15,7 @@ set(SOURCES
     console-log.cpp
     easy-log.cpp
     file-log.cpp
-    ilogger.cpp
+    log-core.cpp
     logging.cpp
 )
 
