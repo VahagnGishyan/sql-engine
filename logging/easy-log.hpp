@@ -42,7 +42,8 @@ namespace SQLEngine::Logging
         //////////////////////////////////////////////////////////////////
 
     protected:
-        auto FileWrite(const std::string &message, const Mode &mode);
+        auto FormatMessage(const std::string &message, const Mode &mode) -> const std::string;
+        void FileWrite(const std::string &message);
         void ConsolePrint(const std::string &message, const Color &color);
         void LogMessage(const std::string &message, const Mode &mode, const Color &color = Color::Default);
     };

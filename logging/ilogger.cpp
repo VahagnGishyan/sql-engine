@@ -29,7 +29,11 @@ namespace SQLEngine::Logging
         {
             auto &&list = GetModeStrList();
             auto end = list.end();
-            auto itr = std::find(list.begin(), end, mode);
+            auto itr = std::find_if(list.begin(), end,
+                                    [&mode](const std::pair<Mode, std::string> &element)
+                                    {
+                                        return (element.first == mode);
+                                    });
             if (itr == end)
             {
                 throw std::invalid_argument("ModeAsString(Mode mode), mode is invalid");
@@ -72,7 +76,11 @@ namespace SQLEngine::Logging
         {
             auto &&list = GetColorStrList();
             auto end = list.end();
-            auto itr = std::find(list.begin(), end, color);
+            auto itr = std::find_if(list.begin(), end,
+                                    [&color](const std::pair<Color, std::string> &element)
+                                    {
+                                        return (element.first == color);
+                                    });
             if (itr == end)
             {
                 throw std::invalid_argument("ColorAsString(Color color), color is invalid");
