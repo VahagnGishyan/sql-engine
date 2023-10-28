@@ -1,0 +1,26 @@
+﻿
+# Set the minimum required version of CMake
+cmake_minimum_required(VERSION 3.0)
+
+project(sql-engine-logging)
+
+# Set the C++ standard to C++20
+set(CMAKE_CXX_STANDARD 20)
+
+set(SOURCES
+    easy-log.cpp
+    ilogger.cpp
+    logging.cpp
+)
+
+add_library (${PROJECT_NAME} SHARED #STATIC 
+    ${SOURCES}
+) 
+
+add_compile_definitions(LOGGING_SHARE)
+
+# target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_20)
+# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(${PROJECT_NAME}  sql-engine-utility)
