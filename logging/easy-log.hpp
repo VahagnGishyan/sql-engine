@@ -11,6 +11,7 @@
 
 #include "ilogger.hpp"
 #include "console-log.hpp"
+#include "file-log.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,8 +23,8 @@ namespace SQLEngine::Logging
     {
     protected:
         Mode m_consoleMode;
-        std::string m_workDir;
         UConsoleWrite m_console;
+        UFileLog m_file;
 
     public:
         EasyLog();
@@ -40,10 +41,6 @@ namespace SQLEngine::Logging
         auto GetMode() const -> const Mode override;
         void SetMode(const Mode &mode) override;
 
-    public:
-        void SetLogDir(const std::string &path) override;
-        auto GetLogDir() const -> const std::string override;
-
         //////////////////////////////////////////////////////////////////
 
     public:
@@ -52,7 +49,7 @@ namespace SQLEngine::Logging
     protected:
         auto FormatMessage(const std::string &message, const Mode &mode) -> const std::string;
         void FileWrite(const std::string &message);
-        void ConsolePrint(const std::string &message, const Color &color);
+        void ConsolePrint(const std::string &message, const Mode &mode, const Color &color);
         void LogMessage(const std::string &message, const Mode &mode, const Color &color = Color::Default);
     };
 }

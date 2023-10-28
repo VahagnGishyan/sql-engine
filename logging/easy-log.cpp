@@ -32,7 +32,8 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    EasyLog::EasyLog() : m_console{std::make_unique<ConsoleLog>()}, m_workDir{}
+    EasyLog::EasyLog() : m_console{std::make_unique<ConsoleLog>()},
+                         m_file{std::move(GetEasyFileLog())} m_consoleMode{Mode::Default}
     {
     }
 
@@ -65,6 +66,8 @@ namespace SQLEngine::Logging
         LogMessage(message, Mode::Error, Color::Red);
     }
 
+    //////////////////////////////////////////////////////////////////////
+
     auto EasyLog::GetMode() const -> const Mode
     {
         return m_consoleMode;
@@ -74,22 +77,11 @@ namespace SQLEngine::Logging
         m_consoleMode = mode;
     }
 
-    void EasyLog::SetLogDir(const std::string &path)
-    {
-        m_workDir = path;
-    }
-    auto EasyLog::GetLogDir() const -> const std::string
-    {
-        return m_workDir;
-    }
-
-    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     auto EasyLog::GetDefaultLogPath() -> const std::string
     {
-        std::string path = Utility::GetDefaultDataPath();
-        path = fmt::format("{}/easy-log/{}.txt", path, );
-        return path;
+        return FileLog::GetDefaultLogPath();
     }
 
     //////////////////////////////////////////////////////////////////
@@ -102,12 +94,15 @@ namespace SQLEngine::Logging
 
     void EasyLog::FileWrite(const std::string &message)
     {
-        throw std::logic_error("EasyLog::FileWrite(), not-impl-yet");
+        m_file->WriteLine(message);
     }
 
-    void EasyLog::ConsolePrint(const std::string &message, const Color &color)
+    void EasyLog::ConsolePrint(const std::string &message, const Mode &mode, const Color &color)
     {
-        throw std::logic_error("EasyLog::FileWrite(), not-impl-yet");
+        if (GetMode() <= mode)
+        {
+            m_console->WriteLine(message, color, true);
+        }
     }
 
     void EasyLog::LogMessage(const std::string &message, const Mode &mode, const Color &color)
