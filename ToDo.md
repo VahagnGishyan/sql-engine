@@ -5,7 +5,7 @@
 - [ ] **utility**
 	- [x] analysing
 	- [x] implementation
-	- [ ] testing
+	- [ ] [testing](docs/testing/utility)
 	- [ ] integration
 - [ ] **db-manager**
 - [ ] **sql-executor**
