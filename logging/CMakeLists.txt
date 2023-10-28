@@ -8,7 +8,7 @@ find_package(fmt REQUIRED)
 
 include_directories( 
     ../application-info/
-    ../utility/
+    ../
 )
 
 set(SOURCES

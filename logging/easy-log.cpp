@@ -5,7 +5,7 @@
 
 #include <fmt/core.h>
 #include "easy-log.hpp"
-#include "utility.hpp"
+#include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -33,7 +33,8 @@ namespace SQLEngine::Logging
     //////////////////////////////////////////////////////////////////////
 
     EasyLog::EasyLog() : m_console{std::make_unique<ConsoleLog>()},
-                         m_file{std::move(GetEasyFileLog())} m_consoleMode{Mode::Default}
+                         m_file{std::move(GetEasyFileLog())},
+                         m_consoleMode{Mode::Default}
     {
     }
 
@@ -108,7 +109,7 @@ namespace SQLEngine::Logging
     void EasyLog::LogMessage(const std::string &message, const Mode &mode, const Color &color)
     {
         auto formatedMsg = FormatMessage(message, mode);
-        ConsolePrint(formatedMsg, color);
+        ConsolePrint(formatedMsg, mode, color);
         FileWrite(formatedMsg);
     }
 

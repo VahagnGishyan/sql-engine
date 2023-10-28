@@ -4,7 +4,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "file-log.hpp"
-#include <iostream>
+#include "application.hpp"
+#include "utility/filesystem.hpp"
+#include "utility/core.hpp"
+#include <fstream>
+#include <fmt/core.h>
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -16,34 +20,45 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void FileLog::Write(const std::string &message)
+    auto FileLog::GetDefaultLogPath() -> const std::string
     {
-        std::cout << "ConsoleLog::Write method is not impled yet" << std::endl;
-    }
-
-    void FileLog::WriteLine(const std::string &message)
-    {
-        std::cout << "ConsoleLog::WriteLine method is not impled yet" << std::endl;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    void FileLog::SetLogDir(const std::string &path)
-    {
-        std::cout << "ConsoleLog::Write method is not impled yet" << std::endl;
-    }
-
-    void FileLog::GetLogDir() const->const std::string
-    {
-        std::cout << "ConsoleLog::WriteLine method is not impled yet" << std::endl;
+        std::string path = Utility::GetDefaultDataPath();
+        auto &&info = Application::GetInfo();
+        path = fmt::format("{}/easy-log/{}.txt", path, info.GetName());
+        return path;
     }
 
     //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
-    void FileLog::GetDefaultLogPath() const->const std::string
+    class EasyFileLog : public FileLog
     {
-        std::cout << "ConsoleLog::WriteLine method is not impled yet" << std::endl;
-    }
+    public:
+        EasyFileLog()
+        {
+            std::string path = FileLog::GetDefaultLogPath();
+            m_ofile.open(path);
+            if (!m_ofile)
+            {
+                throw std::invalid_argument(fmt::format("Can not open file, path: {}", path));
+            }
+        }
+
+    public:
+        void Write(const std::string &message) override
+        {
+            m_ofile << message;
+        }
+
+        void WriteLine(const std::string &message) override
+        {
+            m_ofile << message << std::endl;
+        }
+
+    protected:
+        std::ofstream m_ofile;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

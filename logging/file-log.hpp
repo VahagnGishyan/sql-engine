@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <ilogger.hpp>
+#include "ilogger.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -27,22 +27,18 @@ namespace SQLEngine::Logging
         virtual ~FileLog() = default;
 
     public:
-        void Write(const std::string &message);
-        void WriteLine(const std::string &message);
-
-    public:
-        void SetLogDir(const std::string &path);
-        auto GetLogDir() const -> const std::string;
-
-    public:
-        void SetLogDir(const std::string &path);
-        auto GetLogDir() const -> const std::string;
+        virtual void Write(const std::string &message) = 0;
+        virtual void WriteLine(const std::string &message) = 0;
 
     public:
         static auto GetDefaultLogPath() -> const std::string;
     };
 
     using UFileLog = std::unique_ptr<FileLog>;
+
+    //////////////////////////////////////////////////////////////////////////
+
+    auto GetEasyFileLog() -> UFileLog;
 
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //

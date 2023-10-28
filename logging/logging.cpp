@@ -55,20 +55,6 @@ namespace SQLEngine::Logging
 
     //////////////////////////////////////////////////////////////////////
 
-    void SetLogDir(const std::string &path)
-    {
-        auto &&logger = GetLogger();
-        logger.SetLogDir(path);
-    }
-
-    auto GetLogDir() -> const std::string
-    {
-        auto &&logger = GetLogger();
-        return logger.GetLogDir();
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
     void Message(const std::string &message)
     {
         auto &&logger = GetLogger();
