@@ -38,6 +38,7 @@ namespace SQLEngine::Logging
 
     enum class Color
     {
+        Unset,
         Default,
         Green,
         Yellow,

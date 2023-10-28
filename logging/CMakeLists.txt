@@ -6,8 +6,14 @@ project(sql-engine-logging)
 
 find_package(fmt REQUIRED)
 
+include_directories( 
+    ../utility/
+)
+
 set(SOURCES
+    console-log.cpp
     easy-log.cpp
+    file-log.cpp
     ilogger.cpp
     logging.cpp
 )

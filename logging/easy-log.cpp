@@ -5,6 +5,7 @@
 
 #include <fmt/core.h>
 #include "easy-log.hpp"
+#include "utility.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -27,6 +28,14 @@
 
 namespace SQLEngine::Logging
 {
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    EasyLog::EasyLog() : m_console{std::make_unique<ConsoleLog>()}, m_workDir{}
+    {
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -76,13 +85,22 @@ namespace SQLEngine::Logging
 
     //////////////////////////////////////////////////////////////////
 
+    auto EasyLog::GetDefaultLogPath() -> const std::string
+    {
+        std::string path = Utility::GetDefaultDataPath();
+        path = fmt::format("{}/easy-log/{}.txt", path, );
+        return path;
+    }
+
+    //////////////////////////////////////////////////////////////////
+
     auto EasyLog::FormatMessage(const std::string &message, const Mode &mode) -> const std::string
     {
         auto strmode = Logging::ModeConvert::ModeAsString(mode);
         return fmt::format("[{}] {}", strmode, message);
     }
 
-    void EasyLog::FileWrite(const std::string &message) 
+    void EasyLog::FileWrite(const std::string &message)
     {
         throw std::logic_error("EasyLog::FileWrite(), not-impl-yet");
     }

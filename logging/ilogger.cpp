@@ -64,6 +64,7 @@ namespace SQLEngine::Logging
         auto GetColorStrList() -> const std::vector<std::pair<Color, std::string>> &
         {
             static std::vector<std::pair<Color, std::string>> list{
+                {Color::Unset, "Unset"},
                 {Color::Default, "Default"},
                 {Color::Green, "Green"},
                 {Color::Yellow, "Yellow"},

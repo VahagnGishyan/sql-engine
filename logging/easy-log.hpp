@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "ilogger.hpp"
+#include "console-log.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,6 +23,10 @@ namespace SQLEngine::Logging
     protected:
         Mode m_consoleMode;
         std::string m_workDir;
+        UConsoleWrite m_console;
+
+    public:
+        EasyLog();
 
     public:
         void Message(const std::string &message) override;
@@ -40,6 +45,9 @@ namespace SQLEngine::Logging
         auto GetLogDir() const -> const std::string override;
 
         //////////////////////////////////////////////////////////////////
+
+    public:
+        static auto GetDefaultLogPath() -> const std::string;
 
     protected:
         auto FormatMessage(const std::string &message, const Mode &mode) -> const std::string;
