@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(observer)
 
+find_package(fmt REQUIRED)
+
 include_directories( 
     ../utility/
 )
@@ -14,8 +16,9 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(${PROJECT_NAME}  sql-engine-utility)
+target_link_libraries(${PROJECT_NAME} fmt::fmt)
+# target_link_libraries(${PROJECT_NAME}  sql-engine-utility)
