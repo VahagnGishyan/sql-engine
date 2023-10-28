@@ -3,7 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include <format>
+#include <fmt/core.h>
 #include "easy-log.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,13 +76,13 @@ namespace SQLEngine::Logging
 
     //////////////////////////////////////////////////////////////////
 
-    autp FormatMessage(const std::string &message, const Mode &mode)
+    auto EasyLog::FormatMessage(const std::string &message, const Mode &mode) -> const std::string
     {
         auto strmode = Logging::ModeConvert::ModeAsString(mode);
-        return std::format("[{}] {}", strmode, message);
+        return fmt::format("[{}] {}", strmode, message);
     }
 
-    auto EasyLog::FileWrite(const std::string &message)
+    void EasyLog::FileWrite(const std::string &message) 
     {
         throw std::logic_error("EasyLog::FileWrite(), not-impl-yet");
     }
@@ -92,7 +92,7 @@ namespace SQLEngine::Logging
         throw std::logic_error("EasyLog::FileWrite(), not-impl-yet");
     }
 
-    void EasyLog::LogMessage(const std::string &message, const Mode &mode, const Color &color = Color::Default)
+    void EasyLog::LogMessage(const std::string &message, const Mode &mode, const Color &color)
     {
         auto formatedMsg = FormatMessage(message, mode);
         ConsolePrint(formatedMsg, color);
