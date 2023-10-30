@@ -1,7 +1,7 @@
 # utility
 
 ### Need to:
-- [ ] choose test-library for C++
+- [x] [choose test-library for C++](docs/testing)
 - [ ] import test-library
 - [ ] create branch for testing
 - [ ] generate tests.
