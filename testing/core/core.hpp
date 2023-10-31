@@ -27,6 +27,9 @@ namespace SQLEngine::Testing::Core
     class PROJECT_SHARED_EXPORT Object
     {
     public:
+        virtual ~Object() = default;
+
+    public:
         virtual void Create() = 0;
         virtual void Destroy() = 0;
 
