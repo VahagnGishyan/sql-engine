@@ -29,6 +29,7 @@ namespace SQLEngine::Application
 
     public:
         virtual auto GetName() const -> const std::string & = 0;
+        virtual auto GetDefaultAppData(const bool createIfNotExists = true) const -> const std::string = 0;
         virtual auto GetVersion() const -> const std::string & = 0;
     };
 

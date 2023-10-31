@@ -5,6 +5,8 @@
 
 #include "application.hpp"
 #include "info.hpp"
+#include "utility/core.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -24,11 +26,21 @@ namespace SQLEngine::Application
         }
 
     public:
-        virtual auto GetName() const -> const std::string & override
+        auto GetName() const -> const std::string & override
         {
             return m_name;
         }
-        virtual auto GetVersion() const -> const std::string & override
+        auto GetDefaultAppData(const bool createIfNotExists) const -> const std::string override
+        {
+            const std::string path = Utility::GetDefaultDataPath() + '/' + GetName();
+            if (createIfNotExists)
+            {
+                Utility::MakeDir(path);
+            }
+            return path;
+        }
+
+        auto GetVersion() const -> const std::string & override
         {
             return m_version;
         }
