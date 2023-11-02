@@ -286,12 +286,12 @@ namespace SQLEngine::Testing::Peparation
         {
             auto &&workdir = GetWorkDir();
             auto &&pae = GetValidFilePAEList();
-            auto &&paedirName = GetInvalidFilePAEListDirName();
+            auto &&paedirName = GetValidFilePAEListDirName();
             auto comp = Directory::CreateInstance(paedirName);
             comp->SetPath(workdir);
             for (auto &&item : pae->paelist)
             {
-                dir.AddComponent(File::CreateInstance(item.filename));
+                comp->AddComponent(File::CreateInstance(item.filename));
             }
             dir.AddComponent(std::move(comp));
         }
