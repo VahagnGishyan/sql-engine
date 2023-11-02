@@ -199,6 +199,10 @@ namespace SQLEngine
 
     void Utility::MakeDir(const std::string &path)
     {
+        if (IsDirExists(path))
+        {
+            return;
+        }
         if (!fs::create_directory(path))
         {
             throw std::runtime_error("Failed to create directory: " + path);
