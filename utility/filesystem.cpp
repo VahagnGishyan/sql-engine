@@ -39,6 +39,18 @@ namespace SQLEngine
         }
     }
 
+    auto Utility::GetBaseDir(const std::string &path) -> const std::string
+    {
+        AssertPathExists(path);
+
+        fs::path fullPath(path);
+        // Get the parent directory path
+        fs::path baseDir = fullPath.parent_path();
+
+        // Convert the parent directory path to a string
+        return baseDir.string();
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     auto Utility::IsFileExists(const std::string &path) -> bool
@@ -197,12 +209,28 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    void Utility::MakeDir(const std::string &path)
+    void Utility::MakeDir(const std::string &path, const Option::ExistOk existok,
+                          const Option::CreateBaseDirectory &createbase)
     {
-        if (IsDirExists(path))
+        if (!existok)
+        {
+            AssertDirNotExists(path);
+        }
+        else if (IsDirExists(path))
         {
             return;
         }
+
+        auto &&base = GetBaseDir(path);
+        if (!createbase)
+        {
+            AssertDirNotExists(base);
+        }
+        else if (IsDirExists(path) == false)
+        {
+            MakeDir(base, Option::ExistOk{false}, createbase);
+        }
+
         if (!fs::create_directory(path))
         {
             throw std::runtime_error("Failed to create directory: " + path);
