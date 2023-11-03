@@ -294,9 +294,9 @@ namespace SQLEngine
         {
             fs::remove_all(path);
         }
-        catch (const fs::filesystem_error &e)
+        catch (const fs::filesystem_error &exception)
         {
-            throw std::runtime_error("Failed to remove directory: " + path);
+            throw std::runtime_error("Failed to remove directory: " + path + ", what: " + exception.what());
         }
     }
 
@@ -345,9 +345,9 @@ namespace SQLEngine
         {
             fs::remove(path);
         }
-        catch (const fs::filesystem_error &e)
+        catch (const fs::filesystem_error &exception)
         {
-            throw std::runtime_error("Failed to remove file: " + path);
+            throw std::runtime_error("Failed to remove file: " + path + ", what: " + exception.what());
         }
     }
 
