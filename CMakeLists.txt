@@ -3,6 +3,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(sql-engine)
 
+enable_testing()
+
 include_directories( 
     ./
 )
