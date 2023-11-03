@@ -200,7 +200,7 @@ namespace SQLEngine::Testing::Peparation
         {
             for (auto &&dirinfo : dirs.dirnameList)
             {
-                dir.AddComponent(File::CreateInstance(dirinfo));
+                dir.AddComponent(Directory::CreateInstance(dirinfo));
             }
         }
 

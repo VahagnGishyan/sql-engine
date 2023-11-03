@@ -18,11 +18,12 @@ namespace SQLEngine::Testing::Peparation
         auto &&dir = Peparation::GetTestDir();
     }
 
-    void ClearRemainingTempFiles()
+    int ClearRemainingTempFiles()
     {
         auto &&testdir = Peparation::TestDir::GetTestingWorkDir();
         auto &&testname = Peparation::TestDir::GetTestingName();
         SQLEngine::Utility::RemoveDir(testdir + '/' + testname);
+        return 0;
     }
 }
 
@@ -32,9 +33,9 @@ namespace SQLEngine::Testing::Peparation
 
 int main(int argc, char **argv)
 {
-    // SQLEngine::Testing::Peparation::ClearRemainingTempFiles();
-    SQLEngine::Testing::Peparation::SetUp();
+    // return SQLEngine::Testing::Peparation::ClearRemainingTempFiles();
 
+    SQLEngine::Testing::Peparation::SetUp();
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
