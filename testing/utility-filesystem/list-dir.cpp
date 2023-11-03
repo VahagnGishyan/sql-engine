@@ -150,3 +150,46 @@ TEST(ListDir, NonExistentDirectory)
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
+
+TEST(ListFilesInDirTest, ListFilesWithExtension)
+{
+    auto &&testdir = Peparation::GetTestDir();
+    auto &&paeinfo = testdir.GetValidFilePAEList();
+
+    auto &&path = paeinfo->dirpath;
+    for (auto &&item : paeinfo->paelist)
+    {
+        auto &&extension = item.extension;
+        auto &&list = ListFilesInDir(path, extension);
+        ASSERT_NE(list, nullptr);
+        for (auto &&file : *list)
+        {
+            EXPECT_TRUE(CheckFileExtension(file, extension))
+                << fmt::format("file-path: {}, extension: {}", file, extension);
+        }
+    }
+}
+
+TEST(ListFilesInDirTest, ListFilesWithExtensionEmptyDir)
+{
+    auto &&testdir = Peparation::GetTestDir();
+    auto &&emptydir = testdir.GetEmptyDirPath();
+
+    auto &&extension = ".txt";
+    auto &&list = ListFilesInDir(emptydir, extension);
+    ASSERT_NE(list, nullptr);
+    ASSERT_EQ(list->size(), 0);
+}
+
+TEST(ListFilesInDirTest, ListFilesWithNonExistentDir)
+{
+    auto &&testdir = Peparation::GetTestDir();
+    auto &&nonExisting = testdir.GetNonExistingPath();
+
+    auto &&extension = ".txt";
+    ASSERT_THROW(ListFilesInDir(nonExisting, extension), std::invalid_argument);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////

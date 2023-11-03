@@ -49,7 +49,7 @@ TEST(AssertPathExistsTest, NonExistingPath)
 {
     auto &&dir = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
-    ASSERT_THROW(AssertPathExists(nonExistingPath), std::exception);
+    ASSERT_THROW(AssertPathExists(nonExistingPath), std::invalid_argument);
 }
 
 //////////////////////////////////////////////////////////////////////////
