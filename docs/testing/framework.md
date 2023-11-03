@@ -1,2 +1,0 @@
-### Testing Framework
-For testing purposes, I have chosen Google Test (gtest), a widely recognized and trusted C++ testing framework. I use this library because it provides a comprehensive suite of testing tools, including test discovery, assertion macros, and test runners. Google Test allows me to write and execute test cases with ease, ensuring the reliability and quality of the software I develop. It also integrates seamlessly with various development environments, making it a practical choice for testing C++ applications.
