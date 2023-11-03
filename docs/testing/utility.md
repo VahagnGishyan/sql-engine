@@ -2,6 +2,6 @@
 
 ### Need to:
 - [x] [choose test-library for C++](docs/testing)
-- [ ] create branch for testing
-- [ ] import test-library
-- [ ] generate tests.
+- [x] create branch for testing
+- [x] import test-library
+- [x] generate tests.
