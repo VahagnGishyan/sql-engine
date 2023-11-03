@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "logging.hpp"
-#include "easy-log.hpp"
+#include "boost-wrapper.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -33,7 +33,7 @@ namespace SQLEngine::Logging
 
     static auto GetLogger() -> ILogger &
     {
-        static ULogger logger = std::make_unique<EasyLog>();
+        static ULogger logger = std::make_unique<BoostLogWrapper>();
         return *(logger);
     }
 

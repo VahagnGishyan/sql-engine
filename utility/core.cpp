@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "core.hpp"
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <iostream>
 
 //////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ namespace SQLEngine::Utility
         std::string value;
         if (name.size())
         {
-#if defined _WIN32
+#if defined IS_WINDOWS
             char *buf = nullptr;
             size_t sz = 0;
 
@@ -27,20 +27,22 @@ namespace SQLEngine::Utility
                 value = std::move(std::string(buf));
                 free(buf);
             }
-#else //__linux__
+#elif defined(IS_LINUX) or defined(IS_MACOS) 
             const char *const envValue = std::getenv(name.c_str());
             value = (envValue == nullptr ? std::string()
                                          : std::string(envValue));
+#else
+#error "Unsupported OS"
 #endif
         }
         return (value);
     }
 
-#if IS_LINUX or IS_MACOS
+#if defined(IS_LINUX) or defined(IS_MACOS) 
     static auto ExpandUser(const std::string &path) -> const std::string
     {
-        // Get the user's home directory using Boost.Filesystem
-        boost::filesystem::path homeDir = boost::filesystem::path(getenv("HOME"));
+        // Get the user's home directory using std.Filesystem
+        std::filesystem::path homeDir = std::filesystem::path(getenv("HOME"));
 
         // Specify a file path with a tilde (~)
         std::string filePathWithTilde = path;
@@ -57,14 +59,14 @@ namespace SQLEngine::Utility
 
     auto GetDefaultDataPath() -> const std::string
     {
-#if IS_WINDOWS
+#if defined IS_WINDOWS
         return GetEnvironmentValue("APPDATA");
-#elif IS_LINUX
+#elif defined IS_LINUX
         return ExpandUser("~");
-#elif IS_MACOS
+#elif defined IS_MACOS
         return ExpandUser("~/Library/Application Support");
 #else
-#error "Unsupported OS"
+    #error "Unsupported OS"
 #endif
     }
 }
