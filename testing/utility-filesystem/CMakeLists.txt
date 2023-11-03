@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 project(testing-utility-filesystem)
 
 set(SOURCES
+    path-exists.cpp
     main.cpp
     test-dir-preparation.cpp
 )
