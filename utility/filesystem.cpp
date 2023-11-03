@@ -9,6 +9,8 @@
 #include <filesystem>
 #include <fstream>
 
+// #include <iostream>
+
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
@@ -41,8 +43,6 @@ namespace SQLEngine
 
     auto Utility::GetBaseDir(const std::string &path) -> const std::string
     {
-        AssertPathExists(path);
-
         fs::path fullPath(path);
         // Get the parent directory path
         fs::path baseDir = fullPath.parent_path();
@@ -162,7 +162,13 @@ namespace SQLEngine
 
         for (auto &&entry : *listDir)
         {
-            if (IsDirExists(entry))
+            std::string entrypath = "";
+            if (returnFullPaths == false)
+            {
+                entrypath = path + '/';
+            }
+            entrypath += entry;
+            if (IsDirExists(entrypath))
             {
                 result->push_back(std::move(entry));
             }
@@ -176,13 +182,27 @@ namespace SQLEngine
         auto listDir = ListDir(path, returnFullPaths);
         auto result = std::make_unique<std::vector<std::string>>();
 
+        // std::cout << "point-input, size: " << listDir->size() << std::endl;
+
         for (auto &&entry : *listDir)
         {
-            if (IsFileExists(entry))
+            // std::cout << "point-entry, entry: " << entry << " exists: ";
+            std::string entrypath = "";
+            if (returnFullPaths == false)
             {
-                result->push_back(std::move(entry));
+                entrypath = path + '/';
             }
+            entrypath += entry;
+            if (IsFileExists(entrypath))
+            {
+                // std::cout << "true" << std::endl;
+                result->push_back(std::move(entry));
+                continue;
+            }
+            // std::cout << "false" << std::endl;
         }
+
+        // std::cout << "point-output, size: " << result->size() << std::endl;
 
         return result;
     }
@@ -224,6 +244,7 @@ namespace SQLEngine
     void Utility::MakeDir(const std::string &path, const Option::ExistOk existok,
                           const Option::CreateBaseDirectory &createbase)
     {
+        // std::cout << "point-start" << std::endl;
         if (!existok)
         {
             AssertDirNotExists(path);
@@ -233,20 +254,27 @@ namespace SQLEngine
             return;
         }
 
+        // std::cout << "point-existok-end" << std::endl;
+
         auto &&base = GetBaseDir(path);
+        // std::cout << "point-base-is:" << base << std::endl;
         if (!createbase)
         {
-            AssertDirNotExists(base);
+            AssertDirExists(base);
         }
         else if (IsDirExists(base) == false)
         {
             MakeDir(base, Option::ExistOk{false}, createbase);
         }
 
+        // std::cout << "point-createbase-end" << std::endl;
+
         if (!fs::create_directory(path))
         {
             throw std::runtime_error("Failed to create directory: " + path);
         }
+
+        // std::cout << "point-exit" << std::endl;
     }
 
     void Utility::RemoveDir(const std::string &path, const Option::MustExist mustexist)
