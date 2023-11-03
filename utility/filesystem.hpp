@@ -61,8 +61,9 @@ namespace SQLEngine::Utility
     void AssertDirEmpty(const std::string &path);
 
     PROJECT_SHARED_EXPORT
-    void MakeDir(const std::string &path, const Option::ExistOk existok,
-                 const Option::CreateBaseDirectory &createbase);
+    void MakeDir(const std::string &path,
+                 const Option::ExistOk existok = Option::ExistOk{false},
+                 const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
     void RemoveDir(const std::string &path);
 
