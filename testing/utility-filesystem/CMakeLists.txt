@@ -5,6 +5,7 @@ project(testing-utility-filesystem)
 
 set(SOURCES
     dir-exists.cpp
+    empty-dir.cpp
     file-exists.cpp
     file-extension.cpp
     path-exists.cpp
