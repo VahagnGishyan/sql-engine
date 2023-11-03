@@ -11,6 +11,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "defines.hpp"
+#include "options.hpp"
 #include <memory>
 #include <vector>
 #include <string>
@@ -25,6 +26,8 @@ namespace SQLEngine::Utility
     auto IsPathExists(const std::string &path) -> bool;
     PROJECT_SHARED_EXPORT
     void AssertPathExists(const std::string &path);
+    PROJECT_SHARED_EXPORT
+    auto GetBaseDir(const std::string &path) -> const std::string;
 
     PROJECT_SHARED_EXPORT
     auto IsFileExists(const std::string &path) -> bool;
@@ -58,7 +61,8 @@ namespace SQLEngine::Utility
     void AssertDirEmpty(const std::string &path);
 
     PROJECT_SHARED_EXPORT
-    void MakeDir(const std::string &path);
+    void MakeDir(const std::string &path, const Option::ExistOk existok,
+                 const Option::CreateBaseDirectory &createbase);
     PROJECT_SHARED_EXPORT
     void RemoveDir(const std::string &path);
 
