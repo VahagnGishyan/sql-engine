@@ -3,6 +3,7 @@
 [requires]
 boost/1.81.0
 fmt/10.1.1
+gtest/1.14.0
 
 [options]
 boost/1.81.0:header_only=False
@@ -11,6 +12,3 @@ boost/1.81.0:shared=False
 [generators]
 CMakeToolchain
 CMakeDeps
-
-[layout]
-cmake_layout
