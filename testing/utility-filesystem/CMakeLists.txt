@@ -5,6 +5,7 @@ project(testing-utility-filesystem)
 
 set(SOURCES
     main.cpp
+    test-dir-preparation.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
