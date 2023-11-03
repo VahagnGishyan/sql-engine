@@ -22,7 +22,7 @@ TEST(IsPathExistsTest, ExistingPath)
     auto &&file1 = dir.GetFile1Path();
     auto &&fileN = dir.GetFileNPath();
     auto &&dirN = dir.GetDirNPath();
-    auto &&comp = dir.GetFileNDirNPath();
+    auto &&comp = dir.GetCompDirPath();
     ASSERT_TRUE(IsPathExists(workdir));
     ASSERT_TRUE(IsPathExists(emptydir));
     ASSERT_TRUE(IsPathExists(file1));

@@ -50,28 +50,27 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetWorkDir() const -> const std::string override
         {
             const std::string path = GetTestingWorkDir() + '/' + GetTestingName();
-            std::cout << "testing-path: " << path << std::endl;
             return path;
         }
         auto GetEmptyDirPath() const -> const std::string override
         {
-            return GetWorkDir() + "/empty-dir";
+            return GetWorkDir() + "/" + GetEmptyDirName();
         }
         auto GetFile1Path() const -> const std::string override
         {
-            return GetWorkDir() + "/file-1-dir";
+            return GetWorkDir() + "/" + GetFile1Name();
         }
         auto GetFileNPath() const -> const std::string override
         {
-            return GetWorkDir() + "/file-n-dir";
+            return GetWorkDir() + "/" + GetFileNName();
         }
         auto GetDirNPath() const -> const std::string override
         {
-            return GetWorkDir() + "/dir-n-dir";
+            return GetWorkDir() + "/" + GetDirNName();
         }
-        auto GetFileNDirNPath() const -> const std::string override
+        auto GetCompDirPath() const -> const std::string override
         {
-            return GetWorkDir() + "/comp-dir";
+            return GetWorkDir() + "/" + GetCompDirName();
         }
 
     protected:
@@ -83,6 +82,26 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetTestingName() const -> const std::string
         {
             return "utility-fs";
+        }
+        auto GetEmptyDirName() const -> const std::string
+        {
+            return "empty-dir";
+        }
+        auto GetFile1Name() const -> const std::string
+        {
+            return "file-1-dir";
+        }
+        auto GetFileNName() const -> const std::string
+        {
+            return "file-n-dir";
+        }
+        auto GetDirNName() const -> const std::string
+        {
+            return "dir-n-dir";
+        }
+        auto GetCompDirName() const -> const std::string
+        {
+            return "comp-dir";
         }
 
     protected:
@@ -104,36 +123,46 @@ namespace SQLEngine::Testing::DirPeparation
     protected:
         void CreateEmptyDir(Directory &dir) const
         {
-            auto &&emptyDirPath = GetEmptyDirPath();
-            auto empty_dir = Directory::CreateInstance(emptyDirPath);
+            auto &&workdir = GetWorkDir();
+            auto &&dirname = GetEmptyDirName();
+            auto empty_dir = Directory::CreateInstance(dirname);
+            empty_dir->SetPath(workdir);
             dir.AddComponent(std::move(empty_dir));
         }
         void CreateFile1Dir(Directory &dir) const
         {
-            auto &&file1dir = GetFile1Path();
-            auto file = Directory::CreateInstance(file1dir);
+            auto &&workdir = GetWorkDir();
+            auto &&dirname = GetFile1Name();
+            auto file = Directory::CreateInstance(dirname);
+            file->SetPath(workdir);
 
             file->AddComponent(File::CreateInstance("file.txt"));
             dir.AddComponent(std::move(file));
         }
         void CreateFileNDir(Directory &dir) const
         {
-            auto &&fileNdir = GetFileNPath();
+            auto &&workdir = GetWorkDir();
+            auto &&fileNdir = GetFileNName();
             auto ndir = Directory::CreateInstance(fileNdir);
+            ndir->SetPath(workdir);
             AddFilesTo(*ndir, 10);
             dir.AddComponent(std::move(ndir));
         }
         void CreateDirNDir(Directory &dir) const
         {
-            auto &&dirNdir = GetDirNPath();
-            auto ndir = Directory::CreateInstance(dirNdir);
+            auto &&workdir = GetWorkDir();
+            auto &&dirname = GetDirNName();
+            auto ndir = Directory::CreateInstance(dirname);
+            ndir->SetPath(workdir);
             AddEmptyDirsTo(*ndir, 10);
             dir.AddComponent(std::move(ndir));
         }
         void CreateCompDir(Directory &dir) const
         {
-            auto &&compdir = GetFileNDirNPath();
-            auto comp = Directory::CreateInstance(compdir);
+            auto &&workdir = GetWorkDir();
+            auto &&compdirname = GetCompDirName();
+            auto comp = Directory::CreateInstance(compdirname);
+            comp->SetPath(workdir);
             AddFilesTo(*comp, 10);
             AddEmptyDirsTo(*comp, 10);
             dir.AddComponent(std::move(comp));
