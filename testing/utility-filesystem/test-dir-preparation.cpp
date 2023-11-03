@@ -40,6 +40,7 @@ namespace SQLEngine::Testing::DirPeparation
             CreateFileNDir(*dir);
             CreateDirNDir(*dir);
             CreateCompDir(*dir);
+            CreateFilesValidPAE(*dir);
 
             dir->Create();
 
@@ -80,6 +81,35 @@ namespace SQLEngine::Testing::DirPeparation
         {
             return GetWorkDir() + "/" + GetNonExistingName();
         }
+        auto GetValidFilePAEList() const -> const ShDirOfPAE override
+        {
+            static auto &&info = [this]()
+            {
+                auto &&info = std::make_shared<DirOfPAE>();
+                info->dirpath = GetWorkDir() + "/" + GetInvalidFilePAEListDirName();
+                info->paelist.push_back(PathAndExtension{"file-txt-low.txt", ".txt"});
+                info->paelist.push_back(PathAndExtension{"file-txt-up.TXT", ".txt"});
+                info->paelist.push_back(PathAndExtension{"file.json", ".json"});
+                info->paelist.push_back(PathAndExtension{"file.png", ".png"});
+                info->paelist.push_back(PathAndExtension{"file.jpg", ".jpg"});
+                return info;
+            }();
+            return info;
+        }
+        auto GetInvalidFilePAEList() const -> const ShDirOfPAE override
+        {
+            static auto &&info = [this]()
+            {
+                auto &&info = std::make_shared<DirOfPAE>();
+                info->dirpath = GetWorkDir() + "/" + GetInvalidFilePAEListDirName();
+                info->paelist.push_back(PathAndExtension{"file-txt.txt", ".aaa"});
+                info->paelist.push_back(PathAndExtension{"file-txt.TXT", ".json"});
+                info->paelist.push_back(PathAndExtension{"file.json", ".txt"});
+                info->paelist.push_back(PathAndExtension{"file", ".png"});
+                return info;
+            }();
+            return info;
+        }
 
     protected:
         auto GetTestingWorkDir() const -> const std::string
@@ -118,6 +148,14 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetNonExistingName() const -> const std::string
         {
             return "nonexisting__";
+        }
+        auto GetValidFilePAEListDirName() const -> const std::string
+        {
+            return "path-and-extension-valid";
+        }
+        auto GetInvalidFilePAEListDirName() const -> const std::string
+        {
+            return "path-and-extension-invalid";
         }
 
     protected:
@@ -182,6 +220,19 @@ namespace SQLEngine::Testing::DirPeparation
             comp->SetPath(workdir);
             AddFilesTo(*comp, 10);
             AddEmptyDirsTo(*comp, 10);
+            dir.AddComponent(std::move(comp));
+        }
+        void CreateFilesValidPAE(Directory &dir) const
+        {
+            auto &&workdir = GetWorkDir();
+            auto &&pae = GetValidFilePAEList();
+            auto &&paedirName = GetInvalidFilePAEListDirName();
+            auto comp = Directory::CreateInstance(paedirName);
+            comp->SetPath(workdir);
+            for (auto &&item : pae->paelist)
+            {
+                dir.AddComponent(File::CreateInstance(item.filename));
+            }
             dir.AddComponent(std::move(comp));
         }
 
