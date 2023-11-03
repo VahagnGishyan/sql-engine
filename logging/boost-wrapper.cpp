@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <fmt/core.h>
-#include "easy-log.hpp"
+#include "boost-wrapper.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -32,9 +32,9 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    EasyLog::EasyLog() : m_console{std::make_unique<ConsoleLog>()},
-                         m_file{std::move(GetEasyFileLog())},
-                         m_consoleMode{Mode::Default}
+    BoostLogWrapper::BoostLogWrapper() : m_console{std::make_unique<ConsoleLog>()},
+                                         m_file{std::move(GetEasyFileLog())},
+                                         m_consoleMode{Mode::Default}
     {
     }
 
@@ -42,70 +42,70 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void EasyLog::Message(const std::string &message)
+    void BoostLogWrapper::Message(const std::string &message)
     {
         LogMessage(message, Mode::Message, Color::Default);
     }
-    void EasyLog::Info(const std::string &message)
+    void BoostLogWrapper::Info(const std::string &message)
     {
-        EasyLog::LogMessage(message, Mode::Info, Color::Default);
+        BoostLogWrapper::LogMessage(message, Mode::Info, Color::Default);
     }
-    void EasyLog::Signal(const std::string &message)
+    void BoostLogWrapper::Signal(const std::string &message)
     {
         LogMessage(message, Mode::Signal, Color::Green);
     }
-    void EasyLog::Warning(const std::string &message)
+    void BoostLogWrapper::Warning(const std::string &message)
     {
         LogMessage(message, Mode::Message, Color::Yellow);
     }
-    void EasyLog::Debug(const std::string &message)
+    void BoostLogWrapper::Debug(const std::string &message)
     {
         LogMessage(message, Mode::Debug, Color::Blue);
     }
-    void EasyLog::Error(const std::string &message, const bool dothrow)
+    void BoostLogWrapper::Error(const std::string &message, const bool dothrow)
     {
         LogMessage(message, Mode::Error, Color::Red);
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    auto EasyLog::GetMode() const -> const Mode
+    auto BoostLogWrapper::GetMode() const -> const Mode
     {
         return m_consoleMode;
     }
-    void EasyLog::SetMode(const Mode &mode)
+    void BoostLogWrapper::SetMode(const Mode &mode)
     {
         m_consoleMode = mode;
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    auto EasyLog::GetLogPath() -> const std::string
+    auto BoostLogWrapper::GetLogPath() -> const std::string
     {
         return (FileLog::GetDefaultLogPath());
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    auto EasyLog::GetDefaultLogPath() -> const std::string
+    auto BoostLogWrapper::GetDefaultLogPath() -> const std::string
     {
         return FileLog::GetDefaultLogPath();
     }
 
     //////////////////////////////////////////////////////////////////
 
-    auto EasyLog::FormatMessage(const std::string &message, const Mode &mode) -> const std::string
+    auto BoostLogWrapper::FormatMessage(const std::string &message, const Mode &mode) -> const std::string
     {
         auto strmode = Logging::ModeConvert::ModeAsString(mode);
         return fmt::format("[{}] {}", strmode, message);
     }
 
-    void EasyLog::FileWrite(const std::string &message)
+    void BoostLogWrapper::FileWrite(const std::string &message)
     {
         m_file->WriteLine(message);
     }
 
-    void EasyLog::ConsolePrint(const std::string &message, const Mode &mode, const Color &color)
+    void BoostLogWrapper::ConsolePrint(const std::string &message, const Mode &mode, const Color &color)
     {
         if (GetMode() <= mode)
         {
@@ -113,7 +113,7 @@ namespace SQLEngine::Logging
         }
     }
 
-    void EasyLog::LogMessage(const std::string &message, const Mode &mode, const Color &color)
+    void BoostLogWrapper::LogMessage(const std::string &message, const Mode &mode, const Color &color)
     {
         auto formatedMsg = FormatMessage(message, mode);
         ConsolePrint(formatedMsg, mode, color);

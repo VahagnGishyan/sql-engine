@@ -12,8 +12,8 @@ include_directories(
 )
 
 set(SOURCES
+    boost-wrapper.cpp
     console-log.cpp
-    easy-log.cpp
     file-log.cpp
     log-core.cpp
     logging.cpp

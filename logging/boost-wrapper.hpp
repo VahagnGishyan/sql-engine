@@ -19,7 +19,7 @@
 
 namespace SQLEngine::Logging
 {
-    class EasyLog : public ILogger
+    class BoostLogWrapper : public ILogger
     {
     protected:
         Mode m_consoleMode;
@@ -27,7 +27,7 @@ namespace SQLEngine::Logging
         UFileLog m_file;
 
     public:
-        EasyLog();
+        BoostLogWrapper();
 
     public:
         void Message(const std::string &message) override;
