@@ -7,4 +7,4 @@ find_package(GTest REQUIRED)
 
 add_subdirectory(core)
 add_subdirectory(utility-core)
-# add_subdirectory(utility-filesystem)
+add_subdirectory(utility-filesystem)
