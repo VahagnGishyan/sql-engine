@@ -20,25 +20,25 @@
 #endif
 
 #if defined IS_WINDOWS
-#if defined(UTILITY_SHARE)
-#define PROJECT_SHARED_EXPORT __declspec(dllexport)
-#else
-#define PROJECT_SHARED_EXPORT __declspec(dllimport)
-#endif
-#define PROJECT_SHARED_CCA __cdecl
+    #if defined(SHARE)
+        #define PROJECT_SHARED_EXPORT __declspec(dllexport)
+    #else
+        #define PROJECT_SHARED_EXPORT __declspec(dllimport)
+    #endif
+    #define PROJECT_SHARED_CCA __cdecl
 #elif defined IS_LINUX
-#if __GNUC__ >= 4
-#define PROJECT_SHARED_EXPORT __attribute__((visibility("default")))
-#else
-#define PROJECT_SHARED_EXPORT
-#endif
-#define PROJECT_SHARED_CCA
+    #if __GNUC__ >= 4
+        #define PROJECT_SHARED_EXPORT __attribute__((visibility("default")))
+    #else
+        #define PROJECT_SHARED_EXPORT
+    #endif
+    #define PROJECT_SHARED_CCA
 #elif defined IS_MACOS
-#define PROJECT_SHARED_EXPORT __attribute__((visibility("default")))
-#define PROJECT_SHARED_CCA
+    #define PROJECT_SHARED_EXPORT __attribute__((visibility("default")))
+    #define PROJECT_SHARED_CCA
 #else
-#define PROJECT_SHARED_EXPORT
-#define PROJECT_SHARED_CCA __attribute__((cdecl))
+    #define PROJECT_SHARED_EXPORT
+    #define PROJECT_SHARED_CCA __attribute__((cdecl))
 #endif
 
 //////////////////////////////////////////////////////////////////////////
