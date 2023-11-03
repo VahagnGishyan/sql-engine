@@ -68,7 +68,7 @@ namespace SQLEngine::Utility
     void RemoveDir(const std::string &path);
 
     PROJECT_SHARED_EXPORT
-    void CreateEmptyFile(const std::string &path);
+    void MakeEmptyFile(const std::string &path);
     PROJECT_SHARED_EXPORT
     void RemoveFile(const std::string &path);
 }
