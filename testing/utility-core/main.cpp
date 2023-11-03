@@ -5,63 +5,32 @@
 
 #include <iostream>
 #include "utility/core.hpp"
+#include <gtest/gtest.h>
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing
+TEST(UtilityCore, Environment){
+    ASSERT_TRUE(SQLEngine::Utility::GetEnvironmentValue("PATH").size());
+    // std::cout << "WorkDir is " << SQLEngine::Utility::GetDefaultDataPath() << std::endl;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+TEST(UtilityCore, GetDefaultDataPath)
 {
-    //////////////////////////////////////////////////////////////////////////
-    //
-    //////////////////////////////////////////////////////////////////////////
-
-    namespace Utility::Core
-    {
-        void Run()
-        {
-            std::cout << "Path is    " << SQLEngine::Utility::GetEnvironmentValue("PATH") << std::endl;
-            std::cout << "WorkDir is " << SQLEngine::Utility::GetDefaultDataPath() << std::endl;
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    //
-    //////////////////////////////////////////////////////////////////////////
-
-    int Main(const int count, char **values)
-    {
-        Utility::Core::Run();
-        return (0);
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    //
-    //////////////////////////////////////////////////////////////////////////
+    ASSERT_TRUE(SQLEngine::Utility::GetDefaultDataPath().size());
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-int main(const int argc, char **argv)
+int main(int argc, char **argv)
 {
-    int returnKey = 1;
-    try
-    {
-        std::cout << "Start Main()" << std::endl;
-        returnKey = SQLEngine::Testing::Main(argc, argv);
-        std::cout << "Close Main()" << std::endl;
-    }
-    catch (std::exception &err)
-    {
-        std::cout << std::string("Catch exception, type is std::exception, message is ") + err.what() << std::endl;
-    }
-    catch (...)
-    {
-        std::cout << "Unknown type exception was not handled" << std::endl;
-    }
-    return (returnKey);
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
 
 //////////////////////////////////////////////////////////////////////////
