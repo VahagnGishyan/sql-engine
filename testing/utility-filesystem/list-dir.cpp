@@ -106,7 +106,8 @@ TEST(ListDirsInDirTest, ValidDirectory)
     auto &&dirNList = ListDirsInDir(dirNpath);
     ASSERT_TRUE(dirNList != nullptr);
     ASSERT_EQ(dirNList->size(), dirNinfo->dirnameList.size());
-    EXPECT_TRUE(AreVectorsEqual(*dirNList, dirNinfo->dirnameList));
+    EXPECT_TRUE(AreVectorsEqual(*dirNList, dirNinfo->dirnameList))
+        << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*dirNList), VecStrToStrForPrint(dirNinfo->dirnameList));
 
     auto &&compList = ListDirsInDir(compPath);
     ASSERT_TRUE(compList != nullptr);
@@ -160,7 +161,7 @@ TEST(ListFilesInDirTest, ListFilesWithExtension)
     for (auto &&item : paeinfo->paelist)
     {
         auto &&extension = item.extension;
-        auto &&list = ListFilesInDir(path, extension);
+        auto &&list = ListFilesInDir(path, extension, Option::FullPaths{true});
         ASSERT_NE(list, nullptr);
         for (auto &&file : *list)
         {
