@@ -12,3 +12,6 @@ boost/1.81.0:shared=False
 [generators]
 CMakeToolchain
 CMakeDeps
+
+[layout]
+cmake_layout
