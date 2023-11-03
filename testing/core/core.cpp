@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -139,6 +140,11 @@ namespace SQLEngine::Testing::Core
         std::string basedir = GetPath();
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
+
+        if (Utility::IsPathExists(filepath) == false)
+        {
+            return;
+        }
 
         std::for_each(m_content.rbegin(), m_content.rend(),
                       [](const UObject &element)
