@@ -14,7 +14,7 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(UtilityTest, IsDirEmptyEmptyDirectory)
+TEST(IsDirEmpty, EmptyDirectory)
 {
     auto &&testdir = Peparation::GetTestDir();
     const std::string emptyDir = testdir.GetEmptyDirPath();
@@ -25,7 +25,7 @@ TEST(UtilityTest, IsDirEmptyEmptyDirectory)
     ASSERT_NO_THROW(AssertDirEmpty(emptyDir));
 }
 
-TEST(UtilityTest, IsDirNotEmptyDirectory)
+TEST(IsDirEmpty, NotEmptyDirectory)
 {
     auto &&testdir = Peparation::GetTestDir();
     const std::string nonEmptyDir = testdir.GetWorkDir();
