@@ -265,7 +265,7 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    void Utility::CreateEmptyFile(const std::string &path)
+    void Utility::MakeEmptyFile(const std::string &path)
     {
         AssertFileNotExists(path);
         std::ofstream file(path);
