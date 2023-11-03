@@ -6,6 +6,7 @@
 #include "core.hpp"
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -44,6 +45,16 @@ namespace SQLEngine::Testing::Core
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    File::File(const std::string &name)
+    {
+        SetName(name);
+    }
+
+    File::~File()
+    {
+        Destroy();
+    }
+
     void File::Create()
     {
         std::string basedir = GetPath();
@@ -51,6 +62,7 @@ namespace SQLEngine::Testing::Core
         std::string filepath = basedir + "/" + filename;
 
         // Open the file in output mode, which creates the file if it doesn't exist
+        // std::cout << "File::Create(), path: " << filepath << std::endl;
         std::ofstream outputFile(filepath);
 
         // Check if the file is successfully opened
@@ -86,12 +98,22 @@ namespace SQLEngine::Testing::Core
         m_content.push_back(text);
     }
 
-    auto File::CreateInstance() -> UObject
+    auto File::CreateInstance(const std::string &name) -> UFile
     {
-        return UObject{new File{}};
+        return std::make_unique<File>(name);
     }
 
     //////////////////////////////////////////////////////////////////
+
+    Directory::Directory(const std::string &name)
+    {
+        SetName(name);
+    }
+
+    Directory::~Directory()
+    {
+        Destroy();
+    }
 
     void Directory::Create()
     {
@@ -99,6 +121,7 @@ namespace SQLEngine::Testing::Core
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
 
+        // std::cout << "Directory::Create(), path: " << filepath << std::endl;
         if (!fs::create_directory(filepath))
         {
             throw std::runtime_error("Failed to create directory: " + filepath);
@@ -133,9 +156,14 @@ namespace SQLEngine::Testing::Core
         }
     }
 
-    auto Directory::CreateInstance() -> UObject
+    void Directory::AddComponent(UObject object)
     {
-        return UObject{new Directory{}};
+        m_content.push_back(std::move(object));
+    }
+
+    auto Directory::CreateInstance(const std::string &name) -> UDirectory
+    {
+        return std::make_unique<Directory>(name);
     }
 
     //////////////////////////////////////////////////////////////////////

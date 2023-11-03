@@ -27,9 +27,6 @@ namespace SQLEngine::Testing::Core
     class PROJECT_SHARED_EXPORT Object
     {
     public:
-        virtual ~Object() = default;
-
-    public:
         virtual void Create() = 0;
         virtual void Destroy() = 0;
 
@@ -48,8 +45,15 @@ namespace SQLEngine::Testing::Core
 
     //////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT File : Object
+    class File;
+    using UFile = std::unique_ptr<File>;
+
+    class PROJECT_SHARED_EXPORT File : public Object
     {
+    public:
+        File(const std::string &name);
+        ~File();
+
     public:
         void Create() override;
         void Destroy() override;
@@ -58,7 +62,7 @@ namespace SQLEngine::Testing::Core
         void AddLine(const std::string &text);
 
     public:
-        static auto CreateInstance() -> UObject;
+        static auto CreateInstance(const std::string &name) -> UFile;
 
     protected:
         std::list<std::string> m_content;
@@ -66,14 +70,24 @@ namespace SQLEngine::Testing::Core
 
     //////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT Directory : Object
+    class Directory;
+    using UDirectory = std::unique_ptr<Directory>;
+
+    class PROJECT_SHARED_EXPORT Directory : public Object
     {
+    public:
+        Directory(const std::string &name);
+        ~Directory();
+
     public:
         void Create() override;
         void Destroy() override;
 
     public:
-        static auto CreateInstance() -> UObject;
+        static auto CreateInstance(const std::string &name) -> UDirectory;
+
+    public:
+        void AddComponent(UObject object);
 
     protected:
         std::list<UObject> m_content;
