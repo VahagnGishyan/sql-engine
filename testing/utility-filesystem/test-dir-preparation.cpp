@@ -76,6 +76,10 @@ namespace SQLEngine::Testing::DirPeparation
         {
             return GetWorkDir() + "/" + GetCompDirName();
         }
+        auto GetNonExistingPath() const -> const std::string override
+        {
+            return GetWorkDir() + "/" + GetNonExistingName();
+        }
 
     protected:
         auto GetTestingWorkDir() const -> const std::string
@@ -110,6 +114,10 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetCompDirName() const -> const std::string
         {
             return "comp-dir";
+        }
+        auto GetNonExistingName() const -> const std::string
+        {
+            return "nonexisting__";
         }
 
     protected:

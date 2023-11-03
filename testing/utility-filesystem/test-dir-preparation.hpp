@@ -31,6 +31,7 @@ namespace SQLEngine::Testing::DirPeparation
         virtual auto GetFileNPath() const -> const std::string = 0;
         virtual auto GetDirNPath() const -> const std::string = 0;
         virtual auto GetCompDirPath() const -> const std::string = 0;
+        virtual auto GetNonExistingPath() const -> const std::string = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

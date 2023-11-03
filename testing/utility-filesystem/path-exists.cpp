@@ -34,8 +34,7 @@ TEST(IsPathExistsTest, ExistingPath)
 TEST(IsPathExistsTest, NonExistingPath)
 {
     auto &&dir = DirPeparation::GetTestDir();
-    auto &&workdir = dir.GetWorkDir();
-    auto &&nonExistingPath = workdir + "/__nonexisting__";
+    auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsPathExists(nonExistingPath));
 }
 
@@ -49,8 +48,7 @@ TEST(AssertPathExistsTest, ExistingPath)
 TEST(AssertPathExistsTest, NonExistingPath)
 {
     auto &&dir = DirPeparation::GetTestDir();
-    auto &&workdir = dir.GetWorkDir();
-    auto &&nonExistingPath = workdir + "/__nonexisting__";
+    auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertPathExists(nonExistingPath), std::exception);
 }
 
