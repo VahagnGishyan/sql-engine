@@ -6,6 +6,7 @@ project(testing-utility-filesystem)
 set(SOURCES
     dir-exists.cpp
     file-exists.cpp
+    file-extension.cpp
     path-exists.cpp
     main.cpp
     test-dir-preparation.cpp
