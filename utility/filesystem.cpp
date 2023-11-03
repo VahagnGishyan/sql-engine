@@ -135,23 +135,29 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    auto
-    Utility::ListDir(const std::string &path) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
     {
         AssertDirExists(path);
         auto result = std::make_unique<std::vector<std::string>>();
 
         for (const auto &entry : fs::directory_iterator(path))
         {
-            result->push_back(entry.path().string());
+            if (returnFullPaths)
+            {
+                result->push_back(entry.path().string());
+            }
+            else
+            {
+                result->push_back(entry.path().filename().string());
+            }
         }
 
         return result;
     }
 
-    auto Utility::ListDirsInDir(const std::string &path) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListDirsInDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
     {
-        auto listDir = ListDir(path);
+        auto listDir = ListDir(path, returnFullPaths);
         auto result = std::make_unique<std::vector<std::string>>();
 
         for (auto &&entry : *listDir)
@@ -165,9 +171,9 @@ namespace SQLEngine
         return result;
     }
 
-    auto Utility::ListFilesInDir(const std::string &path) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListFilesInDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
     {
-        auto listDir = ListDir(path);
+        auto listDir = ListDir(path, returnFullPaths);
         auto result = std::make_unique<std::vector<std::string>>();
 
         for (auto &&entry : *listDir)
@@ -181,9 +187,9 @@ namespace SQLEngine
         return result;
     }
 
-    auto Utility::ListFilesInDir(const std::string &path, const std::string &extension) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListFilesInDir(const std::string &path, const std::string &extension, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
     {
-        auto listDir = ListDir(path);
+        auto listDir = ListDir(path, returnFullPaths);
         auto result = std::make_unique<std::vector<std::string>>();
 
         for (auto &&entry : *listDir)
