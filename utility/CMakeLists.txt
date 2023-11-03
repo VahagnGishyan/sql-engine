@@ -7,8 +7,9 @@ project(sql-engine-utility)
 find_package(fmt REQUIRED)
 
 set(SOURCES
-    filesystem.cpp
     core.cpp
+    filesystem.cpp
+    options.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
