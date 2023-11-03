@@ -60,6 +60,10 @@ namespace SQLEngine::Testing::DirPeparation
         {
             return GetWorkDir() + "/" + GetFile1Name();
         }
+        auto GetEmptyFilePath() const -> const std::string override
+        {
+            return GetFile1Path() + "/" + GetEmptyFileName();
+        }
         auto GetFileNPath() const -> const std::string override
         {
             return GetWorkDir() + "/" + GetFileNName();
@@ -90,6 +94,10 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetFile1Name() const -> const std::string
         {
             return "file-1-dir";
+        }
+        auto GetEmptyFileName() const -> const std::string
+        {
+            return "file.txt";
         }
         auto GetFileNName() const -> const std::string
         {
@@ -136,7 +144,8 @@ namespace SQLEngine::Testing::DirPeparation
             auto file = Directory::CreateInstance(dirname);
             file->SetPath(workdir);
 
-            file->AddComponent(File::CreateInstance("file.txt"));
+            const std::string filename = GetEmptyFileName();
+            file->AddComponent(File::CreateInstance(filename));
             dir.AddComponent(std::move(file));
         }
         void CreateFileNDir(Directory &dir) const
