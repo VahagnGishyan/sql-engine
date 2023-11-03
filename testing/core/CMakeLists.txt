@@ -8,7 +8,6 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     core.cpp
-    tdp-object.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 

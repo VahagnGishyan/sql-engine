@@ -57,6 +57,9 @@ namespace SQLEngine::Testing::Core
     public:
         void AddLine(const std::string &text);
 
+    public:
+        static auto CreateInstance() -> UObject;
+
     protected:
         std::list<std::string> m_content;
     };
@@ -68,6 +71,9 @@ namespace SQLEngine::Testing::Core
     public:
         void Create() override;
         void Destroy() override;
+
+    public:
+        static auto CreateInstance() -> UObject;
 
     protected:
         std::list<UObject> m_content;
