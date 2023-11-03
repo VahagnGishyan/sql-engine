@@ -46,8 +46,6 @@ namespace SQLEngine
 
     auto Utility::GetBaseDir(const std::string &path) -> const std::string
     {
-        AssertPathExists(path);
-
         fs::path fullPath(path);
         // Get the parent directory path
         fs::path baseDir = fullPath.parent_path();
