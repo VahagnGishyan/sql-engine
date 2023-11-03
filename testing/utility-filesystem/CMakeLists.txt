@@ -8,9 +8,10 @@ set(SOURCES
     empty-dir.cpp
     file-exists.cpp
     file-extension.cpp
-    path-exists.cpp
     list-dir.cpp
     main.cpp
+    make-remove.cpp
+    path-exists.cpp
     test-dir-preparation.cpp
 )
 
