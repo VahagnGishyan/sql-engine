@@ -52,6 +52,14 @@ namespace SQLEngine::Utility::Option
 
     //////////////////////////////////////////////////////////////////////
 
+    class PROJECT_SHARED_EXPORT MustExist : public IOption
+    {
+    public:
+        using IOption::IOption;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
     class PROJECT_SHARED_EXPORT CreateBaseDirectory : public IOption
     {
     public:

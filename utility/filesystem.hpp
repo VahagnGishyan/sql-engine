@@ -65,14 +65,14 @@ namespace SQLEngine::Utility
                  const Option::ExistOk existok = Option::ExistOk{false},
                  const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
-    void RemoveDir(const std::string &path);
+    void RemoveDir(const std::string &path, const Option::MustExist mustexist = Option::MustExist{true});
 
     PROJECT_SHARED_EXPORT
     void MakeEmptyFile(const std::string &path,
-                 const Option::ExistOk existok = Option::ExistOk{false},
-                 const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
+                       const Option::ExistOk existok = Option::ExistOk{false},
+                       const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
-    void RemoveFile(const std::string &path);
+    void RemoveFile(const std::string &path, const Option::MustExist mustexist = Option::MustExist{true});
 }
 
 //////////////////////////////////////////////////////////////////////////
