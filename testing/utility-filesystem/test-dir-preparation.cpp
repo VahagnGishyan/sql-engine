@@ -48,7 +48,7 @@ namespace SQLEngine::Testing::Peparation
         {
             auto &&workdir = GetTestingWorkDir();
             auto &&name = GetTestingName();
-            SQLEngine::Utility::MakeDir(workdir);
+            SQLEngine::Utility::MakeDir(workdir, Utility::Option::ExistOk{true});
 
             auto dir = Directory::CreateInstance(name);
             dir->SetPath(workdir);
@@ -136,14 +136,14 @@ namespace SQLEngine::Testing::Peparation
                 info->paelist.push_back(PathAndExtension{"file-json-1.json", ".json"});
                 info->paelist.push_back(PathAndExtension{"file-json-2.json", ".json"});
                 info->paelist.push_back(PathAndExtension{"file-json-3.json", ".json"});
-                info->paelist.push_back(PathAndExtension{"file-png-0.png", ".png"});
-                info->paelist.push_back(PathAndExtension{"file-png-1.png", ".png"});
-                info->paelist.push_back(PathAndExtension{"file-png-2.png", ".png"});
-                info->paelist.push_back(PathAndExtension{"file-png-3.png", ".png"});
-                info->paelist.push_back(PathAndExtension{"file-jpg-0.jpg", ".jpg"});
-                info->paelist.push_back(PathAndExtension{"file-jpg-1.jpg", ".jpg"});
-                info->paelist.push_back(PathAndExtension{"file-jpg-2.jpg", ".jpg"});
-                info->paelist.push_back(PathAndExtension{"file-jpg-3.jpg", ".jpg"});
+                info->paelist.push_back(PathAndExtension{"file-py-0.py", ".py"});
+                info->paelist.push_back(PathAndExtension{"file-py-1.py", ".py"});
+                info->paelist.push_back(PathAndExtension{"file-py-2.py", ".py"});
+                info->paelist.push_back(PathAndExtension{"file-py-3.py", ".py"});
+                info->paelist.push_back(PathAndExtension{"file-cpp-0.cpp", ".cpp"});
+                info->paelist.push_back(PathAndExtension{"file-cpp-1.cpp", ".cpp"});
+                info->paelist.push_back(PathAndExtension{"file-cpp-2.cpp", ".cpp"});
+                info->paelist.push_back(PathAndExtension{"file-cpp-3.cpp", ".cpp"});
                 return info;
             }();
             return info;
@@ -157,7 +157,7 @@ namespace SQLEngine::Testing::Peparation
                 info->paelist.push_back(PathAndExtension{"file-txt.txt", "aaa"});
                 info->paelist.push_back(PathAndExtension{"file-txt.TXT", ".json"});
                 info->paelist.push_back(PathAndExtension{"file.json", "txt"});
-                info->paelist.push_back(PathAndExtension{"file", ".png"});
+                info->paelist.push_back(PathAndExtension{"file", ".py"});
                 return info;
             }();
             return info;

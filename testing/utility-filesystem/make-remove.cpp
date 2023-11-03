@@ -51,7 +51,7 @@ TEST(MakeDir, Failure)
     MakeDir(existingDir);
 
     // Attempt to create the directory again (expecting an exception)
-    ASSERT_THROW(MakeDir(existingDir), std::runtime_error);
+    ASSERT_THROW(MakeDir(existingDir), std::invalid_argument);
 
     // Ensure the directory still exists
     EXPECT_TRUE(IsDirExists(existingDir));
@@ -86,7 +86,7 @@ TEST(MakeAndRemoveFile, Success)
     EXPECT_FALSE(IsFileExists(testFile));
 
     // Create the empty file
-    EXPECT_NO_THROW(CreateEmptyFile(testFile));
+    EXPECT_NO_THROW(MakeEmptyFile(testFile));
 
     // Verify that the file has been created
     EXPECT_TRUE(IsFileExists(testFile));
@@ -104,10 +104,10 @@ TEST(MakeFile, Failure)
     const std::string existingFile = emptydir + "existing-file.txt";
 
     // Create the existing file
-    CreateEmptyFile(existingFile);
+    MakeEmptyFile(existingFile);
 
     // Attempt to create the file again (expecting an exception)
-    EXPECT_THROW(CreateEmptyFile(existingFile), std::invalid_argument);
+    EXPECT_THROW(MakeEmptyFile(existingFile), std::invalid_argument);
 
     // Ensure the file still exists
     EXPECT_TRUE(IsFileExists(existingFile));
