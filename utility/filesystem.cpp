@@ -118,9 +118,14 @@ namespace SQLEngine
         if (filePath.has_extension())
         {
             std::string fileExtension = filePath.extension().string();
-            // Convert the extension to lowercase for case-insensitive comparison
-            std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
+            // Ensure the expected extension has a leading dot
             std::string expectedExtension = extension;
+            if (expectedExtension.front() != '.')
+            {
+                expectedExtension = "." + expectedExtension;
+            }
+            // Convert both extensions to lowercase for case-insensitive comparison
+            std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
             std::transform(expectedExtension.begin(), expectedExtension.end(), expectedExtension.begin(), ::tolower);
             return fileExtension == expectedExtension;
         }
@@ -130,7 +135,8 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    auto Utility::ListDir(const std::string &path) -> std::unique_ptr<std::vector<std::string>>
+    auto
+    Utility::ListDir(const std::string &path) -> std::unique_ptr<std::vector<std::string>>
     {
         AssertDirExists(path);
         auto result = std::make_unique<std::vector<std::string>>();
