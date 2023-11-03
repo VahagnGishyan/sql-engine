@@ -249,9 +249,18 @@ namespace SQLEngine
         }
     }
 
-    void Utility::RemoveDir(const std::string &path)
+    void Utility::RemoveDir(const std::string &path, const Option::MustExist mustexist)
     {
-        AssertDirExists(path);
+        if (mustexist)
+        {
+            AssertDirExists(path);
+        }
+        else if (IsDirExists(path) == false)
+        {
+            auto &&base = GetBaseDir(path);
+            AssertDirExists(base);
+            return;
+        }
 
         try
         {
@@ -290,9 +299,20 @@ namespace SQLEngine
         }
     }
 
-    void Utility::RemoveFile(const std::string &path)
+    void Utility::RemoveFile(const std::string &path,
+                             const Option::MustExist mustexist)
     {
-        AssertFileExists(path);
+        if (mustexist)
+        {
+            AssertFileExists(path);
+        }
+        else if (IsFileExists(path) == false)
+        {
+            auto &&base = GetBaseDir(path);
+            AssertDirExists(base);
+            return;
+        }
+
         try
         {
             fs::remove(path);
