@@ -8,6 +8,7 @@ set(SOURCES
     file-exists.cpp
     file-extension.cpp
     path-exists.cpp
+    list-dir.cpp
     main.cpp
     test-dir-preparation.cpp
 )
