@@ -15,13 +15,31 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::DirPeparation
+namespace SQLEngine::Testing::Peparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
     using namespace SQLEngine::Testing::Core;
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto TestDir::GetTestingWorkDir() -> const std::string
+    {
+        auto &&info = SQLEngine::Application::GetInfo();
+        return info.GetDefaultAppData(false) + "/testing";
+    }
+    auto TestDir::GetTestingName() -> const std::string
+    {
+        return "utility-fs";
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     class TestDirImpl : public TestDir
     {
@@ -34,6 +52,7 @@ namespace SQLEngine::Testing::DirPeparation
 
             auto dir = Directory::CreateInstance(name);
             dir->SetPath(workdir);
+            SQLEngine::Utility::AssertDirNotExists(dir->GetPath() + '/' + dir->GetName());
 
             CreateEmptyDir(*dir);
             CreateFile1Dir(*dir);
@@ -64,6 +83,26 @@ namespace SQLEngine::Testing::DirPeparation
         auto GetEmptyFilePath() const -> const std::string override
         {
             return GetFile1Path() + "/" + GetEmptyFileName();
+        }
+        auto GetFileNInfo() const -> const ShFileNInfo override
+        {
+            constexpr int count = 10;
+            auto &&obj = std::make_shared<FileNInfo>();
+            for (int index = 0; index < count; ++index)
+            {
+                obj->filenameList.push_back("file-" + std::to_string(index) + ".txt");
+            }
+            return obj;
+        }
+        auto GetDirNInfo() const -> const ShDirNInfo override
+        {
+            auto &&obj = std::make_shared<DirNInfo>();
+            constexpr int count = 10;
+            for (int index = 0; index < count; ++index)
+            {
+                obj->dirnameList.push_back("dir-" + std::to_string(index));
+            }
+            return obj;
         }
         auto GetFileNPath() const -> const std::string override
         {
@@ -112,15 +151,6 @@ namespace SQLEngine::Testing::DirPeparation
         }
 
     protected:
-        auto GetTestingWorkDir() const -> const std::string
-        {
-            auto &&info = SQLEngine::Application::GetInfo();
-            return info.GetDefaultAppData(false) + "/testing";
-        }
-        auto GetTestingName() const -> const std::string
-        {
-            return "utility-fs";
-        }
         auto GetEmptyDirName() const -> const std::string
         {
             return "empty-dir";
@@ -159,18 +189,18 @@ namespace SQLEngine::Testing::DirPeparation
         }
 
     protected:
-        void AddFilesTo(Directory &dir, const int count) const
+        void AddFilesTo(Directory &dir, const FileNInfo &files) const
         {
-            for (int index = 0; index < count; ++index)
+            for (auto &&file : files.filenameList)
             {
-                dir.AddComponent(File::CreateInstance("file-" + std::to_string(index) + ".txt"));
+                dir.AddComponent(File::CreateInstance(file));
             }
         }
-        void AddEmptyDirsTo(Directory &dir, const int count) const
+        void AddEmptyDirsTo(Directory &dir, const DirNInfo &dirs) const
         {
-            for (int index = 0; index < count; ++index)
+            for (auto &&dirinfo : dirs.dirnameList)
             {
-                dir.AddComponent(Directory::CreateInstance("dir-" + std::to_string(index)));
+                dir.AddComponent(File::CreateInstance(dirinfo));
             }
         }
 
@@ -200,7 +230,8 @@ namespace SQLEngine::Testing::DirPeparation
             auto &&fileNdir = GetFileNName();
             auto ndir = Directory::CreateInstance(fileNdir);
             ndir->SetPath(workdir);
-            AddFilesTo(*ndir, 10);
+            auto &&filelist = GetFileNInfo();
+            AddFilesTo(*ndir, *filelist);
             dir.AddComponent(std::move(ndir));
         }
         void CreateDirNDir(Directory &dir) const
@@ -209,7 +240,8 @@ namespace SQLEngine::Testing::DirPeparation
             auto &&dirname = GetDirNName();
             auto ndir = Directory::CreateInstance(dirname);
             ndir->SetPath(workdir);
-            AddEmptyDirsTo(*ndir, 10);
+            auto &&dirlist = GetDirNInfo();
+            AddEmptyDirsTo(*ndir, *dirlist);
             dir.AddComponent(std::move(ndir));
         }
         void CreateCompDir(Directory &dir) const
@@ -218,8 +250,10 @@ namespace SQLEngine::Testing::DirPeparation
             auto &&compdirname = GetCompDirName();
             auto comp = Directory::CreateInstance(compdirname);
             comp->SetPath(workdir);
-            AddFilesTo(*comp, 10);
-            AddEmptyDirsTo(*comp, 10);
+            auto &&filelist = GetFileNInfo();
+            AddFilesTo(*comp, *filelist);
+            auto &&dirlist = GetDirNInfo();
+            AddEmptyDirsTo(*comp, *dirlist);
             dir.AddComponent(std::move(comp));
         }
         void CreateFilesValidPAE(Directory &dir) const
