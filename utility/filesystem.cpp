@@ -238,7 +238,7 @@ namespace SQLEngine
         {
             AssertDirNotExists(base);
         }
-        else if (IsDirExists(path) == false)
+        else if (IsDirExists(base) == false)
         {
             MakeDir(base, Option::ExistOk{false}, createbase);
         }
@@ -265,9 +265,24 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    void Utility::MakeEmptyFile(const std::string &path)
+    void Utility::MakeEmptyFile(const std::string &path, const Option::ExistOk existok,
+                                const Option::CreateBaseDirectory &createbase)
     {
-        AssertFileNotExists(path);
+        if (!existok)
+        {
+            AssertFileNotExists(path);
+        }
+        else if (IsFileExists(path))
+        {
+            return;
+        }
+
+        if (createbase)
+        {
+            auto &&base = GetBaseDir(path);
+            MakeDir(base, Option::ExistOk{true}, createbase);
+        }
+
         std::ofstream file(path);
         if (!file)
         {
