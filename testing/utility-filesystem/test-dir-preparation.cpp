@@ -5,7 +5,7 @@
 
 #include "test-dir-preparation.hpp"
 #include "testing/dir-preparator/preparator.hpp"
-#include "application-info/application.hpp"
+#include "app-info/application.hpp"
 #include "utility/core.hpp"
 #include "utility/filesystem.hpp"
 
@@ -48,7 +48,9 @@ namespace SQLEngine::Testing::Peparation
         {
             auto &&workdir = GetTestingWorkDir();
             auto &&name = GetTestingName();
-            SQLEngine::Utility::MakeDir(workdir, Utility::Option::ExistOk{true});
+            SQLEngine::Utility::MakeDir(workdir, 
+            Utility::Option::ExistOk{true}, 
+            Utility::Option::CreateBaseDirectory{true});
 
             auto dir = CreateDirectory(name);
             dir->SetPath(workdir);
