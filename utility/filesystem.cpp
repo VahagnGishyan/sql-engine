@@ -199,8 +199,6 @@ namespace SQLEngine
 
         // std::cout << "point-input, size: " << listDir->size() << std::endl;
 
-        // std::cout << "point-input, size: " << listDir->size() << std::endl;
-
         for (auto &&entry : *listDir)
         {
             // std::cout << "point-entry, entry: " << entry << " exists: ";
