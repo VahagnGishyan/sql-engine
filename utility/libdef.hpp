@@ -9,6 +9,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#if defined UTILITY_BUILD
+    #define SHARE_LIB
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64) || defined(__WIN32__) || defined(__TOS_WIN__) || defined(__WINDOWS__) || defined(_WINDOWS) || defined(_WIN32_WINCE)
     #define IS_WINDOWS
 #elif defined(__linux) || defined(__linux__) || defined(linux)
@@ -20,7 +28,7 @@
 #endif
 
 #if defined IS_WINDOWS
-    #if defined(SHARE)
+    #if defined(SHARE_LIB)
         #define PROJECT_SHARED_EXPORT __declspec(dllexport)
     #else
         #define PROJECT_SHARED_EXPORT __declspec(dllimport)
@@ -40,14 +48,6 @@
     #define PROJECT_SHARED_EXPORT
     #define PROJECT_SHARED_CCA __attribute__((cdecl))
 #endif
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-namespace SQLEngine::Utility
-{
-}
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
