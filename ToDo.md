@@ -2,6 +2,11 @@
 
 ## Branch:  [development](docs/branch-development).
 
+### Common
+- [x] add auto formatting
+- [ ] add pvs studio 
+- [ ] add warnings | wextra werror wall 
+
 ### Components
 - [ ] **utility**
 	- [x] analysing
@@ -16,10 +21,5 @@
 - [ ] **cli-application**
 - [ ] **todo-application**
 - [ ] **installer**
-
-### Common
-- [x] add auto formatting
-- [ ] add pvs studio 
-- [ ] add warnings | wextra werror wall 
 
 ---
