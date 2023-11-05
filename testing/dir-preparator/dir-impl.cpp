@@ -30,11 +30,6 @@ namespace SQLEngine::Testing::Core
         SetName(name);
     }
 
-    Directory::~Directory()
-    {
-        Destroy();
-    }
-
     void Directory::Create()
     {
         std::string basedir = GetPath();

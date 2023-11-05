@@ -41,7 +41,6 @@ namespace SQLEngine::Testing::Core
     {
     public:
         File(const std::string &name);
-        ~File();
 
     public:
         void Create() override;
@@ -71,7 +70,6 @@ namespace SQLEngine::Testing::Core
     {
     public:
         Directory(const std::string &name);
-        ~Directory();
 
     public:
         void Create() override;
