@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "test-dir-preparation.hpp"
-#include "testing/core/core.hpp"
+#include "testing/dir-preparator/preparator.hpp"
 #include "application-info/application.hpp"
 #include "utility/core.hpp"
 #include "utility/filesystem.hpp"
@@ -50,7 +50,7 @@ namespace SQLEngine::Testing::Peparation
             auto &&name = GetTestingName();
             SQLEngine::Utility::MakeDir(workdir, Utility::Option::ExistOk{true});
 
-            auto dir = Directory::CreateInstance(name);
+            auto dir = CreateDirectory(name);
             dir->SetPath(workdir);
             SQLEngine::Utility::AssertDirNotExists(dir->GetPath() + '/' + dir->GetName());
 
@@ -202,66 +202,66 @@ namespace SQLEngine::Testing::Peparation
         }
 
     protected:
-        void AddFilesTo(Directory &dir, const FileNInfo &files) const
+        void AddFilesTo(IDirectory &dir, const FileNInfo &files) const
         {
             for (auto &&file : files.filenameList)
             {
-                dir.AddComponent(File::CreateInstance(file));
+                dir.AddComponent(CreateFile(file));
             }
         }
-        void AddEmptyDirsTo(Directory &dir, const DirNInfo &dirs) const
+        void AddEmptyDirsTo(IDirectory &dir, const DirNInfo &dirs) const
         {
             for (auto &&dirinfo : dirs.dirnameList)
             {
-                dir.AddComponent(Directory::CreateInstance(dirinfo));
+                dir.AddComponent(CreateDirectory(dirinfo));
             }
         }
 
     protected:
-        void CreateEmptyDir(Directory &dir) const
+        void CreateEmptyDir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&dirname = GetEmptyDirName();
-            auto empty_dir = Directory::CreateInstance(dirname);
+            auto empty_dir = CreateDirectory(dirname);
             empty_dir->SetPath(workdir);
             dir.AddComponent(std::move(empty_dir));
         }
-        void CreateFile1Dir(Directory &dir) const
+        void CreateFile1Dir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&dirname = GetFile1Name();
-            auto file = Directory::CreateInstance(dirname);
+            auto file = CreateDirectory(dirname);
             file->SetPath(workdir);
 
             const std::string filename = GetEmptyFileName();
-            file->AddComponent(File::CreateInstance(filename));
+            file->AddComponent(CreateFile(filename));
             dir.AddComponent(std::move(file));
         }
-        void CreateFileNDir(Directory &dir) const
+        void CreateFileNDir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&fileNdir = GetFileNName();
-            auto ndir = Directory::CreateInstance(fileNdir);
+            auto ndir = CreateDirectory(fileNdir);
             ndir->SetPath(workdir);
             auto &&filelist = GetFileNInfo();
             AddFilesTo(*ndir, *filelist);
             dir.AddComponent(std::move(ndir));
         }
-        void CreateDirNDir(Directory &dir) const
+        void CreateDirNDir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&dirname = GetDirNName();
-            auto ndir = Directory::CreateInstance(dirname);
+            auto ndir = CreateDirectory(dirname);
             ndir->SetPath(workdir);
             auto &&dirlist = GetDirNInfo();
             AddEmptyDirsTo(*ndir, *dirlist);
             dir.AddComponent(std::move(ndir));
         }
-        void CreateCompDir(Directory &dir) const
+        void CreateCompDir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&compdirname = GetCompDirName();
-            auto comp = Directory::CreateInstance(compdirname);
+            auto comp = CreateDirectory(compdirname);
             comp->SetPath(workdir);
             auto &&filelist = GetFileNInfo();
             AddFilesTo(*comp, *filelist);
@@ -269,16 +269,16 @@ namespace SQLEngine::Testing::Peparation
             AddEmptyDirsTo(*comp, *dirlist);
             dir.AddComponent(std::move(comp));
         }
-        void CreateFilesValidPAE(Directory &dir) const
+        void CreateFilesValidPAE(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
             auto &&pae = GetValidFilePAEList();
             auto &&paedirName = GetValidFilePAEListDirName();
-            auto comp = Directory::CreateInstance(paedirName);
+            auto comp = CreateDirectory(paedirName);
             comp->SetPath(workdir);
             for (auto &&item : pae->paelist)
             {
-                comp->AddComponent(File::CreateInstance(item.filename));
+                comp->AddComponent(CreateFile(item.filename));
             }
             dir.AddComponent(std::move(comp));
         }
