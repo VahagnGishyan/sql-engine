@@ -22,11 +22,6 @@
 - [ ] **todo-application**
 - [ ] **installer**
 
-### Common
-- [x] add auto formatting
-- [ ] add pvs studio 
-- [ ] add warnings | wextra werror wall 
-
 ---
 ### current-task
 - [ ] test new methods in utility::fs
