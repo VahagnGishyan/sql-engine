@@ -22,4 +22,9 @@
 - [ ] **todo-application**
 - [ ] **installer**
 
+### Common
+- [ ] add auto formatting
+- [ ] add pvs studio 
+- [ ] add warnings | wextra werror wall 
+
 ---
