@@ -13,8 +13,26 @@
 
 namespace SQLEngine::Testing::Peparation
 {
+    class TestDirWrapperAutoCreateDestroy
+    {
+    public:
+        TestDirWrapperAutoCreateDestroy()
+        {
+            // Create test directory
+            auto &&dir = Peparation::GetTestDirManager();
+            dir.Create();
+        }
+        ~TestDirWrapperAutoCreateDestroy()
+        {
+            // Destroy test directory
+            auto &&dir = Peparation::GetTestDirManager();
+            dir.Destroy();
+        }
+    };
+
     void SetUp()
     {
+        static TestDirWrapperAutoCreateDestroy obj;
         auto &&dir = Peparation::GetTestDir();
         std::cout << "testing-dir:     " << dir.GetWorkDir() << std::endl;
     }

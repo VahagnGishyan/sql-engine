@@ -57,7 +57,7 @@ TEST(MakeDir, Failure)
     EXPECT_TRUE(IsDirExists(existingDir));
 
     // Attempt to remove a non-existing directory (expecting an exception)
-    EXPECT_NO_THROW(RemoveDir(existingDir), std::invalid_argument);
+    ASSERT_NO_THROW(RemoveDir(existingDir));
 
     // Ensure the directory still does not exist
     EXPECT_FALSE(IsDirExists(existingDir));

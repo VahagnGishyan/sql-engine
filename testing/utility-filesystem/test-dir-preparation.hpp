@@ -26,6 +26,9 @@ namespace SQLEngine::Testing::Peparation
     class TestDir
     {
     public:
+        virtual ~TestDir() = default;
+
+    public:
         static auto GetTestingWorkDir() -> const std::string;
         static auto GetTestingName() -> const std::string;
 
@@ -69,10 +72,14 @@ namespace SQLEngine::Testing::Peparation
 
         virtual auto GetValidFilePAEList() const -> const ShDirOfPAE = 0;
         virtual auto GetInvalidFilePAEList() const -> const ShDirOfPAE = 0;
+
+        virtual void Create() = 0;
+        virtual void Destroy() = 0;
     };
 
     //////////////////////////////////////////////////////////////////////
 
+    auto GetTestDirManager() -> TestDir &;
     auto GetTestDir() -> const TestDir &;
 
     //////////////////////////////////////////////////////////////////////

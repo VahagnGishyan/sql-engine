@@ -46,11 +46,15 @@ namespace SQLEngine::Testing::Peparation
     public:
         TestDirImpl() : m_dir{nullptr}
         {
+        }
+
+        void Create() override
+        {
             auto &&workdir = GetTestingWorkDir();
             auto &&name = GetTestingName();
-            SQLEngine::Utility::MakeDir(workdir, 
-            Utility::Option::ExistOk{true}, 
-            Utility::Option::CreateBaseDirectory{true});
+            SQLEngine::Utility::MakeDir(workdir,
+                                        Utility::Option::ExistOk{true},
+                                        Utility::Option::CreateBaseDirectory{true});
 
             auto dir = CreateDirectory(name);
             dir->SetPath(workdir);
@@ -66,6 +70,11 @@ namespace SQLEngine::Testing::Peparation
             dir->Create();
 
             m_dir = std::move(dir);
+        }
+
+        void Destroy() override
+        {
+            m_dir->Destroy();
         }
 
     public:
@@ -304,10 +313,14 @@ namespace SQLEngine::Testing::Peparation
 
     //////////////////////////////////////////////////////////////////////
 
-    auto GetTestDir() -> const TestDir &
+    auto GetTestDirManager() -> TestDir &
     {
         static TestDirImpl obj{};
         return obj;
+    }
+    auto GetTestDir() -> const TestDir &
+    {
+        return GetTestDirManager();
     }
 
     //////////////////////////////////////////////////////////////////////
