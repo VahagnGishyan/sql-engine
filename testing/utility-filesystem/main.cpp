@@ -16,6 +16,7 @@ namespace SQLEngine::Testing::Peparation
     void SetUp()
     {
         auto &&dir = Peparation::GetTestDir();
+        std::cout << "testing-dir:     " << dir.GetWorkDir() << std::endl;
     }
 
     int ClearRemainingTempFiles()
