@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "application.hpp"
+
 #include "info.hpp"
 #include "utility/core.hpp"
 #include "utility/filesystem.hpp"
@@ -20,19 +21,22 @@ namespace SQLEngine::Application
 
     class EasyInfo : public Info
     {
-    public:
-        EasyInfo(const std::string &name, const std::string &version) : m_name{name}, m_version{version}
+       public:
+        EasyInfo(const std::string &name, const std::string &version) :
+            m_name{name}, m_version{version}
         {
         }
 
-    public:
+       public:
         auto GetName() const -> const std::string & override
         {
             return m_name;
         }
-        auto GetDefaultAppData(const bool createIfNotExists) const -> const std::string override
+        auto GetDefaultAppData(const bool createIfNotExists) const
+            -> const std::string override
         {
-            const std::string path = Utility::GetDefaultDataPath() + '/' + GetName();
+            const std::string path =
+                Utility::GetDefaultDataPath() + '/' + GetName();
             if (createIfNotExists)
             {
                 Utility::MakeDir(path);
@@ -45,7 +49,7 @@ namespace SQLEngine::Application
             return m_version;
         }
 
-    protected:
+       protected:
         std::string m_name;
         std::string m_version;
     };
@@ -54,14 +58,15 @@ namespace SQLEngine::Application
 
     auto GetInfo() -> const Info &
     {
-        static UInfo info = std::make_unique<EasyInfo>(APP_INFO_NAME, APP_INFO_VERSION);
+        static UInfo info =
+            std::make_unique<EasyInfo>(APP_INFO_NAME, APP_INFO_VERSION);
         return *info;
     }
 
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //
     //////////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Application
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

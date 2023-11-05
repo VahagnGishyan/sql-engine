@@ -9,8 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <string>
 #include <memory>
+#include <string>
+
 #include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,13 +26,14 @@ namespace SQLEngine::Application
 
     class PROJECT_SHARED_EXPORT Info
     {
-    public:
+       public:
         virtual ~Info() = default;
 
-    public:
+       public:
         virtual auto GetName() const -> const std::string & = 0;
-        virtual auto GetDefaultAppData(const bool createIfNotExists = true) const -> const std::string = 0;
-        virtual auto GetVersion() const -> const std::string & = 0;
+        virtual auto GetDefaultAppData(
+            const bool createIfNotExists = true) const -> const std::string = 0;
+        virtual auto GetVersion() const -> const std::string              & = 0;
     };
 
     using UInfo = std::unique_ptr<Info>;
@@ -43,7 +45,7 @@ namespace SQLEngine::Application
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //
     //////////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Application
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

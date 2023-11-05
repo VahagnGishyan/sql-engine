@@ -19,7 +19,6 @@ set(HEADERS
     sharelib.hpp
 )
 
-
 ##########################################################
 
 set(FORMAT_FILES ${SOURCES} ${HEADERS})

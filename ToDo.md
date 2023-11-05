@@ -18,7 +18,7 @@
 - [ ] **installer**
 
 ### Common
-- [ ] add auto formatting
+- [x] add auto formatting
 - [ ] add pvs studio 
 - [ ] add warnings | wextra werror wall 
 
