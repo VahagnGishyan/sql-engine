@@ -9,8 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "utility/defines.hpp"
-#include <list>
+#include "libdef.hpp"
 #include <string>
 #include <memory>
 
@@ -24,74 +23,49 @@ namespace SQLEngine::Testing::Core
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT Object
+    class PROJECT_SHARED_EXPORT IObject
     {
+    public:
+        virtual ~IObject() = default;
+
     public:
         virtual void Create() = 0;
         virtual void Destroy() = 0;
 
     public:
-        void SetPath(const std::string &);
-        auto GetPath() -> const std::string;
-        void SetName(const std::string &);
-        auto GetName() -> const std::string;
-
-    protected:
-        std::string m_path;
-        std::string m_name;
+        virtual void SetPath(const std::string &) = 0;
+        virtual auto GetPath() -> const std::string = 0;
+        virtual void SetName(const std::string &) = 0;
+        virtual auto GetName() -> const std::string = 0;
     };
 
-    using UObject = std::unique_ptr<Object>;
+    using UObject = std::unique_ptr<IObject>;
 
     //////////////////////////////////////////////////////////////////
 
-    class File;
-    using UFile = std::unique_ptr<File>;
+    class IFile;
+    using UFile = std::unique_ptr<IFile>;
 
-    class PROJECT_SHARED_EXPORT File : public Object
+    class PROJECT_SHARED_EXPORT IFile : public IObject
     {
     public:
-        File(const std::string &name);
-        ~File();
-
-    public:
-        void Create() override;
-        void Destroy() override;
-
-    public:
-        void AddLine(const std::string &text);
-
-    public:
-        static auto CreateInstance(const std::string &name) -> UFile;
-
-    protected:
-        std::list<std::string> m_content;
+        virtual void AddLine(const std::string &text) = 0;
     };
+
+    auto PROJECT_SHARED_EXPORT CreateFile(const std::string &name) -> UFile;
 
     //////////////////////////////////////////////////////////////////
 
-    class Directory;
-    using UDirectory = std::unique_ptr<Directory>;
+    class IDirectory;
+    using UDirectory = std::unique_ptr<IDirectory>;
 
-    class PROJECT_SHARED_EXPORT Directory : public Object
+    class PROJECT_SHARED_EXPORT IDirectory : public IObject
     {
     public:
-        Directory(const std::string &name);
-        ~Directory();
-
-    public:
-        void Create() override;
-        void Destroy() override;
-
-    public:
-        static auto CreateInstance(const std::string &name) -> UDirectory;
-
-    public:
-        void AddComponent(UObject object);
-
-    protected:
-        std::list<UObject> m_content;
+        virtual void AddComponent(UObject object) = 0;
     };
+
+    auto PROJECT_SHARED_EXPORT CreateDirectory(const std::string &name) -> UDirectory;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
