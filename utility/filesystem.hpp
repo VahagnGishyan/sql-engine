@@ -10,7 +10,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "libdef.hpp"
+#include "sharelib.hpp"
 #include "options.hpp"
 #include <memory>
 #include <vector>
