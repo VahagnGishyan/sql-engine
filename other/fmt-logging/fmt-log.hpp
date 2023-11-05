@@ -53,7 +53,7 @@ namespace SQLEngine::Logging
     protected:
         void DoLog(const std::string &message, const Mode &mode, const Color &color = Color::Default);
         auto PrepareMessage(const std::string &message, const Mode &mode) -> const std::string;
-        void WriteInFile(const std::string &message);
+        void WriteInFile(const std::string &message, const Mode &mode);
         void PrintInConsole(const std::string &message, const Mode &mode, const Color &color);
     };
 

@@ -115,22 +115,22 @@ namespace SQLEngine::Logging
     void FMTLogger::DoLog(const std::string &message, const Mode &mode, const Color &color)
     {
         auto formatedMsg = PrepareMessage(message, mode);
-        WriteInFile(formatedMsg);
+        WriteInFile(formatedMsg, mode);
         PrintInConsole(formatedMsg, mode, color);
     }
 
     auto FMTLogger::PrepareMessage(const std::string &message, const Mode &mode) -> const std::string
     {
-        auto strmode = Logging::ModeConvert::ModeAsString(mode);
-        return fmt::format("{} :: {}", strmode, message);
+        return message;
     }
 
-    void FMTLogger::WriteInFile(const std::string &message)
+    void FMTLogger::WriteInFile(const std::string &message, const Mode &mode)
     {
         using std::chrono::system_clock;
         using std::chrono::time_point;
         time_point<system_clock> timenow = system_clock::now();
-        auto &&formatedMsg = fmt::format("[{:%H:%M:%S}] {}", timenow, message);
+        auto strmode = Logging::ModeConvert::ModeAsString(mode);
+        auto &&formatedMsg = fmt::format("[{:%H:%M:%S}] {:<7} :: {}", timenow, strmode, message);
         m_logfile << formatedMsg << std::endl;
     }
 
