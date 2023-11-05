@@ -18,12 +18,12 @@ namespace FMTLog
 
     int Main(const int count, char **values)
     {
-        SQLEngine::Logging::Message("First log: Message");
-        SQLEngine::Logging::Info("First log: Info");
-        SQLEngine::Logging::Signal("First log: Signal");
-        SQLEngine::Logging::Debug("First log: Debug");
-        SQLEngine::Logging::Warning("First log: Warning");
-        SQLEngine::Logging::Error("First log: Error");
+        SQLEngine::Logging::Message("First log");
+        SQLEngine::Logging::Info("First log");
+        SQLEngine::Logging::Signal("First log");
+        SQLEngine::Logging::Debug("First log");
+        SQLEngine::Logging::Warning("First log");
+        SQLEngine::Logging::Error("First log");
         return 0;
     }
 }
@@ -37,9 +37,7 @@ int main(const int argc, char **argv)
     int returnKey = 1;
     try
     {
-        std::cout << "Start Main()" << std::endl;
         returnKey = FMTLog::Main(argc, argv);
-        std::cout << "Close Main()" << std::endl;
     }
     catch (std::exception &err)
     {
