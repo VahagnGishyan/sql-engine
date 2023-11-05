@@ -2,7 +2,7 @@
 # Set the minimum required version of CMake
 cmake_minimum_required(VERSION 3.5)
 
-project(sql-engine-testing-dir-preparator)
+project(testing-dir-preparator)
 
 find_package(fmt REQUIRED)
 
