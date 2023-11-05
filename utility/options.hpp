@@ -63,7 +63,7 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT MustExist : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
@@ -87,7 +87,7 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT FullPaths : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
