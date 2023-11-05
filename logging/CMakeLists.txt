@@ -7,7 +7,7 @@ project(sql-engine-logging)
 find_package(fmt REQUIRED)
 
 include_directories( 
-    ../application-info/
+    ../app-info/
     ../
 )
 
@@ -31,6 +31,6 @@ target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME} 
     sql-engine-utility 
-    sql-engine-application-info 
+    sql-engine-app-info 
     fmt::fmt
 )

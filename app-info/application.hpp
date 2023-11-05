@@ -11,6 +11,7 @@
 
 #include <string>
 #include <memory>
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,7 +23,7 @@ namespace SQLEngine::Application
     //                                                                      //
     //////////////////////////////////////////////////////////////////////////
 
-    class Info
+    class PROJECT_SHARED_EXPORT Info
     {
     public:
         virtual ~Info() = default;
@@ -37,7 +38,7 @@ namespace SQLEngine::Application
 
     //////////////////////////////////////////////////////////////////////////
 
-    auto GetInfo() -> const Info &;
+    auto PROJECT_SHARED_EXPORT GetInfo() -> const Info &;
 
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //
