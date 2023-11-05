@@ -2,7 +2,7 @@
 # Set the minimum required version of CMake
 cmake_minimum_required(VERSION 3.5)
 
-project(sql-engine-logging)
+project(sql-engine-subproj-logging)
 
 set(CMAKE_CXX_STANDARD 17)
 
