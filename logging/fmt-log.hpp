@@ -23,7 +23,7 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class FMTLogger final : public ILogger
+    class FMTLogger : public ILogger
     {
        protected:
         Mode m_consoleMode;
