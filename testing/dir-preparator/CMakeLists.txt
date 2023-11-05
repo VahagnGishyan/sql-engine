@@ -12,6 +12,20 @@ set(SOURCES
     preparator.cpp
 )
 
+set(HEADERS
+    impl.hpp
+    preparator.hpp
+    sharelib.cpp
+)
+
+##########################################################
+
+set(FORMAT_FILES ${SOURCES} ${HEADERS})
+include(${CMAKE_SOURCE_DIR}/config/cmake/auto-format.cmake)
+AutoFormatClang(${FORMAT_FILES})
+
+##########################################################
+
 add_library (${PROJECT_NAME} SHARED #STATIC 
     ${SOURCES}
 ) 

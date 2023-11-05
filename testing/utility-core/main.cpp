@@ -3,17 +3,21 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include "utility/core.hpp"
 #include <gtest/gtest.h>
+
+#include <iostream>
+
+#include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(UtilityCore, Environment){
+TEST(UtilityCore, Environment)
+{
     ASSERT_TRUE(SQLEngine::Utility::GetEnvironmentValue("PATH").size());
-    // std::cout << "WorkDir is " << SQLEngine::Utility::GetDefaultDataPath() << std::endl;
+    // std::cout << "WorkDir is " << SQLEngine::Utility::GetDefaultDataPath() <<
+    // std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -4,12 +4,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "test-dir-preparation.hpp"
-#include "testing/dir-preparator/preparator.hpp"
-#include "app-info/application.hpp"
-#include "utility/core.hpp"
-#include "utility/filesystem.hpp"
 
 #include <iostream>
+
+#include "app-info/application.hpp"
+#include "testing/dir-preparator/preparator.hpp"
+#include "utility/core.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -43,7 +44,7 @@ namespace SQLEngine::Testing::Peparation
 
     class TestDirImpl : public TestDir
     {
-    public:
+       public:
         TestDirImpl() : m_dir{nullptr}
         {
         }
@@ -51,14 +52,15 @@ namespace SQLEngine::Testing::Peparation
         void Create() override
         {
             auto &&workdir = GetTestingWorkDir();
-            auto &&name = GetTestingName();
-            SQLEngine::Utility::MakeDir(workdir,
-                                        Utility::Option::ExistOk{true},
-                                        Utility::Option::CreateBaseDirectory{true});
+            auto &&name    = GetTestingName();
+            SQLEngine::Utility::MakeDir(
+                workdir, Utility::Option::ExistOk{true},
+                Utility::Option::CreateBaseDirectory{true});
 
             auto dir = CreateDirectory(name);
             dir->SetPath(workdir);
-            SQLEngine::Utility::AssertDirNotExists(dir->GetPath() + '/' + dir->GetName());
+            SQLEngine::Utility::AssertDirNotExists(dir->GetPath() + '/' +
+                                                   dir->GetName());
 
             CreateEmptyDir(*dir);
             CreateFile1Dir(*dir);
@@ -77,10 +79,11 @@ namespace SQLEngine::Testing::Peparation
             m_dir->Destroy();
         }
 
-    public:
+       public:
         auto GetWorkDir() const -> const std::string override
         {
-            const std::string path = GetTestingWorkDir() + '/' + GetTestingName();
+            const std::string path =
+                GetTestingWorkDir() + '/' + GetTestingName();
             return path;
         }
         auto GetEmptyDirPath() const -> const std::string override
@@ -98,16 +101,17 @@ namespace SQLEngine::Testing::Peparation
         auto GetFileNInfo() const -> const ShFileNInfo override
         {
             constexpr int count = 10;
-            auto &&obj = std::make_shared<FileNInfo>();
+            auto &&obj          = std::make_shared<FileNInfo>();
             for (int index = 0; index < count; ++index)
             {
-                obj->filenameList.push_back("file-" + std::to_string(index) + ".txt");
+                obj->filenameList.push_back("file-" + std::to_string(index) +
+                                            ".txt");
             }
             return obj;
         }
         auto GetDirNInfo() const -> const ShDirNInfo override
         {
-            auto &&obj = std::make_shared<DirNInfo>();
+            auto &&obj          = std::make_shared<DirNInfo>();
             constexpr int count = 10;
             for (int index = 0; index < count; ++index)
             {
@@ -136,25 +140,44 @@ namespace SQLEngine::Testing::Peparation
             static auto &&info = [this]()
             {
                 auto &&info = std::make_shared<DirOfPAE>();
-                info->dirpath = GetWorkDir() + "/" + GetValidFilePAEListDirName();
-                info->paelist.push_back(PathAndExtension{"file-txt-low.txt", "txt"});
-                info->paelist.push_back(PathAndExtension{"file-txt-up.TXT", ".txt"});
-                info->paelist.push_back(PathAndExtension{"file-txt-0.txt", "txt"});
-                info->paelist.push_back(PathAndExtension{"file-txt-1.txt", "txt"});
-                info->paelist.push_back(PathAndExtension{"file-txt-2.txt", "txt"});
-                info->paelist.push_back(PathAndExtension{"file-txt-3.txt", "txt"});
-                info->paelist.push_back(PathAndExtension{"file-json-0.json", ".json"});
-                info->paelist.push_back(PathAndExtension{"file-json-1.json", ".json"});
-                info->paelist.push_back(PathAndExtension{"file-json-2.json", ".json"});
-                info->paelist.push_back(PathAndExtension{"file-json-3.json", ".json"});
-                info->paelist.push_back(PathAndExtension{"file-py-0.py", ".py"});
-                info->paelist.push_back(PathAndExtension{"file-py-1.py", ".py"});
-                info->paelist.push_back(PathAndExtension{"file-py-2.py", ".py"});
-                info->paelist.push_back(PathAndExtension{"file-py-3.py", ".py"});
-                info->paelist.push_back(PathAndExtension{"file-cpp-0.cpp", ".cpp"});
-                info->paelist.push_back(PathAndExtension{"file-cpp-1.cpp", ".cpp"});
-                info->paelist.push_back(PathAndExtension{"file-cpp-2.cpp", ".cpp"});
-                info->paelist.push_back(PathAndExtension{"file-cpp-3.cpp", ".cpp"});
+                info->dirpath =
+                    GetWorkDir() + "/" + GetValidFilePAEListDirName();
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-low.txt", "txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-up.TXT", ".txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-0.txt", "txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-1.txt", "txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-2.txt", "txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt-3.txt", "txt"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-json-0.json", ".json"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-json-1.json", ".json"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-json-2.json", ".json"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-json-3.json", ".json"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-py-0.py", ".py"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-py-1.py", ".py"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-py-2.py", ".py"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-py-3.py", ".py"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-cpp-0.cpp", ".cpp"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-cpp-1.cpp", ".cpp"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-cpp-2.cpp", ".cpp"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-cpp-3.cpp", ".cpp"});
                 return info;
             }();
             return info;
@@ -164,9 +187,12 @@ namespace SQLEngine::Testing::Peparation
             static auto &&info = [this]()
             {
                 auto &&info = std::make_shared<DirOfPAE>();
-                info->dirpath = GetWorkDir() + "/" + GetInvalidFilePAEListDirName();
-                info->paelist.push_back(PathAndExtension{"file-txt.txt", "aaa"});
-                info->paelist.push_back(PathAndExtension{"file-txt.TXT", ".json"});
+                info->dirpath =
+                    GetWorkDir() + "/" + GetInvalidFilePAEListDirName();
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt.txt", "aaa"});
+                info->paelist.push_back(
+                    PathAndExtension{"file-txt.TXT", ".json"});
                 info->paelist.push_back(PathAndExtension{"file.json", "txt"});
                 info->paelist.push_back(PathAndExtension{"file", ".py"});
                 return info;
@@ -174,7 +200,7 @@ namespace SQLEngine::Testing::Peparation
             return info;
         }
 
-    protected:
+       protected:
         auto GetEmptyDirName() const -> const std::string
         {
             return "empty-dir";
@@ -212,7 +238,7 @@ namespace SQLEngine::Testing::Peparation
             return "path-and-extension-invalid";
         }
 
-    protected:
+       protected:
         void AddFilesTo(IDirectory &dir, const FileNInfo &files) const
         {
             for (auto &&file : files.filenameList)
@@ -228,7 +254,7 @@ namespace SQLEngine::Testing::Peparation
             }
         }
 
-    protected:
+       protected:
         void CreateEmptyDir(IDirectory &dir) const
         {
             auto &&workdir = GetWorkDir();
@@ -241,7 +267,7 @@ namespace SQLEngine::Testing::Peparation
         {
             auto &&workdir = GetWorkDir();
             auto &&dirname = GetFile1Name();
-            auto file = CreateDirectory(dirname);
+            auto file      = CreateDirectory(dirname);
             file->SetPath(workdir);
 
             const std::string filename = GetEmptyFileName();
@@ -250,9 +276,9 @@ namespace SQLEngine::Testing::Peparation
         }
         void CreateFileNDir(IDirectory &dir) const
         {
-            auto &&workdir = GetWorkDir();
+            auto &&workdir  = GetWorkDir();
             auto &&fileNdir = GetFileNName();
-            auto ndir = CreateDirectory(fileNdir);
+            auto ndir       = CreateDirectory(fileNdir);
             ndir->SetPath(workdir);
             auto &&filelist = GetFileNInfo();
             AddFilesTo(*ndir, *filelist);
@@ -262,7 +288,7 @@ namespace SQLEngine::Testing::Peparation
         {
             auto &&workdir = GetWorkDir();
             auto &&dirname = GetDirNName();
-            auto ndir = CreateDirectory(dirname);
+            auto ndir      = CreateDirectory(dirname);
             ndir->SetPath(workdir);
             auto &&dirlist = GetDirNInfo();
             AddEmptyDirsTo(*ndir, *dirlist);
@@ -270,9 +296,9 @@ namespace SQLEngine::Testing::Peparation
         }
         void CreateCompDir(IDirectory &dir) const
         {
-            auto &&workdir = GetWorkDir();
+            auto &&workdir     = GetWorkDir();
             auto &&compdirname = GetCompDirName();
-            auto comp = CreateDirectory(compdirname);
+            auto comp          = CreateDirectory(compdirname);
             comp->SetPath(workdir);
             auto &&filelist = GetFileNInfo();
             AddFilesTo(*comp, *filelist);
@@ -282,10 +308,10 @@ namespace SQLEngine::Testing::Peparation
         }
         void CreateFilesValidPAE(IDirectory &dir) const
         {
-            auto &&workdir = GetWorkDir();
-            auto &&pae = GetValidFilePAEList();
+            auto &&workdir    = GetWorkDir();
+            auto &&pae        = GetValidFilePAEList();
             auto &&paedirName = GetValidFilePAEListDirName();
-            auto comp = CreateDirectory(paedirName);
+            auto comp         = CreateDirectory(paedirName);
             comp->SetPath(workdir);
             for (auto &&item : pae->paelist)
             {
@@ -307,7 +333,7 @@ namespace SQLEngine::Testing::Peparation
             dir.AddComponent(std::move(comp));
         }
 
-    protected:
+       protected:
         UDirectory m_dir;
     };
 
@@ -326,7 +352,7 @@ namespace SQLEngine::Testing::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Testing::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

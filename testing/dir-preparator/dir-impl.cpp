@@ -3,10 +3,11 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "impl.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+
+#include "impl.hpp"
 #include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@ namespace SQLEngine::Testing::Core
 
     void Directory::Create()
     {
-        std::string basedir = GetPath();
+        std::string basedir  = GetPath();
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
 
@@ -51,7 +52,7 @@ namespace SQLEngine::Testing::Core
     }
     void Directory::Destroy()
     {
-        std::string basedir = GetPath();
+        std::string basedir  = GetPath();
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
 
@@ -72,7 +73,8 @@ namespace SQLEngine::Testing::Core
         }
         catch (const fs::filesystem_error &exception)
         {
-            throw std::runtime_error("Failed to remove directory: " + filepath + "what: " + exception.what());
+            throw std::runtime_error("Failed to remove directory: " + filepath +
+                                     "what: " + exception.what());
         }
     }
 
@@ -106,7 +108,7 @@ namespace SQLEngine::Testing::Core
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Testing::Core
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

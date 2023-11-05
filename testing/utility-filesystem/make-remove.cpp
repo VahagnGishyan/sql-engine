@@ -1,10 +1,11 @@
 
-#include "utility/filesystem.hpp"
-#include "test-dir-preparation.hpp"
-
-#include <gtest/gtest.h>
 #include <fmt/core.h>
+#include <gtest/gtest.h>
+
 #include <vector>
+
+#include "test-dir-preparation.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -19,7 +20,7 @@ using namespace SQLEngine::Utility;
 
 TEST(MakeAndRemoveDir, Success)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testDir = emptydir + "/test-directory";
@@ -42,7 +43,7 @@ TEST(MakeAndRemoveDir, Success)
 
 TEST(MakeDir, Failure)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string existingDir = emptydir + "/existing_directory";
@@ -65,7 +66,7 @@ TEST(MakeDir, Failure)
 
 TEST(RemoveDir, Failure)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testDir = emptydir + "/test-directory";
@@ -83,7 +84,7 @@ TEST(RemoveDir, Failure)
 
 TEST(MakeAndRemoveFile, Success)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testFile = emptydir + "test-file.txt";
@@ -103,7 +104,7 @@ TEST(MakeAndRemoveFile, Success)
 
 TEST(MakeFile, Failure)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     // Define an existing file path for testing (change it as needed)
@@ -127,7 +128,7 @@ TEST(MakeFile, Failure)
 
 TEST(RemoveFile, Failure)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     // Define an existing file path for testing (change it as needed)

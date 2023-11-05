@@ -9,8 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "preparator.hpp"
 #include <list>
+
+#include "preparator.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -39,26 +40,26 @@ namespace SQLEngine::Testing::Core
 
     class File : public IFile
     {
-    public:
+       public:
         File(const std::string &name);
 
-    public:
+       public:
         void Create() override;
         void Destroy() override;
 
-    public:
+       public:
         void SetPath(const std::string &) override;
         auto GetPath() -> const std::string override;
         void SetName(const std::string &) override;
         auto GetName() -> const std::string override;
 
-    public:
+       public:
         void AddLine(const std::string &text) override;
 
-    public:
+       public:
         static auto CreateInstance(const std::string &name) -> UFile;
 
-    protected:
+       protected:
         std::string m_filepath;
         std::string m_filename;
         std::list<std::string> m_content;
@@ -68,26 +69,26 @@ namespace SQLEngine::Testing::Core
 
     class Directory : public IDirectory
     {
-    public:
+       public:
         Directory(const std::string &name);
 
-    public:
+       public:
         void Create() override;
         void Destroy() override;
 
-    public:
+       public:
         void SetPath(const std::string &) override;
         auto GetPath() -> const std::string override;
         void SetName(const std::string &) override;
         auto GetName() -> const std::string override;
 
-    public:
+       public:
         void AddComponent(UObject object) override;
 
-    public:
+       public:
         static auto CreateInstance(const std::string &name) -> UDirectory;
 
-    protected:
+       protected:
         std::string m_basedirpath;
         std::string m_dirname;
         std::list<UObject> m_content;
@@ -96,7 +97,7 @@ namespace SQLEngine::Testing::Core
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Testing::Core
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

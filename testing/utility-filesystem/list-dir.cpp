@@ -1,11 +1,12 @@
 
-#include "utility/filesystem.hpp"
-#include "test-dir-preparation.hpp"
-
-#include <gtest/gtest.h>
 #include <fmt/core.h>
-#include <vector>
+#include <gtest/gtest.h>
+
 #include <algorithm>
+#include <vector>
+
+#include "test-dir-preparation.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -46,35 +47,39 @@ auto VecStrToStrForPrint(const std::vector<std::string> &list)
 
 TEST(ListDirTest, ValidDirectory)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
-    auto &&dirNpath = testdir.GetDirNPath();
-    auto &&compPath = testdir.GetCompDirPath();
+    auto &&dirNpath  = testdir.GetDirNPath();
+    auto &&compPath  = testdir.GetCompDirPath();
 
     auto &&fileNinfo = testdir.GetFileNInfo();
-    auto &&dirNinfo = testdir.GetDirNInfo();
+    auto &&dirNinfo  = testdir.GetDirNInfo();
 
     auto &&fileNList = ListDir(fileNpath);
     ASSERT_TRUE(fileNList != nullptr);
     ASSERT_EQ(fileNList->size(), fileNinfo->filenameList.size());
     EXPECT_TRUE(AreVectorsEqual(*fileNList, fileNinfo->filenameList));
-    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList), VecStrToStrForPrint(fileNinfo->filenameList));
+    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList),
+    //  VecStrToStrForPrint(fileNinfo->filenameList));
 
     auto &&dirNList = ListDir(dirNpath);
     ASSERT_TRUE(dirNList != nullptr);
     ASSERT_EQ(dirNList->size(), dirNinfo->dirnameList.size());
     EXPECT_TRUE(AreVectorsEqual(*dirNList, dirNinfo->dirnameList));
-    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList), VecStrToStrForPrint(fileNinfo->filenameList));
+    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList),
+    //  VecStrToStrForPrint(fileNinfo->filenameList));
 
     auto &&compList = ListDir(compPath);
     ASSERT_TRUE(compList != nullptr);
-    EXPECT_EQ(compList->size(), fileNinfo->filenameList.size() + dirNinfo->dirnameList.size());
-    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList), VecStrToStrForPrint(fileNinfo->filenameList));
+    EXPECT_EQ(compList->size(),
+              fileNinfo->filenameList.size() + dirNinfo->dirnameList.size());
+    //  << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*fileNList),
+    //  VecStrToStrForPrint(fileNinfo->filenameList));
 }
 
 TEST(ListDirTest, EmptyDirectory)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto result = ListDir(emptydir);
@@ -92,13 +97,13 @@ TEST(ListDirTest, EmptyDirectory)
 
 TEST(ListDirsInDirTest, ValidDirectory)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
-    auto &&dirNpath = testdir.GetDirNPath();
-    auto &&compPath = testdir.GetCompDirPath();
+    auto &&dirNpath  = testdir.GetDirNPath();
+    auto &&compPath  = testdir.GetCompDirPath();
 
     auto &&fileNinfo = testdir.GetFileNInfo();
-    auto &&dirNinfo = testdir.GetDirNInfo();
+    auto &&dirNinfo  = testdir.GetDirNInfo();
 
     auto &&fileNList = ListDirsInDir(fileNpath);
     ASSERT_TRUE(fileNList != nullptr);
@@ -108,7 +113,8 @@ TEST(ListDirsInDirTest, ValidDirectory)
     ASSERT_TRUE(dirNList != nullptr);
     ASSERT_EQ(dirNList->size(), dirNinfo->dirnameList.size());
     EXPECT_TRUE(AreVectorsEqual(*dirNList, dirNinfo->dirnameList))
-        << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*dirNList), VecStrToStrForPrint(dirNinfo->dirnameList));
+        << fmt::format("first: {}, second: {}", VecStrToStrForPrint(*dirNList),
+                       VecStrToStrForPrint(dirNinfo->dirnameList));
 
     auto &&compList = ListDirsInDir(compPath);
     ASSERT_TRUE(compList != nullptr);
@@ -117,13 +123,13 @@ TEST(ListDirsInDirTest, ValidDirectory)
 
 TEST(ListFilesInDirTest, ValidDirectory)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
-    auto &&dirNpath = testdir.GetDirNPath();
-    auto &&compPath = testdir.GetCompDirPath();
+    auto &&dirNpath  = testdir.GetDirNPath();
+    auto &&compPath  = testdir.GetCompDirPath();
 
     auto &&fileNinfo = testdir.GetFileNInfo();
-    auto &&dirNinfo = testdir.GetDirNInfo();
+    auto &&dirNinfo  = testdir.GetDirNInfo();
 
     auto &&fileNList = ListFilesInDir(fileNpath);
     ASSERT_TRUE(fileNList != nullptr);
@@ -141,7 +147,7 @@ TEST(ListFilesInDirTest, ValidDirectory)
 
 TEST(ListDir, NonExistentDirectory)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir     = Peparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
 
     ASSERT_THROW(ListDir(nonExisting), std::invalid_argument);
@@ -174,18 +180,18 @@ TEST(ListFilesInDirTest, ListFilesWithExtension)
 
 TEST(ListFilesInDirTest, ListFilesWithExtensionEmptyDir)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto &&extension = ".txt";
-    auto &&list = ListFilesInDir(emptydir, extension);
+    auto &&list      = ListFilesInDir(emptydir, extension);
     ASSERT_NE(list, nullptr);
     ASSERT_EQ(list->size(), 0);
 }
 
 TEST(ListFilesInDirTest, ListFilesWithNonExistentDir)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir     = Peparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
 
     auto &&extension = ".txt";

@@ -3,10 +3,11 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "impl.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+
+#include "impl.hpp"
 // #include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -32,12 +33,12 @@ namespace SQLEngine::Testing::Core
 
     void File::Create()
     {
-        std::string basedir = GetPath();
+        std::string basedir  = GetPath();
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
 
-        // Open the file in output mode, which creates the file if it doesn't exist
-        // std::cout << "File::Create(), path: " << filepath << std::endl;
+        // Open the file in output mode, which creates the file if it doesn't
+        // exist std::cout << "File::Create(), path: " << filepath << std::endl;
         std::ofstream outputFile(filepath);
 
         // Check if the file is successfully opened
@@ -56,7 +57,7 @@ namespace SQLEngine::Testing::Core
 
     void File::Destroy()
     {
-        std::string basedir = GetPath();
+        std::string basedir  = GetPath();
         std::string filename = GetName();
         std::string filepath = basedir + "/" + filename;
 
@@ -98,7 +99,7 @@ namespace SQLEngine::Testing::Core
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Testing::Core
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

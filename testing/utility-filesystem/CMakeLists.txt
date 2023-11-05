@@ -15,6 +15,14 @@ set(SOURCES
     test-dir-preparation.cpp
 )
 
+##########################################################
+
+set(FORMAT_FILES ${SOURCES} ${HEADERS})
+include(${CMAKE_SOURCE_DIR}/config/cmake/auto-format.cmake)
+AutoFormatClang(${FORMAT_FILES})
+
+##########################################################
+
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_17)

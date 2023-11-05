@@ -3,9 +3,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <gtest/gtest.h>
+
 #include "test-dir-preparation.hpp"
 #include "utility/filesystem.hpp"
-#include <gtest/gtest.h>
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -15,7 +16,7 @@ namespace SQLEngine::Testing::Peparation
 {
     class TestDirWrapperAutoCreateDestroy
     {
-    public:
+       public:
         TestDirWrapperAutoCreateDestroy()
         {
             // Create test directory
@@ -39,12 +40,12 @@ namespace SQLEngine::Testing::Peparation
 
     int ClearRemainingTempFiles()
     {
-        auto &&testdir = Peparation::TestDir::GetTestingWorkDir();
+        auto &&testdir  = Peparation::TestDir::GetTestingWorkDir();
         auto &&testname = Peparation::TestDir::GetTestingName();
         SQLEngine::Utility::RemoveDir(testdir + '/' + testname);
         return 0;
     }
-}
+}  // namespace SQLEngine::Testing::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //
