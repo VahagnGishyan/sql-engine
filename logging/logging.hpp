@@ -10,8 +10,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <string>
-#include "utility/defines.hpp"
+
 #include "log-core.hpp"
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -30,7 +31,7 @@ namespace SQLEngine::Logging
     PROJECT_SHARED_EXPORT
     void Debug(const std::string &message);
     PROJECT_SHARED_EXPORT
-    void Error(const std::string &message);
+    void Error(const std::string &message, const bool dothrow = false);
 
     PROJECT_SHARED_EXPORT
     auto GetMode() -> const Mode;
@@ -39,7 +40,7 @@ namespace SQLEngine::Logging
 
     PROJECT_SHARED_EXPORT
     auto GetLogPath() -> const std::string;
-}
+}  // namespace SQLEngine::Logging
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

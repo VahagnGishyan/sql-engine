@@ -4,33 +4,46 @@ cmake_minimum_required(VERSION 3.5)
 
 project(sql-engine-logging)
 
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(fmt REQUIRED)
 
 include_directories( 
-    ../app-info/
     ../
 )
 
 set(SOURCES
-    boost-wrapper.cpp
-    console-log.cpp
-    file-log.cpp
+    fmt-log.cpp
     log-core.cpp
     logging.cpp
 )
+
+set(HEADERS
+    fmt-log.hpp
+    ilogger.hpp
+    log-core.hpp
+    logging.hpp
+    sharelib.hpp
+)
+
+##########################################################
+
+set(FORMAT_FILES ${SOURCES} ${HEADERS})
+include(${CMAKE_SOURCE_DIR}/config/cmake/auto-format.cmake)
+AutoFormatClang(${FORMAT_FILES})
+
+##########################################################
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
     ${SOURCES}
 ) 
 
-add_compile_definitions(LOGGING_SHARE)
-
-target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_17)
-# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+add_compile_definitions(LOGGING_BUILD)
 
 target_link_libraries(${PROJECT_NAME} 
     sql-engine-utility 
     sql-engine-app-info 
     fmt::fmt
 )
+
+##########################################################

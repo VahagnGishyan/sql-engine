@@ -4,26 +4,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "logging.hpp"
-#include "boost-wrapper.hpp"
+
+#include "fmt-log.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
-
-// def PrintInfo(message):
-//     print(GREEN + message + RESET)
-
-// def PrintSignal(message):
-//     print(GREEN + message + RESET)
-
-// def PrintWarning(message):
-//     print(YELLOW + message + RESET)
-
-// def PrintDebug(message):
-//     print(BLUE + message + RESET)
-
-// def PrintError(message):
-//     print(RED + message + RESET)
 
 namespace SQLEngine::Logging
 {
@@ -33,7 +19,7 @@ namespace SQLEngine::Logging
 
     static auto GetLogger() -> ILogger &
     {
-        static ULogger logger = std::make_unique<BoostLogWrapper>();
+        static ULogger logger = std::make_unique<FMTLogger>();
         return *(logger);
     }
 
@@ -85,10 +71,10 @@ namespace SQLEngine::Logging
         logger.Debug(message);
     }
 
-    void Error(const std::string &message, const bool dothrow = false)
+    void Error(const std::string &message, const bool dothrow)
     {
         auto &&logger = GetLogger();
-        logger.Error(message, false);
+        logger.Error(message, dothrow);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -102,7 +88,7 @@ namespace SQLEngine::Logging
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Logging
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

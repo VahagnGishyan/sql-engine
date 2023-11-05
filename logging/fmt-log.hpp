@@ -9,9 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fstream>
+
 #include "ilogger.hpp"
-#include "console-log.hpp"
-#include "file-log.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -19,17 +19,20 @@
 
 namespace SQLEngine::Logging
 {
-    class BoostLogWrapper : public ILogger
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    class FMTLogger : public ILogger
     {
-    protected:
+       protected:
         Mode m_consoleMode;
-        UConsoleWrite m_console;
-        UFileLog m_file;
+        std::ofstream m_logfile;
 
-    public:
-        BoostLogWrapper();
+       public:
+        FMTLogger();
 
-    public:
+       public:
         void Message(const std::string &message) override;
         void Info(const std::string &message) override;
         void Signal(const std::string &message) override;
@@ -37,25 +40,31 @@ namespace SQLEngine::Logging
         void Debug(const std::string &message) override;
         void Error(const std::string &message, const bool dothrow) override;
 
-    public:
+       public:
         auto GetMode() const -> const Mode override;
         void SetMode(const Mode &mode) override;
 
-    public:
-        virtual auto GetLogPath() -> const std::string override;
+       public:
+        auto GetLogPath() -> const std::string override;
+        virtual auto GetLogFileName() -> const std::string;
 
-        //////////////////////////////////////////////////////////////////
-
-    public:
+       public:
         static auto GetDefaultLogPath() -> const std::string;
 
-    protected:
-        auto FormatMessage(const std::string &message, const Mode &mode) -> const std::string;
-        void FileWrite(const std::string &message);
-        void ConsolePrint(const std::string &message, const Mode &mode, const Color &color);
-        void LogMessage(const std::string &message, const Mode &mode, const Color &color = Color::Default);
+       protected:
+        void DoLog(const std::string &message, const Mode &mode,
+                   const Color &color = Color::Default);
+        auto PrepareMessage(const std::string &message, const Mode &mode)
+            -> const std::string;
+        void WriteInFile(const std::string &message, const Mode &mode);
+        void PrintInConsole(const std::string &message, const Mode &mode,
+                            const Color &color);
     };
-}
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+}  // namespace SQLEngine::Logging
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
