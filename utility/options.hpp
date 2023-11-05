@@ -10,9 +10,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "sharelib.hpp"
-#include <vector>
 #include <memory>
+#include <vector>
+
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -26,14 +27,14 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT IOption
     {
-    public:
+       public:
         explicit IOption(const bool value);
         virtual ~IOption() = default;
 
-    public:
+       public:
         operator bool() const;
 
-    protected:
+       protected:
         const bool m_value;
     };
 
@@ -46,7 +47,7 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT ExistOk : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
@@ -54,7 +55,7 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT MustExist : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
@@ -62,7 +63,7 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT CreateBaseDirectory : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
@@ -70,14 +71,14 @@ namespace SQLEngine::Utility::Option
 
     class PROJECT_SHARED_EXPORT FullPaths : public IOption
     {
-    public:
+       public:
         using IOption::IOption;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Utility::Option
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

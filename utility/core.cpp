@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "core.hpp"
+
 #include <filesystem>
 #include <iostream>
 
@@ -27,10 +28,10 @@ namespace SQLEngine::Utility
                 value = std::move(std::string(buf));
                 free(buf);
             }
-#elif defined(IS_LINUX) or defined(IS_MACOS) 
+#elif defined(IS_LINUX) or defined(IS_MACOS)
             const char *const envValue = std::getenv(name.c_str());
-            value = (envValue == nullptr ? std::string()
-                                         : std::string(envValue));
+            value =
+                (envValue == nullptr ? std::string() : std::string(envValue));
 #else
 #error "Unsupported OS"
 #endif
@@ -38,7 +39,7 @@ namespace SQLEngine::Utility
         return (value);
     }
 
-#if defined(IS_LINUX) or defined(IS_MACOS) 
+#if defined(IS_LINUX) or defined(IS_MACOS)
     static auto ExpandUser(const std::string &path) -> const std::string
     {
         // Get the user's home directory using std.Filesystem
@@ -66,10 +67,10 @@ namespace SQLEngine::Utility
 #elif defined IS_MACOS
         return ExpandUser("~/Library/Application Support");
 #else
-    #error "Unsupported OS"
+#error "Unsupported OS"
 #endif
     }
-}
+}  // namespace SQLEngine::Utility
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

@@ -10,11 +10,12 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "sharelib.hpp"
-#include "options.hpp"
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "options.hpp"
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -44,16 +45,28 @@ namespace SQLEngine::Utility
     void AssertDirNotExists(const std::string &path);
 
     PROJECT_SHARED_EXPORT
-    auto CheckFileExtension(const std::string &path, const std::string &extension) -> bool;
+    auto CheckFileExtension(const std::string &path,
+                            const std::string &extension) -> bool;
 
     PROJECT_SHARED_EXPORT
-    auto ListDir(const std::string &path, const Option::FullPaths returnFullPaths = Option::FullPaths{false}) -> std::unique_ptr<std::vector<std::string>>;
+    auto ListDir(const std::string &path,
+                 const Option::FullPaths returnFullPaths = Option::FullPaths{
+                     false}) -> std::unique_ptr<std::vector<std::string>>;
     PROJECT_SHARED_EXPORT
-    auto ListDirsInDir(const std::string &path, const Option::FullPaths returnFullPaths = Option::FullPaths{false}) -> std::unique_ptr<std::vector<std::string>>;
+    auto ListDirsInDir(
+        const std::string &path,
+        const Option::FullPaths returnFullPaths = Option::FullPaths{false})
+        -> std::unique_ptr<std::vector<std::string>>;
     PROJECT_SHARED_EXPORT
-    auto ListFilesInDir(const std::string &path, const Option::FullPaths returnFullPaths = Option::FullPaths{false}) -> std::unique_ptr<std::vector<std::string>>;
+    auto ListFilesInDir(
+        const std::string &path,
+        const Option::FullPaths returnFullPaths = Option::FullPaths{false})
+        -> std::unique_ptr<std::vector<std::string>>;
     PROJECT_SHARED_EXPORT
-    auto ListFilesInDir(const std::string &path, const std::string &extension, const Option::FullPaths returnFullPaths = Option::FullPaths{false}) -> std::unique_ptr<std::vector<std::string>>;
+    auto ListFilesInDir(
+        const std::string &path, const std::string &extension,
+        const Option::FullPaths returnFullPaths = Option::FullPaths{false})
+        -> std::unique_ptr<std::vector<std::string>>;
 
     PROJECT_SHARED_EXPORT
     auto IsDirEmpty(const std::string &path) -> bool;
@@ -63,17 +76,22 @@ namespace SQLEngine::Utility
     PROJECT_SHARED_EXPORT
     void MakeDir(const std::string &path,
                  const Option::ExistOk existok = Option::ExistOk{false},
-                 const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
+                 const Option::CreateBaseDirectory &createbase =
+                     Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
-    void RemoveDir(const std::string &path, const Option::MustExist mustexist = Option::MustExist{true});
+    void RemoveDir(const std::string &path,
+                   const Option::MustExist mustexist = Option::MustExist{true});
 
     PROJECT_SHARED_EXPORT
     void MakeEmptyFile(const std::string &path,
                        const Option::ExistOk existok = Option::ExistOk{false},
-                       const Option::CreateBaseDirectory &createbase = Option::CreateBaseDirectory{false});
+                       const Option::CreateBaseDirectory &createbase =
+                           Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
-    void RemoveFile(const std::string &path, const Option::MustExist mustexist = Option::MustExist{true});
-}
+    void RemoveFile(const std::string &path,
+                    const Option::MustExist mustexist = Option::MustExist{
+                        true});
+}  // namespace SQLEngine::Utility
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

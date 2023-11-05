@@ -5,7 +5,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "filesystem.hpp"
+
 #include <fmt/core.h>
+
 #include <filesystem>
 #include <fstream>
 
@@ -37,7 +39,8 @@ namespace SQLEngine
     {
         if (!IsPathExists(path))
         {
-            throw std::invalid_argument(fmt::format("{} does not exist.", path));
+            throw std::invalid_argument(
+                fmt::format("{} does not exist.", path));
         }
     }
 
@@ -95,7 +98,8 @@ namespace SQLEngine
     {
         if (!IsDirExists(path))
         {
-            throw std::invalid_argument(fmt::format("{} is not a directory.", path));
+            throw std::invalid_argument(
+                fmt::format("{} is not a directory.", path));
         }
     }
 
@@ -103,13 +107,15 @@ namespace SQLEngine
     {
         if (IsDirExists(path))
         {
-            throw std::invalid_argument(fmt::format("{} directory exists.", path));
+            throw std::invalid_argument(
+                fmt::format("{} directory exists.", path));
         }
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    auto Utility::CheckFileExtension(const std::string &path, const std::string &extension) -> bool
+    auto Utility::CheckFileExtension(const std::string &path,
+                                     const std::string &extension) -> bool
     {
         AssertFileExists(path);
         fs::path filePath(path);
@@ -124,9 +130,12 @@ namespace SQLEngine
             {
                 expectedExtension = "." + expectedExtension;
             }
-            // Convert both extensions to lowercase for case-insensitive comparison
-            std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
-            std::transform(expectedExtension.begin(), expectedExtension.end(), expectedExtension.begin(), ::tolower);
+            // Convert both extensions to lowercase for case-insensitive
+            // comparison
+            std::transform(fileExtension.begin(), fileExtension.end(),
+                           fileExtension.begin(), ::tolower);
+            std::transform(expectedExtension.begin(), expectedExtension.end(),
+                           expectedExtension.begin(), ::tolower);
             return fileExtension == expectedExtension;
         }
 
@@ -135,7 +144,9 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    auto Utility::ListDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListDir(const std::string &path,
+                          const Option::FullPaths returnFullPaths)
+        -> std::unique_ptr<std::vector<std::string>>
     {
         AssertDirExists(path);
         auto result = std::make_unique<std::vector<std::string>>();
@@ -155,10 +166,12 @@ namespace SQLEngine
         return result;
     }
 
-    auto Utility::ListDirsInDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListDirsInDir(const std::string &path,
+                                const Option::FullPaths returnFullPaths)
+        -> std::unique_ptr<std::vector<std::string>>
     {
         auto listDir = ListDir(path, returnFullPaths);
-        auto result = std::make_unique<std::vector<std::string>>();
+        auto result  = std::make_unique<std::vector<std::string>>();
 
         for (auto &&entry : *listDir)
         {
@@ -177,10 +190,12 @@ namespace SQLEngine
         return result;
     }
 
-    auto Utility::ListFilesInDir(const std::string &path, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListFilesInDir(const std::string &path,
+                                 const Option::FullPaths returnFullPaths)
+        -> std::unique_ptr<std::vector<std::string>>
     {
         auto listDir = ListDir(path, returnFullPaths);
-        auto result = std::make_unique<std::vector<std::string>>();
+        auto result  = std::make_unique<std::vector<std::string>>();
 
         // std::cout << "point-input, size: " << listDir->size() << std::endl;
 
@@ -207,10 +222,13 @@ namespace SQLEngine
         return result;
     }
 
-    auto Utility::ListFilesInDir(const std::string &path, const std::string &extension, const Option::FullPaths returnFullPaths) -> std::unique_ptr<std::vector<std::string>>
+    auto Utility::ListFilesInDir(const std::string &path,
+                                 const std::string &extension,
+                                 const Option::FullPaths returnFullPaths)
+        -> std::unique_ptr<std::vector<std::string>>
     {
         auto listDir = ListDir(path, returnFullPaths);
-        auto result = std::make_unique<std::vector<std::string>>();
+        auto result  = std::make_unique<std::vector<std::string>>();
 
         for (auto &&entry : *listDir)
         {
@@ -241,7 +259,8 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    void Utility::MakeDir(const std::string &path, const Option::ExistOk existok,
+    void Utility::MakeDir(const std::string &path,
+                          const Option::ExistOk existok,
                           const Option::CreateBaseDirectory &createbase)
     {
         // std::cout << "point-start" << std::endl;
@@ -277,7 +296,8 @@ namespace SQLEngine
         // std::cout << "point-exit" << std::endl;
     }
 
-    void Utility::RemoveDir(const std::string &path, const Option::MustExist mustexist)
+    void Utility::RemoveDir(const std::string &path,
+                            const Option::MustExist mustexist)
     {
         if (mustexist)
         {
@@ -296,13 +316,15 @@ namespace SQLEngine
         }
         catch (const fs::filesystem_error &exception)
         {
-            throw std::runtime_error("Failed to remove directory: " + path + ", what: " + exception.what());
+            throw std::runtime_error("Failed to remove directory: " + path +
+                                     ", what: " + exception.what());
         }
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    void Utility::MakeEmptyFile(const std::string &path, const Option::ExistOk existok,
+    void Utility::MakeEmptyFile(const std::string &path,
+                                const Option::ExistOk existok,
                                 const Option::CreateBaseDirectory &createbase)
     {
         if (!existok)
@@ -347,14 +369,15 @@ namespace SQLEngine
         }
         catch (const fs::filesystem_error &exception)
         {
-            throw std::runtime_error("Failed to remove file: " + path + ", what: " + exception.what());
+            throw std::runtime_error("Failed to remove file: " + path +
+                                     ", what: " + exception.what());
         }
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
