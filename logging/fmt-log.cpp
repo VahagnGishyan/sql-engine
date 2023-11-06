@@ -155,8 +155,6 @@ namespace SQLEngine::Logging
         auto &&info      = Application::GetInfo();
         auto &&appname   = info.GetName();
         path             = fmt::format("{}/{}/logs", path, appname);
-        Utility::MakeDir(path, Utility::Option::ExistOk{true},
-                         Utility::Option::CreateBaseDirectory{true});
         return path;
     }
 
