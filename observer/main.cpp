@@ -3,8 +3,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/format.h>
+
 #include <iostream>
 
+#include "db-manager/database.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 
@@ -28,13 +31,7 @@ namespace SQLEngine::Observer
 
     int Main(const int count, char **values)
     {
-        SQLEngine::Logging::Message("First log");
-        SQLEngine::Logging::Info("First log");
-        SQLEngine::Logging::Signal("First log");
-        SQLEngine::Logging::Debug("First log");
-        SQLEngine::Logging::Warning("First log");
-        SQLEngine::Logging::Error("First log");
-        return 0;
+        DBManager::DoSomething();
         return (0);
     }
 
@@ -52,9 +49,11 @@ int main(const int argc, char **argv)
     int returnKey = 1;
     try
     {
-        std::cout << "Start Main()" << std::endl;
+        SQLEngine::Logging::Info("Program observer.");
+        SQLEngine::Logging::Signal("Start Main().");
+        SQLEngine::Logging::Signal(fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
         returnKey = SQLEngine::Observer::Main(argc, argv);
-        std::cout << "Close Main()" << std::endl;
+        SQLEngine::Logging::Signal("Close Main().");
     }
     catch (std::exception &err)
     {

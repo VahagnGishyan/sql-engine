@@ -24,4 +24,5 @@ target_link_libraries(${PROJECT_NAME}
     fmt::fmt 
     sql-engine-utility
     sql-engine-logging
+    sql-engine-db-manager
 )
