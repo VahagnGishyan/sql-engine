@@ -12,19 +12,6 @@ set(SOURCES
     options.cpp
 )
 
-set(HEADERS
-    core.hpp
-    filesystem.hpp
-    options.hpp
-    sharelib.hpp
-)
-
-##########################################################
-
-set(FORMAT_FILES ${SOURCES} ${HEADERS})
-include(${CMAKE_SOURCE_DIR}/config/cmake/auto-format.cmake)
-AutoFormatClang(${FORMAT_FILES})
-
 ##########################################################
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
