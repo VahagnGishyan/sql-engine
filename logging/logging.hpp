@@ -21,6 +21,12 @@
 namespace SQLEngine::Logging
 {
     PROJECT_SHARED_EXPORT
+    void Init();
+    // void Init(const std::string &logdir);
+    PROJECT_SHARED_EXPORT
+    auto GetLogPath() -> const std::string;
+
+    PROJECT_SHARED_EXPORT
     void Message(const std::string &message);
     PROJECT_SHARED_EXPORT
     void Info(const std::string &message);
@@ -37,9 +43,6 @@ namespace SQLEngine::Logging
     auto GetMode() -> const Mode;
     PROJECT_SHARED_EXPORT
     void SetMode(const Mode &);
-
-    PROJECT_SHARED_EXPORT
-    auto GetLogPath() -> const std::string;
 }  // namespace SQLEngine::Logging
 
 //////////////////////////////////////////////////////////////////////////

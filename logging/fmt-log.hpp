@@ -33,6 +33,14 @@ namespace SQLEngine::Logging
         FMTLogger();
 
        public:
+        void Init() override;
+        // void Init(const std::string &logdir) override;
+        auto GetLogPath() -> const std::string override;
+        virtual auto GetLogFileName() -> const std::string;
+        virtual void PrepareLogDir(const std::string &logdir);
+        virtual auto ResolutionNumberOfLogFiles() const -> int;
+
+       public:
         void Message(const std::string &message) override;
         void Info(const std::string &message) override;
         void Signal(const std::string &message) override;
@@ -43,10 +51,6 @@ namespace SQLEngine::Logging
        public:
         auto GetMode() const -> const Mode override;
         void SetMode(const Mode &mode) override;
-
-       public:
-        auto GetLogPath() -> const std::string override;
-        virtual auto GetLogFileName() -> const std::string;
 
        public:
         static auto GetDefaultLogPath() -> const std::string;

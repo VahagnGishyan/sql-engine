@@ -27,6 +27,25 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    void Init()
+    // void Init(const std::string &logdir)
+    {
+        auto &&logger = GetLogger();
+        logger.Init(/*logdir*/);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto GetLogPath() -> const std::string
+    {
+        auto &&logger = GetLogger();
+        return logger.GetLogPath();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
     void SetMode(const Mode &mod)
     {
         auto &&logger = GetLogger();
@@ -75,14 +94,6 @@ namespace SQLEngine::Logging
     {
         auto &&logger = GetLogger();
         logger.Error(message, dothrow);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto GetLogPath() -> const std::string
-    {
-        auto &&logger = GetLogger();
-        return logger.GetLogPath();
     }
 
     //////////////////////////////////////////////////////////////////////

@@ -8,11 +8,15 @@
 #include <fmt/chrono.h>
 #include <fmt/color.h>
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
+#include <algorithm>
+#include <iterator>
 #include <optional>
 #include <stdexcept>
 
 #include "app-info/application.hpp"
+#include "logging/logging.hpp"
 #include "utility/core.hpp"
 #include "utility/filesystem.hpp"
 
@@ -28,16 +32,79 @@ namespace SQLEngine::Logging
 
     FMTLogger::FMTLogger() : m_logfile{}, m_consoleMode{Mode::Default}
     {
-        m_logfile.open(GetLogPath());
-        if (!m_logfile)
-        {
-            throw std::runtime_error{
-                fmt::format("Enable to open file: {}", GetLogPath())};
-        }
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    void FMTLogger::Init()
+    // void FMTLogger::Init(const std::string &logdir)
+    {
+        auto &&logfilepath = GetLogPath();
+        PrepareLogDir(Utility::GetBaseDir(logfilepath));
+        m_logfile.open(logfilepath);
+        if (!m_logfile)
+        {
+            throw std::runtime_error{
+                fmt::format("Enable to open file: {}", logfilepath)};
+        }
+    }
+
+    auto FMTLogger::GetLogPath() -> const std::string
+    {
+        std::string path = FMTLogger::GetDefaultLogPath();
+        std::string name = GetLogFileName();
+        path             = fmt::format("{}/{}", path, name);
+        return path;
+    }
+
+    auto FMTLogger::GetLogFileName() -> const std::string
+    {
+        auto &&info    = Application::GetInfo();
+        auto &&appname = info.GetName();
+        using std::chrono::system_clock;
+        using std::chrono::time_point;
+        time_point<system_clock> timenow = system_clock::now();
+        return fmt::format("{}-{:%Y-%m-%d-%Hh-%Mm}.log", appname, timenow);
+    }
+
+    void FMTLogger::PrepareLogDir(const std::string &logdir)
+    {
+        Logging::Debug(
+            fmt::format("FMTLogger::PrepareLogDir(path: {})", logdir));
+        Utility::MakeDir(logdir, Utility::Option::ExistOk{true},
+                         Utility::Option::CreateBaseDirectory{true});
+        auto &&logfiles = Utility::ListFilesInDir(
+            logdir, ".log", Utility::Option::FullPaths{true});
+
+        Logging::Debug(fmt::format("logfiles.size: {}, elements: [{}]",
+                                   logfiles->size(), *logfiles));
+
+        auto resolutionNumber = ResolutionNumberOfLogFiles();
+        if (resolutionNumber == 1)
+        {
+            Logging::Error("FMTLogger, ResolutionNumberOfLogFiles must be > 1.",
+                           /*dothrow = */ true);
+        }
+        if (logfiles->size() >= (resolutionNumber - 1))
+        {
+            std::sort(logfiles->begin(), logfiles->end(), std::greater<>());
+            auto iter = logfiles->begin();
+            std::advance(iter, resolutionNumber - 1);
+            std::for_each(iter, logfiles->end(),
+                          [](const std::string &path)
+                          {
+                              Utility::RemoveFile(path);
+                          });
+        }
+    }
+
+    auto FMTLogger::ResolutionNumberOfLogFiles() const -> int
+    {
+        return (10);
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     void FMTLogger::Message(const std::string &message)
@@ -82,34 +149,12 @@ namespace SQLEngine::Logging
 
     //////////////////////////////////////////////////////////////////////
 
-    auto FMTLogger::GetLogPath() -> const std::string
-    {
-        std::string path = FMTLogger::GetDefaultLogPath();
-        std::string name = GetLogFileName();
-        path             = fmt::format("{}/{}", path, name);
-        return path;
-    }
-
-    auto FMTLogger::GetLogFileName() -> const std::string
-    {
-        auto &&info    = Application::GetInfo();
-        auto &&appname = info.GetName();
-        using std::chrono::system_clock;
-        using std::chrono::time_point;
-        time_point<system_clock> timenow = system_clock::now();
-        return fmt::format("log-{}-{:%Y-%m-%d}.txt", appname, timenow);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
     auto FMTLogger::GetDefaultLogPath() -> const std::string
     {
         std::string path = Utility::GetDefaultDataPath();
         auto &&info      = Application::GetInfo();
         auto &&appname   = info.GetName();
         path             = fmt::format("{}/{}/logs", path, appname);
-        Utility::MakeDir(path, Utility::Option::ExistOk{true},
-                         Utility::Option::CreateBaseDirectory{true});
         return path;
     }
 
@@ -133,6 +178,11 @@ namespace SQLEngine::Logging
     {
         using std::chrono::system_clock;
         using std::chrono::time_point;
+        if (m_logfile.is_open() == false)
+        {
+            return;
+        }
+
         time_point<system_clock> timenow = system_clock::now();
         auto strmode = Logging::ModeConvert::ModeAsString(mode);
         auto &&formatedMsg =

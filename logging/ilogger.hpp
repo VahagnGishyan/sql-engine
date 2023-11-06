@@ -23,6 +23,11 @@ namespace SQLEngine::Logging
         virtual ~ILogger() = default;
 
        public:
+        virtual void Init() = 0;
+        // virtual void Init(const std::string &logdir)   = 0;
+        virtual auto GetLogPath() -> const std::string = 0;
+
+       public:
         virtual void Message(const std::string &message)                   = 0;
         virtual void Info(const std::string &message)                      = 0;
         virtual void Signal(const std::string &message)                    = 0;
@@ -33,9 +38,6 @@ namespace SQLEngine::Logging
        public:
         virtual auto GetMode() const -> const Mode = 0;
         virtual void SetMode(const Mode &)         = 0;
-
-       public:
-        virtual auto GetLogPath() -> const std::string = 0;
     };
 
     using ULogger = std::unique_ptr<ILogger>;
