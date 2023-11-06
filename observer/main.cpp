@@ -7,7 +7,6 @@
 
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
-#include "logging/logging.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
