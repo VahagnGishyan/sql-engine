@@ -9,9 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -25,17 +25,17 @@ namespace SQLEngine::Testing::Peparation
 
     class TestDir
     {
-    public:
+       public:
         virtual ~TestDir() = default;
 
-    public:
+       public:
         static auto GetTestingWorkDir() -> const std::string;
         static auto GetTestingName() -> const std::string;
 
-    public:
-        virtual auto GetWorkDir() const -> const std::string = 0;
-        virtual auto GetEmptyDirPath() const -> const std::string = 0;
-        virtual auto GetFile1Path() const -> const std::string = 0;
+       public:
+        virtual auto GetWorkDir() const -> const std::string       = 0;
+        virtual auto GetEmptyDirPath() const -> const std::string  = 0;
+        virtual auto GetFile1Path() const -> const std::string     = 0;
         virtual auto GetEmptyFilePath() const -> const std::string = 0;
 
         struct FileNInfo
@@ -52,9 +52,9 @@ namespace SQLEngine::Testing::Peparation
         using ShDirNInfo = std::shared_ptr<DirNInfo>;
         virtual auto GetDirNInfo() const -> const ShDirNInfo = 0;
 
-        virtual auto GetFileNPath() const -> const std::string = 0;
-        virtual auto GetDirNPath() const -> const std::string = 0;
-        virtual auto GetCompDirPath() const -> const std::string = 0;
+        virtual auto GetFileNPath() const -> const std::string       = 0;
+        virtual auto GetDirNPath() const -> const std::string        = 0;
+        virtual auto GetCompDirPath() const -> const std::string     = 0;
         virtual auto GetNonExistingPath() const -> const std::string = 0;
 
         struct PathAndExtension
@@ -70,10 +70,10 @@ namespace SQLEngine::Testing::Peparation
         };
         using ShDirOfPAE = std::shared_ptr<DirOfPAE>;
 
-        virtual auto GetValidFilePAEList() const -> const ShDirOfPAE = 0;
+        virtual auto GetValidFilePAEList() const -> const ShDirOfPAE   = 0;
         virtual auto GetInvalidFilePAEList() const -> const ShDirOfPAE = 0;
 
-        virtual void Create() = 0;
+        virtual void Create()  = 0;
         virtual void Destroy() = 0;
     };
 
@@ -85,7 +85,7 @@ namespace SQLEngine::Testing::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}
+}  // namespace SQLEngine::Testing::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
