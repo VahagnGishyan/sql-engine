@@ -17,5 +17,4 @@ target_link_libraries(${PROJECT_NAME}
     fmt::fmt 
     gtest::gtest
     sql-engine-utility
-    sql-engine-testing-core
 )

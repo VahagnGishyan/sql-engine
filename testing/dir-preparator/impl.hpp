@@ -38,7 +38,7 @@ namespace SQLEngine::Testing::Core
 
     //////////////////////////////////////////////////////////////////
 
-    class File : public IFile
+    class File final : public IFile
     {
        public:
         File(const std::string &name);
@@ -67,7 +67,7 @@ namespace SQLEngine::Testing::Core
 
     //////////////////////////////////////////////////////////////////
 
-    class Directory : public IDirectory
+    class Directory final : public IDirectory
     {
        public:
         Directory(const std::string &name);

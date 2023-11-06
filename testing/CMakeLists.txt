@@ -16,8 +16,6 @@ set (TEST_SUBDIRS
 include(${CMAKE_SOURCE_DIR}/config/cmake/clang-format.cmake)
 include(${CMAKE_SOURCE_DIR}/config/cmake/clang-tidy.cmake)
 
-set (ENABLE_CLANG_FORMAT "true")
-
 FOREACH(subdir ${TEST_SUBDIRS})
     message("[${PROJECT_NAME}] subdir: ${subdir}")
     ClangFormatDir(${CMAKE_CURRENT_LIST_DIR}/${subdir})
