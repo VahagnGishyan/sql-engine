@@ -12,22 +12,26 @@ include_directories(
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
+include(${CMAKE_SOURCE_DIR}/config/cmake/clang-format.cmake)
+include(${CMAKE_SOURCE_DIR}/config/cmake/clang-tidy.cmake)
+include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
+
 set (SUBDIRS
     app-info
     db-manager
     logging
     observer
     # other
-    testing
     utility
 )
 
-# set(FORMAT_FILES ${SOURCES} ${HEADERS})
-include(${CMAKE_SOURCE_DIR}/config/cmake/clang-format.cmake)
-include(${CMAKE_SOURCE_DIR}/config/cmake/clang-tidy.cmake)
+if (ENABLE_TESTING)
+    set (SUBDIRS
+        ${SUBDIRS}
+        testing
+    )
+endif()
 
-# set (ENABLE_CLANG_FORMAT "true")
-# set (ENABLE_CLANG_TIDY "true")
 
 FOREACH(subdir ${SUBDIRS})
     message("[${PROJECT_NAME}] subdir: ${subdir}")
