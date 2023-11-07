@@ -11,6 +11,7 @@ set(SOURCES
     list-dir.cpp
     main.cpp
     make-remove.cpp
+    options.cpp
     path-exists.cpp
     test-dir-preparation.cpp
 )
