@@ -145,7 +145,7 @@ TEST(RemoveFile, Failure)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(MakeDirOption, ExistOkExisting)
+TEST(MakeDir, OptionExistOkExisting)
 {
     auto &&testdir = Peparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
@@ -155,7 +155,7 @@ TEST(MakeDirOption, ExistOkExisting)
     EXPECT_THROW(MakeDir(workdir, Option::ExistOk{false}), std::exception);
 }
 
-TEST(MakeDirOption, ExistOkNonExisting)
+TEST(MakeDir, OptionExistOkNonExisting)
 {
     auto &&testdir       = Peparation::GetTestDir();
     auto nonExistingPath = testdir.GetNonExistingPath();
@@ -167,7 +167,7 @@ TEST(MakeDirOption, ExistOkNonExisting)
     ASSERT_NO_THROW(RemoveDir(nonExistingPath));
 }
 
-TEST(MakeDirOption, CreateBaseDirectoryExisting)
+TEST(MakeDir, OptionCreateBaseDirectoryExisting)
 {
     auto &&testdir = Peparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
@@ -180,7 +180,7 @@ TEST(MakeDirOption, CreateBaseDirectoryExisting)
                             Option::CreateBaseDirectory{true}));
 }
 
-TEST(MakeDirOption, CreateBaseDirectoryNonExisting)
+TEST(MakeDir, OptionCreateBaseDirectoryNonExisting)
 {
     auto &&testdir                 = Peparation::GetTestDir();
     auto nonExistingPath           = testdir.GetNonExistingPath();
@@ -203,6 +203,34 @@ TEST(MakeDirOption, CreateBaseDirectoryNonExisting)
     ASSERT_TRUE(IsDirExists(nonExistingPathWithChilds));
     ASSERT_NO_THROW(RemoveDir(nonExistingPath));
     ASSERT_FALSE(IsDirExists(nonExistingPathWithChilds));
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
+TEST(RemoveDir, OptionMustExist)
+{
+    auto &&testdir  = Peparation::GetTestDir();
+    auto &&emptydir = testdir.GetEmptyDirPath();
+
+    const std::string testDir = emptydir + "/test-directory";
+
+    ASSERT_FALSE(IsDirExists(testDir));
+    EXPECT_THROW(RemoveDir(testDir, Option::MustExist{true}),
+                 std::invalid_argument);
+    EXPECT_NO_THROW(RemoveDir(testDir, Option::MustExist{false}));
+
+    ASSERT_NO_THROW(MakeDir(testDir, Option::ExistOk{false}));
+    EXPECT_TRUE(IsDirExists(testDir));
+    ASSERT_NO_THROW(RemoveDir(testDir, Option::MustExist{true}));
+    EXPECT_FALSE(IsDirExists(testDir));
+    ASSERT_NO_THROW(RemoveDir(testDir, Option::MustExist{false}));
+    EXPECT_FALSE(IsDirExists(testDir));
+    ASSERT_NO_THROW(MakeDir(testDir, Option::ExistOk{false}));
+    EXPECT_TRUE(IsDirExists(testDir));
+    ASSERT_NO_THROW(RemoveDir(testDir, Option::MustExist{false}));
+    EXPECT_FALSE(IsDirExists(testDir));
 }
 
 //////////////////////////////////////////////////////////////////////////
