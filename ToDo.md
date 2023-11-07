@@ -11,7 +11,7 @@
 - [ ] **utility**
 	- [x] analysing
 	- [x] implementation
-	- [x] [testing](docs/testing/utility)
+	- [ ] [testing](docs/testing/utility)
 - [ ] **logging**
 	- [ ] analysing
 	- [ ] [implementation](docs/logging)
