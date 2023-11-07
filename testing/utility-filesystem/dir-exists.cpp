@@ -25,8 +25,7 @@ TEST(IsDirExistsTest, ExistingDir)
 TEST(IsDirExistsTest, NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
-    auto &&workdir         = dir.GetWorkDir();
-    auto &&nonExistingPath = workdir + "/__nonexisting__";
+    auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsDirExists(nonExistingPath));
     std::string nonExistingDirPath = "/path/to/nonexisting/dir.txt";
     ASSERT_FALSE(IsDirExists(nonExistingDirPath));
@@ -42,8 +41,7 @@ TEST(AssertDirExistsTest, ExistingDir)
 TEST(AssertDirExistsTest, NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
-    auto &&workdir         = dir.GetWorkDir();
-    auto &&nonExistingPath = workdir + "/__nonexisting__";
+    auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertDirExists(nonExistingPath), std::invalid_argument);
 }
 
@@ -57,8 +55,7 @@ TEST(AssertDirNotExistsTest, ExistingDir)
 TEST(AssertDirNotExistsTest, NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
-    auto &&workdir         = dir.GetWorkDir();
-    auto &&nonExistingPath = workdir + "/__nonexisting__";
+    auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_NO_THROW(AssertDirNotExists(nonExistingPath));
 }
 
