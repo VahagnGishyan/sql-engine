@@ -8,7 +8,10 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     core.cpp
-    filesystem.cpp
+    fs-dir.cpp
+    fs-file.cpp
+    fs-list-dir.cpp
+    fs-path.cpp
     options.cpp
 )
 

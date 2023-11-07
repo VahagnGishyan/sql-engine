@@ -319,19 +319,6 @@ namespace SQLEngine::Testing::Peparation
             }
             dir.AddComponent(std::move(comp));
         }
-        void CreateFilesValidPAE(Directory &dir) const
-        {
-            auto &&workdir = GetWorkDir();
-            auto &&pae = GetValidFilePAEList();
-            auto &&paedirName = GetValidFilePAEListDirName();
-            auto comp = Directory::CreateInstance(paedirName);
-            comp->SetPath(workdir);
-            for (auto &&item : pae->paelist)
-            {
-                comp->AddComponent(File::CreateInstance(item.filename));
-            }
-            dir.AddComponent(std::move(comp));
-        }
 
        protected:
         UDirectory m_dir;

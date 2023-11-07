@@ -24,7 +24,8 @@
 
 ---
 ### current-task
-- [ ] test new methods in utility::fs
+- [x] test new methods in utility::fs
+- [x] test in windows
 - [ ] impl [bugs and features](docs/logging) of logging
 - [ ] unit tests for logging
 - [ ] [check manual testing](https://www.google.com/search?q=manual+testing&oq=manual+test&gs_lcrp=EgZjaHJvbWUqBwgBEAAYgAQyCQgAEEUYORiABDIHCAEQABiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDI3MjZqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8) 

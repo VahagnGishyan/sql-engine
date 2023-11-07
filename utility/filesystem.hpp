@@ -27,13 +27,15 @@ namespace SQLEngine::Utility
     auto IsPathExists(const std::string &path) -> bool;
     PROJECT_SHARED_EXPORT
     void AssertPathExists(const std::string &path);
-    PROJECT_SHARED_EXPORT
-    auto GetBaseDir(const std::string &path) -> const std::string;
 
     PROJECT_SHARED_EXPORT
     auto IsFileExists(const std::string &path) -> bool;
     PROJECT_SHARED_EXPORT
     auto IsDirExists(const std::string &path) -> bool;
+    PROJECT_SHARED_EXPORT
+    auto GetBaseDir(const std::string &path,
+                    const Option::MustExist &mustexist = Option::MustExist{
+                        true}) -> const std::string;
 
     PROJECT_SHARED_EXPORT
     void AssertFileExists(const std::string &path);
