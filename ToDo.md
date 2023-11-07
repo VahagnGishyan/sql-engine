@@ -11,7 +11,7 @@
 - [ ] **utility**
 	- [x] analysing
 	- [x] implementation
-	- [ ] [testing](docs/testing/utility)
+	- [x] [testing](docs/testing/utility)
 - [ ] **logging**
 	- [ ] analysing
 	- [ ] [implementation](docs/logging)
@@ -24,7 +24,7 @@
 
 ---
 ### current-task
-- [ ] test new methods in utility::fs
+- [x] test new methods in utility::fs
 - [ ] impl [bugs and features](docs/logging) of logging
 - [ ] unit tests for logging
 - [ ] [check manual testing](https://www.google.com/search?q=manual+testing&oq=manual+test&gs_lcrp=EgZjaHJvbWUqBwgBEAAYgAQyCQgAEEUYORiABDIHCAEQABiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDI3MjZqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8) 
