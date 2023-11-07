@@ -44,16 +44,6 @@ namespace SQLEngine
         }
     }
 
-    auto Utility::GetBaseDir(const std::string &path) -> const std::string
-    {
-        fs::path fullPath(path);
-        // Get the parent directory path
-        fs::path baseDir = fullPath.parent_path();
-
-        // Convert the parent directory path to a string
-        return baseDir.string();
-    }
-
     //////////////////////////////////////////////////////////////////////
 
     auto Utility::IsFileExists(const std::string &path) -> bool
@@ -74,6 +64,31 @@ namespace SQLEngine
         }
         fs::path dirPath(path);
         return fs::is_directory(dirPath);
+    }
+
+    auto Utility::GetBaseDir(const std::string &path) -> const std::string
+    {
+        auto strpath = path;
+        if (path.empty())
+        {
+            // Handle the case of an empty path
+            throw std::invalid_argument("Empty path provided");
+        }
+        if ((strpath.back() == '\\') || (strpath.back() == '/'))
+        {
+            strpath.pop_back();
+        }
+
+        fs::path fullPath(strpath);
+        fs::path baseDir = fullPath.parent_path();
+
+        if (baseDir.empty())
+        {
+            // Handle the case of the root directory
+            throw std::invalid_argument("Path is already the root directory");
+        }
+
+        return baseDir.string();
     }
 
     //////////////////////////////////////////////////////////////////////
