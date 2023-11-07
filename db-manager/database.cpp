@@ -13,7 +13,7 @@
 
 namespace SQLEngine::DBManager
 {
-    void DoSomething()
+    void DataBase::DoSomething()
     {
         Logging::Signal("Hello from db-manager.");
     }

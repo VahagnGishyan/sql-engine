@@ -12,10 +12,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 set (SUBDIRS
     app-info
+    db-manager
     utility
     logging
     observer
-    other
+    # other
 )
 
 # set(FORMAT_FILES ${SOURCES} ${HEADERS})

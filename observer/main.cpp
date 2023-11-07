@@ -31,7 +31,8 @@ namespace SQLEngine::Observer
 
     int Main(const int count, char **values)
     {
-        DBManager::DoSomething();
+        DBManager::DataBase db{};
+        db.DoSomething();
         return (0);
     }
 
@@ -51,7 +52,8 @@ int main(const int argc, char **argv)
     {
         SQLEngine::Logging::Info("Program observer.");
         SQLEngine::Logging::Signal("Start Main().");
-        SQLEngine::Logging::Signal(fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
+        SQLEngine::Logging::Signal(
+            fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
         returnKey = SQLEngine::Observer::Main(argc, argv);
         SQLEngine::Logging::Signal("Close Main().");
     }
