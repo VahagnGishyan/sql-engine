@@ -52,6 +52,7 @@ int main(const int argc, char **argv)
     int returnKey = 1;
     try
     {
+        SQLEngine::Logging::Init();
         SQLEngine::Logging::Info("Program observer.");
         SQLEngine::Logging::Signal("Start Main().");
         SQLEngine::Logging::Signal(
