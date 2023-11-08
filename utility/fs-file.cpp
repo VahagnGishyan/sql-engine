@@ -63,7 +63,6 @@ namespace SQLEngine
     auto Utility::CheckFileExtension(const std::string &path,
                                      const std::string &extension) -> bool
     {
-        AssertFileExists(path);
         fs::path filePath(path);
 
         // Check if the path is a regular file and the extension matches
