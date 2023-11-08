@@ -17,6 +17,10 @@
 
 namespace SQLEngine::Logging
 {
+    //////////////////////////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////////////////////////
+
     class ILogger
     {
        public:
@@ -26,6 +30,7 @@ namespace SQLEngine::Logging
         virtual void Init() = 0;
         // virtual void Init(const std::string &logdir)   = 0;
         virtual auto GetLogPath() -> const std::string = 0;
+        virtual void EnableBuffering(const bool order) = 0;
 
        public:
         virtual void Message(const std::string &message)                   = 0;
@@ -40,7 +45,17 @@ namespace SQLEngine::Logging
         virtual void SetMode(const Mode &)         = 0;
     };
 
-    using ULogger = std::unique_ptr<ILogger>;
+    using ULogger  = std::unique_ptr<ILogger>;
+    using ShLogger = std::shared_ptr<ILogger>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto MakeUniqueLogger() -> ULogger;
+    auto MakeSharedLogger() -> ShLogger;
+
+    //////////////////////////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////////////////////////
 }  // namespace SQLEngine::Logging
 
 //////////////////////////////////////////////////////////////////////////

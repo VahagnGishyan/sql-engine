@@ -5,7 +5,7 @@
 
 #include "logging.hpp"
 
-#include "fmt-log.hpp"
+#include "ilogger.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -19,7 +19,7 @@ namespace SQLEngine::Logging
 
     static auto GetLogger() -> ILogger &
     {
-        static ULogger logger = std::make_unique<FMTLogger>();
+        static ULogger logger = MakeUniqueLogger();
         return *(logger);
     }
 
@@ -40,6 +40,14 @@ namespace SQLEngine::Logging
     {
         auto &&logger = GetLogger();
         return logger.GetLogPath();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    void EnableBuffering(const bool order)
+    {
+        auto &&logger = GetLogger();
+        return logger.EnableBuffering(order);
     }
 
     //////////////////////////////////////////////////////////////////////

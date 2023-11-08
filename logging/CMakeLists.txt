@@ -14,6 +14,7 @@ include_directories(
 
 set(SOURCES
     fmt-log.cpp
+    ilogger.cpp
     log-core.cpp
     logging.cpp
 )

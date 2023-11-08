@@ -25,6 +25,8 @@ namespace SQLEngine::Logging
     // void Init(const std::string &logdir);
     PROJECT_SHARED_EXPORT
     auto GetLogPath() -> const std::string;
+    PROJECT_SHARED_EXPORT
+    void EnableBuffering(const bool order);
 
     PROJECT_SHARED_EXPORT
     void Message(const std::string &message);

@@ -28,6 +28,7 @@ namespace SQLEngine::Logging
        protected:
         Mode m_consoleMode;
         std::ofstream m_logfile;
+        bool m_enableBuffering;
 
        public:
         FMTLogger();
@@ -39,6 +40,9 @@ namespace SQLEngine::Logging
         virtual auto GetLogFileName() -> const std::string;
         virtual void PrepareLogDir(const std::string &logdir);
         virtual auto ResolutionNumberOfLogFiles() const -> int;
+
+       public:
+        void EnableBuffering(const bool order) override;
 
        public:
         void Message(const std::string &message) override;

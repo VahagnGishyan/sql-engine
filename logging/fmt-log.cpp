@@ -30,7 +30,8 @@ namespace SQLEngine::Logging
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    FMTLogger::FMTLogger() : m_logfile{}, m_consoleMode{Mode::Default}
+    FMTLogger::FMTLogger() :
+        m_logfile{}, m_consoleMode{Mode::Default}, m_enableBuffering{true}
     {
     }
 
@@ -71,15 +72,18 @@ namespace SQLEngine::Logging
 
     void FMTLogger::PrepareLogDir(const std::string &logdir)
     {
-        Logging::Debug(
-            fmt::format("FMTLogger::PrepareLogDir(path: {})", logdir));
+        // Logging::Debug(
+        //     fmt::format("FMTLogger::PrepareLogDir(path: {})", logdir));
         Utility::MakeDir(logdir, Utility::Option::ExistOk{true},
                          Utility::Option::CreateBaseDirectory{true});
         auto &&logfiles = Utility::ListFilesInDir(
-            logdir, ".log", Utility::Option::FullPaths{true});
+            logdir, ".log", Utility::Option::FullPaths{false});
 
-        Logging::Debug(fmt::format("logfiles.size: {}, elements: [{}]",
-                                   logfiles->size(), *logfiles));
+        // Logging::Debug(
+        //     fmt::format("logfiles.size: {}\n"
+        //                 "log-dir: {}\n"
+        //                 "elements: {}",
+        //                 logfiles->size(), logdir, *logfiles));
 
         auto resolutionNumber = ResolutionNumberOfLogFiles();
         if (resolutionNumber == 1)
@@ -93,9 +97,9 @@ namespace SQLEngine::Logging
             auto iter = logfiles->begin();
             std::advance(iter, resolutionNumber - 1);
             std::for_each(iter, logfiles->end(),
-                          [](const std::string &path)
+                          [&logdir](const std::string &path)
                           {
-                              Utility::RemoveFile(path);
+                              Utility::RemoveFile(logdir + '/' + path);
                           });
         }
     }
@@ -103,6 +107,12 @@ namespace SQLEngine::Logging
     auto FMTLogger::ResolutionNumberOfLogFiles() const -> int
     {
         return (10);
+    }
+    //////////////////////////////////////////////////////////////////////
+
+    void FMTLogger::EnableBuffering(const bool order)
+    {
+        m_enableBuffering = order;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -188,6 +198,10 @@ namespace SQLEngine::Logging
         auto &&formatedMsg =
             fmt::format("[{:%H:%M:%S}] {:<7} :: {}", timenow, strmode, message);
         m_logfile << formatedMsg << std::endl;
+        if (m_enableBuffering == false)
+        {
+            m_logfile.flush();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////
