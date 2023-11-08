@@ -11,9 +11,9 @@
 - [ ] **utility**
 	- [x] analysing
 	- [x] implementation
-	- [x] [testing](docs/testing/utility)
+	- [ ] [testing](docs/testing/utility)
 - [ ] **logging**
-	- [ ] analysing
+	- [x] analysing
 	- [ ] [implementation](docs/logging)
 	- [ ] testing
 - [ ] **db-manager**

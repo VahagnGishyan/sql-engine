@@ -10,5 +10,6 @@
     - [x] test fs updates
         - [x] GetBaseDir
         - [x] test options
+        - [ ] test list dirs and files in dir
 
 

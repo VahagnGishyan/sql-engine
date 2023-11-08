@@ -2,6 +2,6 @@
 ### bugs and features
 - [x] impl main api
 - [x] prepare log dir
-- [ ] disable log buffer | immediately write
+- [x] disable log buffer | log immediately
 - [ ] add custom logger
 - [ ] add thread safety 
