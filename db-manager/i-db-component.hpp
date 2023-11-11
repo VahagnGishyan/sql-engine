@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -32,7 +33,7 @@ namespace SQLEngine
     };
 
     using UDBComponentInfo  = std::unique_ptr<IDBComponentInfo>;
-    using ShDBComponentInfo = std::unique_ptr<IDBComponentInfo>;
+    using ShDBComponentInfo = std::shared_ptr<IDBComponentInfo>;
 
     //////////////////////////////////////////////////////////////////////
 

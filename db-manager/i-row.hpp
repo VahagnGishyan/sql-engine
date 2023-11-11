@@ -9,6 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+
 #include "i-db-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,6 +51,10 @@ namespace SQLEngine
     class IRow : public IDBComponent
     {
     };
+
+    using URow    = std::unique_ptr<IRow>;
+    using ShRow   = std::shared_ptr<IRow>;
+    using RowList = std::vector<URow>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

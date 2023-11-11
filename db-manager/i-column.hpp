@@ -51,6 +51,10 @@ namespace SQLEngine
     {
     };
 
+    using UColumn    = std::unique_ptr<IColumn>;
+    using ShColumn   = std::shared_ptr<IColumn>;
+    using ColumnList = std::vector<UColumn>;
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

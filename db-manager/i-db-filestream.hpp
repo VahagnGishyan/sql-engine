@@ -9,7 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-component.hpp"
+#include "i-database.hpp"
+#include "i-db-manager.hpp"
+#include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -24,17 +26,18 @@ namespace SQLEngine
     class IFileStream : public IDBComponent
     {
        public:
-        virtual void SaveTable(const ITable& db) const = 0;
-        virtual void LoadTable(ITable& db) const       = 0;
+        virtual void SaveTable(const ITable& table) const = 0;
+        virtual void LoadTable(ITable& table) const       = 0;
 
        public:
-        virtual void SaveDataBase(const IDataBase& db) const = 0;
-        virtual void LoadDataBase(IDataBase& db) const       = 0;
+        virtual void SaveDataBase(const IDataBase& database) const = 0;
+        virtual void LoadDataBase(IDataBase& database) const       = 0;
 
        public:
-        virtual void SaveDBManager(const IDBManager& db) const = 0;
-        virtual void LoadDBManager(IDBManager& db) const       = 0;
+        virtual void SaveDBManager(const IDBManager& dbmanager) const = 0;
+        virtual void LoadDBManager(IDBManager& dbmanager) const       = 0;
     };
+
     using UFileStream = std::unique_ptr<IFileStream>;
 
     //////////////////////////////////////////////////////////////////////
