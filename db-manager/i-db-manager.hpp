@@ -23,7 +23,7 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInitializer : public IDBComponent
+    class IDBManagerInit : public IDBComponent
     {
        public:
         virtual auto GetWorkDir() const -> const std::string     = 0;
@@ -64,8 +64,8 @@ namespace SQLEngine
         virtual void AssertDBNotConnected(const IDataBaseID& dbid) const = 0;
 
        public:
-        virtual void Connect(const IDBManagerInitializer& data) = 0;
-        virtual void Disconnect()                               = 0;
+        virtual void Connect(const IDBManagerInit& data) = 0;
+        virtual void Disconnect()                        = 0;
 
        public:
         virtual auto CreateDatabase(const IDataBaseID& dbid) -> UDataBase = 0;

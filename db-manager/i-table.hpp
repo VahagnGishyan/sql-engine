@@ -39,10 +39,24 @@ namespace SQLEngine
     {
     };
 
+    using UTableID      = std::unique_ptr<ITableID>;
+    using TableIDList   = std::vector<UTableID>;
+    using ShTableIDList = std::shared_ptr<TableIDList>;
+
     //////////////////////////////////////////////////////////////////////
 
     class ITableInfo : public ITableComponent, public IDBComponentInfo
     {
+    };
+
+    using UTableInfo    = std::unique_ptr<ITableInfo>;
+    using TableInfoList = std::vector<UTableInfo>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class ITableInit : public ITableComponent
+    {
+       public:
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -51,7 +65,9 @@ namespace SQLEngine
     {
     };
 
-    using UTable = std::unique_ptr<ITable>;
+    using UTable    = std::unique_ptr<ITable>;
+    using ShTable   = std::shared_ptr<ITable>;
+    using TableList = std::vector<UTable>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
