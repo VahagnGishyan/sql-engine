@@ -52,7 +52,7 @@ TEST(MakeDir, Failure)
     MakeDir(existingDir);
 
     // Attempt to create the directory again (expecting an exception)
-    ASSERT_THROW(MakeDir(existingDir), std::invalid_argument);
+    ASSERT_THROW(MakeDir(existingDir), std::exception);
 
     // Ensure the directory still exists
     EXPECT_TRUE(IsDirExists(existingDir));
@@ -72,7 +72,7 @@ TEST(RemoveDir, Failure)
     const std::string testDir = emptydir + "/test-directory";
 
     // Attempt to remove a non-existing directory (expecting an exception)
-    EXPECT_THROW(RemoveDir(testDir), std::invalid_argument);
+    EXPECT_THROW(RemoveDir(testDir), std::exception);
 
     // Ensure the directory still does not exist
     EXPECT_FALSE(IsDirExists(testDir));
@@ -114,7 +114,7 @@ TEST(MakeFile, Failure)
     MakeEmptyFile(existingFile);
 
     // Attempt to create the file again (expecting an exception)
-    EXPECT_THROW(MakeEmptyFile(existingFile), std::invalid_argument);
+    EXPECT_THROW(MakeEmptyFile(existingFile), std::exception);
 
     // Ensure the file still exists
     EXPECT_TRUE(IsFileExists(existingFile));
@@ -135,7 +135,7 @@ TEST(RemoveFile, Failure)
     const std::string nonExistingFile = emptydir + "non-existing-file.txt";
 
     // Attempt to remove a non-existing file (expecting an exception)
-    ASSERT_THROW(RemoveFile(nonExistingFile), std::logic_error);
+    ASSERT_THROW(RemoveFile(nonExistingFile), std::exception);
 
     // Ensure the file still does not exist
     ASSERT_FALSE(IsFileExists(nonExistingFile));
@@ -218,7 +218,7 @@ TEST(RemoveDir, OptionMustExist)
 
     ASSERT_FALSE(IsDirExists(testDir));
     EXPECT_THROW(RemoveDir(testDir, Option::MustExist{true}),
-                 std::invalid_argument);
+                 std::exception);
     EXPECT_NO_THROW(RemoveDir(testDir, Option::MustExist{false}));
 
     ASSERT_NO_THROW(MakeDir(testDir, Option::ExistOk{false}));

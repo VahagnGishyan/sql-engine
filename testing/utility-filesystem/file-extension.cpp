@@ -18,10 +18,9 @@ using namespace SQLEngine::Utility;
 
 TEST(AssertThrowFileExtensionTest, InvalidFileExtension)
 {
-    std::string validFilePath  = "/path/to/file.txt";
-    std::string validExtension = "txt";
-    ASSERT_THROW(CheckFileExtension(validFilePath, validExtension),
-                 std::invalid_argument);
+    std::string filepath = "/path/to/file.txt";
+    EXPECT_TRUE(CheckFileExtension(filepath, "txt"));
+    EXPECT_TRUE(CheckFileExtension(filepath, ".txt"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,11 +62,7 @@ TEST(CheckFileExtensionTest, NonExistingFiles)
     for (auto &&item : paeinfo->paelist)
     {
         auto &&filepath = path + '/' + item.filename;
-        EXPECT_THROW(CheckFileExtension(filepath, item.extension),
-                     std::invalid_argument)
-            << fmt::format("CheckFileExtension(filepath: {}, extension: {})",
-                           filepath, item.extension);
-        ;
+        EXPECT_FALSE(CheckFileExtension(filepath, item.extension));
     }
 }
 

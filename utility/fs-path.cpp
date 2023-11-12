@@ -4,12 +4,13 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "filesystem.hpp"
-
 #include <fmt/core.h>
 
 #include <filesystem>
 #include <fstream>
+
+#include "filesystem.hpp"
+#include "core.hpp"
 
 // #include <iostream>
 
@@ -37,11 +38,7 @@ namespace SQLEngine
 
     void Utility::AssertPathExists(const std::string &path)
     {
-        if (!IsPathExists(path))
-        {
-            throw std::invalid_argument(
-                fmt::format("{} does not exist.", path));
-        }
+        Assert(IsPathExists(path), fmt::format("{} does not exist.", path));
     }
 
     //////////////////////////////////////////////////////////////////////

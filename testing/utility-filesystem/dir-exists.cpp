@@ -42,14 +42,14 @@ TEST(AssertDirExistsTest, NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
-    ASSERT_THROW(AssertDirExists(nonExistingPath), std::invalid_argument);
+    ASSERT_THROW(AssertDirExists(nonExistingPath), std::exception);
 }
 
 TEST(AssertDirNotExistsTest, ExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
-    ASSERT_THROW(AssertDirNotExists(existingDirPath), std::invalid_argument);
+    ASSERT_THROW(AssertDirNotExists(existingDirPath), std::exception);
 }
 
 TEST(AssertDirNotExistsTest, NonExistingDir)
@@ -97,19 +97,19 @@ TEST(GetBaseDir, NonExistingDir)
 TEST(GetBaseDir, EmptyPathTest)
 {
     const std::string path = "";
-    EXPECT_THROW(GetBaseDir(path), std::invalid_argument);
+    EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
 TEST(GetBaseDir, NoSlashesTest)
 {
     const std::string path = "file.txt";
-    EXPECT_THROW(GetBaseDir(path), std::invalid_argument);
+    EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
 TEST(GetBaseDir, SingleSlashTest)
 {
     const std::string path = "/";
-    EXPECT_THROW(GetBaseDir(path), std::invalid_argument);
+    EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
 TEST(GetBaseDir, RelativePathTest)

@@ -5,6 +5,8 @@
 
 #include "core.hpp"
 
+#include <fmt/format.h>
+
 #include <filesystem>
 #include <iostream>
 
@@ -69,6 +71,14 @@ namespace SQLEngine::Utility
 #else
 #error "Unsupported OS"
 #endif
+    }
+
+    void Assert(const bool condition, const std::string &info)
+    {
+        if (condition == false)
+        {
+            throw std::runtime_error(info);
+        }
     }
 }  // namespace SQLEngine::Utility
 

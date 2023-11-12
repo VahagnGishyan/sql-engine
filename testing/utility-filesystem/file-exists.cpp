@@ -43,14 +43,14 @@ TEST(AssertFileExistsTest, NonExistingFile)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
-    ASSERT_THROW(AssertFileExists(nonExistingPath), std::invalid_argument);
+    ASSERT_THROW(AssertFileExists(nonExistingPath), std::exception);
 }
 
 TEST(AssertFileNotExistsTest, ExistingFile)
 {
     auto &&dir              = Peparation::GetTestDir();
     auto &&existingFilePath = dir.GetEmptyFilePath();
-    ASSERT_THROW(AssertFileNotExists(existingFilePath), std::invalid_argument);
+    ASSERT_THROW(AssertFileNotExists(existingFilePath), std::exception);
 }
 
 TEST(AssertFileNotExistsTest, NonExistingFile)

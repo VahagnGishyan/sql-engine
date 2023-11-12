@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <fstream>
 
+#include "core.hpp"
 #include "filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,7 +28,6 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-
     //////////////////////////////////////////////////////////////////////
 
     auto Utility::IsFileExists(const std::string &path) -> bool
@@ -44,18 +44,12 @@ namespace SQLEngine
 
     void Utility::AssertFileExists(const std::string &path)
     {
-        if (!IsFileExists(path))
-        {
-            throw std::invalid_argument(fmt::format("{} is not a file.", path));
-        }
+        Assert(IsFileExists(path), fmt::format("{} is not a file.", path));
     }
 
     void Utility::AssertFileNotExists(const std::string &path)
     {
-        if (IsFileExists(path))
-        {
-            throw std::invalid_argument(fmt::format("{} file exists.", path));
-        }
+        Assert(!IsFileExists(path), fmt::format("{} file exists.", path));
     }
 
     //////////////////////////////////////////////////////////////////////

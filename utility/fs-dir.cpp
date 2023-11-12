@@ -4,12 +4,13 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "filesystem.hpp"
-
 #include <fmt/core.h>
 
 #include <filesystem>
 #include <fstream>
+
+#include "core.hpp"
+#include "filesystem.hpp"
 
 // #include <iostream>
 
@@ -68,20 +69,12 @@ namespace SQLEngine
 
     void Utility::AssertDirExists(const std::string &path)
     {
-        if (!IsDirExists(path))
-        {
-            throw std::invalid_argument(
-                fmt::format("{} is not a directory.", path));
-        }
+        Assert(IsDirExists(path), fmt::format("{} is not a directory.", path));
     }
 
     void Utility::AssertDirNotExists(const std::string &path)
     {
-        if (IsDirExists(path))
-        {
-            throw std::invalid_argument(
-                fmt::format("{} directory exists.", path));
-        }
+        Assert(!IsDirExists(path), fmt::format("{} directory exists.", path));
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -94,10 +87,7 @@ namespace SQLEngine
 
     void Utility::AssertDirEmpty(const std::string &path)
     {
-        if (!IsDirEmpty(path))
-        {
-            throw std::runtime_error("Directory is not empty: " + path);
-        }
+        Assert(IsDirEmpty(path), "Directory is not empty: " + path);
     }
 
     //////////////////////////////////////////////////////////////////////

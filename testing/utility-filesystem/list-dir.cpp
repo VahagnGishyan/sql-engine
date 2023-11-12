@@ -150,9 +150,9 @@ TEST(ListDir, NonExistentDirectory)
     auto &&testdir     = Peparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
 
-    ASSERT_THROW(ListDir(nonExisting), std::invalid_argument);
-    ASSERT_THROW(ListDirsInDir(nonExisting), std::invalid_argument);
-    ASSERT_THROW(ListFilesInDir(nonExisting), std::invalid_argument);
+    ASSERT_THROW(ListDir(nonExisting), std::exception);
+    ASSERT_THROW(ListDirsInDir(nonExisting), std::exception);
+    ASSERT_THROW(ListFilesInDir(nonExisting), std::exception);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -195,7 +195,7 @@ TEST(ListFilesInDir, ListFilesWithNonExistentDir)
     auto &&nonExisting = testdir.GetNonExistingPath();
 
     auto &&extension = ".txt";
-    ASSERT_THROW(ListFilesInDir(nonExisting, extension), std::invalid_argument);
+    ASSERT_THROW(ListFilesInDir(nonExisting, extension), std::exception);
 }
 
 //////////////////////////////////////////////////////////////////////////
