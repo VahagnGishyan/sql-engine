@@ -9,8 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-object.hpp"
-#include "i-row-component.hpp"
+#include "i-row-element.hpp"
+#include "i-row-id.hpp"
+#include "i-row-info.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,23 +22,6 @@ namespace SQLEngine::DBLib::Interface
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
-    class IRow : public IDBObject
-    {
-    };
-
-    using URow    = std::unique_ptr<IRow>;
-    using ShRow   = std::shared_ptr<IRow>;
-    using RowList = std::vector<URow>;
-
-    //////////////////////////////////////////////////////////////////////
-
-    template <typename T, typename... Types>
-    PROJECT_SHARED_EXPORT auto MakeRow(Types&&... args) -> URow
-    {
-        static_assert(std::is_base_of<IRow, T>());
-        return std::make_unique<T>(args...);
-    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

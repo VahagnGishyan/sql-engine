@@ -14,6 +14,7 @@ include_directories(
 
 set(SOURCES
     db-object.cpp
+    row.cpp
     table.cpp
 )
 
