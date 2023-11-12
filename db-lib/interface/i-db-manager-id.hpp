@@ -9,10 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
-#include "i-db-filestream.hpp"
-#include "i-db-manager-info.hpp"
-#include "i-db-object.hpp"
+#include "i-db-manager-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -24,19 +21,12 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerRead : public IDBObject
+    class IDBManagerID : public IDBManagerComponent
     {
        public:
-        virtual auto GetWorkDir() const -> const std::string           = 0;
-        virtual auto GetDBManagerInfo() const -> const IDBManagerInfo& = 0;
-
-       public:
-        virtual auto DatabaseConnected(const IDataBaseID& dbid) const
-            -> bool                                                     = 0;
-        virtual auto GetDatabase(const IDataBaseID& dbid) -> IDataBase& = 0;
+        virtual auto GetName() const -> const std::string = 0;
     };
-
-    using UDBManager = std::unique_ptr<IDBManager>;
+    using UDBManagerID = std::unique_ptr<IDBManagerID>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

@@ -10,8 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-database.hpp"
-#include "i-db-manager-data.hpp"
-#include "i-table.hpp"
+#include "i-db-manager-info.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -23,26 +22,36 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IFileStream
+    class IDBManagerData : public IDBObject
     {
        public:
-        virtual ~IFileStream() = default;
+        virtual auto DatabaseExists(const IDataBaseID& dbid) const -> bool = 0;
 
        public:
-        virtual void SaveTable(const ITable& table) const = 0;
-        virtual void LoadTable(ITable& table) const       = 0;
+        virtual auto ListDatabase() const -> UDataBaseIDList          = 0;
+        virtual auto ListConnectedDatabase() const -> UDataBaseIDList = 0;
 
        public:
-        virtual void SaveDataBase(const IDataBase& database) const = 0;
-        virtual void LoadDataBase(IDataBase& database) const       = 0;
+        virtual void AssertDBExists(const IDataBaseID& dbid) const       = 0;
+        virtual void AssertDBNotExists(const IDataBaseID& dbid) const    = 0;
+        virtual void AssertDBConnected(const IDataBaseID& dbid) const    = 0;
+        virtual void AssertDBNotConnected(const IDataBaseID& dbid) const = 0;
 
        public:
-        virtual void SaveDBManager(const IDBManagerData& dbmanager) const = 0;
-        virtual void LoadDBManager(IDBManagerData& dbmanager) const       = 0;
+        virtual auto GetWorkDir() const -> const std::string           = 0;
+        virtual auto GetDBManagerInfo() const -> const IDBManagerInfo& = 0;
+
+       public:
+        virtual auto DatabaseConnected(const IDataBaseID& dbid) const
+            -> bool                                                     = 0;
+        virtual auto GetDatabase(const IDataBaseID& dbid) -> IDataBase& = 0;
+
+       public:
+        virtual auto CreateDatabase(const IDataBaseID& dbid) -> UDataBase = 0;
+        virtual void DropDatabase(const IDataBaseID& dbid)                = 0;
     };
 
-    using UFileStream  = std::unique_ptr<IFileStream>;
-    using ShFileStream = std::shared_ptr<IFileStream>;
+    using UDBManagerData = std::unique_ptr<IDBManagerData>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

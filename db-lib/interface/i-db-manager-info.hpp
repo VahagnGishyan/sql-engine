@@ -9,9 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
-#include "i-db-filestream.hpp"
-#include "i-db-object.hpp"
+#include "i-db-manager-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -23,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInfo : public IDBObject
+    class IDBManagerInfo : public IDBManagerComponent
     {
        public:
         virtual auto GetWorkDir() const -> const std::string = 0;

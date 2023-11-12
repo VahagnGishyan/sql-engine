@@ -35,8 +35,8 @@ namespace SQLEngine
         void LoadDataBase(IDataBase& database) const override;
 
        public:
-        void SaveDBManager(const IDBManagerRead& dbmanager) const override;
-        void LoadDBManager(IDBManagerRead& dbmanager) const override;
+        void SaveDBManager(const IDBManagerData& dbmanager) const override;
+        void LoadDBManager(IDBManagerData& dbmanager) const override;
 
        public:
         static auto Create() -> UFileStream;

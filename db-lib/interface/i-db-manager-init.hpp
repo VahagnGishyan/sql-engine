@@ -9,9 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
 #include "i-db-filestream.hpp"
-#include "i-db-object.hpp"
+#include "i-db-manager-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -23,7 +22,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInit
+    class IDBManagerInit : public IDBManagerComponent
     {
        public:
         virtual ~IDBManagerInit() = default;

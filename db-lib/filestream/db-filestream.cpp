@@ -39,11 +39,11 @@ namespace SQLEngine
 
     //////////////////////////////////////////////////////////////////////
 
-    void FileStream::SaveDBManager(const IDBManagerRead& dbmanager) const
+    void FileStream::SaveDBManager(const IDBManagerData& dbmanager) const
     {
         NotImplYet("db-filestream::FileStream::SaveDBManager");
     }
-    void FileStream::LoadDBManager(IDBManagerRead& dbmanager) const
+    void FileStream::LoadDBManager(IDBManagerData& dbmanager) const
     {
         NotImplYet("db-filestream::FileStream::LoadDBManager");
     }

@@ -9,9 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
-#include "i-db-manager-data.hpp"
-#include "i-table.hpp"
+#include "i-db-manager-id.hpp"
+#include "i-db-manager-info.hpp"
+#include "i-db-manager-init.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,27 +22,6 @@ namespace SQLEngine::DBLib::Interface
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
-    class IFileStream
-    {
-       public:
-        virtual ~IFileStream() = default;
-
-       public:
-        virtual void SaveTable(const ITable& table) const = 0;
-        virtual void LoadTable(ITable& table) const       = 0;
-
-       public:
-        virtual void SaveDataBase(const IDataBase& database) const = 0;
-        virtual void LoadDataBase(IDataBase& database) const       = 0;
-
-       public:
-        virtual void SaveDBManager(const IDBManagerData& dbmanager) const = 0;
-        virtual void LoadDBManager(IDBManagerData& dbmanager) const       = 0;
-    };
-
-    using UFileStream  = std::unique_ptr<IFileStream>;
-    using ShFileStream = std::shared_ptr<IFileStream>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
