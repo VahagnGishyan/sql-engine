@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInit : public IDBManagerComponent
+    class PROJECT_SHARED_EXPORT IDBManagerInit : public IDBManagerComponent
     {
        public:
         virtual ~IDBManagerInit() = default;

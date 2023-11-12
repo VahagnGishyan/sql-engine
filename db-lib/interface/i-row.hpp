@@ -22,7 +22,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IRow : public IDBObject
+    class PROJECT_SHARED_EXPORT IRow : public IDBObject
     {
     };
 

@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IColumnElement : public IColumnComponent
+    class PROJECT_SHARED_EXPORT IColumnElement : public IColumnComponent
     {
     };
 

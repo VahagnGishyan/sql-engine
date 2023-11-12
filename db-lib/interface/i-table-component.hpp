@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class ITableComponent
+    class PROJECT_SHARED_EXPORT ITableComponent
     {
        public:
         virtual ~ITableComponent() = default;

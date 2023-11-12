@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IColumn : public IDBObject
+    class PROJECT_SHARED_EXPORT IColumn : public IDBObject
     {
     };
 

@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBaseInit : public IDataBaseComponent
+    class PROJECT_SHARED_EXPORT IDataBaseInit : public IDataBaseComponent
     {
        public:
         virtual auto GetWorkDir() const -> const std::string           = 0;

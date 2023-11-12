@@ -23,7 +23,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IFileStream
+    class PROJECT_SHARED_EXPORT IFileStream
     {
        public:
         virtual ~IFileStream() = default;

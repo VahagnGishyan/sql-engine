@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBaseInfo : public IDataBaseComponent, public IDBObjectInfo
+    class PROJECT_SHARED_EXPORT IDataBaseInfo : public IDataBaseComponent, public IDBObjectInfo
     {
     };
     using UDataBaseInfo     = std::unique_ptr<IDataBaseInfo>;

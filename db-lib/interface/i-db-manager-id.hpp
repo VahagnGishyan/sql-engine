@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerID : public IDBManagerComponent
+    class PROJECT_SHARED_EXPORT IDBManagerID : public IDBManagerComponent
     {
        public:
         virtual auto GetName() const -> const std::string = 0;

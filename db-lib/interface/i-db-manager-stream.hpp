@@ -22,7 +22,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerFileStream : public IDBManager
+    class PROJECT_SHARED_EXPORT IDBManagerFileStream : public IDBManager
     {
     };
 

@@ -21,7 +21,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInfo : public IDBManagerComponent
+    class PROJECT_SHARED_EXPORT IDBManagerInfo : public IDBManagerComponent
     {
        public:
         virtual auto GetWorkDir() const -> const std::string = 0;

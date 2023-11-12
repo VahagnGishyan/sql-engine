@@ -23,7 +23,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBase : public IDBObject
+    class PROJECT_SHARED_EXPORT IDataBase : public IDBObject
     {
         //    public:
         //     virtual auto GetDataBaseID() const -> const IDataBaseID& = 0;

@@ -24,7 +24,7 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManager : public IDBObject
+    class PROJECT_SHARED_EXPORT IDBManager : public IDBObject
     {
        public:
         virtual auto DatabaseExists(const IDataBaseID& dbid) const -> bool = 0;
