@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-database.hpp"
-#include "i-db-manager-data.hpp"
+#include "i-db-manager.hpp"
 #include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,8 +37,8 @@ namespace SQLEngine::DBLib::Interface
         virtual void LoadDataBase(IDataBase& database) const       = 0;
 
        public:
-        virtual void SaveDBManager(const IDBManagerData& dbmanager) const = 0;
-        virtual void LoadDBManager(IDBManagerData& dbmanager) const       = 0;
+        virtual void SaveDBManager(const IDBManager& dbmanager) const = 0;
+        virtual void LoadDBManager(IDBManager& dbmanager) const       = 0;
     };
 
     using UFileStream  = std::unique_ptr<IFileStream>;

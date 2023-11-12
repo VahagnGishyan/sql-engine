@@ -13,6 +13,8 @@ include_directories(
 )
 
 set(SOURCES
+    column.cpp
+    database.cpp
     db-manager.cpp
     db-object.cpp
     row.cpp

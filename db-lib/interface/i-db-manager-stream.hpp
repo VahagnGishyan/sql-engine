@@ -9,7 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-manager-component.hpp"
+#include "i-db-manager-comps.hpp"
+#include "i-db-manager.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,18 +22,11 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBManagerInit : public IDBManagerComponent
+    class IDBManagerFileStream : public IDBManager
     {
-       public:
-        virtual ~IDBManagerInit() = default;
-
-       public:
-        virtual auto GetWorkDir() const -> const std::string = 0;
-        virtual auto GetName() const -> const std::string    = 0;
     };
 
-    using UDBManagerInit  = std::unique_ptr<IDBManagerInit>;
-    using ShDBManagerInfo = std::shared_ptr<IDBManagerInit>;
+    using UDBManagerFileStream = std::unique_ptr<IDBManagerFileStream>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
