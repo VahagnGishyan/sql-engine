@@ -9,68 +9,26 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-component.hpp"
+#include "i-database-component.hpp"
+#include "i-db-object.hpp"
 #include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBLib::Interface
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBaseComponent
-    {
-       public:
-        virtual ~IDataBaseComponent() = default;
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDataBaseElement : public IDataBaseComponent
-    {
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDataBaseID : public IDBComponent
-    {
-       public:
-        virtual auto GetName() const -> const std::string = 0;
-    };
-    using DataBaseIDList  = std::vector<IDataBaseID>;
-    using UDataBaseIDList = std::unique_ptr<DataBaseIDList>;
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDataBaseInfo : public IDataBaseComponent, public IDBComponentInfo
-    {
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDataBaseInit : public IDataBaseComponent
-    {
-       public:
-        virtual auto GetWorkDir() const -> const std::string           = 0;
-        virtual auto GetName() const -> const std::string              = 0;
-        virtual auto GetTablesWorkDirPath() const -> const std::string = 0;
-        // virtual auto GetTablesWorkDirName() const -> const std::string = 0;
-        // virtual auto GetFileStream() const -> const ShFile
-        // virtual auto GetTablePath(const ITableID& init) const -> const
-        // std::string = 0;
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDataBase : public IDBComponent
+    class IDataBase : public IDBObject
     {
        public:
         virtual auto GetDataBaseID() const -> const IDataBaseID& = 0;
-        virtual auto GetInfo() const -> const ShDBComponentInfo  = 0;
+        virtual auto GetInfo() const -> const ShDataBaseInfo  = 0;
+        virtual auto GetID() const -> const ShDataBaseID  = 0;
 
        public:
         virtual auto IsConnected() const -> bool           = 0;
@@ -95,12 +53,14 @@ namespace SQLEngine
         virtual auto GetTable(const ITableID& init) const -> const ShTable = 0;
     };
 
-    using UDataBase = std::unique_ptr<IDataBase>;
+    using UDataBase    = std::unique_ptr<IDataBase>;
+    using ShDataBase   = std::shared_ptr<IDataBase>;
+    using DataBaseList = std::vector<ShDataBase>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBLib::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

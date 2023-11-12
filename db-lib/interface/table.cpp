@@ -3,21 +3,16 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "database.hpp"
-
-#include "logging/logging.hpp"
+#include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBManager
+namespace SQLEngine::DBLib::Interface
 {
-    void DataBase::DoSomething()
-    {
-        Logging::Signal("Hello from db-manager.");
-    }
-}  // namespace SQLEngine::DBManager
+    
+}  // namespace SQLEngine::DBLib::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

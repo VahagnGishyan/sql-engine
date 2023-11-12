@@ -7,9 +7,7 @@
 
 #include <iostream>
 
-#include "db-manager/database.hpp"
-#include "logging/logging.hpp"
-#include "utility/core.hpp"
+#include "db-lib/interface/i-table.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 
@@ -23,18 +21,20 @@ namespace SQLEngine::Observer
     //
     //////////////////////////////////////////////////////////////////////////
 
-    void CheckCore()
+    class Table : public DBLib::Interface::ITable
     {
-        std::cout << "Path is    " << Utility::GetEnvironmentValue("PATH")
-                  << std::endl;
-        std::cout << "WorkDir is " << Utility::GetDefaultDataPath()
-                  << std::endl;
-    }
+       public:
+        auto GetInfo() const
+            -> const DBLib::Interface::ShDBComponentInfo override
+        {
+            return nullptr;
+        }
+    };
 
     int Main(const int count, char **values)
     {
-        DBManager::DataBase db{};
-        db.DoSomething();
+        SQLEngine::DBLib::Interface::MakeTable<Table>();
+
         return (0);
     }
 

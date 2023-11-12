@@ -18,7 +18,7 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 
 set (SUBDIRS
     app-info
-    db-manager
+    db-lib
     logging
     observer
     # other

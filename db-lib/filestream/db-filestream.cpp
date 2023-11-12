@@ -3,13 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-#include "i-db-component.hpp"
+#include "db-filestream.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,53 +15,47 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class ITableComponent
+    //////////////////////////////////////////////////////////////////////
+
+    void FileStream::SaveTable(const ITable& table) const
     {
-       public:
-        virtual ~ITableComponent() = default;
-    };
+        NotImplYet("db-filestream::FileStream::SaveTable");
+    }
+    void FileStream::LoadTable(ITable& table) const
+    {
+        NotImplYet("db-filestream::FileStream::LoadTable");
+    }
 
     //////////////////////////////////////////////////////////////////////
 
-    class ITableElement : public ITableComponent
+    void FileStream::SaveDataBase(const IDataBase& database) const
     {
-    };
+        NotImplYet("db-filestream::FileStream::SaveDataBase");
+    }
+    void FileStream::LoadDataBase(IDataBase& database) const
+    {
+        NotImplYet("db-filestream::FileStream::LoadDataBase");
+    }
 
     //////////////////////////////////////////////////////////////////////
 
-    class ITableID : public ITableComponent
+    void FileStream::SaveDBManager(const IDBManagerRead& dbmanager) const
     {
-    };
-
-    using UTableID      = std::unique_ptr<ITableID>;
-    using TableIDList   = std::vector<UTableID>;
-    using ShTableIDList = std::shared_ptr<TableIDList>;
+        NotImplYet("db-filestream::FileStream::SaveDBManager");
+    }
+    void FileStream::LoadDBManager(IDBManagerRead& dbmanager) const
+    {
+        NotImplYet("db-filestream::FileStream::LoadDBManager");
+    }
 
     //////////////////////////////////////////////////////////////////////
-
-    class ITableInfo : public ITableComponent, public IDBComponentInfo
-    {
-    };
-
-    using UTableInfo    = std::unique_ptr<ITableInfo>;
-    using TableInfoList = std::vector<UTableInfo>;
-
+    //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class ITableInit : public ITableComponent
+    auto FileStream::Create() -> UFileStream
     {
-       public:
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class ITable : public IDBComponent
-    {
-    };
-
-    using UTable    = std::unique_ptr<ITable>;
-    using ShTable   = std::shared_ptr<ITable>;
-    using TableList = std::vector<UTable>;
+        return UFileStream{new FileStream};
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

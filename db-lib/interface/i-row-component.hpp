@@ -9,55 +9,46 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <memory>
-#include <string>
-#include <vector>
+#include "i-db-object.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBLib::Interface
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDBComponentInfo
+    class IRowComponent
     {
        public:
-        virtual ~IDBComponentInfo() = default;
-
-       public:
-        virtual auto GetName() -> const std::string = 0;
-    };
-
-    using UDBComponentInfo  = std::unique_ptr<IDBComponentInfo>;
-    using ShDBComponentInfo = std::shared_ptr<IDBComponentInfo>;
-
-    //////////////////////////////////////////////////////////////////////
-
-    class IDBComponent
-    {
-       public:
-        virtual ~IDBComponent() = default;
-
-       public:
-        virtual auto GetInfo() const -> const ShDBComponentInfo = 0;
+        virtual ~IRowComponent() = default;
     };
 
     //////////////////////////////////////////////////////////////////////
 
-    class IRow;
-    class IColumn;
-    class ITable;
-    class IDataBase;
-    class IDBManager;
+    class IRowElement : public IRowComponent
+    {
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    class IRowID : public IRowComponent
+    {
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    class IRowInfo : public IRowComponent, public IDBObjectInfo
+    {
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBLib::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

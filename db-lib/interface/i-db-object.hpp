@@ -9,41 +9,63 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
-#include "i-db-manager.hpp"
-#include "i-table.hpp"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBLib::Interface
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IFileStream : public IDBComponent
+    class PROJECT_SHARED_EXPORT IDBObjectInfo
     {
        public:
-        virtual void SaveTable(const ITable& table) const = 0;
-        virtual void LoadTable(ITable& table) const       = 0;
+        virtual ~IDBObjectInfo() = default;
 
        public:
-        virtual void SaveDataBase(const IDataBase& database) const = 0;
-        virtual void LoadDataBase(IDataBase& database) const       = 0;
-
-       public:
-        virtual void SaveDBManager(const IDBManager& dbmanager) const = 0;
-        virtual void LoadDBManager(IDBManager& dbmanager) const       = 0;
+        virtual auto GetName() -> const std::string = 0;
     };
 
-    using UFileStream = std::unique_ptr<IFileStream>;
+    using UDBComponentInfo  = std::unique_ptr<IDBObjectInfo>;
+    using ShDBComponentInfo = std::shared_ptr<IDBObjectInfo>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class PROJECT_SHARED_EXPORT IDBObject
+    {
+       public:
+        virtual ~IDBObject() = default;
+
+       public:
+        virtual auto GetInfo() const -> const ShDBComponentInfo = 0;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    class IRow;
+    class IColumn;
+    class ITable;
+    class IDataBase;
+    class IDBManager;
+
+    //////////////////////////////////////////////////////////////////////
+
+    // temp
+    PROJECT_SHARED_EXPORT
+    void NotImplYet(const std::string& info);
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBLib::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
