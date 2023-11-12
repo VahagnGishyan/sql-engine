@@ -9,8 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-object.hpp"
-#include "i-table.hpp"
+#include "i-database-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,10 +21,16 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBaseComponent
+    class IDataBaseInit : public IDataBaseComponent
     {
        public:
-        virtual ~IDataBaseComponent() = default;
+        virtual auto GetWorkDir() const -> const std::string           = 0;
+        virtual auto GetName() const -> const std::string              = 0;
+        virtual auto GetTablesWorkDirPath() const -> const std::string = 0;
+        // virtual auto GetTablesWorkDirName() const -> const std::string = 0;
+        // virtual auto GetFileStream() const -> const ShFile
+        // virtual auto GetTablePath(const ITableID& init) const -> const
+        // std::string = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

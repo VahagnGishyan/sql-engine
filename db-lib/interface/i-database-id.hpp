@@ -9,8 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-object.hpp"
-#include "i-table.hpp"
+#include "i-database-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,11 +21,15 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IDataBaseComponent
+    class IDataBaseID : public IDBObject
     {
        public:
-        virtual ~IDataBaseComponent() = default;
+        virtual auto GetName() const -> const std::string = 0;
     };
+    using UDataBaseID     = std::unique_ptr<IDataBaseID>;
+    using ShDataBaseID    = std::shared_ptr<IDataBaseID>;
+    using DataBaseIDList  = std::vector<ShDataBaseID>;
+    using UDataBaseIDList = std::unique_ptr<DataBaseIDList>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
