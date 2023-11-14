@@ -7,7 +7,9 @@
 
 #include <iostream>
 
+#include "db-lib/database/database.hpp"
 #include "db-lib/interface/i-table.hpp"
+#include "db-lib/table/table.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 
@@ -34,6 +36,8 @@ namespace SQLEngine::Observer
     int Main(const int count, char **values)
     {
         SQLEngine::DBLib::Interface::MakeTable<Table>();
+        DBLib::Table::DoSomething();
+        DBLib::DataBase::DoSomething();
 
         return (0);
     }

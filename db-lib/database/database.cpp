@@ -5,27 +5,19 @@
 
 #include "database.hpp"
 
-#include <stdexcept>
-
 #include "logging/logging.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBLib::DataBase
 {
     void DoSomething()
     {
-        Logging::Signal("Hello from db-manager.");
+        Logging::Signal("Hello from database.");
     }
-
-    void NotImplYet(const std::string& info)
-    {
-        throw std::logic_error("Not impl yet: " + info);
-    }
-
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBLib::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

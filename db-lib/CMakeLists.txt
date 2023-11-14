@@ -6,14 +6,15 @@ find_package(fmt REQUIRED)
 find_package(GTest REQUIRED)
 
 include_directories(
-    interface
+    ./
 )
 
 set (DBM_SUBDIRS
     # db-manager
-    # database
+    database
     # filestream
     interface
+    table
 )
 
 # set(FORMAT_FILES ${SOURCES} ${HEADERS})
