@@ -8,12 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(fmt REQUIRED)
 
-include_directories( 
-    ../
-)
-
 set(SOURCES
+    db-manager-info.cpp
     db-manager-init.cpp
+    db-manager.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
@@ -26,6 +24,8 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-utility 
     sql-engine-app-info 
     sql-engine-logging
+    sql-engine-db-interface
+    sql-engine-db-db
     fmt::fmt
 )
 

@@ -9,32 +9,46 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-manager-component.hpp"
+#include "interface/i-db-manager-init.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBLib::Interface
+namespace SQLEngine::DBLib::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDBManagerInit : public IDBManagerComponent
+    class Init : public Interface::IDBManagerInit
     {
        public:
-        virtual auto GetWorkDir() const -> const std::string = 0;
-        virtual auto GetName() const -> const std::string    = 0;
-    };
+        auto GetWorkDir() const -> const std::string override;
+        auto GetName() const -> const std::string override;
+        // auto GetFileStream() const -> ShFileStream override;
 
-    using UDBManagerInit  = std::unique_ptr<IDBManagerInit>;
-    using ShDBManagerInfo = std::shared_ptr<IDBManagerInit>;
+       public:
+        virtual void SetWorkDir(const std::string&);
+        virtual void SetName(const std::string&);
+        // virtual void SetFileStream(ShFileStream);
+
+       public:
+        static auto Create(const std::string& name) -> Interface::UDBManagerInit;
+        // static auto Create(const std::string& name,
+        //                    ShFileStream filestream = nullptr) ->
+        //                    UDBManagerInit;
+
+       protected:
+        std::string m_workdir;
+        std::string m_name;
+        // ShFileStream m_filestream;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DBLib::Interface
+}  // namespace SQLEngine::DBLib::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

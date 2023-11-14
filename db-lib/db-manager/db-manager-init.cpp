@@ -3,49 +3,49 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
+#include "db-manager-init.hpp"
+
 #include "app-info/application.hpp"
-#include "db-filestream.hpp"
-#include "db-manager.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBLib::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto DBManagerInit::GetWorkDir() const -> const std::string
+    auto Init::GetWorkDir() const -> const std::string
     {
         return (m_workdir);
     }
 
-    auto DBManagerInit::GetName() const -> const std::string
+    auto Init::GetName() const -> const std::string
     {
         return (m_name);
     }
 
-    auto DBManagerInit::GetFileStream() const -> ShFileStream
-    {
-        return (m_filestream);
-    }
+    // auto Init::GetFileStream() const -> ShFileStream
+    // {
+    //     return (m_filestream);
+    // }
 
     //////////////////////////////////////////////////////////////////////
 
-    void DBManagerInit::SetWorkDir(const std::string& workdir)
+    void Init::SetWorkDir(const std::string& workdir)
     {
         m_workdir = workdir;
     }
-    void DBManagerInit::SetName(const std::string& name)
+    void Init::SetName(const std::string& name)
     {
         m_name = name;
     }
-    void DBManagerInit::SetFileStream(ShFileStream filestream)
-    {
-        m_filestream = filestream;
-    }
+    // void Init::SetFileStream(ShFileStream filestream)
+    // {
+    //     m_filestream = filestream;
+    // }
 
     //////////////////////////////////////////////////////////////////////
 
@@ -57,24 +57,23 @@ namespace SQLEngine
         return (workdir);
     }
 
-    auto DBManagerInit::Create(const std::string& name, ShFileStream filestream)
-        -> UDBManagerInit
+    auto Init::Create(const std::string& name) -> Interface::UDBManagerInit
     {
-        auto init = std::make_unique<DBManagerInit>();
-        if (filestream == nullptr)
-        {
-            filestream = std::move(FileStream::Create());
-        }
+        auto init = std::make_unique<Init>();
+        // if (filestream == nullptr)
+        // {
+        //     filestream = std::move(FileStream::Create());
+        // }
         init->SetWorkDir(GetDBManagerWorkDir());
         init->SetName(name);
-        init->SetFileStream(filestream);
+        // init->SetFileStream(filestream);
         return std::move(init);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBLib::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

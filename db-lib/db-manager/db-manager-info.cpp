@@ -3,38 +3,33 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "db-manager-info.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-manager-component.hpp"
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-namespace SQLEngine::DBLib::Interface
+namespace SQLEngine::DBLib::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDBManagerInit : public IDBManagerComponent
+    auto Info::GetWorkDir() const -> const std::string
     {
-       public:
-        virtual auto GetWorkDir() const -> const std::string = 0;
-        virtual auto GetName() const -> const std::string    = 0;
-    };
-
-    using UDBManagerInit  = std::unique_ptr<IDBManagerInit>;
-    using ShDBManagerInfo = std::shared_ptr<IDBManagerInit>;
+        DBLib::Interface::NotImplYet("db-manager-info.cpp, Info::GetWorkDir()");
+        return "";
+    }
+    auto Info::GetName() const -> const std::string
+    {
+        DBLib::Interface::NotImplYet("db-manager-info.cpp, Info::GetName()");
+        return "";
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DBLib::Interface
+}  // namespace SQLEngine::DBLib::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

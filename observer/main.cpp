@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "db-lib/database/database.hpp"
+#include "db-lib/db-manager/db-manager.hpp"
 #include "db-lib/interface/i-table.hpp"
 #include "db-lib/table/table.hpp"
 #include "logging/logging.hpp"
@@ -38,6 +39,7 @@ namespace SQLEngine::Observer
         SQLEngine::DBLib::Interface::MakeTable<Table>();
         DBLib::Table::DoSomething();
         DBLib::DataBase::DoSomething();
+        DBLib::DBManager::DoSomething();
 
         return (0);
     }

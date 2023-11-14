@@ -27,5 +27,5 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-db-interface
     sql-engine-db-table
     sql-engine-db-db
-    # sql-engine-db-manager
+    sql-engine-db-manager
 )
