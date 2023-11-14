@@ -10,8 +10,8 @@ include_directories(
 )
 
 set (DBM_SUBDIRS
-    # db-manager
     database
+    db-manager
     # filestream
     interface
     table
