@@ -19,7 +19,7 @@ namespace SQLEngine::DBLib::DBManager
 
     void DoSomething()
     {
-        Logging::Signal("Hello from db-manager.");
+        Logging::Signal("Hello from dblib-db-manager.");
     }
 
     // auto Manager::GetWorkDir() const -> const std::string

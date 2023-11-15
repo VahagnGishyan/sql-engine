@@ -15,7 +15,7 @@ namespace SQLEngine::DBLib::DataBase
 {
     void DoSomething()
     {
-        Logging::Signal("Hello from database.");
+        Logging::Signal("Hello from dblib-database.");
     }
 }  // namespace SQLEngine::DBLib::DataBase
 

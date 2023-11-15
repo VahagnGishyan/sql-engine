@@ -12,7 +12,7 @@ include_directories(
 set (DBM_SUBDIRS
     database
     db-manager
-    # filestream
+    filestream
     interface
     table
 )
