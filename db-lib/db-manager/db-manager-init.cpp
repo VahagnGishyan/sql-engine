@@ -59,6 +59,7 @@ namespace SQLEngine::DBLib::DBManager
 
     auto Init::Create(const std::string& name) -> Interface::UDBManagerInit
     {
+        Init obj;
         auto init = std::make_unique<Init>();
         // if (filestream == nullptr)
         // {

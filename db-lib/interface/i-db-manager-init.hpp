@@ -29,7 +29,8 @@ namespace SQLEngine::DBLib::Interface
     };
 
     using UDBManagerInit  = std::unique_ptr<IDBManagerInit>;
-    using ShDBManagerInfo = std::shared_ptr<IDBManagerInit>;
+    using ShDBManagerInit = std::shared_ptr<IDBManagerInit>;
+    using WDBManagerInit  = std::weak_ptr<IDBManagerInit>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

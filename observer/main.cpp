@@ -27,10 +27,9 @@ namespace SQLEngine::Observer
     class Table : public DBLib::Interface::ITable
     {
        public:
-        auto GetInfo() const
-            -> const DBLib::Interface::ShDBComponentInfo override
+        auto GetComponentInfo() const -> const DBLib::Interface::WDBComponentInfo override
         {
-            return nullptr;
+            throw std::logic_error("something");
         }
     };
 
@@ -61,18 +60,13 @@ int main(const int argc, char **argv)
         SQLEngine::Logging::Init();
         SQLEngine::Logging::Info("Program observer.");
         SQLEngine::Logging::Signal("Start Main().");
-        SQLEngine::Logging::Signal(
-            fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
+        SQLEngine::Logging::Signal(fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
         returnKey = SQLEngine::Observer::Main(argc, argv);
         SQLEngine::Logging::Signal("Close Main().");
     }
     catch (std::exception &err)
     {
-        std::cout
-            << std::string(
-                   "Catch exception, type is std::exception, message is ") +
-                   err.what()
-            << std::endl;
+        std::cout << std::string("Catch exception, type is std::exception, message is ") + err.what() << std::endl;
     }
     catch (...)
     {

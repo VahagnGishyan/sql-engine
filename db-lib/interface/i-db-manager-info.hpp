@@ -21,13 +21,15 @@ namespace SQLEngine::DBLib::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDBManagerInfo : public IDBManagerComponent
+    class PROJECT_SHARED_EXPORT IDBManagerInfo : public IDBManagerComponent, public IDBObjectInfo
     {
        public:
         virtual auto GetWorkDir() const -> const std::string = 0;
         virtual auto GetName() const -> const std::string    = 0;
     };
-    using UDBManagerInfo = std::unique_ptr<IDBManagerInfo>;
+    using UDBManagerInfo  = std::unique_ptr<IDBManagerInfo>;
+    using ShDBManagerInfo = std::shared_ptr<IDBManagerInfo>;
+    using WDBManagerInfo  = std::weak_ptr<IDBManagerInfo>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

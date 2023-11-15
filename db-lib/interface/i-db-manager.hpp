@@ -27,6 +27,13 @@ namespace SQLEngine::DBLib::Interface
     class PROJECT_SHARED_EXPORT IDBManager : public IDBObject
     {
        public:
+        virtual auto GetInfo() const -> const WDBManagerInfo = 0;
+
+       public:
+        virtual void Connect(const Interface::IDBManagerInit& data) = 0;
+        virtual void Disconnect()                                   = 0;
+
+       public:
         virtual auto DatabaseExists(const IDataBaseID& dbid) const -> bool = 0;
 
        public:
@@ -40,21 +47,12 @@ namespace SQLEngine::DBLib::Interface
         virtual void AssertDBNotConnected(const IDataBaseID& dbid) const = 0;
 
        public:
-        virtual auto GetWorkDir() const -> const std::string           = 0;
-        virtual auto GetDBManagerInfo() const -> const IDBManagerInfo& = 0;
-
-       public:
-        virtual auto DatabaseConnected(const IDataBaseID& dbid) const
-            -> bool                                                     = 0;
-        virtual auto GetDatabase(const IDataBaseID& dbid) -> IDataBase& = 0;
-
-       public:
-        virtual auto CreateDatabase(const IDataBaseID& dbid) -> UDataBase = 0;
-        virtual void DropDatabase(const IDataBaseID& dbid)                = 0;
-
-       public:
-        virtual void Connect(const IDBManagerInit& data) = 0;
-        virtual void Disconnect()                        = 0;
+        virtual auto CreateDatabase(const IDataBaseID& dbid) -> WDataBase     = 0;
+        virtual void ConnectDatabase(const IDataBaseID& data)                 = 0;
+        virtual auto DatabaseConnected(const IDataBaseID& dbid) const -> bool = 0;
+        virtual auto GetDatabase(const IDataBaseID& dbid) -> WDataBase        = 0;
+        virtual void DropDatabase(const IDataBaseID& dbid)                    = 0;
+        virtual void DisconnectDatabase(const IDataBaseID& dbid)              = 0;
     };
 
     using UDBManagerData = std::unique_ptr<IDBManager>;
