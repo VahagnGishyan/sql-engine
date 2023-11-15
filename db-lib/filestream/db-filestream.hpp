@@ -9,7 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-filestream.hpp"
+#include "interface/i-database.hpp"
+#include "interface/i-db-filestream.hpp"
+#include "interface/i-db-manager.hpp"
+#include "interface/i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -35,8 +38,8 @@ namespace SQLEngine
         void LoadDataBase(IDataBase& database) const override;
 
        public:
-        void SaveDBManager(const IDBManagerData& dbmanager) const override;
-        void LoadDBManager(IDBManagerData& dbmanager) const override;
+        void SaveDBManager(const IDBManager& dbmanager) const override;
+        void LoadDBManager(IDBManager& dbmanager) const override;
 
        public:
         static auto Create() -> UFileStream;
