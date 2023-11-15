@@ -22,13 +22,9 @@ namespace SQLEngine::DBLib::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::GetInfo() const -> const Interface::WDBManagerInfo
+    auto Manager::GetInfo() const -> const Interface::WDBObjectInfo
     {
         return m_info;
-    }
-    auto Manager::GetComponentInfo() const -> const Interface::WDBComponentInfo
-    {
-        return GetInfo();
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -112,6 +108,7 @@ namespace SQLEngine::DBLib::DBManager
     auto Manager::CreateDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
     {
         Interface::NotImplYet("db-manager.cpp, Manager::CreateDatabase(...)");
+        return Interface::WDataBase{};
         //     def create_database(self, name):
         //         # Create a new database with the given name
         //         self.assert_db_not_exists(name)
@@ -185,10 +182,10 @@ namespace SQLEngine::DBLib::DBManager
     {
         const auto end = m_databases.end();
         auto itr       = std::find_if(m_databases.begin(), end,
-            [&dbid](const Interface::ShDataBase db)
-            {
-                return (db->GetDataBaseID().GetName() == dbid.GetName());
-            });
+                                      [&dbid](const Interface::ShDataBase db)
+                                      {
+                                    return (db->GetDataBaseID().GetName() == dbid.GetName());
+                                });
         if (itr == end)
         {
             return std::nullopt;

@@ -27,7 +27,7 @@ namespace SQLEngine::Observer
     class Table : public DBLib::Interface::ITable
     {
        public:
-        auto GetComponentInfo() const -> const DBLib::Interface::WDBComponentInfo override
+        auto GetInfo() const -> const DBLib::Interface::WDBObjectInfo override
         {
             throw std::logic_error("something");
         }

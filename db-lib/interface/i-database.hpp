@@ -25,10 +25,9 @@ namespace SQLEngine::DBLib::Interface
     class PROJECT_SHARED_EXPORT IDataBase : public IDBObject
     {
        public:
-        virtual auto GetDataBaseID() const -> const IDataBaseID&        = 0;
-        virtual auto GetComponentInfo() const -> const WDBComponentInfo = 0;
-        virtual auto GetInfo() const -> const ShDataBaseInfo            = 0;
-        virtual auto GetID() const -> const ShDataBaseID                = 0;
+        virtual auto GetDataBaseID() const -> const IDataBaseID& = 0;
+        virtual auto GetInfo() const -> const WDBObjectInfo      = 0;
+        virtual auto GetID() const -> const ShDataBaseID         = 0;
 
        public:
         virtual auto IsConnected() const -> bool           = 0;

@@ -34,9 +34,9 @@ namespace SQLEngine::DBLib::Interface
         virtual auto GetName() -> const std::string = 0;
     };
 
-    using UDBComponentInfo  = std::unique_ptr<IDBObjectInfo>;
-    using ShDBComponentInfo = std::shared_ptr<IDBObjectInfo>;
-    using WDBComponentInfo  = std::weak_ptr<IDBObjectInfo>;
+    using UDBObjectInfo  = std::unique_ptr<IDBObjectInfo>;
+    using ShDBObjectInfo = std::shared_ptr<IDBObjectInfo>;
+    using WDBObjectInfo  = std::weak_ptr<IDBObjectInfo>;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ namespace SQLEngine::DBLib::Interface
 
        public:
         // auto GetWorkDir() const -> const std::string override;
-        virtual auto GetComponentInfo() const -> const WDBComponentInfo = 0;
+        virtual auto GetInfo() const -> const WDBObjectInfo = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

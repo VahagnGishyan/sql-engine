@@ -27,7 +27,7 @@ namespace SQLEngine::DBLib::Interface
     class PROJECT_SHARED_EXPORT IDBManager : public IDBObject
     {
        public:
-        virtual auto GetInfo() const -> const WDBManagerInfo = 0;
+        virtual auto GetInfo() const -> const WDBObjectInfo = 0;
 
        public:
         virtual void Connect(const Interface::IDBManagerInit& data) = 0;

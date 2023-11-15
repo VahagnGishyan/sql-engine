@@ -27,8 +27,7 @@ namespace SQLEngine::DBLib::DBManager
     class Manager : public Interface::IDBManager
     {
        public:
-        auto GetInfo() const -> const Interface::WDBManagerInfo override;
-        auto GetComponentInfo() const -> const Interface::WDBComponentInfo override;
+        auto GetInfo() const -> const Interface::WDBObjectInfo override;
 
        public:
         void Connect(const Interface::IDBManagerInit& data) override;
