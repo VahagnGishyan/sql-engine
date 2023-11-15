@@ -45,7 +45,7 @@ namespace SQLEngine::DBLib::Interface
         virtual ~IDBObject() = default;
 
        public:
-        virtual auto GetInfo() const -> const ShDBComponentInfo = 0;
+        virtual auto GetComponentInfo() const -> const ShDBComponentInfo = 0;
     };
 
     //////////////////////////////////////////////////////////////////////
