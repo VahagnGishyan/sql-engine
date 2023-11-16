@@ -26,6 +26,7 @@ set (SUBDIRS
     logging
     observer
     query-executor
+    sql-engine
     table
     # other
     utility
