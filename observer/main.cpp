@@ -7,10 +7,10 @@
 
 #include <iostream>
 
-#include "db-lib/database/database.hpp"
-#include "db-lib/db-manager/db-manager.hpp"
-#include "db-lib/interface/i-table.hpp"
-#include "db-lib/table/table.hpp"
+#include "database/database.hpp"
+#include "db-manager/db-manager.hpp"
+#include "interface/i-table.hpp"
+#include "table/table.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 

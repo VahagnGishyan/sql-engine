@@ -18,9 +18,14 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 
 set (SUBDIRS
     app-info
-    db-lib
+    database
+    db-manager
+    filestream
+    interface
     logging
     observer
+    query-executor
+    table
     # other
     utility
 )

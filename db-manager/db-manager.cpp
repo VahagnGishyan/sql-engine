@@ -213,7 +213,7 @@ namespace SQLEngine::DBLib::DBManager
 
     void DoSomething()
     {
-        Logging::Signal("Hello from dblib-db-manager.");
+        Logging::Signal("Hello from db-manager.");
     }
 
 }  // namespace SQLEngine::DBLib::DBManager

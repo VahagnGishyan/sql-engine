@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "db-lib/interface/i-database.hpp"
+#include "interface/i-database.hpp"
 #include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////

@@ -9,10 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "db-lib/interface/i-database-id.hpp"
-#include "db-lib/interface/i-database.hpp"
-#include "db-lib/interface/i-db-manager-info.hpp"
-#include "db-lib/interface/i-db-manager-init.hpp"
+#include "interface/i-database-id.hpp"
+#include "interface/i-database.hpp"
+#include "interface/i-db-manager-info.hpp"
+#include "interface/i-db-manager-init.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //

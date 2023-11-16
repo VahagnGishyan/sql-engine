@@ -11,8 +11,8 @@
 
 #include <optional>
 
-#include "db-lib/interface/i-db-manager-comps.hpp"
-#include "db-lib/interface/i-db-manager.hpp"
+#include "interface/i-db-manager-comps.hpp"
+#include "interface/i-db-manager.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
