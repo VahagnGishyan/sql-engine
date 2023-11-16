@@ -24,12 +24,12 @@ namespace SQLEngine::DBLib::DBManager
     class Init : public Interface::IDBManagerInit
     {
        public:
-        auto GetWorkDir() const -> const std::string override;
+        // auto GetWorkDir() const -> const std::string override;
         auto GetName() const -> const std::string override;
         // auto GetFileStream() const -> ShFileStream override;
 
        public:
-        virtual void SetWorkDir(const std::string&);
+        // virtual void SetWorkDir(const std::string&);
         virtual void SetName(const std::string&);
         // virtual void SetFileStream(ShFileStream);
 
@@ -40,7 +40,7 @@ namespace SQLEngine::DBLib::DBManager
         //                    UDBManagerInit;
 
        protected:
-        std::string m_workdir;
+        // std::string m_workdir;
         std::string m_name;
         // ShFileStream m_filestream;
     };

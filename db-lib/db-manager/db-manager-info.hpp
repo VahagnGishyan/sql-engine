@@ -24,7 +24,7 @@ namespace SQLEngine::DBLib::DBManager
     class Info : public Interface::IDBManagerInfo
     {
        public:
-        virtual auto GetWorkDir() const -> const std::string override;
+        // virtual auto GetWorkDir() const -> const std::string override;
         virtual auto GetName() const -> const std::string override;
     };
 

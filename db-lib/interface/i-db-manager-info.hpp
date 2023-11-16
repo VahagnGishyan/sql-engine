@@ -24,7 +24,7 @@ namespace SQLEngine::DBLib::Interface
     class PROJECT_SHARED_EXPORT IDBManagerInfo : public IDBManagerComponent, public IDBObjectInfo
     {
        public:
-        virtual auto GetWorkDir() const -> const std::string = 0;
+        // virtual auto GetWorkDir() const -> const std::string = 0;
         virtual auto GetName() const -> const std::string    = 0;
     };
     using UDBManagerInfo  = std::unique_ptr<IDBManagerInfo>;

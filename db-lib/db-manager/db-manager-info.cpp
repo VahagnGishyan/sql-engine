@@ -15,11 +15,11 @@ namespace SQLEngine::DBLib::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Info::GetWorkDir() const -> const std::string
-    {
-        DBLib::Interface::NotImplYet("db-manager-info.cpp, Info::GetWorkDir()");
-        return "";
-    }
+    // auto Info::GetWorkDir() const -> const std::string
+    // {
+    //     DBLib::Interface::NotImplYet("db-manager-info.cpp, Info::GetWorkDir()");
+    //     return "";
+    // }
     auto Info::GetName() const -> const std::string
     {
         DBLib::Interface::NotImplYet("db-manager-info.cpp, Info::GetName()");

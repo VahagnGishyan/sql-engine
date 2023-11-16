@@ -17,10 +17,10 @@ namespace SQLEngine::DBLib::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Init::GetWorkDir() const -> const std::string
-    {
-        return (m_workdir);
-    }
+    // auto Init::GetWorkDir() const -> const std::string
+    // {
+    //     return (m_workdir);
+    // }
 
     auto Init::GetName() const -> const std::string
     {
@@ -34,10 +34,10 @@ namespace SQLEngine::DBLib::DBManager
 
     //////////////////////////////////////////////////////////////////////
 
-    void Init::SetWorkDir(const std::string& workdir)
-    {
-        m_workdir = workdir;
-    }
+    // void Init::SetWorkDir(const std::string& workdir)
+    // {
+    //     m_workdir = workdir;
+    // }
     void Init::SetName(const std::string& name)
     {
         m_name = name;
@@ -49,13 +49,13 @@ namespace SQLEngine::DBLib::DBManager
 
     //////////////////////////////////////////////////////////////////////
 
-    static auto GetDBManagerWorkDir() -> const std::string
-    {
-        auto&& info       = Application::GetInfo();
-        auto&& prjAppData = info.GetDefaultAppData();
-        auto&& workdir    = prjAppData + "/main";
-        return (workdir);
-    }
+    // static auto GetDBManagerWorkDir() -> const std::string
+    // {
+    //     auto&& info       = Application::GetInfo();
+    //     auto&& prjAppData = info.GetDefaultAppData();
+    //     auto&& workdir    = prjAppData + "/main";
+    //     return (workdir);
+    // }
 
     auto Init::Create(const std::string& name) -> Interface::UDBManagerInit
     {
@@ -65,7 +65,7 @@ namespace SQLEngine::DBLib::DBManager
         // {
         //     filestream = std::move(FileStream::Create());
         // }
-        init->SetWorkDir(GetDBManagerWorkDir());
+        // init->SetWorkDir(GetDBManagerWorkDir());
         init->SetName(name);
         // init->SetFileStream(filestream);
         return std::move(init);
