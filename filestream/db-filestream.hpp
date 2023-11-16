@@ -18,37 +18,37 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class FileStream : public IFileStream
+    class FileStream : public Interface::IFileStream
     {
-       private:
-        FileStream() = default;
+        //    private:
+        //     FileStream() = default;
 
-       public:
-        void SaveTable(const ITable& table) const override;
-        void LoadTable(ITable& table) const override;
+        //    public:
+        //     void SaveTable(const ITable& table) const override;
+        //     void LoadTable(ITable& table) const override;
 
-       public:
-        void SaveDataBase(const IDataBase& database) const override;
-        void LoadDataBase(IDataBase& database) const override;
+        //    public:
+        //     void SaveDataBase(const IDataBase& database) const override;
+        //     void LoadDataBase(IDataBase& database) const override;
 
-       public:
-        void SaveDBManager(const IDBManager& dbmanager) const override;
-        void LoadDBManager(IDBManager& dbmanager) const override;
+        //    public:
+        //     void SaveDBManager(const IDBManager& dbmanager) const override;
+        //     void LoadDBManager(IDBManager& dbmanager) const override;
 
-       public:
-        static auto Create() -> UFileStream;
+        //    public:
+        //     static auto Create() -> UFileStream;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

@@ -24,10 +24,10 @@ namespace SQLEngine::Observer
     //
     //////////////////////////////////////////////////////////////////////////
 
-    class Table : public DBLib::Interface::ITable
+    class Table : public Interface::ITable
     {
        public:
-        auto GetInfo() const -> const DBLib::Interface::WDBObjectInfo override
+        auto GetInfo() const -> const Interface::WDBObjectInfo override
         {
             throw std::logic_error("something");
         }
@@ -35,10 +35,10 @@ namespace SQLEngine::Observer
 
     int Main(const int count, char **values)
     {
-        SQLEngine::DBLib::Interface::MakeTable<Table>();
-        DBLib::Table::DoSomething();
-        DBLib::DataBase::DoSomething();
-        DBLib::DBManager::DoSomething();
+        SQLEngine::Interface::MakeTable<Table>();
+        Table::DoSomething();
+        DataBase::DoSomething();
+        DBManager::DoSomething();
 
         return (0);
     }

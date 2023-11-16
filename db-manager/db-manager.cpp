@@ -16,7 +16,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBLib::DBManager
+namespace SQLEngine::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -216,7 +216,7 @@ namespace SQLEngine::DBLib::DBManager
         Logging::Signal("Hello from db-manager.");
     }
 
-}  // namespace SQLEngine::DBLib::DBManager
+}  // namespace SQLEngine::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

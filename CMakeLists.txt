@@ -20,6 +20,7 @@ set (SUBDIRS
     app-info
     database
     db-manager
+    db-stream
     filestream
     interface
     logging

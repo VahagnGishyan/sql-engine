@@ -23,7 +23,7 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-utility 
     sql-engine-app-info 
     sql-engine-logging
-    sql-engine-db-interface
+    sql-engine-interface
 )
 
 ##########################################################

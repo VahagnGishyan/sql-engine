@@ -11,13 +11,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBLib::DataBase
+namespace SQLEngine::DataBase
 {
     void DoSomething()
     {
         Logging::Signal("Hello from database.");
     }
-}  // namespace SQLEngine::DBLib::DataBase
+}  // namespace SQLEngine::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

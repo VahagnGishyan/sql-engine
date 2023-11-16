@@ -9,10 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBLib::Interface
+namespace SQLEngine::Interface
 {
     
-}  // namespace SQLEngine::DBLib::Interface
+}  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

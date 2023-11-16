@@ -10,13 +10,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBLib::Interface
+namespace SQLEngine::Interface
 {
     void NotImplYet(const std::string& info)
     {
         Utility::Assert(false, "Not impl yet: " + info);
     }
-}  // namespace SQLEngine::DBLib::Interface
+}  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
