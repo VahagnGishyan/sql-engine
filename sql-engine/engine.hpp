@@ -12,7 +12,7 @@
 #include <memory>
 
 #include "database.hpp"
-#include "engine.hpp"
+#include "interface/i-database.hpp"
 #include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,29 +25,36 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Init(UEngine engine);
+    class EngineInit
+    {
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    bool DatabaseExists(const std::string& name);
-    auto ListDatabases() -> DataBaseNameList;
-    auto ListConnectedDatabases() -> DataBaseNameList;
+    class Engine
+    {
+       public:
+        virtual ~Engine() = default;
 
-    auto CreateDatabase(const std::string& name) -> WDataBase;
-    void DropDatabase(const std::string& name);
+       public:
+        auto CreateDatabase(const std::string& name) -> WDataBase;
+        void DropDatabase(const std::string& name);
 
-    auto ConnectDatabase(const std::string& name) -> WDataBase;
-    void DisconnectDatabase(const std::string& name);
+       public:
+        auto ConnectDatabase(const std::string& name) -> WDataBase;
+        void DisconnectDatabase(const std::string& name);
 
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
+       public:
+        bool DatabaseExists(const std::string& name);
+        auto ListDatabases() -> DataBaseNameList;
+        auto ListConnectedDatabases() -> DataBaseNameList;
+    };
 
-    // virtual auto AlterTableAdd(const ITableID& tbid, const IColumnID, const DataType) -> ShTable    = 0;
-    // virtual auto AlterTableDrop(const ITableID& tbid, const IColumnID) -> ShTable                   = 0;
-    // virtual auto AlterTableRename(const ITableID& tbid, const IColumnID, const DataType) -> ShTable = 0;
+    using UEngine  = std::unique_ptr<Engine>;
+    using WEngine  = std::weak_ptr<Engine>;
+    using ShEngine = std::shared_ptr<Engine>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

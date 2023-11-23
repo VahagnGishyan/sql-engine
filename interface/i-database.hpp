@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-database-comps.hpp"
+#include "i-query.hpp"
 #include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,6 +51,9 @@ namespace SQLEngine::Interface
         virtual void DropTable(const ITableID& init)                       = 0;
         virtual auto GetTable(const ITableID& init) -> ShTable             = 0;
         virtual auto GetTable(const ITableID& init) const -> const ShTable = 0;
+
+       public:
+        virtual void Execute(const IQuery& query);
     };
 
     using UDataBase    = std::unique_ptr<IDataBase>;

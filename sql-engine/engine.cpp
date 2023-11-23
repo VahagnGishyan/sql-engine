@@ -3,17 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-#include <memory>
-
-#include "database.hpp"
 #include "engine.hpp"
-#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -25,29 +15,48 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Init(UEngine engine);
+    bool Engine::DatabaseExists(const std::string& name)
+    {
+        Interface::NotImplYet("engine.cpp, Engine::DatabaseExists()");
+        return false;
+    }
+    auto Engine::ListDatabases() -> DataBaseNameList
+    {
+        Interface::NotImplYet("engine.cpp, Engine::ListDatabases()");
+        return DataBaseNameList{};
+    }
+    auto Engine::ListConnectedDatabases() -> DataBaseNameList
+    {
+        Interface::NotImplYet("engine.cpp, Engine::ListConnectedDatabases()");
+        return DataBaseNameList{};
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    bool DatabaseExists(const std::string& name);
-    auto ListDatabases() -> DataBaseNameList;
-    auto ListConnectedDatabases() -> DataBaseNameList;
-
-    auto CreateDatabase(const std::string& name) -> WDataBase;
-    void DropDatabase(const std::string& name);
-
-    auto ConnectDatabase(const std::string& name) -> WDataBase;
-    void DisconnectDatabase(const std::string& name);
+    auto Engine::CreateDatabase(const std::string& name) -> WDataBase
+    {
+        Interface::NotImplYet("engine.cpp, Engine::CreateDatabase()");
+        return WDataBase{};
+    }
+    void Engine::DropDatabase(const std::string& name)
+    {
+        Interface::NotImplYet("engine.cpp, Engine::DropDatabase()");
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // virtual auto AlterTableAdd(const ITableID& tbid, const IColumnID, const DataType) -> ShTable    = 0;
-    // virtual auto AlterTableDrop(const ITableID& tbid, const IColumnID) -> ShTable                   = 0;
-    // virtual auto AlterTableRename(const ITableID& tbid, const IColumnID, const DataType) -> ShTable = 0;
+    auto Engine::ConnectDatabase(const std::string& name) -> WDataBase
+    {
+        Interface::NotImplYet("engine.cpp, Engine::ConnectDatabase()");
+    }
+    void Engine::DisconnectDatabase(const std::string& name)
+    {
+        Interface::NotImplYet("engine.cpp, Engine::DisconnectDatabase()");
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

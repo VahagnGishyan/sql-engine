@@ -10,6 +10,8 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     core.cpp
+    database.cpp
+    engine.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
