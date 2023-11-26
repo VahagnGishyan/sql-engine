@@ -11,7 +11,7 @@
 
 #include "i-column-component.hpp"
 #include "i-column-id.hpp"
-#include "i-element.hpp"
+#include "i-dyn-object.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -28,7 +28,7 @@ namespace SQLEngine::Interface
        public:
         virtual auto GetSize() const -> unsigned int;
         virtual auto GetID() const -> const IColumnID& = 0;
-        virtual auto GetType() const -> const ElementType;
+        virtual auto GetType() const -> const DynamicObjectType;
     };
 
     using UColumnInfo  = std::unique_ptr<IColumnInfo>;

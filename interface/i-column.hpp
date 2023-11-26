@@ -40,10 +40,10 @@ namespace SQLEngine::Interface
        public:
         virtual auto GetID() const -> const IColumnID& = 0;
         virtual auto GetSize() const -> unsigned int;
-        virtual auto GetType() const -> const ElementType;
+        virtual auto GetType() const -> const DynamicObjectType;
 
        public:
-        virtual void SetType(const ElementType& type) = 0;
+        virtual void SetType(const DynamicObjectType& type) = 0;
 
        public:
         virtual void AddElement(UColumnElement element)                                                    = 0;

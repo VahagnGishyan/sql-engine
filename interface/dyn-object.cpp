@@ -8,7 +8,7 @@
 #include <map>
 #include <stdexcept>
 
-#include "i-element.hpp"
+#include "i-dyn-object.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,19 +21,20 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto GetElementTypeNameAsString(const ElementType& type) -> const std::string&
+    auto GetDynamicObjectTypeNameAsString(const DynamicObjectType& type) -> const std::string&
     {
-        static std::map<ElementType, std::string> elements = {
-            {ElementType::Int,    "Unset" },
-            {ElementType::Int,    "Int"   },
-            {ElementType::Double, "Double"},
-            {ElementType::String, "String"},
+        static std::map<DynamicObjectType, std::string> elements = {
+            {DynamicObjectType::Int,    "Unset" },
+            {DynamicObjectType::Int,    "Int"   },
+            {DynamicObjectType::Double, "Double"},
+            {DynamicObjectType::String, "String"},
         };
         static auto end = elements.end();
 
         auto pos = elements.find(type);
-        Utility::Assert(pos != end,
-                        fmt::format("GetElementTypeNameAsString, unknown ElementType, id is [{}]", (int)type));
+        Utility::Assert(
+            pos != end,
+            fmt::format("GetDynamicObjectTypeNameAsString, unknown DynamicObjectType, id is [{}]", (int)type));
         return pos->second;
     }
 

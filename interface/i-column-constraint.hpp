@@ -11,7 +11,7 @@
 
 #include "i-column-component.hpp"
 #include "i-column-id.hpp"
-#include "i-element.hpp"
+#include "i-dyn-object.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
