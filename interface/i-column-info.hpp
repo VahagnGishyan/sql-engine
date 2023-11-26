@@ -10,6 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-column-component.hpp"
+#include "i-column-id.hpp"
+#include "i-element.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,15 +23,17 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    class PROJECT_SHARED_EXPORT IColumnInfo : public IColumnComponent, public IDBObjectInfo
     {
+       public:
+        virtual auto GetSize() const -> unsigned int;
+        virtual auto GetID() const -> const IColumnID& = 0;
+        virtual auto GetType() const -> const ElementType;
     };
 
-    using UColumnID     = std::unique_ptr<IColumnID>;
-    using WColumnID    = std::weak_ptr<IColumnID>;
-    using ShColumnID    = std::shared_ptr<IColumnID>;
-    using ColumnIDList  = std::vector<ShColumnID>;
-    using UColumnIDList = std::unique_ptr<ColumnIDList>;
+    using UColumnInfo  = std::unique_ptr<IColumnInfo>;
+    using WColumnInfo  = std::weak_ptr<IColumnInfo>;
+    using ShColumnInfo = std::shared_ptr<IColumnInfo>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

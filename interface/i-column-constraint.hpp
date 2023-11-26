@@ -10,6 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-column-component.hpp"
+#include "i-column-id.hpp"
+#include "i-element.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,15 +23,16 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    class PROJECT_SHARED_EXPORT IColumnConstraint : public IColumnComponent
     {
+       public:
     };
 
-    using UColumnID     = std::unique_ptr<IColumnID>;
-    using WColumnID    = std::weak_ptr<IColumnID>;
-    using ShColumnID    = std::shared_ptr<IColumnID>;
-    using ColumnIDList  = std::vector<ShColumnID>;
-    using UColumnIDList = std::unique_ptr<ColumnIDList>;
+    using UColumnConstraint     = std::unique_ptr<IColumnConstraint>;
+    using WColumnConstraint     = std::weak_ptr<IColumnConstraint>;
+    using ShColumnConstraint    = std::shared_ptr<IColumnConstraint>;
+    using ColumnConstraintList  = std::vector<UColumnConstraint>;
+    using UColumnConstraintList = std::unique_ptr<ColumnConstraintList>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

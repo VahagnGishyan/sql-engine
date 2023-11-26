@@ -21,9 +21,13 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnInfo : public IColumnComponent, public IDBObjectInfo
+    class PROJECT_SHARED_EXPORT IColumnInit : public IColumnComponent
     {
     };
+
+    using UColumnInit     = std::unique_ptr<IColumnInit>;
+    using WColumnInit    = std::weak_ptr<IColumnInit>;
+    using ShColumnInit    = std::shared_ptr<IColumnInit>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

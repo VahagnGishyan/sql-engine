@@ -3,13 +3,13 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include <fmt/core.h>
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
+#include <map>
+#include <stdexcept>
 
-#include "i-column-component.hpp"
+#include "i-element.hpp"
+#include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,15 +21,25 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    auto GetElementTypeNameAsString(const ElementType& type) -> const std::string&
     {
-    };
+        static std::map<ElementType, std::string> elements = {
+            {ElementType::Int,    "Unset" },
+            {ElementType::Int,    "Int"   },
+            {ElementType::Double, "Double"},
+            {ElementType::String, "String"},
+        };
+        static auto end = elements.end();
 
-    using UColumnID     = std::unique_ptr<IColumnID>;
-    using WColumnID    = std::weak_ptr<IColumnID>;
-    using ShColumnID    = std::shared_ptr<IColumnID>;
-    using ColumnIDList  = std::vector<ShColumnID>;
-    using UColumnIDList = std::unique_ptr<ColumnIDList>;
+        auto pos = elements.find(type);
+        Utility::Assert(pos != end,
+                        fmt::format("GetElementTypeNameAsString, unknown ElementType, id is [{}]", (int)type));
+        return pos->second;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
