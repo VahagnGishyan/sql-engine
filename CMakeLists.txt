@@ -18,15 +18,15 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 
 set (SUBDIRS
     app-info
-    database
-    db-manager
-    db-stream
-    filestream
+    # database
+    # db-manager
+    # db-stream
+    # filestream
     interface
     logging
     observer
-    query-executor
-    sql-engine
+    # query-executor
+    # sql-engine
     table
     # other
     utility
