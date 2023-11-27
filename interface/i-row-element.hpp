@@ -9,6 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "i-dyn-object.hpp"
 #include "i-row-component.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,9 +22,13 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IRowElement : public IRowComponent
+    class PROJECT_SHARED_EXPORT IRowElement : public IRowComponent, public IDynamicObject
     {
     };
+
+    using URowElement  = std::unique_ptr<IRowElement>;
+    using WRowElement  = std::weak_ptr<IRowElement>;
+    using ShRowElement = std::shared_ptr<IRowElement>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

@@ -21,20 +21,20 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto GetDynamicObjectTypeNameAsString(const DynamicObjectType& type) -> const std::string&
+    auto GetDynamicTypeNameAsString(const DynamicType& type) -> const std::string&
     {
-        static std::map<DynamicObjectType, std::string> elements = {
-            {DynamicObjectType::Int,    "Unset" },
-            {DynamicObjectType::Int,    "Int"   },
-            {DynamicObjectType::Double, "Double"},
-            {DynamicObjectType::String, "String"},
+        static std::map<DynamicType, std::string> elements = {
+            {DynamicType::Int,    "Unset" },
+            {DynamicType::Int,    "Int"   },
+            {DynamicType::Double, "Double"},
+            {DynamicType::String, "String"},
         };
         static auto end = elements.end();
 
         auto pos = elements.find(type);
         Utility::Assert(
             pos != end,
-            fmt::format("GetDynamicObjectTypeNameAsString, unknown DynamicObjectType, id is [{}]", (int)type));
+            fmt::format("GetDynamicTypeNameAsString, unknown DynamicType, id is [{}]", (int)type));
         return pos->second;
     }
 

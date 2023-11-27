@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-column-component.hpp"
+#include "i-dyn-object.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,27 +22,13 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnElement : public IColumnComponent
+    class PROJECT_SHARED_EXPORT IColumnElement : public IColumnComponent, public IDynamicObject
     {
-        // class ColumnElement:
-        //     def __init__(self, value):
-        //         self.value = None
-        //         self.set_value(value)
-
-        //     def get_value(self):
-        //         return self.value
-
-        //     def set_value(self, value):
-        //         self.value = value
-
-        //     def copy(self):
-        //         newclm = ColumnElement(self.get_value())
-        //         return newclm
     };
 
-    using UColumnElement     = std::unique_ptr<IColumnElement>;
-    using WColumnElement     = std::weak_ptr<IColumnElement>;
-    using ShColumnElement    = std::shared_ptr<IColumnElement>;
+    using UColumnElement  = std::unique_ptr<IColumnElement>;
+    using WColumnElement  = std::weak_ptr<IColumnElement>;
+    using ShColumnElement = std::shared_ptr<IColumnElement>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

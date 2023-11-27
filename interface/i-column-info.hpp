@@ -28,7 +28,7 @@ namespace SQLEngine::Interface
        public:
         virtual auto GetSize() const -> unsigned int;
         virtual auto GetID() const -> const IColumnID& = 0;
-        virtual auto GetType() const -> const DynamicObjectType;
+        virtual auto GetType() const -> const DynamicType;
     };
 
     using UColumnInfo  = std::unique_ptr<IColumnInfo>;
