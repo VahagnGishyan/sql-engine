@@ -32,6 +32,7 @@ namespace SQLEngine::Interface
 
     class PROJECT_SHARED_EXPORT IColumnElement : /*public IColumnComponent,*/ public IDynamicValue
     {
+       public:
         virtual auto Copy() const -> UColumnElement = 0;
     };
 

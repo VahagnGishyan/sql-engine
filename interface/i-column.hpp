@@ -38,16 +38,16 @@ namespace SQLEngine::Interface
         virtual auto Copy() const -> UColumn       = 0;
 
        public:
-        virtual auto GetID() const -> const IColumnID& = 0;
-        virtual auto GetSize() const -> unsigned int;
-        virtual auto GetType() const -> const DynamicType;
+        virtual auto GetID() const -> const IColumnID&    = 0;
+        virtual auto GetSize() const -> unsigned int      = 0;
+        virtual auto GetType() const -> const DynamicType = 0;
 
        public:
         virtual void SetType(const DynamicType& type) = 0;
 
        public:
         virtual void AddElement(UColumnElement element)                                                    = 0;
-        virtual auto GetElement(const IColumnID& id) -> IColumnElement                                     = 0;
+        virtual auto GetElement(const IColumnID& id) -> UColumnElement                                     = 0;
         virtual auto GetElementsIDs(std::function<bool(const IColumnElement&)> predicate) -> UColumnIDList = 0;
 
        public:
@@ -55,9 +55,8 @@ namespace SQLEngine::Interface
         virtual void AddConstraints(UColumnConstraintList element) = 0;
 
        public:
-        virtual auto RemoveElementsIf(std::function<bool(const IColumnElement&)> predicate) -> UColumnIDList = 0;
-        virtual auto UpdateElementsIf(std::function<bool(const IColumnElement&)> predicate,
-                                      std::function<void(IColumnElement&)> modifier) -> UColumnIDList        = 0;
+        virtual void RemoveElementsIf(std::function<bool(const IColumnElement&)> predicate) = 0;
+        virtual void UpdateElementsIf(std::function<void(IColumnElement&)> modifier)        = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

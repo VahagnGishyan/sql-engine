@@ -27,6 +27,9 @@ namespace SQLEngine::Interface
         auto GetName() const -> const std::string override;
         void SetName(const std::string&) override;
 
+       public:
+        auto Copy() const -> UColumnID override;
+
        protected:
         std::string m_name;
     };

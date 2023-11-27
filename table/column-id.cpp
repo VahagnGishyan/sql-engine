@@ -26,6 +26,15 @@ namespace SQLEngine::Interface
     }
 
     //////////////////////////////////////////////////////////////////////
+
+    auto ColumnID::Copy() const -> UColumnID
+    {
+        auto id    = std::make_unique<ColumnID>();
+        id->m_name = m_name;
+        return id;
+    }
+
+    //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 }  // namespace SQLEngine::Interface

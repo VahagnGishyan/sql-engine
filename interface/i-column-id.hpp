@@ -21,18 +21,25 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
-    {
-       public:
-        virtual auto GetName() const -> const std::string = 0;
-        virtual void SetName(const std::string&)          = 0;
-    };
+    class IColumnID;
 
     using UColumnID     = std::unique_ptr<IColumnID>;
     using WColumnID     = std::weak_ptr<IColumnID>;
     using ShColumnID    = std::shared_ptr<IColumnID>;
     using ColumnIDList  = std::vector<ShColumnID>;
     using UColumnIDList = std::unique_ptr<ColumnIDList>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    {
+       public:
+        virtual auto GetName() const -> const std::string = 0;
+        virtual void SetName(const std::string&)          = 0;
+
+       public:
+        virtual auto Copy() const -> UColumnID = 0;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
