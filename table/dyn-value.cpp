@@ -20,7 +20,7 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto DynamicValue::Copy() const -> Interface::UDynamicValue
+    auto DynamicValue::CopyValue() const -> Interface::UDynamicValue
     {
         auto&& obj   = std::make_unique<DynamicValue>();
         obj->m_value = m_value;
@@ -30,6 +30,28 @@ namespace SQLEngine::Table
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
+
+    void DynamicValue::SetValue(const IDynamicValue& value, const Interface::DynamicType& type)
+    {
+        if (type == Interface::DynamicType::Int)
+        {
+            SetValueAsInt(value.GetValueAsInt());
+            return;
+        }
+        if (type == Interface::DynamicType::Double)
+        {
+            SetValueAsDouble(value.GetValueAsDouble());
+            return;
+        }
+        if (type == Interface::DynamicType::String)
+        {
+            SetValueAsString(value.GetValueAsString());
+            return;
+        }
+        Utility::Assert(false,
+                        fmt::format("dyn-value.cpp, DynamicValue::SetValue(value, type), type: {} is unsupported",
+                                    Interface::GetDynamicTypeNameAsString(type)));
+    }
 
     void DynamicValue::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
     {
@@ -82,7 +104,7 @@ namespace SQLEngine::Table
             return GetValueAsString() == value.GetValueAsString();
         }
         Utility::Assert(
-            false, fmt::format("table::dyn-value.cpp, DynamicValue::Equal(value, type), value-type: {} in unsupported",
+            false, fmt::format("table::dyn-value.cpp, DynamicValue::Equal(value, type), value-type: {} is unsupported",
                                Interface::GetDynamicTypeNameAsString(type)));
         return false;
     }
@@ -106,7 +128,7 @@ namespace SQLEngine::Table
         }
         Utility::Assert(
             false,
-            fmt::format("table::dyn-value.cpp, DynamicValue::GreaterThan(value, type), value-type: {} in unsupported",
+            fmt::format("table::dyn-value.cpp, DynamicValue::GreaterThan(value, type), value-type: {} is unsupported",
                         Interface::GetDynamicTypeNameAsString(type)));
         return false;
     }

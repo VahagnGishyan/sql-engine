@@ -9,11 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// #include "interface/i-table.hpp"
-#include <string>
-#include <variant>
-
-#include "interface/i-dyn-object.hpp"
+#include "dyn-object.hpp"
+#include "interface/i-column-element.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -25,14 +22,10 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class DynamicValue : public Interface::IDynamicValue
+    class PROJECT_SHARED_EXPORT ColumnElement : public Interface::IColumnElement
     {
-       protected:
-        using DynamicValueType = std::variant<Interface::GetDynamicType<Interface::DynamicType::Int>::type,
-                                              Interface::GetDynamicType<Interface::DynamicType::Double>::type,
-                                              Interface::GetDynamicType<Interface::DynamicType::String>::type>;
-
        public:
+        auto Copy() const -> Interface::UColumnElement override;
         auto CopyValue() const -> Interface::UDynamicValue override;
 
        public:
@@ -57,51 +50,6 @@ namespace SQLEngine::Table
         bool LessThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type) override;
 
        protected:
-        DynamicValueType m_value;
-    };
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    class DynamicObject : public Interface::IDynamicObject
-    {
-       public:
-        auto CopyObject() const -> Interface::UDynamicObject override;
-        auto CopyValue() const -> Interface::UDynamicValue override;
-
-       public:
-        void SetType(const Interface::DynamicType& type) override;
-        auto GetType() const -> const Interface::DynamicType& override;
-
-       public:
-        void SetValue(const IDynamicObject& obj) override;
-        void SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value) override;
-        void SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value) override;
-        void SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value) override;
-
-       public:
-        auto GetValue() const -> const Interface::IDynamicValue& override;
-        auto GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type& override;
-        auto GetValueAsDouble() const
-            -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type& override;
-        auto GetValueAsString() const
-            -> const Interface::GetDynamicType<Interface::DynamicType::String>::type& override;
-
-       public:
-        void AssertTypeIs(const Interface::DynamicType& type) const override; 
-        void AssertTypeIsNot(const Interface::DynamicType& type) const override; 
-
-       public:
-        bool Equal(const IDynamicObject& element) override;
-        bool NotEqual(const IDynamicObject& element) override;
-        bool GreaterThan(const IDynamicObject& element) override;
-        bool LessThan(const IDynamicObject& element) override;
-        bool GreaterThanOrEqualTo(const IDynamicObject& element) override;
-        bool LessThanOrEqualTo(const IDynamicObject& element) override;
-
-       protected:
-        Interface::DynamicType m_type = Interface::DynamicType::Unset;
         Interface::UDynamicValue m_pValue;
     };
 

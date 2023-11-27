@@ -21,17 +21,17 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto DynamicObject::Copy() const -> Interface::UDynamicObject
+    auto DynamicObject::CopyObject() const -> Interface::UDynamicObject
     {
-        auto&& obj  = std::make_unique<DynamicObject>();
-        obj->m_type = GetType();
-        obj->SetValue(*this);
+        auto&& obj    = std::make_unique<DynamicObject>();
+        obj->m_type   = GetType();
+        obj->m_pValue = CopyValue();
         return std::move(obj);
     }
 
     auto DynamicObject::CopyValue() const -> Interface::UDynamicValue
     {
-        return (m_value.Copy());
+        return (m_pValue->CopyValue());
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -54,53 +54,49 @@ namespace SQLEngine::Table
 
     void DynamicObject::SetValue(const IDynamicObject& obj)
     {
-        if (obj.GetType() == Interface::DynamicType::Int)
-        {
-            SetValueAsInt(obj.GetValueAsInt());
-            return;
-        }
-        if (obj.GetType() == Interface::DynamicType::Double)
-        {
-            SetValueAsDouble(obj.GetValueAsDouble());
-            return;
-        }
-        if (obj.GetType() == Interface::DynamicType::String)
-        {
-            SetValueAsString(obj.GetValueAsString());
-            return;
-        }
-        Utility::Assert(false, fmt::format("dyn-object.cpp, DynamicObject::SetValue(obj), obj-type: {} in unsupported",
-                                           Interface::GetDynamicTypeNameAsString(obj.GetType())));
+        m_pValue->SetValue(obj.GetValue(), obj.GetType());
     }
     void DynamicObject::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
     {
-        m_value.SetValueAsInt(value);
+        SetType(Interface::DynamicType::Int);
+        m_pValue->SetValueAsInt(value);
     }
     void DynamicObject::SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value)
     {
-        m_value.SetValueAsDouble(value);
+        SetType(Interface::DynamicType::Double);
+        m_pValue->SetValueAsDouble(value);
     }
     void DynamicObject::SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value)
     {
-        m_value.SetValueAsString(value);
+        SetType(Interface::DynamicType::String);
+        m_pValue->SetValueAsString(value);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto DynamicObject::GetValue() const -> const Interface::IDynamicValue&
+    {
+        return *m_pValue;
     }
 
     auto DynamicObject::GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
     {
         // AssertTypeIs(Interface::DynamicType::Int);
-        return m_value.GetValueAsInt();
+        return m_pValue->GetValueAsInt();
     }
     auto DynamicObject::GetValueAsDouble() const
         -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
     {
         // AssertTypeIs(Interface::DynamicType::Double);
-        return m_value.GetValueAsDouble();
+        return m_pValue->GetValueAsDouble();
     }
     auto DynamicObject::GetValueAsString() const
         -> const Interface::GetDynamicType<Interface::DynamicType::String>::type&
     {
         // AssertTypeIs(Interface::DynamicType::String);
-        return m_value.GetValueAsString();
+        return m_pValue->GetValueAsString();
     }
 
     //////////////////////////////////////////////////////////////////////

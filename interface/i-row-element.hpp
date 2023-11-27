@@ -22,13 +22,19 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IRowElement : public IRowComponent, public IDynamicObject
-    {
-    };
+    class IRowElement;
 
     using URowElement  = std::unique_ptr<IRowElement>;
     using WRowElement  = std::weak_ptr<IRowElement>;
     using ShRowElement = std::shared_ptr<IRowElement>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class PROJECT_SHARED_EXPORT IRowElement : public IRowComponent, public IDynamicObject
+    {
+       public:
+        virtual auto Copy() const -> Interface::URowElement = 0;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

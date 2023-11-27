@@ -78,9 +78,10 @@ namespace SQLEngine::Interface
         virtual ~IDynamicValue() = default;
 
        public:
-        virtual auto Copy() const -> UDynamicValue = 0;
+        virtual auto CopyValue() const -> UDynamicValue = 0;
 
        public:
+        virtual void SetValue(const IDynamicValue& obj, const DynamicType& type)              = 0;
         virtual void SetValueAsInt(const GetDynamicType<DynamicType::Int>::type& value)       = 0;
         virtual void SetValueAsDouble(const GetDynamicType<DynamicType::Double>::type& value) = 0;
         virtual void SetValueAsString(const GetDynamicType<DynamicType::String>::type& value) = 0;
@@ -117,8 +118,8 @@ namespace SQLEngine::Interface
         virtual ~IDynamicObject() = default;
 
        public:
-        virtual auto Copy() const -> UDynamicObject     = 0;
-        virtual auto CopyValue() const -> UDynamicValue = 0;
+        virtual auto CopyObject() const -> UDynamicObject = 0;
+        virtual auto CopyValue() const -> UDynamicValue   = 0;
 
        public:
         virtual auto GetType() const -> const DynamicType& = 0;
@@ -131,9 +132,14 @@ namespace SQLEngine::Interface
         virtual void SetValueAsString(const GetDynamicType<DynamicType::String>::type& value) = 0;
 
        public:
+        virtual auto GetValue() const -> const IDynamicValue&                                     = 0;
         virtual auto GetValueAsInt() const -> const GetDynamicType<DynamicType::Int>::type&       = 0;
         virtual auto GetValueAsDouble() const -> const GetDynamicType<DynamicType::Double>::type& = 0;
         virtual auto GetValueAsString() const -> const GetDynamicType<DynamicType::String>::type& = 0;
+
+       public:
+        virtual void AssertTypeIs(const Interface::DynamicType& type) const    = 0;
+        virtual void AssertTypeIsNot(const Interface::DynamicType& type) const = 0;
 
        public:
         virtual bool Equal(const IDynamicObject& element)                = 0;

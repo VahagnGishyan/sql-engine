@@ -25,7 +25,9 @@ namespace SQLEngine::Table
     class PROJECT_SHARED_EXPORT RowElement : public Interface::IRowElement
     {
        public:
-        auto Copy() const -> Interface::UDynamicObject override;
+        auto Copy() const -> Interface::URowElement override;
+        auto CopyObject() const -> Interface::UDynamicObject override;
+        auto CopyValue() const -> Interface::UDynamicValue override;
 
        public:
         void SetType(const Interface::DynamicType& type) override;
@@ -38,14 +40,16 @@ namespace SQLEngine::Table
         void SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value) override;
 
        public:
+        auto GetValue() const -> const Interface::IDynamicValue& override;
         auto GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type& override;
         auto GetValueAsDouble() const
             -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type& override;
         auto GetValueAsString() const
             -> const Interface::GetDynamicType<Interface::DynamicType::String>::type& override;
 
-        virtual void AssertTypeIs(const Interface::DynamicType& type) const;
-        virtual void AssertTypeIsNot(const Interface::DynamicType& type) const;
+       public:
+        void AssertTypeIs(const Interface::DynamicType& type) const override;
+        void AssertTypeIsNot(const Interface::DynamicType& type) const override;
 
        public:
         bool Equal(const IDynamicObject& element) override;
@@ -56,7 +60,7 @@ namespace SQLEngine::Table
         bool LessThanOrEqualTo(const IDynamicObject& element) override;
 
        protected:
-        DynamicObject m_dynobj;
+        Interface::UDynamicObject m_pobject;
     };
 
     //////////////////////////////////////////////////////////////////////
