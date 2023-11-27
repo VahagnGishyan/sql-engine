@@ -10,6 +10,7 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     column-element.cpp
+    column-id.cpp
     # column.cpp
     dyn-object.cpp
     dyn-value.cpp

@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-column-component.hpp"
+#include "interface/i-column-id.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,18 +21,15 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    class PROJECT_SHARED_EXPORT ColumnID : public Interface::IColumnID
     {
        public:
-        virtual auto GetName() const -> const std::string = 0;
-        virtual void SetName(const std::string&)          = 0;
-    };
+        auto GetName() const -> const std::string override;
+        void SetName(const std::string&) override;
 
-    using UColumnID     = std::unique_ptr<IColumnID>;
-    using WColumnID     = std::weak_ptr<IColumnID>;
-    using ShColumnID    = std::shared_ptr<IColumnID>;
-    using ColumnIDList  = std::vector<ShColumnID>;
-    using UColumnIDList = std::unique_ptr<ColumnIDList>;
+       protected:
+        std::string m_name;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

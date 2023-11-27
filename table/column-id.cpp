@@ -3,13 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-#include "i-column-component.hpp"
+#include "column-id.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,18 +15,15 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnID : public IColumnComponent
+    auto ColumnID::GetName() const -> const std::string
     {
-       public:
-        virtual auto GetName() const -> const std::string = 0;
-        virtual void SetName(const std::string&)          = 0;
-    };
+        return m_name;
+    }
 
-    using UColumnID     = std::unique_ptr<IColumnID>;
-    using WColumnID     = std::weak_ptr<IColumnID>;
-    using ShColumnID    = std::shared_ptr<IColumnID>;
-    using ColumnIDList  = std::vector<ShColumnID>;
-    using UColumnIDList = std::unique_ptr<ColumnIDList>;
+    void ColumnID::SetName(const std::string& name)
+    {
+        m_name = name;
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
