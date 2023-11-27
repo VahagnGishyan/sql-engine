@@ -9,8 +9,10 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(fmt REQUIRED)
 
 set(SOURCES
+    # row-element.cpp
     # column.cpp
     dyn-object.cpp
+    dyn-value.cpp
     # table.cpp
 )
 

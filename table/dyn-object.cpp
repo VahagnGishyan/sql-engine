@@ -21,12 +21,29 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto DynamicObject::GetType() const -> const Interface::DynamicObjectType&
+    auto DynamicObject::Copy() const -> Interface::UDynamicObject
+    {
+        auto&& obj  = std::make_unique<DynamicObject>();
+        obj->m_type = GetType();
+        obj->SetValue(*this);
+        return std::move(obj);
+    }
+
+    auto DynamicObject::CopyValue() const -> Interface::UDynamicValue
+    {
+        return (m_value.Copy());
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto DynamicObject::GetType() const -> const Interface::DynamicType&
     {
         return m_type;
     }
 
-    void DynamicObject::SetType(const Interface::DynamicObjectType& type)
+    void DynamicObject::SetType(const Interface::DynamicType& type)
     {
         m_type = type;
     }
@@ -35,53 +52,72 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void DynamicObject::SetValueAsInt(
-        const Interface::GetDynamicObjectType<Interface::DynamicObjectType::Int>::type& value)
+    void DynamicObject::SetValue(const IDynamicObject& obj)
     {
-        m_value = value;
+        if (obj.GetType() == Interface::DynamicType::Int)
+        {
+            SetValueAsInt(obj.GetValueAsInt());
+            return;
+        }
+        if (obj.GetType() == Interface::DynamicType::Double)
+        {
+            SetValueAsDouble(obj.GetValueAsDouble());
+            return;
+        }
+        if (obj.GetType() == Interface::DynamicType::String)
+        {
+            SetValueAsString(obj.GetValueAsString());
+            return;
+        }
+        Utility::Assert(false, fmt::format("dyn-object.cpp, DynamicObject::SetValue(obj), obj-type: {} in unsupported",
+                                           Interface::GetDynamicTypeNameAsString(obj.GetType())));
     }
-    void DynamicObject::SetValueAsDouble(
-        const Interface::GetDynamicObjectType<Interface::DynamicObjectType::Double>::type& value)
+    void DynamicObject::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
     {
-        m_value = value;
+        m_value.SetValueAsInt(value);
     }
-    void DynamicObject::SetValueAsString(
-        const Interface::GetDynamicObjectType<Interface::DynamicObjectType::String>::type& value)
+    void DynamicObject::SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value)
     {
-        m_value = value;
+        m_value.SetValueAsDouble(value);
+    }
+    void DynamicObject::SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value)
+    {
+        m_value.SetValueAsString(value);
     }
 
-    auto DynamicObject::GetValueAsInt() const
-        -> const Interface::GetDynamicObjectType<Interface::DynamicObjectType::Int>::type&
+    auto DynamicObject::GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
     {
-        return std::get<Interface::GetDynamicObjectType<Interface::DynamicObjectType::Int>::type>(m_value);
+        // AssertTypeIs(Interface::DynamicType::Int);
+        return m_value.GetValueAsInt();
     }
     auto DynamicObject::GetValueAsDouble() const
-        -> const Interface::GetDynamicObjectType<Interface::DynamicObjectType::Double>::type&
+        -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
     {
-        return std::get<Interface::GetDynamicObjectType<Interface::DynamicObjectType::Double>::type>(m_value);
+        // AssertTypeIs(Interface::DynamicType::Double);
+        return m_value.GetValueAsDouble();
     }
     auto DynamicObject::GetValueAsString() const
-        -> const Interface::GetDynamicObjectType<Interface::DynamicObjectType::String>::type&
+        -> const Interface::GetDynamicType<Interface::DynamicType::String>::type&
     {
-        return std::get<Interface::GetDynamicObjectType<Interface::DynamicObjectType::String>::type>(m_value);
+        // AssertTypeIs(Interface::DynamicType::String);
+        return m_value.GetValueAsString();
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void DynamicObject::AssertTypeIs(const Interface::DynamicObjectType& type) const
+    void DynamicObject::AssertTypeIs(const Interface::DynamicType& type) const
     {
-        Utility::Assert(GetType() == type,
-                        fmt::format("DynamicObject::AssertTypeIs(type: {}), types are different, this->type: {}",
-                                    Interface::GetDynamicObjectTypeNameAsString(type),
-                                    Interface::GetDynamicObjectTypeNameAsString(m_type)));
+        Utility::Assert(
+            GetType() == type,
+            fmt::format("DynamicObject::AssertTypeIs(type: {}), types are different, this->type: {}",
+                        Interface::GetDynamicTypeNameAsString(type), Interface::GetDynamicTypeNameAsString(m_type)));
     }
-    void DynamicObject::AssertTypeIsNot(const Interface::DynamicObjectType& type) const
+    void DynamicObject::AssertTypeIsNot(const Interface::DynamicType& type) const
     {
         Utility::Assert(GetType() != type, fmt::format("DynamicObject::AssertTypeIsNot(type: {}), types are the same",
-                                                       Interface::GetDynamicObjectTypeNameAsString(type)));
+                                                       Interface::GetDynamicTypeNameAsString(type)));
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -90,22 +126,22 @@ namespace SQLEngine::Table
 
     bool DynamicObject::Equal(const IDynamicObject& rhs)
     {
-        AssertTypeIsNot(Interface::DynamicObjectType::Double);
+        AssertTypeIsNot(Interface::DynamicType::Double);
         AssertTypeIs(rhs.GetType());
 
-        if (GetType() == Interface::DynamicObjectType::String)
+        if (GetType() == Interface::DynamicType::String)
         {
             return this->GetValueAsString() == rhs.GetValueAsString();
         }
 
-        if (GetType() == Interface::DynamicObjectType::Int)
+        if (GetType() == Interface::DynamicType::Int)
         {
             return this->GetValueAsInt() == rhs.GetValueAsInt();
         }
 
-        Utility::Assert(false, fmt::format("DynamicObject::Equal(rhs.type: {}) this->type: {}, invalid types",
-                                           GetDynamicObjectTypeNameAsString(rhs.GetType()),
-                                           GetDynamicObjectTypeNameAsString(GetType())));
+        Utility::Assert(false,
+                        fmt::format("DynamicObject::Equal(rhs.type: {}) this->type: {}, invalid types",
+                                    GetDynamicTypeNameAsString(rhs.GetType()), GetDynamicTypeNameAsString(GetType())));
         return false;
     }
 
@@ -116,22 +152,22 @@ namespace SQLEngine::Table
 
     bool DynamicObject::GreaterThan(const IDynamicObject& rhs)
     {
-        AssertTypeIsNot(Interface::DynamicObjectType::String);
+        AssertTypeIsNot(Interface::DynamicType::String);
         AssertTypeIs(rhs.GetType());
 
-        if (GetType() == Interface::DynamicObjectType::Int)
+        if (GetType() == Interface::DynamicType::Int)
         {
             return this->GetValueAsInt() > rhs.GetValueAsInt();
         }
 
-        if (GetType() == Interface::DynamicObjectType::Double)
+        if (GetType() == Interface::DynamicType::Double)
         {
             return this->GetValueAsDouble() > rhs.GetValueAsDouble();
         }
 
-        Utility::Assert(false, fmt::format("DynamicObject::GreaterThan(rhs.type: {}) this->type: {}, invalid types",
-                                           GetDynamicObjectTypeNameAsString(rhs.GetType()),
-                                           GetDynamicObjectTypeNameAsString(GetType())));
+        Utility::Assert(false,
+                        fmt::format("DynamicObject::GreaterThan(rhs.type: {}) this->type: {}, invalid types",
+                                    GetDynamicTypeNameAsString(rhs.GetType()), GetDynamicTypeNameAsString(GetType())));
         return false;
     }
     bool DynamicObject::LessThan(const IDynamicObject& rhs)
