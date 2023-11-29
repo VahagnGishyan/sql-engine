@@ -63,13 +63,25 @@ namespace SQLEngine::Table
     {
         m_elements.push_back(std::move(element));
     }
-    // auto Column::GetElement(const Interface::IColumnID& id) -> Interface::UColumnElement
-    // {
-    // }
-    // auto Column::GetElementsIDs(std::function<bool(const Interface::IColumnElement&)> predicate)
-    //     -> Interface::UColumnIDList
-    // {
-    // }
+
+    auto Column::At(const int index) -> Interface::IColumnElement&
+    {
+        return *m_elements[index];
+    }
+    auto Column::GetElement(const int& index) -> Interface::UColumnElement
+    {
+        return m_elements[index]->Copy();
+    }
+    auto Column::GetElements(const std::vector<int> indexes) -> Interface::UColumnElementList
+    {
+        auto list = std::make_unique<Interface::ColumnElementList>();
+        std::for_each(m_elements.begin(), m_elements.end(),
+                      [&list](const Interface::UColumnElement& element)
+                      {
+                          list->push_back(element->Copy());
+                      });
+        return list;
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

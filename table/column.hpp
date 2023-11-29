@@ -40,13 +40,13 @@ namespace SQLEngine::Table
 
        public:
         void AddElement(Interface::UColumnElement element) override;
-        // auto GetElement(const Interface::IColumnID& id) -> Interface::UColumnElement override;
-        // auto GetElementsIDs(std::function<bool(const Interface::IColumnElement&)> predicate)
-        //     -> Interface::UColumnIDList override;
+        auto At(const int index) -> Interface::IColumnElement& override;
+        auto GetElement(const int& index) -> Interface::UColumnElement override;
+        auto GetElements(const std::vector<int> indexes) -> Interface::UColumnElementList override;
 
-    //    public:
-    //     void AddConstraint(Interface::UColumnConstraint constraint) override;
-    //     void AddConstraints(Interface::UColumnConstraintList element) override;
+        //    public:
+        //     void AddConstraint(Interface::UColumnConstraint constraint) override;
+        //     void AddConstraints(Interface::UColumnConstraintList element) override;
 
        public:
         void RemoveElementsIf(std::function<bool(const Interface::IColumnElement&)> predicate) override;

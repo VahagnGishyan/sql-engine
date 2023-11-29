@@ -46,9 +46,10 @@ namespace SQLEngine::Interface
         virtual void SetType(const DynamicType& type) = 0;
 
        public:
-        virtual void AddElement(UColumnElement element)                                                    = 0;
-        virtual auto GetElement(const IColumnID& id) -> UColumnElement                                     = 0;
-        virtual auto GetElementsIDs(std::function<bool(const IColumnElement&)> predicate) -> UColumnIDList = 0;
+        virtual void AddElement(UColumnElement element)                                           = 0;
+        virtual auto At(const int index) -> Interface::IColumnElement&                            = 0;
+        virtual auto GetElement(const int& index) -> Interface::UColumnElement                    = 0;
+        virtual auto GetElements(const std::vector<int> indexes) -> Interface::UColumnElementList = 0;
 
        public:
         virtual void AddConstraint(UColumnConstraint constraint)   = 0;

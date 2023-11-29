@@ -24,9 +24,11 @@ namespace SQLEngine::Interface
 
     class IColumnElement;
 
-    using UColumnElement  = std::unique_ptr<IColumnElement>;
-    using WColumnElement  = std::weak_ptr<IColumnElement>;
-    using ShColumnElement = std::shared_ptr<IColumnElement>;
+    using UColumnElement     = std::unique_ptr<IColumnElement>;
+    using WColumnElement     = std::weak_ptr<IColumnElement>;
+    using ShColumnElement    = std::shared_ptr<IColumnElement>;
+    using ColumnElementList  = std::vector<ShColumnElement>;
+    using UColumnElementList = std::unique_ptr<ColumnElementList>;
 
     //////////////////////////////////////////////////////////////////////
 
