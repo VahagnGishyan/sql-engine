@@ -15,7 +15,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Interface
+namespace SQLEngine::Table
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -28,7 +28,7 @@ namespace SQLEngine::Interface
         void SetName(const std::string&) override;
 
        public:
-        auto Copy() const -> UColumnID override;
+        auto Copy() const -> Interface::UColumnID override;
 
        protected:
         std::string m_name;
@@ -37,7 +37,7 @@ namespace SQLEngine::Interface
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Interface
+}  // namespace SQLEngine::Table
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

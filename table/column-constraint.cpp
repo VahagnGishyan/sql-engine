@@ -3,46 +3,31 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "column-constraint.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-column-component.hpp"
-#include "i-column-element.hpp"
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-namespace SQLEngine::Interface
+namespace SQLEngine::Table
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class IColumnConstraint;
-
-    using UColumnConstraint     = std::unique_ptr<IColumnConstraint>;
-    using WColumnConstraint     = std::weak_ptr<IColumnConstraint>;
-    using ShColumnConstraint    = std::shared_ptr<IColumnConstraint>;
-    using ColumnConstraintList  = std::vector<UColumnConstraint>;
-    using UColumnConstraintList = std::unique_ptr<ColumnConstraintList>;
-
-    //////////////////////////////////////////////////////////////////////
-
-    class PROJECT_SHARED_EXPORT IColumnConstraint : public IColumnComponent
+    auto ColumnConstraint::Copy() const -> Interface::UColumnConstraint
     {
-       public:
-        virtual auto Copy() const -> UColumnConstraint      = 0;
-        virtual void Perform(IColumnElement& element) const = 0;
-    };
+        return nullptr;
+    }
+
+    void ColumnConstraint::Perform(Interface::IColumnElement& element) const
+    {
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Interface
+}  // namespace SQLEngine::Table
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

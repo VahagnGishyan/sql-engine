@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(fmt REQUIRED)
 
 set(SOURCES
+    column-constraint.cpp
     column-element.cpp
     column-id.cpp
     column.cpp
