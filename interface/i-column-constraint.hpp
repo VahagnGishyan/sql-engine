@@ -30,13 +30,15 @@ namespace SQLEngine::Interface
     using ColumnConstraintList  = std::vector<UColumnConstraint>;
     using UColumnConstraintList = std::unique_ptr<ColumnConstraintList>;
 
+    class IColumn;
+
     //////////////////////////////////////////////////////////////////////
 
     class PROJECT_SHARED_EXPORT IColumnConstraint : public IColumnComponent
     {
        public:
-        virtual auto Copy() const -> UColumnConstraint      = 0;
-        virtual void Perform(IColumnElement& element) const = 0;
+        virtual auto Copy() const -> UColumnConstraint                                        = 0;
+        virtual void Perform(const Interface::IColumn& column, IColumnElement& element) const = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

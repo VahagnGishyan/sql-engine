@@ -56,8 +56,10 @@ namespace SQLEngine::Interface
         virtual void AddConstraints(UColumnConstraintList element) = 0;
 
        public:
-        virtual void RemoveElementsIf(std::function<bool(const IColumnElement&)> predicate) = 0;
-        virtual void UpdateElementsIf(std::function<void(IColumnElement&)> modifier)        = 0;
+        virtual void ForEach(const std::function<void(const IColumnElement&)> predicate) const    = 0;
+        virtual void RemoveElements(const std::vector<int> indexes)                               = 0;
+        virtual void RemoveElementsIf(const std::function<bool(const IColumnElement&)> predicate) = 0;
+        virtual void UpdateElementsIf(const std::function<void(IColumnElement&)> modifier)        = 0;
     };
 
     //////////////////////////////////////////////////////////////////////
