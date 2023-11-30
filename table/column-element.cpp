@@ -27,6 +27,11 @@ namespace SQLEngine::Table
         return m_pValue->CopyValue();
     }
 
+    auto ColumnElement::IsNull() const -> bool
+    {
+        return (m_pValue == nullptr || m_pValue->IsNull());
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

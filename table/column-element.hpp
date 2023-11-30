@@ -27,6 +27,7 @@ namespace SQLEngine::Table
        public:
         auto Copy() const -> Interface::UColumnElement override;
         auto CopyValue() const -> Interface::UDynamicValue override;
+        auto IsNull() const -> bool override;
 
        public:
         void SetValue(const IDynamicValue& obj, const Interface::DynamicType& type) override;

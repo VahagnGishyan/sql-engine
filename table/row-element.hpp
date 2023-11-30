@@ -28,9 +28,9 @@ namespace SQLEngine::Table
         auto Copy() const -> Interface::URowElement override;
         auto CopyObject() const -> Interface::UDynamicObject override;
         auto CopyValue() const -> Interface::UDynamicValue override;
+        auto IsNull() const -> bool override;
 
        public:
-        void SetType(const Interface::DynamicType& type) override;
         auto GetType() const -> const Interface::DynamicType& override;
 
        public:

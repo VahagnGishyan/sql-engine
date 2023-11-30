@@ -79,6 +79,7 @@ namespace SQLEngine::Interface
 
        public:
         virtual auto CopyValue() const -> UDynamicValue = 0;
+        virtual auto IsNull() const -> bool             = 0;
 
        public:
         virtual void SetValue(const IDynamicValue& obj, const DynamicType& type)              = 0;
@@ -120,10 +121,10 @@ namespace SQLEngine::Interface
        public:
         virtual auto CopyObject() const -> UDynamicObject = 0;
         virtual auto CopyValue() const -> UDynamicValue   = 0;
+        virtual auto IsNull() const -> bool               = 0;
 
        public:
         virtual auto GetType() const -> const DynamicType& = 0;
-        virtual void SetType(const DynamicType& type)      = 0;
 
        public:
         virtual void SetValue(const IDynamicObject& obj)                                      = 0;

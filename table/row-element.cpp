@@ -32,6 +32,11 @@ namespace SQLEngine::Table
         return (m_pobject->CopyValue());
     }
 
+    auto RowElement::IsNull() const -> bool
+    {
+        return (m_pobject == nullptr || m_pobject->IsNull());
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -39,11 +44,6 @@ namespace SQLEngine::Table
     auto RowElement::GetType() const -> const Interface::DynamicType&
     {
         return m_pobject->GetType();
-    }
-
-    void RowElement::SetType(const Interface::DynamicType& type)
-    {
-        m_pobject->SetType(type);
     }
 
     //////////////////////////////////////////////////////////////////////

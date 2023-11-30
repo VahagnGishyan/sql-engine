@@ -28,12 +28,24 @@ namespace SQLEngine::Table
     class DynamicValue : public Interface::IDynamicValue
     {
        protected:
-        using DynamicValueType = std::variant<Interface::GetDynamicType<Interface::DynamicType::Int>::type,
+        using DynamicValueType  = std::variant<Interface::GetDynamicType<Interface::DynamicType::Int>::type,
                                               Interface::GetDynamicType<Interface::DynamicType::Double>::type,
                                               Interface::GetDynamicType<Interface::DynamicType::String>::type>;
+        using UDynamicValueType = std::unique_ptr<DynamicValueType>;
+
+       protected:
+        virtual void Init();
 
        public:
         auto CopyValue() const -> Interface::UDynamicValue override;
+        auto IsNull() const -> bool override;
+
+       protected:
+        virtual void AssertIsNull() const;
+        virtual void AssertIsNotNull() const;
+
+       protected:
+        virtual void SetValue(const DynamicValue& obj);
 
        public:
         void SetValue(const IDynamicValue& obj, const Interface::DynamicType& type) override;
@@ -57,7 +69,7 @@ namespace SQLEngine::Table
         bool LessThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type) override;
 
        protected:
-        DynamicValueType m_value;
+        UDynamicValueType m_value;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -69,9 +81,12 @@ namespace SQLEngine::Table
        public:
         auto CopyObject() const -> Interface::UDynamicObject override;
         auto CopyValue() const -> Interface::UDynamicValue override;
+        auto IsNull() const -> bool override;
+
+       protected:
+        virtual void SetType(const Interface::DynamicType& type);
 
        public:
-        void SetType(const Interface::DynamicType& type) override;
         auto GetType() const -> const Interface::DynamicType& override;
 
        public:
@@ -89,8 +104,8 @@ namespace SQLEngine::Table
             -> const Interface::GetDynamicType<Interface::DynamicType::String>::type& override;
 
        public:
-        void AssertTypeIs(const Interface::DynamicType& type) const override; 
-        void AssertTypeIsNot(const Interface::DynamicType& type) const override; 
+        void AssertTypeIs(const Interface::DynamicType& type) const override;
+        void AssertTypeIsNot(const Interface::DynamicType& type) const override;
 
        public:
         bool Equal(const IDynamicObject& element) override;

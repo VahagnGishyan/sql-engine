@@ -34,6 +34,11 @@ namespace SQLEngine::Table
         return (m_pValue->CopyValue());
     }
 
+    auto DynamicObject::IsNull() const -> bool
+    {
+        return (m_pValue == nullptr || m_pValue->IsNull());
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
