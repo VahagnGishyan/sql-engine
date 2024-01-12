@@ -27,12 +27,13 @@ namespace SQLEngine::Interface
     using UColumnElement     = std::unique_ptr<IColumnElement>;
     using WColumnElement     = std::weak_ptr<IColumnElement>;
     using ShColumnElement    = std::shared_ptr<IColumnElement>;
-    using ColumnElementList  = std::vector<ShColumnElement>;
+    using ColumnElementList  = std::vector<UColumnElement>;
     using UColumnElementList = std::unique_ptr<ColumnElementList>;
 
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IColumnElement : /*public IColumnComponent,*/ public IDynamicValue
+    class PROJECT_SHARED_EXPORT IColumnElement
+        : /*public IColumnComponent,*/ public IDynamicValue
     {
        public:
         virtual auto Copy() const -> UColumnElement = 0;

@@ -47,7 +47,7 @@ namespace SQLEngine::Interface
 
        public:
         // auto GetWorkDir() const -> const std::string override;
-        virtual auto GetInfo() const -> const WDBObjectInfo = 0;
+        // virtual auto GetInfo() const -> const UDBObjectInfo = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

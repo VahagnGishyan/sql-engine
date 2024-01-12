@@ -26,14 +26,17 @@ namespace SQLEngine::Table
     class Column : public Interface::IColumn
     {
        protected:
-        using ColumnElementList = std::vector<Interface::UColumnElement>;
+        Column();
 
        public:
-        // void Init(const Interface::IColumnInit& init) override;
-        // auto Copy() const -> Interface::UColumn override;
+        static auto Create(const Interface::IColumnInit& init)
+            -> Interface::UColumn;
+        void Init(const Interface::IColumnInit& init) override;
+        auto Copy() const -> Interface::UColumn override;
 
        public:
         auto GetID() const -> const Interface::IColumnID& override;
+        // auto GetInfo() const -> const Interface::UDBObjectInfo override;
         auto GetSize() const -> unsigned int override;
         auto GetType() const -> const Interface::DynamicType override;
         void SetType(const Interface::DynamicType& type) override;
@@ -42,20 +45,32 @@ namespace SQLEngine::Table
         void AddElement(Interface::UColumnElement element) override;
         auto At(const int index) -> Interface::IColumnElement& override;
         auto GetElement(const int& index) -> Interface::UColumnElement override;
-        auto GetElements(const std::vector<int> indexes) -> Interface::UColumnElementList override;
-
-        //    public:
-        //     void AddConstraint(Interface::UColumnConstraint constraint) override;
-        //     void AddConstraints(Interface::UColumnConstraintList element) override;
+        auto GetElements(const std::vector<int> indexes)
+            -> Interface::UColumnElementList override;
 
        public:
-        void RemoveElementsIf(std::function<bool(const Interface::IColumnElement&)> predicate) override;
-        void UpdateElementsIf(std::function<void(Interface::IColumnElement&)> modifier) override;
+        void AddConstraint(Interface::UColumnConstraint constraint) override;
+        void AddConstraints(Interface::UColumnConstraintList element) override;
+
+       public:
+        void ForEach(const std::function<void(const Interface::IColumnElement&)>
+                         predicate) const override;
+        void RemoveElements(const std::vector<int> indexes) override;
+        void RemoveElementsIf(
+            std::function<bool(const Interface::IColumnElement&)> predicate)
+            override;
+        void UpdateElementsIf(
+            std::function<void(Interface::IColumnElement&)> modifier) override;
+
+       protected:
+        virtual void AssertInitialized(const std::string& message) const;
+        virtual void AssertNotInitialized(const std::string& message) const;
 
        protected:
         Interface::DynamicType m_type;
-        ColumnElementList m_elements;
+        Interface::UColumnElementList m_elements;
         Interface::UColumnID m_id;
+        // Interface::UColumnConstraintList m_constraintList;
     };
 
     //////////////////////////////////////////////////////////////////////
