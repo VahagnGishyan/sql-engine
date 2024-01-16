@@ -9,8 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-column-component.hpp"
 #include "i-column-element.hpp"
+#include "i-db-object.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -37,8 +37,9 @@ namespace SQLEngine::Interface
     class PROJECT_SHARED_EXPORT IColumnConstraint : public IColumnComponent
     {
        public:
-        virtual auto Copy() const -> UColumnConstraint                                        = 0;
-        virtual void Perform(const Interface::IColumn& column, IColumnElement& element) const = 0;
+        virtual auto Copy() const -> UColumnConstraint      = 0;
+        virtual void Perform(const Interface::IColumn& column,
+                             IColumnElement& element) const = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

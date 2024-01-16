@@ -14,7 +14,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Table
+namespace SQLEngine::TableNS
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -24,6 +24,11 @@ namespace SQLEngine::Table
     {
         AssertIsNull();
         m_value = std::make_unique<DynamicValueType>();
+    }
+
+    auto DynamicValue::Create() -> Interface::UDynamicValue
+    {
+        return std::make_unique<DynamicValue>();
     }
 
     auto DynamicValue::CopyValue() const -> Interface::UDynamicValue
@@ -42,7 +47,8 @@ namespace SQLEngine::Table
     {
         if (m_value != nullptr)
         {
-            throw std::logic_error{"DynamicValue::AssertIsNull(), value is not null"};
+            throw std::logic_error{
+                "DynamicValue::AssertIsNull(), value is not null"};
         }
     }
 
@@ -50,7 +56,8 @@ namespace SQLEngine::Table
     {
         if (m_value == nullptr)
         {
-            throw std::logic_error{"DynamicValue::AssertIsNull(), value is null"};
+            throw std::logic_error{
+                "DynamicValue::AssertIsNull(), value is null"};
         }
     }
 
@@ -67,7 +74,8 @@ namespace SQLEngine::Table
         *m_value = *obj.m_value;
     }
 
-    void DynamicValue::SetValue(const IDynamicValue& value, const Interface::DynamicType& type)
+    void DynamicValue::SetValue(const IDynamicValue& value,
+                                const Interface::DynamicType& type)
     {
         if (m_value == nullptr)
         {
@@ -88,12 +96,15 @@ namespace SQLEngine::Table
             SetValueAsString(value.GetValueAsString());
             return;
         }
-        Utility::Assert(false,
-                        fmt::format("dyn-value.cpp, DynamicValue::SetValue(value, type), type: {} is unsupported",
-                                    Interface::GetDynamicTypeNameAsString(type)));
+        Utility::Assert(
+            false, fmt::format("dyn-value.cpp, DynamicValue::SetValue(value, "
+                               "type), type: {} is unsupported",
+                               Interface::GetDynamicTypeNameAsString(type)));
     }
 
-    void DynamicValue::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
+    void DynamicValue::SetValueAsInt(
+        const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
+            value)
     {
         if (m_value == nullptr)
         {
@@ -101,7 +112,9 @@ namespace SQLEngine::Table
         }
         *m_value = value;
     }
-    void DynamicValue::SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value)
+    void DynamicValue::SetValueAsDouble(
+        const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
+            value)
     {
         if (m_value == nullptr)
         {
@@ -109,7 +122,9 @@ namespace SQLEngine::Table
         }
         *m_value = value;
     }
-    void DynamicValue::SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value)
+    void DynamicValue::SetValueAsString(
+        const Interface::GetDynamicType<Interface::DynamicType::String>::type&
+            value)
     {
         if (m_value == nullptr)
         {
@@ -122,29 +137,37 @@ namespace SQLEngine::Table
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto DynamicValue::GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
+    auto DynamicValue::GetValueAsInt() const
+        -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
     {
         AssertIsNotNull();
-        return std::get<Interface::GetDynamicType<Interface::DynamicType::Int>::type>(*m_value);
+        return std::get<
+            Interface::GetDynamicType<Interface::DynamicType::Int>::type>(
+            *m_value);
     }
-    auto DynamicValue::GetValueAsDouble() const
-        -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
+    auto DynamicValue::GetValueAsDouble() const -> const
+        Interface::GetDynamicType<Interface::DynamicType::Double>::type&
     {
         AssertIsNotNull();
-        return std::get<Interface::GetDynamicType<Interface::DynamicType::Double>::type>(*m_value);
+        return std::get<
+            Interface::GetDynamicType<Interface::DynamicType::Double>::type>(
+            *m_value);
     }
-    auto DynamicValue::GetValueAsString() const
-        -> const Interface::GetDynamicType<Interface::DynamicType::String>::type&
+    auto DynamicValue::GetValueAsString() const -> const
+        Interface::GetDynamicType<Interface::DynamicType::String>::type&
     {
         AssertIsNotNull();
-        return std::get<Interface::GetDynamicType<Interface::DynamicType::String>::type>(*m_value);
+        return std::get<
+            Interface::GetDynamicType<Interface::DynamicType::String>::type>(
+            *m_value);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    bool DynamicValue::Equal(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::Equal(const IDynamicValue& value,
+                             const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         if (type == Interface::DynamicType::Int)
@@ -160,16 +183,20 @@ namespace SQLEngine::Table
             return GetValueAsString() == value.GetValueAsString();
         }
         Utility::Assert(
-            false, fmt::format("table::dyn-value.cpp, DynamicValue::Equal(value, type), value-type: {} is unsupported",
-                               Interface::GetDynamicTypeNameAsString(type)));
+            false,
+            fmt::format("table::dyn-value.cpp, DynamicValue::Equal(value, "
+                        "type), value-type: {} is unsupported",
+                        Interface::GetDynamicTypeNameAsString(type)));
         return false;
     }
-    bool DynamicValue::NotEqual(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::NotEqual(const IDynamicValue& value,
+                                const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         return (Equal(value, type) == false);
     }
-    bool DynamicValue::GreaterThan(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::GreaterThan(const IDynamicValue& value,
+                                   const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         if (type == Interface::DynamicType::Int)
@@ -185,22 +212,26 @@ namespace SQLEngine::Table
             return GetValueAsString() > value.GetValueAsString();
         }
         Utility::Assert(
-            false,
-            fmt::format("table::dyn-value.cpp, DynamicValue::GreaterThan(value, type), value-type: {} is unsupported",
-                        Interface::GetDynamicTypeNameAsString(type)));
+            false, fmt::format(
+                       "table::dyn-value.cpp, DynamicValue::GreaterThan(value, "
+                       "type), value-type: {} is unsupported",
+                       Interface::GetDynamicTypeNameAsString(type)));
         return false;
     }
-    bool DynamicValue::LessThan(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::LessThan(const IDynamicValue& value,
+                                const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         return ((NotEqual(value, type)) && (!GreaterThan(value, type)));
     }
-    bool DynamicValue::GreaterThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::GreaterThanOrEqualTo(const IDynamicValue& value,
+                                            const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         return (!LessThan(value, type));
     }
-    bool DynamicValue::LessThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool DynamicValue::LessThanOrEqualTo(const IDynamicValue& value,
+                                         const Interface::DynamicType& type)
     {
         AssertIsNotNull();
         return (!GreaterThan(value, type));
@@ -209,7 +240,7 @@ namespace SQLEngine::Table
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Table
+}  // namespace SQLEngine::TableNS
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

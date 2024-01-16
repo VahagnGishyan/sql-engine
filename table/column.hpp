@@ -17,7 +17,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Table
+namespace SQLEngine::TableNS
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -26,57 +26,45 @@ namespace SQLEngine::Table
     class Column : public Interface::IColumn
     {
        protected:
-        Column();
+        Column(const std::string& name, const Interface::DynamicType& type);
 
        public:
-        static auto Create(const Interface::IColumnInit& init)
+        static auto Create(const std::string& name,
+                           const Interface::DynamicType& type)
             -> Interface::UColumn;
-        void Init(const Interface::IColumnInit& init) override;
-        auto Copy() const -> Interface::UColumn override;
 
        public:
-        auto GetID() const -> const Interface::IColumnID& override;
-        // auto GetInfo() const -> const Interface::UDBObjectInfo override;
+        auto Copy(const std::string& newname) const
+            -> Interface::UColumn override;
+
+       public:
+        auto GetName() const -> const std::string& override;
         auto GetSize() const -> unsigned int override;
+
+       public:
         auto GetType() const -> const Interface::DynamicType override;
         void SetType(const Interface::DynamicType& type) override;
 
        public:
-        void AddElement(Interface::UColumnElement element) override;
         auto At(const int index) -> Interface::IColumnElement& override;
-        auto GetElement(const int& index) -> Interface::UColumnElement override;
-        auto GetElements(const std::vector<int> indexes)
-            -> Interface::UColumnElementList override;
-
-       public:
-        void AddConstraint(Interface::UColumnConstraint constraint) override;
-        void AddConstraints(Interface::UColumnConstraintList element) override;
-
-       public:
-        void ForEach(const std::function<void(const Interface::IColumnElement&)>
-                         predicate) const override;
-        void RemoveElements(const std::vector<int> indexes) override;
-        void RemoveElementsIf(
-            std::function<bool(const Interface::IColumnElement&)> predicate)
-            override;
-        void UpdateElementsIf(
-            std::function<void(Interface::IColumnElement&)> modifier) override;
+        void AddElement(Interface::UColumnElement element) override;
+        auto GetElement(const int& index)
+            -> Interface::IColumnElement& override;
 
        protected:
         virtual void AssertInitialized(const std::string& message) const;
         virtual void AssertNotInitialized(const std::string& message) const;
 
        protected:
+        std::string m_name;
         Interface::DynamicType m_type;
-        Interface::UColumnElementList m_elements;
-        Interface::UColumnID m_id;
-        // Interface::UColumnConstraintList m_constraintList;
+        Interface::ColumnElementList m_elements;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Table
+}  // namespace SQLEngine::TableNS
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

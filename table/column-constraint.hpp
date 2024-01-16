@@ -15,7 +15,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Table
+namespace SQLEngine::TableNS
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -25,7 +25,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -34,7 +35,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -43,7 +45,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -52,7 +55,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -61,7 +65,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -70,7 +75,8 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
 
        public:
         virtual void SetDefaultValue(Interface::UDynamicValue value);
@@ -86,13 +92,14 @@ namespace SQLEngine::Table
     {
        public:
         auto Copy() const -> Interface::UColumnConstraint override;
-        void Perform(const Interface::IColumn& column, Interface::IColumnElement& element) const override;
+        void Perform(const Interface::IColumn& column,
+                     Interface::IColumnElement& element) const override;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Table
+}  // namespace SQLEngine::TableNS
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
