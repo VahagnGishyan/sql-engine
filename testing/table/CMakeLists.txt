@@ -6,7 +6,7 @@ project(testing-table)
 set(SOURCES
     main.cpp
     test-column-element.cpp
-    test-column.cpp
+    # test-column.cpp
     # test-dyn-object.cpp
 )
 

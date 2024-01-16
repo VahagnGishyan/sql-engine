@@ -52,10 +52,6 @@ namespace SQLEngine::TableNS
             -> Interface::IColumnElement& override;
 
        protected:
-        virtual void AssertInitialized(const std::string& message) const;
-        virtual void AssertNotInitialized(const std::string& message) const;
-
-       protected:
         std::string m_name;
         Interface::DynamicType m_type;
         Interface::ColumnElementList m_elements;
