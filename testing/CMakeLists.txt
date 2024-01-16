@@ -8,6 +8,9 @@ find_package(GTest REQUIRED)
 
 set (TEST_SUBDIRS
     dir-preparator
+
+    table
+
     utility-core
     utility-filesystem
 )
