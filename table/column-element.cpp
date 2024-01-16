@@ -15,90 +15,113 @@ namespace SQLEngine::TableNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    ColumnElement::ColumnElement(const DynamicValue& value) : m_value{value}
+    {
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto ColumnElement::Create(const DynamicValue& value)
+        -> Interface::UColumnElement
+    {
+        auto uelement =
+            std::unique_ptr<ColumnElement>(new ColumnElement{value});
+        return uelement;
+    }
+
+    auto ColumnElement::Create(const IColumnElement& element)
+        -> Interface::UColumnElement
+    {
+        return Create(element.GetValue());
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
     auto ColumnElement::Copy() const -> Interface::UColumnElement
     {
-        auto&& obj    = std::make_unique<ColumnElement>();
-        obj->m_pValue = CopyValue();
-        return std::move(obj);
-    }
-
-    auto ColumnElement::CopyValue() const -> Interface::UDynamicValue
-    {
-        return m_pValue->CopyValue();
-    }
-
-    auto ColumnElement::IsNull() const -> bool
-    {
-        return (m_pValue == nullptr || m_pValue->IsNull());
+        return Create(*this);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void ColumnElement::SetValue(const IDynamicValue& obj, const Interface::DynamicType& type)
+    void ColumnElement::SetValue(const DynamicValue& value)
     {
-        m_pValue->SetValue(obj, type);
+        m_value = value;
     }
-    void ColumnElement::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
+    void ColumnElement::SetValue(const IColumnElement& element)
     {
-        m_pValue->SetValueAsInt(value);
+        SetValue(element.GetValue());
     }
-    void ColumnElement::SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value)
+    auto ColumnElement::GetValue() -> DynamicValue&
     {
-        m_pValue->SetValueAsDouble(value);
+        return m_value;
     }
-    void ColumnElement::SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value)
+    auto ColumnElement::GetValue() const -> const DynamicValue&
     {
-        m_pValue->SetValueAsString(value);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto ColumnElement::GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
-    {
-        return m_pValue->GetValueAsInt();
-    }
-    auto ColumnElement::GetValueAsDouble() const
-        -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
-    {
-        return m_pValue->GetValueAsDouble();
-    }
-    auto ColumnElement::GetValueAsString() const
-        -> const Interface::GetDynamicType<Interface::DynamicType::String>::type&
-    {
-        return m_pValue->GetValueAsString();
+        return m_value;
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    bool ColumnElement::Equal(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool ColumnElement::Equal(const DynamicValue& value) const
     {
-        return m_pValue->Equal(value, type);
+        return m_value == value;
     }
-    bool ColumnElement::NotEqual(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool ColumnElement::Equal(const IColumnElement& element) const
     {
-        return m_pValue->NotEqual(value, type);
+        return Equal(element.GetValue());
     }
-    bool ColumnElement::GreaterThan(const IDynamicValue& value, const Interface::DynamicType& type)
+
+    bool ColumnElement::NotEqual(const DynamicValue& value) const
     {
-        return m_pValue->GreaterThan(value, type);
+        return !Equal(value);
     }
-    bool ColumnElement::LessThan(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool ColumnElement::NotEqual(const IColumnElement& element) const
     {
-        return m_pValue->LessThan(value, type);
+        return NotEqual(element.GetValue());
     }
-    bool ColumnElement::GreaterThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type)
+
+    bool ColumnElement::GreaterThan(const DynamicValue& value) const
     {
-        return m_pValue->GreaterThanOrEqualTo(value, type);
+        return m_value > value;
     }
-    bool ColumnElement::LessThanOrEqualTo(const IDynamicValue& value, const Interface::DynamicType& type)
+    bool ColumnElement::GreaterThan(const IColumnElement& element) const
     {
-        return m_pValue->LessThanOrEqualTo(value, type);
+        return GreaterThan(element.GetValue());
+    }
+
+    bool ColumnElement::LessThan(const DynamicValue& value) const
+    {
+        return (NotEqual(value) && !GreaterThan(value));
+    }
+    bool ColumnElement::LessThan(const IColumnElement& element) const
+    {
+        return LessThan(element.GetValue());
+    }
+
+    bool ColumnElement::GreaterThanOrEqualTo(const DynamicValue& value) const
+    {
+        return (!LessThan(value));
+    }
+    bool ColumnElement::GreaterThanOrEqualTo(
+        const IColumnElement& element) const
+    {
+        return GreaterThanOrEqualTo(element.GetValue());
+    }
+
+    bool ColumnElement::LessThanOrEqualTo(const DynamicValue& value) const
+    {
+        return (!GreaterThan(value));
+    }
+    bool ColumnElement::LessThanOrEqualTo(const IColumnElement& element) const
+    {
+        return LessThanOrEqualTo(element.GetValue());
     }
 
     //////////////////////////////////////////////////////////////////////

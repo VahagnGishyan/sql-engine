@@ -8,7 +8,7 @@
 #include <map>
 #include <stdexcept>
 
-#include "i-dyn-object.hpp"
+#include "i-dynamic-types.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,7 +21,8 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto GetDynamicTypeNameAsString(const DynamicType& type) -> const std::string&
+    auto GetDynamicTypeNameAsString(const DynamicType& type)
+        -> const std::string&
     {
         static std::map<DynamicType, std::string> elements = {
             {DynamicType::Int,    "Unset" },
@@ -34,7 +35,9 @@ namespace SQLEngine::Interface
         auto pos = elements.find(type);
         Utility::Assert(
             pos != end,
-            fmt::format("GetDynamicTypeNameAsString, unknown DynamicType, id is [{}]", (int)type));
+            fmt::format(
+                "GetDynamicTypeNameAsString, unknown DynamicType, id is [{}]",
+                (int)type));
         return pos->second;
     }
 

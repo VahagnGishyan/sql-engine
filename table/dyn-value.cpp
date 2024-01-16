@@ -20,15 +20,11 @@ namespace SQLEngine::TableNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void DynamicValue::Init()
-    {
-        AssertIsNull();
-        m_value = std::make_unique<DynamicValueType>();
-    }
-
     auto DynamicValue::Create() -> Interface::UDynamicValue
     {
-        return std::make_unique<DynamicValue>();
+        auto&& element  = std::make_unique<DynamicValue>();
+        element.m_value = std::make_unique<DynamicValueType>();
+        return element;
     }
 
     auto DynamicValue::CopyValue() const -> Interface::UDynamicValue

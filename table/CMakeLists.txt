@@ -11,10 +11,7 @@ find_package(fmt REQUIRED)
 set(SOURCES
     # column-constraint.cpp
     column-element.cpp
-    # column-id.cpp
     column.cpp
-    dyn-object.cpp
-    # dyn-value.cpp
     # row-element.cpp
     # table.cpp
 )
