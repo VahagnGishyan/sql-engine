@@ -13,6 +13,7 @@ set(SOURCES
     column-element.cpp
     column.cpp
     # row-element.cpp
+    # row.cpp
     # table.cpp
 )
 

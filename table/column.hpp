@@ -23,7 +23,7 @@ namespace SQLEngine::TableNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class Column : public Interface::IColumn
+    class PROJECT_SHARED_EXPORT Column : public Interface::IColumn
     {
        protected:
         Column(const std::string& name, const Interface::DynamicType& type);

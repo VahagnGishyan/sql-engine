@@ -68,6 +68,14 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
+    class PROJECT_SHARED_EXPORT IRowComponent
+    {
+       public:
+        virtual ~IRowComponent() = default;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
     // temp
     PROJECT_SHARED_EXPORT
     void NotImplYet(const std::string& info);

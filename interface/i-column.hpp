@@ -11,7 +11,6 @@
 
 #include <functional>
 
-// #include "i-column-component.hpp"
 #include "i-column-element.hpp"
 
 //////////////////////////////////////////////////////////////////////////

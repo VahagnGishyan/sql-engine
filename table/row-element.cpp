@@ -15,118 +15,126 @@ namespace SQLEngine::TableNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    RowElement::RowElement(const unsigned int columnIndex,
+                           const DynamicValue& value) :
+        m_columnIndex{columnIndex}, m_value{value}
+    {
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto RowElement::Create(const unsigned int columnIndex,
+                            const DynamicValue& value) -> Interface::URowElement
+    {
+        auto urow =
+            std::unique_ptr<RowElement>(new RowElement{columnIndex, value});
+        return urow;
+    }
+
+    auto RowElement::Create(const IRowElement& element)
+        -> Interface::URowElement
+    {
+        return Create(element.GetColumnIndex(), element.GetValue());
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
     auto RowElement::Copy() const -> Interface::URowElement
     {
-        auto&& obj     = std::make_unique<RowElement>();
-        obj->m_pobject = CopyObject();
-        return std::move(obj);
-    }
-
-    auto RowElement::CopyObject() const -> Interface::UDynamicObject
-    {
-        return (m_pobject->CopyObject());
-    }
-
-    auto RowElement::CopyValue() const -> Interface::UDynamicValue
-    {
-        return (m_pobject->CopyValue());
-    }
-
-    auto RowElement::IsNull() const -> bool
-    {
-        return (m_pobject == nullptr || m_pobject->IsNull());
+        return Create(*this);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto RowElement::GetType() const -> const Interface::DynamicType&
+    auto RowElement::GetColumnIndex() const -> const unsigned int
     {
-        return m_pobject->GetType();
+        return (m_columnIndex);
+    }
+
+    void RowElement::SetColumnIndex(const unsigned int columnIndex)
+    {
+        m_columnIndex = columnIndex;
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void RowElement::SetValue(const IDynamicObject& obj)
+    void RowElement::SetValue(const DynamicValue& value)
     {
-        m_pobject->SetValue(obj);
+        m_value = value;
     }
-    void RowElement::SetValueAsInt(const Interface::GetDynamicType<Interface::DynamicType::Int>::type& value)
+    void RowElement::SetValue(const IRowElement& element)
     {
-        m_pobject->SetValueAsInt(value);
+        SetValue(element.GetValue());
     }
-    void RowElement::SetValueAsDouble(const Interface::GetDynamicType<Interface::DynamicType::Double>::type& value)
+    auto RowElement::GetValue() -> DynamicValue&
     {
-        m_pobject->SetValueAsDouble(value);
+        return m_value;
     }
-    void RowElement::SetValueAsString(const Interface::GetDynamicType<Interface::DynamicType::String>::type& value)
+    auto RowElement::GetValue() const -> const DynamicValue&
     {
-        m_pobject->SetValueAsString(value);
-    }
-
-    auto RowElement::GetValue() const -> const Interface::IDynamicValue&
-    {
-        return m_pobject->GetValue();
-    }
-
-    auto RowElement::GetValueAsInt() const -> const Interface::GetDynamicType<Interface::DynamicType::Int>::type&
-    {
-        return m_pobject->GetValueAsInt();
-    }
-    auto RowElement::GetValueAsDouble() const -> const Interface::GetDynamicType<Interface::DynamicType::Double>::type&
-    {
-        return m_pobject->GetValueAsDouble();
-    }
-    auto RowElement::GetValueAsString() const -> const Interface::GetDynamicType<Interface::DynamicType::String>::type&
-    {
-        return m_pobject->GetValueAsString();
+        return m_value;
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void RowElement::AssertTypeIs(const Interface::DynamicType& type) const
+    bool RowElement::Equal(const DynamicValue& value) const
     {
-        m_pobject->AssertTypeIs(type);
+        return m_value == value;
     }
-    void RowElement::AssertTypeIsNot(const Interface::DynamicType& type) const
+    bool RowElement::Equal(const IRowElement& element) const
     {
-        m_pobject->AssertTypeIsNot(type);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    bool RowElement::Equal(const IDynamicObject& rhs)
-    {
-        return m_pobject->Equal(rhs);
+        return Equal(element.GetValue());
     }
 
-    bool RowElement::NotEqual(const IDynamicObject& element)
+    bool RowElement::NotEqual(const DynamicValue& value) const
     {
-        return m_pobject->NotEqual(element);
+        return !Equal(value);
+    }
+    bool RowElement::NotEqual(const IRowElement& element) const
+    {
+        return NotEqual(element.GetValue());
     }
 
-    bool RowElement::GreaterThan(const IDynamicObject& rhs)
+    bool RowElement::GreaterThan(const DynamicValue& value) const
     {
-        return m_pobject->GreaterThan(rhs);
+        return m_value > value;
     }
-    bool RowElement::LessThan(const IDynamicObject& rhs)
+    bool RowElement::GreaterThan(const IRowElement& element) const
     {
-        return m_pobject->LessThan(rhs);
+        return GreaterThan(element.GetValue());
     }
-    bool RowElement::GreaterThanOrEqualTo(const IDynamicObject& rhs)
+
+    bool RowElement::LessThan(const DynamicValue& value) const
     {
-        return m_pobject->GreaterThanOrEqualTo(rhs);
+        return (NotEqual(value) && !GreaterThan(value));
     }
-    bool RowElement::LessThanOrEqualTo(const IDynamicObject& rhs)
+    bool RowElement::LessThan(const IRowElement& element) const
     {
-        return m_pobject->LessThanOrEqualTo(rhs);
+        return LessThan(element.GetValue());
+    }
+
+    bool RowElement::GreaterThanOrEqualTo(const DynamicValue& value) const
+    {
+        return (!LessThan(value));
+    }
+    bool RowElement::GreaterThanOrEqualTo(const IRowElement& element) const
+    {
+        return GreaterThanOrEqualTo(element.GetValue());
+    }
+
+    bool RowElement::LessThanOrEqualTo(const DynamicValue& value) const
+    {
+        return (!GreaterThan(value));
+    }
+    bool RowElement::LessThanOrEqualTo(const IRowElement& element) const
+    {
+        return LessThanOrEqualTo(element.GetValue());
     }
 
     //////////////////////////////////////////////////////////////////////
