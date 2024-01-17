@@ -17,7 +17,7 @@ set(SOURCES
     database.cpp
     db-manager.cpp
     db-object.cpp
-    dyn-object.cpp
+    dynamic-types.cpp
     row.cpp
     table.cpp
 )

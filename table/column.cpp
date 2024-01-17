@@ -77,15 +77,17 @@ namespace SQLEngine::TableNS
 
     void Column::AddElement(Interface::UColumnElement element)
     {
+        Interface::AssertDynamicValueTypeIs(element->GetValue(), m_type);
         m_elements.push_back(std::move(element));
     }
 
-    auto Column::At(const int index) -> Interface::IColumnElement&
+    auto Column::GetElement(const int& index) -> Interface::IColumnElement&
     {
         return *m_elements.at(index);
     }
 
-    auto Column::GetElement(const int& index) -> Interface::IColumnElement&
+    auto Column::GetElement(const int& index) const
+        -> const Interface::IColumnElement&
     {
         return *m_elements.at(index);
     }

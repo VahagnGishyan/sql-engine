@@ -15,13 +15,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Interface
+namespace SQLEngine
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto GetDynamicTypeNameAsString(const DynamicType& type)
+    auto Interface::GetDynamicTypeNameAsString(const DynamicType& type)
         -> const std::string&
     {
         static std::map<DynamicType, std::string> elements = {
@@ -45,10 +45,39 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    bool Interface::IsDynamicValueType(const DynamicValue& value,
+                                       const DynamicType& type)
+    {
+        switch (type)
+        {
+            case DynamicType::Int:
+                return std::holds_alternative<
+                    GetDynamicType<DynamicType::Int>::type>(value);
+                break;
+            case DynamicType::Double:
+                return std::holds_alternative<
+                    GetDynamicType<DynamicType::Double>::type>(value);
+                break;
+            case DynamicType::String:
+                return std::holds_alternative<
+                    GetDynamicType<DynamicType::String>::type>(value);
+                break;
+            default:
+                throw std::logic_error{"Unknown DynamicValue type"};
+        }
+    }
+
+    void Interface::AssertDynamicValueTypeIs(const DynamicValue& value,
+                                             const DynamicType& type)
+    {
+        Utility::Assert(IsDynamicValueType(value, type),
+                        "Interface::AssertDynamicValueTypeIs()");
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Interface
+}  // namespace SQLEngine
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

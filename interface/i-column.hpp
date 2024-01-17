@@ -46,10 +46,11 @@ namespace SQLEngine::Interface
         virtual auto GetType() const -> const DynamicType = 0;
 
        public:
-        virtual auto At(const int index) -> Interface::IColumnElement& = 0;
-        virtual void AddElement(UColumnElement element)                = 0;
+        virtual void AddElement(UColumnElement element) = 0;
         virtual auto GetElement(const int& index)
             -> Interface::IColumnElement& = 0;
+        virtual auto GetElement(const int& index) const
+            -> const Interface::IColumnElement& = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

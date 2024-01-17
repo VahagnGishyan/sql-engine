@@ -46,10 +46,11 @@ namespace SQLEngine::TableNS
         void SetType(const Interface::DynamicType& type) override;
 
        public:
-        auto At(const int index) -> Interface::IColumnElement& override;
         void AddElement(Interface::UColumnElement element) override;
         auto GetElement(const int& index)
             -> Interface::IColumnElement& override;
+        auto GetElement(const int& index) const
+            -> const Interface::IColumnElement& override;
 
        protected:
         std::string m_name;
