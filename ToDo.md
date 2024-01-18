@@ -14,8 +14,13 @@
 	- [ ] [testing](docs/testing/utility)
 - [ ] **logging**
 	- [x] analysing
-	- [ ] [implementation](docs/logging)
+	- [x] [implementation](docs/logging)
 	- [ ] testing
+- [x] table
+	- [x] column
+	- [x] table
+	- [ ] row
+	- [x] tests
 - [ ] **db-manager**
 - [ ] **sql-executor**
 - [ ] **cli-application**
