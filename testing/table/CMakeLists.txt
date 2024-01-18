@@ -7,7 +7,8 @@ set(SOURCES
     main.cpp
     test-column-element.cpp
     test-column.cpp
-    # test-dyn-object.cpp
+    test-table.cpp
+    utility.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

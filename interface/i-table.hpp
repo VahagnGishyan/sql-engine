@@ -9,8 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <optional>
+
+#include "i-column.hpp"
 #include "i-db-object.hpp"
-#include "i-table-comps.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,10 +24,7 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT ITable : public IDBObject
-    {
-       public:
-    };
+    class ITable;
 
     using UTable    = std::unique_ptr<ITable>;
     using ShTable   = std::shared_ptr<ITable>;
@@ -33,12 +32,37 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
-    template <typename T, typename... Types>
-    PROJECT_SHARED_EXPORT auto MakeTable(Types&&... args) -> UTable
+    class PROJECT_SHARED_EXPORT ITable : public IDBObject
     {
-        static_assert(std::is_base_of<ITable, T>());
-        return std::make_unique<T>(args...);
-    }
+       public:
+        virtual auto Copy(const std::string& newname) const -> UTable = 0;
+
+       public:
+        virtual auto GetName() const -> const std::string& = 0;
+        virtual void SetName(const std::string& name)      = 0;
+
+       public:
+        virtual void AddColumn(UColumn column)                  = 0;
+        virtual bool RemoveColumn(const std::string& columnName) = 0;
+
+       public:
+        virtual auto GetColumnIndex(const std::string& columnName) const
+            -> const std::optional<unsigned int> = 0;
+        virtual auto GetColumn(const unsigned int index) const
+            -> const IColumn&                                        = 0;
+        virtual auto GetColumn(const unsigned int index) -> IColumn& = 0;
+        virtual auto GetColumn(const std::string& columnName) const
+            -> const IColumn&                                             = 0;
+        virtual auto GetColumn(const std::string& columnName) -> IColumn& = 0;
+
+       public:
+        virtual void RenameColumn(const std::string& oldColumnName,
+                                  const std::string& newColumnName) = 0;
+
+       public:
+        virtual auto ColumnsCount() const -> const int      = 0;
+        virtual auto ListColumns() const -> UColumnNameList = 0;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

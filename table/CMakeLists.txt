@@ -14,7 +14,7 @@ set(SOURCES
     column.cpp
     # row-element.cpp
     # row.cpp
-    # table.cpp
+    table.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 

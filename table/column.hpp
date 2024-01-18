@@ -34,11 +34,13 @@ namespace SQLEngine::TableNS
             -> Interface::UColumn;
 
        public:
+        auto Copy() const -> Interface::UColumn override;
         auto Copy(const std::string& newname) const
             -> Interface::UColumn override;
 
        public:
         auto GetName() const -> const std::string& override;
+        void SetName(const std::string& name) override;
         auto GetSize() const -> unsigned int override;
 
        public:

@@ -49,6 +49,11 @@ namespace SQLEngine::TableNS
         return std::move(newcolumn);
     }
 
+    auto Column::Copy() const -> Interface::UColumn
+    {
+        return Copy(m_name);
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -57,6 +62,11 @@ namespace SQLEngine::TableNS
     {
         return m_name;
     }
+    void Column::SetName(const std::string& name)
+    {
+        m_name = name;
+    }
+
     auto Column::GetSize() const -> unsigned int
     {
         return m_elements.size();

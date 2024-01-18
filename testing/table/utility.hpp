@@ -9,32 +9,31 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-table-component.hpp"
+#include "table/column-element.hpp"
+#include "table/column.hpp"
+#include "table/table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Interface
+namespace SQLEngine::Testing::Table
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT ITableInfo : public ITableComponent,
-                                             public IDBObjectInfo
-    {
-    };
+    auto CreateIntColumn() -> Interface::UColumn;
+    auto CreateDoubleColumn() -> Interface::UColumn;
+    auto CreateStringColumn() -> Interface::UColumn;
 
-    using UTableInfo      = std::unique_ptr<ITableInfo>;
-    using ShTableInfo     = std::shared_ptr<ITableInfo>;
-    using TableInfoList   = std::vector<ShTableInfo>;
-    using ShTableInfoList = std::shared_ptr<TableInfoList>;
+    auto CreateEmptyTable() -> Interface::UTable;
+    auto CreateTable() -> Interface::UTable;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Interface
+}  // namespace SQLEngine::Testing::Table
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

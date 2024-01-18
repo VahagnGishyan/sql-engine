@@ -29,15 +29,21 @@ namespace SQLEngine::Interface
     using ShColumn   = std::shared_ptr<IColumn>;
     using ColumnList = std::vector<UColumn>;
 
+    using ColumnNameList   = std::vector<std::string>;
+    using UColumnNameList  = std::unique_ptr<ColumnNameList>;
+    using ShColumnNameList = std::shared_ptr<ColumnNameList>;
+
     //////////////////////////////////////////////////////////////////////
 
     class PROJECT_SHARED_EXPORT IColumn : public IDBObject
     {
        public:
+        virtual auto Copy() const -> UColumn                           = 0;
         virtual auto Copy(const std::string& newname) const -> UColumn = 0;
 
        public:
         virtual auto GetName() const -> const std::string& = 0;
+        virtual void SetName(const std::string& name)      = 0;
         virtual auto GetSize() const -> unsigned int       = 0;
 
        public:

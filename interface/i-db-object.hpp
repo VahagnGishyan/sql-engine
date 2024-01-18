@@ -76,6 +76,16 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
+    class PROJECT_SHARED_EXPORT ITableComponent
+    {
+       public:
+        virtual ~ITableComponent() = default;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
     // temp
     PROJECT_SHARED_EXPORT
     void NotImplYet(const std::string& info);
