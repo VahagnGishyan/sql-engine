@@ -1,34 +1,30 @@
 # ToDo
 
+---
 ## Branch:  [development](docs/branch-development).
 
-### Common
-- [x] add auto formatting
-- [ ] add static analysis  
-- [ ] add warnings | wextra werror wall 
+---
+## Tasks
 
-### Components
-- [ ] **utility**
-	- [x] analysing
-	- [x] implementation
-	- [ ] [testing](docs/testing/utility)
-- [ ] **logging**
-	- [x] analysing
-	- [x] [implementation](docs/logging)
-	- [ ] testing
-- [x] table
-	- [x] column
-	- [x] table
-	- [ ] row
-	- [x] tests
-- [ ] **db-manager**
-- [ ] **sql-executor**
-- [ ] **cli-application**
-- [ ] **todo-application**
-- [ ] **installer**
+- [x] **utility**
+- [x] **logging**
+- [x] config: add auto formatting
+- [x] database: column
+- [x] database: table
+- [x] database: database
+- [ ] database: row
+- [ ] db-manager: db-manager
+- [ ] db-manager: json-saver
+- [ ] sql-executor
+- [ ] cli-application
+- [ ] todo-application
+- [ ] installer
+- [ ] config: add static analysis
+- [ ] config: add warnings | wextra werror wall
 
 ---
-### current-task
+## nonordered -task
+
 - [x] test new methods in utility::fs
 - [x] test in windows
 - [ ] impl [bugs and features](docs/logging) of logging
