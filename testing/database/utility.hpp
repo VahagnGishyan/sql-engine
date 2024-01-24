@@ -9,7 +9,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "database/column-element.hpp"
 #include "database/column.hpp"
 #include "database/database.hpp"
 #include "database/table.hpp"

@@ -11,7 +11,8 @@
 
 #include <functional>
 
-#include "i-column-element.hpp"
+#include "i-db-object.hpp"
+#include "i-dynamic-types.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -28,6 +29,8 @@ namespace SQLEngine::Interface
     using UColumn    = std::unique_ptr<IColumn>;
     using ShColumn   = std::shared_ptr<IColumn>;
     using ColumnList = std::vector<UColumn>;
+
+    using ColumnElementList = std::vector<std::unique_ptr<DynamicValue>>;
 
     using ColumnNameList   = std::vector<std::string>;
     using UColumnNameList  = std::unique_ptr<ColumnNameList>;
@@ -51,11 +54,10 @@ namespace SQLEngine::Interface
         virtual auto GetType() const -> const DynamicType = 0;
 
        public:
-        virtual void AddElement(UColumnElement element) = 0;
-        virtual auto GetElement(const int& index)
-            -> Interface::IColumnElement& = 0;
+        virtual void AddElement(UDynamicValue element)              = 0;
+        virtual auto GetElement(const int& index) -> UDynamicValue& = 0;
         virtual auto GetElement(const int& index) const
-            -> const Interface::IColumnElement& = 0;
+            -> const UDynamicValue& = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

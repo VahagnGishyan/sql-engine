@@ -5,7 +5,6 @@
 
 #include <gtest/gtest.h>
 
-#include "database/column-element.hpp"
 #include "database/column.hpp"
 #include "database/table.hpp"
 #include "utility.hpp"

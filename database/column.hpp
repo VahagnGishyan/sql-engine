@@ -26,6 +26,10 @@ namespace SQLEngine::DataBaseNS
     class PROJECT_SHARED_EXPORT Column : public Interface::IColumn
     {
        protected:
+        using DynamicValue  = Interface::DynamicValue;
+        using UDynamicValue = Interface::UDynamicValue;
+
+       protected:
         Column(const std::string& name, const Interface::DynamicType& type);
 
        public:
@@ -48,11 +52,10 @@ namespace SQLEngine::DataBaseNS
         void SetType(const Interface::DynamicType& type) override;
 
        public:
-        void AddElement(Interface::UColumnElement element) override;
-        auto GetElement(const int& index)
-            -> Interface::IColumnElement& override;
+        void AddElement(UDynamicValue element) override;
+        auto GetElement(const int& index) -> UDynamicValue& override;
         auto GetElement(const int& index) const
-            -> const Interface::IColumnElement& override;
+            -> const UDynamicValue& override;
 
        protected:
         std::string m_name;

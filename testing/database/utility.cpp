@@ -26,7 +26,7 @@ namespace SQLEngine::Testing::DataBase
 
         for (auto element : elements)
         {
-            column->AddElement(DataBaseNS::ColumnElement::Create(element));
+            column->AddElement(Interface::CreateUDynValue(element));
         }
 
         return column;
@@ -44,7 +44,7 @@ namespace SQLEngine::Testing::DataBase
 
         for (auto element : elements)
         {
-            column->AddElement(DataBaseNS::ColumnElement::Create(element));
+            column->AddElement(Interface::CreateUDynValue(element));
         }
 
         return column;
@@ -64,7 +64,7 @@ namespace SQLEngine::Testing::DataBase
 
         for (auto element : elements)
         {
-            column->AddElement(DataBaseNS::ColumnElement::Create(element));
+            column->AddElement(Interface::CreateUDynValue(element));
         }
 
         return column;

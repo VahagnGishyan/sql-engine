@@ -9,54 +9,60 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "interface/i-row.hpp"
+#include "i-db-object.hpp"
+#include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DataBaseNS
+namespace SQLEngine::Interface
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT Row : public Interface::IRow
+    class IRowOrientedTable;
+
+    using URowOrientedTable  = std::unique_ptr<IRowOrientedTable>;
+    using ShRowOrientedTable = std::shared_ptr<IRowOrientedTable>;
+    using RowList            = std::vector<URowOrientedTable>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class PROJECT_SHARED_EXPORT IRowOrientedTable : public IDBObject
     {
-       protected:
-        using DynamicValue = Interface::DynamicValue;
-        using IRowElement  = Interface::IRowElement;
-        using URowElement  = Interface::URowElement;
-
-       protected:
-        Row(const unsigned int columnIndex);
+       public:
+        struct ColumnInfo
+        {
+            ColumnInfo(const std::string& name, const DynamicType& type);
+            std::string name;
+            DynamicType type;
+        };
+        using ColumnInfoList = std::vector<ColumnInfo>;
 
        public:
-        static auto Create(const unsigned int columnIndex) -> Interface::URow;
+        virtual auto Copy() const -> URowOrientedTable = 0;
 
        public:
-        auto Copy(const unsigned int rowindex) const -> URow override;
+        virtual auto CreateTable() const -> UTable = 0;
 
        public:
-        auto GetSize() const -> unsigned int override;
+        virtual auto RowsCount() const -> const int    = 0;
+        virtual auto ColumnsCount() const -> const int = 0;
+
+        virtual auto GetTableName() const -> const std::string          = 0;
+        virtual auto GetColumnInfoList() const -> const ColumnInfoList& = 0;
 
        public:
-        void AddElement(const Interface::IColumnElement& element,
-                        const Interface::IColumn& column) override;
-        auto GetElement(const int& index) -> Interface::IRowElement& override;
-        auto GetElement(const int& index) const
-            -> const Interface::IRowElement& override;
-
-       protected:
-        unsigned int m_rowIndex;
-        Interface::RowElementList m_elements;
-        std::vector<std::string> m_columnNames;  // used for indexing columns
+        virtual auto GetValue(const int rowIndex, const int columnIndex) const
+            -> const UDynamicValue& = 0;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DataBaseNS
+}  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

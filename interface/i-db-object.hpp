@@ -52,7 +52,7 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
-    class IRow;
+    class IRowOrientedTable;
     class IColumn;
     class ITable;
     class IDataBase;
@@ -64,14 +64,6 @@ namespace SQLEngine::Interface
     {
        public:
         virtual ~IColumnComponent() = default;
-    };
-
-    //////////////////////////////////////////////////////////////////////
-
-    class PROJECT_SHARED_EXPORT IRowComponent
-    {
-       public:
-        virtual ~IRowComponent() = default;
     };
 
     //////////////////////////////////////////////////////////////////////

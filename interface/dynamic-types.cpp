@@ -74,6 +74,20 @@ namespace SQLEngine
                         "Interface::AssertDynamicValueTypeIs()");
     }
 
+    auto Interface::CreateUDynValue(const DynamicValue& value) -> UDynamicValue
+    {
+        return std::make_unique<DynamicValue>(value);
+    }
+
+    auto Interface::CopyUDynValue(const UDynamicValue& value) -> UDynamicValue
+    {
+        if (value == nullptr)
+        {
+            return nullptr;
+        }
+        return std::make_unique<DynamicValue>(*value);
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

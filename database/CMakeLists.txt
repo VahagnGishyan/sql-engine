@@ -10,11 +10,9 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     # column-constraint.cpp
-    column-element.cpp
     column.cpp
     database.cpp
-    # row-element.cpp
-    # row.cpp
+    row-oriented-table.cpp
     table.cpp
 )
 

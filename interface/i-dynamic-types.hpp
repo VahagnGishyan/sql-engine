@@ -90,6 +90,13 @@ namespace SQLEngine::Interface
     void PROJECT_SHARED_EXPORT AssertDynamicValueTypeIs(
         const DynamicValue& value, const DynamicType& type);
 
+    using UDynamicValue = std::unique_ptr<DynamicValue>;
+
+    auto PROJECT_SHARED_EXPORT CreateUDynValue(const DynamicValue& value)
+        -> UDynamicValue;
+    auto PROJECT_SHARED_EXPORT CopyUDynValue(const UDynamicValue& value)
+        -> UDynamicValue;
+
     //////////////////////////////////////////////////////////////////////
 
     struct PROJECT_SHARED_EXPORT DynamicObject final

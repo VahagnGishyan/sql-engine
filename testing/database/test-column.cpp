@@ -5,7 +5,6 @@
 
 #include <gtest/gtest.h>
 
-#include "database/column-element.hpp"
 #include "database/column.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,20 +52,17 @@ TEST(Column, AddElementInt)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 5);
 }
@@ -88,20 +84,17 @@ TEST(Column, AddElementDouble)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 5);
 }
@@ -123,20 +116,17 @@ TEST(Column, AddElementString)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 5);
 }
@@ -161,24 +151,23 @@ TEST(Column, TypeIntAddWrongElements)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
     dynvalue = 4.4;
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
     dynvalue = "4.4";
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
 
     ASSERT_EQ(column->GetSize(), 1);
     dynvalue = value;
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    ASSERT_EQ(*column->GetElement(0), dynvalue);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,24 +188,23 @@ TEST(Column, TypeDoubleAddWrongElements)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
     dynvalue = 4;
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
     dynvalue = "4.4";
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
 
     ASSERT_EQ(column->GetSize(), 1);
     dynvalue = value;
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    ASSERT_EQ(*column->GetElement(0), dynvalue);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -237,24 +225,23 @@ TEST(Column, TypeStringAddWrongElements)
     auto dynvalue = Interface::DynamicValue{};
     dynvalue      = value;
 
-    ASSERT_NO_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)));
+    ASSERT_NO_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)));
 
     ASSERT_EQ(column->GetSize(), 1);
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    auto&& value0 = column->GetElement(0);
+    ASSERT_NE(value0, nullptr);
+    ASSERT_EQ(*value0, dynvalue);
 
     dynvalue = 4;
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
     dynvalue = 4.4;
-    EXPECT_THROW(
-        column->AddElement(DataBaseNS::ColumnElement::Create(dynvalue)),
-        std::exception);
+    EXPECT_THROW(column->AddElement(Interface::CreateUDynValue(dynvalue)),
+                 std::exception);
 
     ASSERT_EQ(column->GetSize(), 1);
     dynvalue = value;
-    ASSERT_EQ(column->GetElement(0).GetValue(), dynvalue);
+    ASSERT_EQ(*column->GetElement(0), dynvalue);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -273,7 +260,7 @@ TEST(Column, GetIntElement)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
 
     ASSERT_EQ(column->GetSize(), size);
@@ -282,7 +269,7 @@ TEST(Column, GetIntElement)
     for (int index = 0; index < size; ++index)
     {
         dynvalue = elements[index];
-        ASSERT_EQ(column->GetElement(index).GetValue(), dynvalue);
+        ASSERT_EQ(*column->GetElement(index), dynvalue);
     }
 }
 //////////////////////////////////////////////////////////////////////////
@@ -299,7 +286,7 @@ TEST(Column, GetDoubleElement)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
 
     ASSERT_EQ(column->GetSize(), size);
@@ -308,7 +295,7 @@ TEST(Column, GetDoubleElement)
     for (int index = 0; index < size; ++index)
     {
         dynvalue = elements[index];
-        ASSERT_EQ(column->GetElement(index).GetValue(), dynvalue);
+        ASSERT_EQ(*column->GetElement(index), dynvalue);
     }
 }
 //////////////////////////////////////////////////////////////////////////
@@ -328,7 +315,7 @@ TEST(Column, GetStringElement)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
 
     ASSERT_EQ(column->GetSize(), size);
@@ -337,7 +324,7 @@ TEST(Column, GetStringElement)
     for (int index = 0; index < size; ++index)
     {
         dynvalue = elements[index];
-        ASSERT_EQ(column->GetElement(index).GetValue(), dynvalue);
+        ASSERT_EQ(*column->GetElement(index), dynvalue);
     }
 }
 
@@ -357,14 +344,14 @@ TEST(Column, CopyTypeInt)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
     auto&& newcolumn = column->Copy("new-empty-column");
 
     for (int index = 0; index < size; ++index)
     {
-        ASSERT_EQ(column->GetElement(index).GetValue(),
-                  newcolumn->GetElement(index).GetValue());
+        ASSERT_EQ(*column->GetElement(index),
+                  *newcolumn->GetElement(index));
     }
 }
 //////////////////////////////////////////////////////////////////////////
@@ -381,14 +368,14 @@ TEST(Column, CopyTypeDouble)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
     auto&& newcolumn = column->Copy("new-empty-column");
 
     for (int index = 0; index < size; ++index)
     {
-        ASSERT_EQ(column->GetElement(index).GetValue(),
-                  newcolumn->GetElement(index).GetValue());
+        ASSERT_EQ(*column->GetElement(index),
+                  *newcolumn->GetElement(index));
     }
 }
 //////////////////////////////////////////////////////////////////////////
@@ -408,14 +395,14 @@ TEST(Column, CopyTypeString)
 
     for (auto element : elements)
     {
-        column->AddElement(DataBaseNS::ColumnElement::Create(element));
+        column->AddElement(Interface::CreateUDynValue(element));
     }
     auto&& newcolumn = column->Copy("new-empty-column");
 
     for (int index = 0; index < size; ++index)
     {
-        ASSERT_EQ(column->GetElement(index).GetValue(),
-                  newcolumn->GetElement(index).GetValue());
+        ASSERT_EQ(*column->GetElement(index),
+                 *newcolumn->GetElement(index));
     }
 }
 

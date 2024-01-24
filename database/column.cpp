@@ -5,7 +5,6 @@
 
 #include "column.hpp"
 
-#include "column-element.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,7 +43,7 @@ namespace SQLEngine::DataBaseNS
         auto&& newcolumn = Column::Create(newname, m_type);
         for (auto&& item : m_elements)
         {
-            newcolumn->AddElement(item->Copy());
+            newcolumn->AddElement(Interface::CopyUDynValue(item));
         }
         return std::move(newcolumn);
     }
@@ -85,21 +84,23 @@ namespace SQLEngine::DataBaseNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Column::AddElement(Interface::UColumnElement element)
+    void Column::AddElement(UDynamicValue element)
     {
-        Interface::AssertDynamicValueTypeIs(element->GetValue(), m_type);
+        if (element != nullptr)
+        {
+            Interface::AssertDynamicValueTypeIs(*element, m_type);
+        }
         m_elements.push_back(std::move(element));
     }
 
-    auto Column::GetElement(const int& index) -> Interface::IColumnElement&
+    auto Column::GetElement(const int& index) -> UDynamicValue&
     {
-        return *m_elements.at(index);
+        return m_elements.at(index);
     }
 
-    auto Column::GetElement(const int& index) const
-        -> const Interface::IColumnElement&
+    auto Column::GetElement(const int& index) const -> const UDynamicValue&
     {
-        return *m_elements.at(index);
+        return m_elements.at(index);
     }
 
     //////////////////////////////////////////////////////////////////////

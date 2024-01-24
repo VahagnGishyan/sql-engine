@@ -63,6 +63,12 @@ namespace SQLEngine
     void Table::AddColumn(UColumn column)
     {
         AssertColumnDoesNotExist(column->GetName(), "Table::AddColumn:");
+        if (ColumnsCount() != 0)
+        {
+            Utility::Assert(
+                GetColumn(0).GetSize() == column->GetSize(),
+                "Table::AddColumn, columns count must be equal in table:");
+        }
         m_columns.push_back(std::move(column));
     }
 

@@ -5,7 +5,6 @@ project(testing-database)
 
 set(SOURCES
     main.cpp
-    test-column-element.cpp
     test-column.cpp
     test-table.cpp
     test-database.cpp
