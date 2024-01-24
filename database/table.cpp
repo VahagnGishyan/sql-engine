@@ -24,8 +24,13 @@ namespace SQLEngine
 
     auto Table::Create(const std::string& newname) -> UTable
     {
-        Interface::UTable ucolumn{new Table{newname}};
-        return (ucolumn);
+        Interface::UTable utable{new Table{newname}};
+        return (utable);
+    }
+
+    auto Table::Copy() const -> UTable
+    {
+        return Copy(m_name);
     }
 
     auto Table::Copy(const std::string& newname) const -> UTable

@@ -18,7 +18,7 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 
 set (SUBDIRS
     app-info
-    # database
+    database
     # db-manager
     # db-stream
     # filestream
@@ -27,7 +27,6 @@ set (SUBDIRS
     observer
     # query-executor
     # sql-engine
-    table
     # other
     utility
 )

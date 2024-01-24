@@ -1,13 +1,14 @@
 ﻿
 cmake_minimum_required(VERSION 3.0)
 
-project(testing-table)
+project(testing-database)
 
 set(SOURCES
     main.cpp
     test-column-element.cpp
     test-column.cpp
     test-table.cpp
+    test-database.cpp
     utility.cpp
 )
 
@@ -21,5 +22,5 @@ target_link_libraries(${PROJECT_NAME}
     fmt::fmt 
     gtest::gtest
     sql-engine-utility
-    sql-engine-table
+    sql-engine-database
 )

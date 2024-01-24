@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::Table
+namespace SQLEngine::Testing::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -22,11 +22,11 @@ namespace SQLEngine::Testing::Table
         auto elements = std::vector<Interface::GetDynamicType<type>::type>{
             0, 41, 874456465, 65465, 485485485, -548548, 48548, -121};
 
-        auto&& column = SQLEngine::TableNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
 
         for (auto element : elements)
         {
-            column->AddElement(TableNS::ColumnElement::Create(element));
+            column->AddElement(DataBaseNS::ColumnElement::Create(element));
         }
 
         return column;
@@ -40,11 +40,11 @@ namespace SQLEngine::Testing::Table
             0.45,       41.5,     87445646.5, 65.465,
             48548.5485, -5485.48, 48.548,     -12.1};
 
-        auto&& column = SQLEngine::TableNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
 
         for (auto element : elements)
         {
-            column->AddElement(TableNS::ColumnElement::Create(element));
+            column->AddElement(DataBaseNS::ColumnElement::Create(element));
         }
 
         return column;
@@ -60,11 +60,11 @@ namespace SQLEngine::Testing::Table
             " 874456465", "    ",
         };
 
-        auto&& column = SQLEngine::TableNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
 
         for (auto element : elements)
         {
-            column->AddElement(TableNS::ColumnElement::Create(element));
+            column->AddElement(DataBaseNS::ColumnElement::Create(element));
         }
 
         return column;
@@ -106,7 +106,43 @@ namespace SQLEngine::Testing::Table
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Table
+
+    auto CreateListOfTables() -> SQLEngine::Interface::UTableList
+    {
+        SQLEngine::Interface::UTableList tableList =
+            std::make_unique<SQLEngine::Interface::TableList>();
+
+        tableList->push_back(CreateEmptyTable());
+        tableList->push_back(CreateTable());
+
+        return tableList;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateDataBase() -> SQLEngine::Interface::UDataBase
+    {
+        const std::string databaseName{"test-table"};
+        auto&& database = SQLEngine::DataBase::Create(databaseName);
+
+        //////////////////////////////////////////////////////////////////////
+
+        auto tables = Testing::DataBase::CreateListOfTables();
+
+        for (auto&& table : *tables)
+        {
+            database->AddTable(table->Copy());
+        }
+
+        return database;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+}  // namespace SQLEngine::Testing::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

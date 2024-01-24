@@ -9,7 +9,13 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(fmt REQUIRED)
 
 set(SOURCES
+    # column-constraint.cpp
+    column-element.cpp
+    column.cpp
     database.cpp
+    # row-element.cpp
+    # row.cpp
+    table.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
@@ -23,7 +29,6 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-app-info 
     sql-engine-logging
     sql-engine-interface
-    sql-engine-table
     fmt::fmt
 )
 

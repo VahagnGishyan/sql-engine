@@ -5,9 +5,9 @@
 
 #include <gtest/gtest.h>
 
-#include "table/column-element.hpp"
-#include "table/column.hpp"
-#include "table/table.hpp"
+#include "database/column-element.hpp"
+#include "database/column.hpp"
+#include "database/table.hpp"
 #include "utility.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,6 +27,7 @@ TEST(Table, EmptyCreation)
     auto&& table = Table::Create(name);
 
     EXPECT_EQ(name, table->GetName());
+    EXPECT_EQ(0, table->ColumnsCount());
     EXPECT_EQ(0, table->ListColumns()->size());
 }
 
@@ -54,9 +55,9 @@ TEST(Table, ColumnManipulation)
 
     // Act: Add columns
     auto&& column1 =
-        TableNS::Column::Create("Column1", Interface::DynamicType::Int);
+        DataBaseNS::Column::Create("Column1", Interface::DynamicType::Int);
     auto&& column2 =
-        TableNS::Column::Create("Column2", Interface::DynamicType::Int);
+        DataBaseNS::Column::Create("Column2", Interface::DynamicType::Int);
 
     table->AddColumn(std::move(column1));
     table->AddColumn(std::move(column2));
@@ -96,9 +97,9 @@ TEST(Table, ColumnManipulation)
 
 TEST(Table, NotEmptyColumns)
 {
-    auto&& column0 = Testing::Table::CreateIntColumn();
-    auto&& column1 = Testing::Table::CreateDoubleColumn();
-    auto&& column2 = Testing::Table::CreateStringColumn();
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
 
     //////////////////////////////////////////////////////////////////////
 
@@ -130,9 +131,9 @@ TEST(Table, NotEmptyColumns)
 
 TEST(Table, GetColumnIndex)
 {
-    auto&& column0 = Testing::Table::CreateIntColumn();
-    auto&& column1 = Testing::Table::CreateDoubleColumn();
-    auto&& column2 = Testing::Table::CreateStringColumn();
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
 
     //////////////////////////////////////////////////////////////////////
 
@@ -167,9 +168,9 @@ TEST(Table, GetColumnIndex)
 
 TEST(Table, GetColumn)
 {
-    auto&& column0 = Testing::Table::CreateIntColumn();
-    auto&& column1 = Testing::Table::CreateDoubleColumn();
-    auto&& column2 = Testing::Table::CreateStringColumn();
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
 
     //////////////////////////////////////////////////////////////////////
 
@@ -215,9 +216,9 @@ TEST(Table, GetColumn)
 
 TEST(Table, ListColumns)
 {
-    auto&& column0 = Testing::Table::CreateIntColumn();
-    auto&& column1 = Testing::Table::CreateDoubleColumn();
-    auto&& column2 = Testing::Table::CreateStringColumn();
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
 
     //////////////////////////////////////////////////////////////////////
 
@@ -243,6 +244,82 @@ TEST(Table, ListColumns)
         EXPECT_EQ(table->GetColumn(index).GetName(), columnName);
         EXPECT_EQ(table->GetColumn(columnName).GetName(), columnName);
     }
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
+TEST(Table, CopyWithNewName)
+{
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
+
+    //////////////////////////////////////////////////////////////////////
+
+    const std::string tableName{"test-table"};
+
+    auto&& table = Table::Create(tableName);
+
+    table->AddColumn(column0->Copy());
+    table->AddColumn(column1->Copy());
+    table->AddColumn(column2->Copy());
+
+    //////////////////////////////////////////////////////////////////////
+
+    const std::string newTableName{"new-test-table"};
+    auto&& newtable = table->Copy(newTableName);
+
+    EXPECT_EQ(table->GetName(), tableName);
+    EXPECT_EQ(newtable->GetName(), newTableName);
+
+    auto&& columnListOld = table->ListColumns();
+    auto&& columnListNew = newtable->ListColumns();
+
+    ASSERT_NE(columnListOld, nullptr);
+    ASSERT_NE(columnListNew, nullptr);
+    ASSERT_EQ(columnListOld->size(), columnListNew->size());
+    ASSERT_TRUE(std::equal(columnListOld->begin(), columnListOld->end(),
+                           columnListNew->begin()));
+
+    //////////////////////////////////////////////////////////////////////
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+TEST(Table, CopyWithOutNewName)
+{
+    auto&& column0 = Testing::DataBase::CreateIntColumn();
+    auto&& column1 = Testing::DataBase::CreateDoubleColumn();
+    auto&& column2 = Testing::DataBase::CreateStringColumn();
+
+    //////////////////////////////////////////////////////////////////////
+
+    const std::string tableName{"test-table"};
+
+    auto&& table = Table::Create(tableName);
+
+    table->AddColumn(column0->Copy());
+    table->AddColumn(column1->Copy());
+    table->AddColumn(column2->Copy());
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto&& newtable = table->Copy();
+
+    EXPECT_EQ(table->GetName(), newtable->GetName());
+
+    auto&& columnListOld = table->ListColumns();
+    auto&& columnListNew = newtable->ListColumns();
+
+    ASSERT_NE(columnListOld, nullptr);
+    ASSERT_NE(columnListNew, nullptr);
+    ASSERT_EQ(columnListOld->size(), columnListNew->size());
+    ASSERT_TRUE(std::equal(columnListOld->begin(), columnListOld->end(),
+                           columnListNew->begin()));
+
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////

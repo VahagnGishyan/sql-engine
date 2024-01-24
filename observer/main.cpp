@@ -14,7 +14,7 @@
 // #include "db-manager/db-manager.hpp"
 // #include "interface/i-table.hpp"
 #include "logging/logging.hpp"
-// #include "table/table.hpp"
+// #include "database/table.hpp"
 
 #include "utility/core.hpp"
 

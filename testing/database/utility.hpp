@@ -9,34 +9,36 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database-component.hpp"
+#include "database/column-element.hpp"
+#include "database/column.hpp"
+#include "database/database.hpp"
+#include "database/table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Interface
+namespace SQLEngine::Testing::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDataBaseInit : public IDataBaseComponent
-    {
-       public:
-        // virtual auto GetWorkDir() const -> const std::string           = 0;
-        virtual auto GetName() const -> const std::string              = 0;
-        virtual auto GetTablesWorkDirPath() const -> const std::string = 0;
-        // virtual auto GetTablesWorkDirName() const -> const std::string = 0;
-        // virtual auto GetFileStream() const -> const ShFile
-        // virtual auto GetTablePath(const ITableID& init) const -> const
-        // std::string = 0;
-    };
+    auto CreateIntColumn() -> Interface::UColumn;
+    auto CreateDoubleColumn() -> Interface::UColumn;
+    auto CreateStringColumn() -> Interface::UColumn;
+
+    auto CreateEmptyTable() -> Interface::UTable;
+    auto CreateTable() -> Interface::UTable;
+
+    auto CreateListOfTables() -> SQLEngine::Interface::UTableList;
+
+    auto CreateDataBase() -> SQLEngine::Interface::UDataBase;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Interface
+}  // namespace SQLEngine::Testing::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

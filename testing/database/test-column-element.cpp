@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-#include "table/column-element.hpp"
+#include "database/column-element.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -19,7 +19,7 @@ using namespace SQLEngine;
 
 TEST(ColumnElement, EmptyCreation)
 {
-    auto&& element = TableNS::ColumnElement::Create();
+    auto&& element = DataBaseNS::ColumnElement::Create();
     ASSERT_NE(element, nullptr);
 
     EXPECT_TRUE(element->Equal(*element));
@@ -39,7 +39,7 @@ TEST(ColumnElement, AssignInt)
 {
     const int value = 4;
 
-    auto&& element = TableNS::ColumnElement::Create();
+    auto&& element = DataBaseNS::ColumnElement::Create();
     ASSERT_NE(element, nullptr);
 
     ASSERT_NO_THROW(element->SetValue(value));
@@ -59,7 +59,7 @@ TEST(ColumnElement, AssignDouble)
 {
     const double value = 4.0;
 
-    auto&& element = TableNS::ColumnElement::Create();
+    auto&& element = DataBaseNS::ColumnElement::Create();
     ASSERT_NE(element, nullptr);
 
     ASSERT_NO_THROW(element->SetValue(value));
@@ -79,7 +79,7 @@ TEST(ColumnElement, AssignString)
 {
     const std::string value = "4.0";
 
-    auto&& element = TableNS::ColumnElement::Create();
+    auto&& element = DataBaseNS::ColumnElement::Create();
     ASSERT_NE(element, nullptr);
 
     ASSERT_NO_THROW(element->SetValue(value));

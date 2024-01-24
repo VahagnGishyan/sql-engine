@@ -40,6 +40,7 @@ namespace SQLEngine
         static auto Create(const std::string& newname) -> UTable;
 
        public:
+        auto Copy() const -> UTable override;
         auto Copy(const std::string& newname) const -> UTable override;
 
        public:
