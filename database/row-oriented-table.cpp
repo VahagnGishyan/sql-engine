@@ -31,7 +31,7 @@ namespace SQLEngine::DataBaseNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto RowOrientedTable::Create(std::string&& tableName,
+    auto RowOrientedDataBase::CreateTable(std::string&& tableName,
                                   ColumnInfoList&& columns, Data&& data)
         -> Interface::URowOrientedTable
     {
@@ -42,7 +42,7 @@ namespace SQLEngine::DataBaseNS
         return (urow);
     }
 
-    auto RowOrientedTable::Create(const std::string& tableName,
+    auto RowOrientedDataBase::CreateTable(const std::string& tableName,
                                   const ColumnInfoList& columns,
                                   const Data& data)
         -> Interface::URowOrientedTable
@@ -76,7 +76,7 @@ namespace SQLEngine::DataBaseNS
             Create(std::move(newName), std::move(newlist), std::move(newdata)));
     }
 
-    auto RowOrientedTable::Create(const RowOrientedTable& rowTable)
+    auto RowOrientedDataBase::CreateTable(const RowOrientedTable& rowTable)
         -> Interface::URowOrientedTable
     {
         return Create(rowTable.m_tableName, rowTable.m_columns,
@@ -85,7 +85,7 @@ namespace SQLEngine::DataBaseNS
 
     //////////////////////////////////////////////////////////////////////
 
-    auto RowOrientedTable::Create(const Interface::ITable& table)
+    auto RowOrientedDataBase::CreateTable(const Interface::ITable& table)
         -> Interface::URowOrientedTable
     {
         ColumnInfoList columnInfoList{};
@@ -134,9 +134,9 @@ namespace SQLEngine::DataBaseNS
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto RowOrientedTable::CreateTable() const -> Interface::UTable
+    auto RowOrientedDataBase::CreateTableTable() const -> Interface::UTable
     {
-        auto table = Table::Create(GetTableName());
+        auto table = DataBase::CreateTable(GetTableName());
 
         const int columnCount = ColumnsCount();
         const int rowCount    = RowsCount();
@@ -146,7 +146,7 @@ namespace SQLEngine::DataBaseNS
         for (auto&& columnInfo : m_columns)
         {
             columnList.push_back(
-                Column::Create(columnInfo.name, columnInfo.type));
+                DataBase::CreateColumn(columnInfo.name, columnInfo.type));
         }
 
         for (int columnIndex = 0; columnCount; ++columnIndex)

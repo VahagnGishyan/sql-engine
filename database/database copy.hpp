@@ -9,33 +9,27 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "database/database.hpp"
+#include <string>
+
+#include "interface/i-database.hpp"
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::DataBase
+namespace SQLEngine
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateIntColumn() -> Interface::UColumn;
-    auto CreateDoubleColumn() -> Interface::UColumn;
-    auto CreateStringColumn() -> Interface::UColumn;
 
-    auto CreateEmptyTable() -> Interface::UTable;
-    auto CreateTable() -> Interface::UTable;
-
-    auto CreateListOfTables() -> SQLEngine::Interface::UTableList;
-
-    auto CreateDataBase() -> SQLEngine::Interface::UDataBase;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::DataBase
+}  // namespace SQLEngine
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

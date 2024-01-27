@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-#include "database/column.hpp"
+#include "database/database.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,9 +22,9 @@ TEST(Column, EmptyCreation)
     const std::string name{"empty-column"};
     const Interface::DynamicType type{Interface::DynamicType::Int};
 
-    ASSERT_NO_THROW(SQLEngine::DataBaseNS::Column::Create(name, type));
+    ASSERT_NO_THROW(SQLEngine::DataBase::CreateColumn(name, type));
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     EXPECT_NE(column, nullptr);
 
@@ -43,7 +43,7 @@ TEST(Column, AddElementInt)
     constexpr Interface::DynamicType type{Interface::DynamicType::Int};
     const Interface::GetDynamicType<type>::type value = 4;
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -75,7 +75,7 @@ TEST(Column, AddElementDouble)
     constexpr Interface::DynamicType type{Interface::DynamicType::Double};
     const Interface::GetDynamicType<type>::type value = 4.4;
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -107,7 +107,7 @@ TEST(Column, AddElementString)
     constexpr Interface::DynamicType type{Interface::DynamicType::String};
     const Interface::GetDynamicType<type>::type value = "4.4";
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -142,7 +142,7 @@ TEST(Column, TypeIntAddWrongElements)
 
     const Interface::GetDynamicType<type>::type value = 4;
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -179,7 +179,7 @@ TEST(Column, TypeDoubleAddWrongElements)
 
     const Interface::GetDynamicType<type>::type value = 4.4;
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -216,7 +216,7 @@ TEST(Column, TypeStringAddWrongElements)
 
     const Interface::GetDynamicType<type>::type value = "4.4";
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
     ASSERT_NE(column, nullptr);
     ASSERT_EQ(column->GetSize(), 0);
     ASSERT_EQ(column->GetName(), name);
@@ -256,7 +256,7 @@ TEST(Column, GetIntElement)
         0, 41, 874456465, 65465, 485485485, -548548, 48548, -121};
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {
@@ -282,7 +282,7 @@ TEST(Column, GetDoubleElement)
         0.45, 41.5, 87445646.5, 65.465, 48548.5485, -5485.48, 48.548, -12.1};
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {
@@ -311,7 +311,7 @@ TEST(Column, GetStringElement)
     };
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {
@@ -340,7 +340,7 @@ TEST(Column, CopyTypeInt)
         0, 41, 874456465, 65465, 485485485, -548548, 48548, -121};
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {
@@ -364,7 +364,7 @@ TEST(Column, CopyTypeDouble)
         0.45, 41.5, 87445646.5, 65.465, 48548.5485, -5485.48, 48.548, -12.1};
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {
@@ -391,7 +391,7 @@ TEST(Column, CopyTypeString)
     };
     auto size = elements.size();
 
-    auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+    auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
     for (auto element : elements)
     {

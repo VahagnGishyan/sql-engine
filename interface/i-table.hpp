@@ -55,10 +55,10 @@ namespace SQLEngine::Interface
 
        public:
         virtual auto GetColumnIndex(const std::string& columnName) const
-            -> const std::optional<unsigned int> = 0;
-        virtual auto GetColumn(const unsigned int index) const
+            -> const std::optional<int> = 0;
+        virtual auto GetColumn(const int index) const
             -> const IColumn&                                        = 0;
-        virtual auto GetColumn(const unsigned int index) -> IColumn& = 0;
+        virtual auto GetColumn(const int index) -> IColumn& = 0;
         virtual auto GetColumn(const std::string& columnName) const
             -> const IColumn&                                             = 0;
         virtual auto GetColumn(const std::string& columnName) -> IColumn& = 0;

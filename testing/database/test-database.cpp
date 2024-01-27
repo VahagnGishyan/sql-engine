@@ -6,7 +6,6 @@
 #include <gtest/gtest.h>
 
 #include "database/database.hpp"
-#include "database/table.hpp"
 #include "utility.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +22,7 @@ TEST(DataBase, EmptyCreation)
 {
     const std::string name{"test-database"};
 
-    auto&& database = DataBase::Create(name);
+    auto&& database = DataBase::CreateDataBase(name);
 
     EXPECT_EQ(name, database->GetName());
     EXPECT_EQ(0, database->TablesCount());
@@ -36,7 +35,7 @@ TEST(DataBase, SetNameAndGetSetName)
 {
     const std::string initialName{"initial-name"};
     const std::string newName{"new-name"};
-    auto&& database = DataBase::Create(initialName);
+    auto&& database = DataBase::CreateDataBase(initialName);
     EXPECT_EQ(initialName, database->GetName());
     database->SetName(newName);
     EXPECT_EQ(newName, database->GetName());
@@ -50,13 +49,13 @@ TEST(DataBase, AddTables)
 {
     // Arrange
     const std::string databaseName{"test-table"};
-    auto&& database = DataBase::Create(databaseName);
+    auto&& database = DataBase::CreateDataBase(databaseName);
 
     // Act: Add columns
     auto tableName1 = std::string{"empty-table-1"};
     auto tableName2 = std::string{"empty-table-2"};
-    auto&& table1   = Table::Create(tableName1);
-    auto&& table2   = Table::Create(tableName2);
+    auto&& table1   = DataBase::CreateTable(tableName1);
+    auto&& table2   = DataBase::CreateTable(tableName2);
 
     //////////////////////////////////////////////////////////////////////
 
@@ -72,13 +71,13 @@ TEST(DataBase, RemoveTable)
 {
     // Arrange
     const std::string databaseName{"test-table"};
-    auto&& database = DataBase::Create(databaseName);
+    auto&& database = DataBase::CreateDataBase(databaseName);
 
     // Act: Add columns
     auto tableName1 = std::string{"empty-table-1"};
     auto tableName2 = std::string{"empty-table-2"};
-    auto&& table1   = Table::Create(tableName1);
-    auto&& table2   = Table::Create(tableName2);
+    auto&& table1   = DataBase::CreateTable(tableName1);
+    auto&& table2   = DataBase::CreateTable(tableName2);
 
     database->AddTable(table1->Copy());
     database->AddTable(table2->Copy());
@@ -101,13 +100,13 @@ TEST(DataBase, RenameTable)
 {
     // Arrange
     const std::string databaseName{"test-table"};
-    auto&& database = DataBase::Create(databaseName);
+    auto&& database = DataBase::CreateDataBase(databaseName);
 
     // Act: Add columns
     auto tableName1 = std::string{"empty-table-1"};
     auto tableName2 = std::string{"empty-table-2"};
-    auto&& table1   = Table::Create(tableName1);
-    auto&& table2   = Table::Create(tableName2);
+    auto&& table1   = DataBase::CreateTable(tableName1);
+    auto&& table2   = DataBase::CreateTable(tableName2);
 
     database->AddTable(table1->Copy());
     database->AddTable(table2->Copy());
@@ -134,7 +133,7 @@ TEST(DataBase, RenameTable)
 TEST(DataBase, NotEmptyTables)
 {
     const std::string databaseName{"test-table"};
-    auto&& database = DataBase::Create(databaseName);
+    auto&& database = DataBase::CreateDataBase(databaseName);
 
     //////////////////////////////////////////////////////////////////////
 
@@ -155,7 +154,7 @@ TEST(DataBase, NotEmptyTables)
 TEST(DataBase, GetTable)
 {
     const std::string databaseName{"test-table"};
-    auto&& database = DataBase::Create(databaseName);
+    auto&& database = DataBase::CreateDataBase(databaseName);
 
     //////////////////////////////////////////////////////////////////////
 

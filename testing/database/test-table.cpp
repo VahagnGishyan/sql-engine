@@ -5,8 +5,7 @@
 
 #include <gtest/gtest.h>
 
-#include "database/column.hpp"
-#include "database/table.hpp"
+#include "database/database.hpp"
 #include "utility.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +22,7 @@ TEST(Table, EmptyCreation)
 {
     const std::string name{"test-table"};
 
-    auto&& table = Table::Create(name);
+    auto&& table = DataBase::CreateTable(name);
 
     EXPECT_EQ(name, table->GetName());
     EXPECT_EQ(0, table->ColumnsCount());
@@ -36,7 +35,7 @@ TEST(Table, SetNameAndGetSetName)
 {
     const std::string initialName{"initial-name"};
     const std::string newName{"new-name"};
-    auto&& table = Table::Create(initialName);
+    auto&& table = DataBase::CreateTable(initialName);
     EXPECT_EQ(initialName, table->GetName());
     table->SetName(newName);
     EXPECT_EQ(newName, table->GetName());
@@ -50,13 +49,13 @@ TEST(Table, ColumnManipulation)
 {
     // Arrange
     const std::string tableName{"test-table"};
-    auto&& table = Table::Create(tableName);
+    auto&& table = DataBase::CreateTable(tableName);
 
     // Act: Add columns
     auto&& column1 =
-        DataBaseNS::Column::Create("Column1", Interface::DynamicType::Int);
+        DataBase::CreateColumn("Column1", Interface::DynamicType::Int);
     auto&& column2 =
-        DataBaseNS::Column::Create("Column2", Interface::DynamicType::Int);
+        DataBase::CreateColumn("Column2", Interface::DynamicType::Int);
 
     table->AddColumn(std::move(column1));
     table->AddColumn(std::move(column2));
@@ -104,7 +103,7 @@ TEST(Table, NotEmptyColumns)
 
     const std::string tablename{"test-table"};
 
-    auto&& table = Table::Create(tablename);
+    auto&& table = DataBase::CreateTable(tablename);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());
@@ -138,7 +137,7 @@ TEST(Table, GetColumnIndex)
 
     const std::string tablename{"test-table"};
 
-    auto&& table = Table::Create(tablename);
+    auto&& table = DataBase::CreateTable(tablename);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());
@@ -175,7 +174,7 @@ TEST(Table, GetColumn)
 
     const std::string tablename{"test-table"};
 
-    auto&& table = Table::Create(tablename);
+    auto&& table = DataBase::CreateTable(tablename);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());
@@ -223,7 +222,7 @@ TEST(Table, ListColumns)
 
     const std::string tablename{"test-table"};
 
-    auto&& table = Table::Create(tablename);
+    auto&& table = DataBase::CreateTable(tablename);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());
@@ -259,7 +258,7 @@ TEST(Table, CopyWithNewName)
 
     const std::string tableName{"test-table"};
 
-    auto&& table = Table::Create(tableName);
+    auto&& table = DataBase::CreateTable(tableName);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());
@@ -297,7 +296,7 @@ TEST(Table, CopyWithOutNewName)
 
     const std::string tableName{"test-table"};
 
-    auto&& table = Table::Create(tableName);
+    auto&& table = DataBase::CreateTable(tableName);
 
     table->AddColumn(column0->Copy());
     table->AddColumn(column1->Copy());

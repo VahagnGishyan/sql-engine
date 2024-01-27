@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#if defined DB_DATABASE_BUILD
+#if defined SQL_ENGINE_DATABASE_BUILD
 #define SHARE_LIB
 #endif
 

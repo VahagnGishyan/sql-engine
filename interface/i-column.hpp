@@ -47,7 +47,7 @@ namespace SQLEngine::Interface
        public:
         virtual auto GetName() const -> const std::string& = 0;
         virtual void SetName(const std::string& name)      = 0;
-        virtual auto GetSize() const -> unsigned int       = 0;
+        virtual auto GetSize() const -> int       = 0;
 
        public:
         virtual void SetType(const DynamicType& type)     = 0;

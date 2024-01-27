@@ -22,7 +22,7 @@ namespace SQLEngine::Testing::DataBase
         auto elements = std::vector<Interface::GetDynamicType<type>::type>{
             0, 41, 874456465, 65465, 485485485, -548548, 48548, -121};
 
-        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
         for (auto element : elements)
         {
@@ -40,7 +40,7 @@ namespace SQLEngine::Testing::DataBase
             0.45,       41.5,     87445646.5, 65.465,
             48548.5485, -5485.48, 48.548,     -12.1};
 
-        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
         for (auto element : elements)
         {
@@ -60,7 +60,7 @@ namespace SQLEngine::Testing::DataBase
             " 874456465", "    ",
         };
 
-        auto&& column = SQLEngine::DataBaseNS::Column::Create(name, type);
+        auto&& column = SQLEngine::DataBase::CreateColumn(name, type);
 
         for (auto element : elements)
         {
@@ -77,7 +77,7 @@ namespace SQLEngine::Testing::DataBase
     auto CreateEmptyTable() -> Interface::UTable
     {
         const std::string name{"empty-table"};
-        auto&& table = SQLEngine::Table::Create(name);
+        auto&& table = SQLEngine::DataBase::CreateTable(name);
 
         return table;
     }
@@ -92,7 +92,7 @@ namespace SQLEngine::Testing::DataBase
 
         const std::string tablename{"test-table"};
 
-        auto&& table = SQLEngine::Table::Create(tablename);
+        auto&& table = SQLEngine::DataBase::CreateTable(tablename);
 
         table->AddColumn(column0->Copy());
         table->AddColumn(column1->Copy());
@@ -125,7 +125,7 @@ namespace SQLEngine::Testing::DataBase
     auto CreateDataBase() -> SQLEngine::Interface::UDataBase
     {
         const std::string databaseName{"test-table"};
-        auto&& database = SQLEngine::DataBase::Create(databaseName);
+        auto&& database = SQLEngine::DataBase::CreateDataBase(databaseName);
 
         //////////////////////////////////////////////////////////////////////
 

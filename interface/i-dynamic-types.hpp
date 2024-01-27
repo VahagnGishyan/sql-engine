@@ -85,25 +85,17 @@ namespace SQLEngine::Interface
         Interface::GetDynamicType<Interface::DynamicType::Double>::type,
         Interface::GetDynamicType<Interface::DynamicType::String>::type>;
 
+    using UDynamicValue = std::unique_ptr<DynamicValue>;
+
     bool PROJECT_SHARED_EXPORT IsDynamicValueType(const DynamicValue& value,
                                                   const DynamicType& type);
     void PROJECT_SHARED_EXPORT AssertDynamicValueTypeIs(
         const DynamicValue& value, const DynamicType& type);
 
-    using UDynamicValue = std::unique_ptr<DynamicValue>;
-
     auto PROJECT_SHARED_EXPORT CreateUDynValue(const DynamicValue& value)
         -> UDynamicValue;
     auto PROJECT_SHARED_EXPORT CopyUDynValue(const UDynamicValue& value)
         -> UDynamicValue;
-
-    //////////////////////////////////////////////////////////////////////
-
-    struct PROJECT_SHARED_EXPORT DynamicObject final
-    {
-        DynamicType type;
-        DynamicValue value;
-    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

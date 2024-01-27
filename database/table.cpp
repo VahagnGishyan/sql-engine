@@ -3,8 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "table.hpp"
-
+#include "database.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 
@@ -12,179 +11,194 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    Table::Table(const std::string& newname) : m_name{newname}, m_columns{}
-    {
-    }
+    using DynamicValue = Interface::DynamicValue;
+    using ITable       = Interface::ITable;
+    using UTable       = Interface::UTable;
 
-    auto Table::Create(const std::string& newname) -> UTable
-    {
-        Interface::UTable utable{new Table{newname}};
-        return (utable);
-    }
+    using IColumn         = Interface::IColumn;
+    using UColumn         = Interface::UColumn;
+    using ColumnList      = Interface::ColumnList;
+    using UColumnNameList = Interface::UColumnNameList;
 
-    auto Table::Copy() const -> UTable
-    {
-        return Copy(m_name);
-    }
+    //////////////////////////////////////////////////////////////////////
 
-    auto Table::Copy(const std::string& newname) const -> UTable
+    class Table : public Interface::ITable
     {
-        auto newtable = Create(newname);
-        for (auto&& column : m_columns)
+       protected:
+        Table(const std::string& newname) : m_name{newname}, m_columns{}
         {
-            newtable->AddColumn(column->Copy(column->GetName()));
         }
-        return newtable;
-    }
 
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto Table::GetName() const -> const std::string&
-    {
-        return m_name;
-    }
-    void Table::SetName(const std::string& name)
-    {
-        m_name = name;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    void Table::AddColumn(UColumn column)
-    {
-        AssertColumnDoesNotExist(column->GetName(), "Table::AddColumn:");
-        if (ColumnsCount() != 0)
+       public:
+        static auto Create(const std::string& newname) -> UTable
         {
+            Interface::UTable utable{new Table{newname}};
+            return (utable);
+        }
+
+       public:
+        auto Copy() const -> UTable override
+        {
+            return Copy(m_name);
+        }
+        auto Copy(const std::string& newname) const -> UTable override
+        {
+            auto newtable = Create(newname);
+            for (auto&& column : m_columns)
+            {
+                newtable->AddColumn(column->Copy(column->GetName()));
+            }
+            return newtable;
+        }
+
+       public:
+        auto GetName() const -> const std::string& override
+        {
+            return m_name;
+        }
+        void SetName(const std::string& name) override
+        {
+            m_name = name;
+        }
+
+       public:
+        void AddColumn(UColumn column) override
+        {
+            AssertColumnDoesNotExist(column->GetName(), "AddColumn:");
+            if (ColumnsCount() != 0)
+            {
+                Utility::Assert(
+                    GetColumn(0).GetSize() == column->GetSize(),
+                    "AddColumn, columns count must be equal in table:");
+            }
+            m_columns.push_back(std::move(column));
+        }
+        void RenameColumn(const std::string& oldColumnName,
+                          const std::string& newColumnName) override
+        {
+            auto&& column = GetColumn(oldColumnName);
+            column.SetName(newColumnName);
+        }
+        bool RemoveColumn(const std::string& columnName) override
+        {
+            auto end = m_columns.end();
+            auto result =
+                std::remove_if(m_columns.begin(), end,
+                               [columnName](const Interface::UColumn& column)
+                               {
+                                   return column->GetName() == columnName;
+                               });
+            m_columns.erase(result, end);
+            return result != end;
+        }
+
+       public:
+        auto GetColumnIndex(const std::string& columnName) const
+            -> const std::optional<int> override
+        {
+            auto begin = m_columns.begin();
+            auto end   = m_columns.end();
+            auto itr =
+                std::find_if(begin, end,
+                             [columnName](const Interface::UColumn& column)
+                             {
+                                 return column->GetName() == columnName;
+                             });
+            if (itr == end)
+            {
+                return std::nullopt;
+            }
+            return std::make_optional<int>(std::distance(begin, itr));
+        }
+        auto GetColumnIndexAssert(const std::string& columnName) const -> const
+            int
+        {
+            auto&& result = GetColumnIndex(columnName);
+            Utility::Assert(result != std::nullopt,
+                            "GetColumnIndexAssert: column does not "
+                            "exist");
+            return *result;
+        }
+
+       public:
+        auto GetColumn(const int index) const -> const IColumn& override
+        {
+            return *m_columns.at(index);
+        }
+        auto GetColumn(const int index) -> IColumn& override
+        {
+            return *m_columns.at(index);
+        }
+
+        auto GetColumn(const std::string& columnName) const
+            -> const IColumn& override
+        {
+            return (GetColumn(GetColumnIndexAssert(columnName)));
+        }
+        auto GetColumn(const std::string& columnName) -> IColumn& override
+        {
+            return (GetColumn(GetColumnIndexAssert(columnName)));
+        }
+
+       public:
+        auto ColumnsCount() const -> const int override
+        {
+            return m_columns.size();
+        }
+
+        auto ListColumns() const -> UColumnNameList override
+        {
+            UColumnNameList ulist =
+                std::make_unique<Interface::ColumnNameList>();
+            for (auto&& column : m_columns)
+            {
+                ulist->push_back(column->GetName());
+            }
+            return ulist;
+        }
+
+       public:
+        void AssertColumnDoesNotExist(const std::string& columnName,
+                                      const std::string& message) const
+        {
+            auto&& result = GetColumnIndex(columnName);
+            Utility::Assert(result == std::nullopt,
+                            message + " AssertColumnExist: column exist");
+        }
+
+        void AssertColumnExist(const std::string& columnName,
+                               const std::string& message) const
+        {
+            auto&& result = GetColumnIndex(columnName);
             Utility::Assert(
-                GetColumn(0).GetSize() == column->GetSize(),
-                "Table::AddColumn, columns count must be equal in table:");
+                result != std::nullopt,
+                message + " AssertColumnExist: column does not exist");
         }
-        m_columns.push_back(std::move(column));
-    }
 
-    //////////////////////////////////////////////////////////////////////
-
-    bool Table::RemoveColumn(const std::string& columnName)
-    {
-        auto end = m_columns.end();
-        auto result =
-            std::remove_if(m_columns.begin(), end,
-                           [columnName](const Interface::UColumn& column)
-                           {
-                               return column->GetName() == columnName;
-                           });
-        m_columns.erase(result, end);
-        return result != end;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto Table::GetColumnIndex(const std::string& columnName) const
-        -> const std::optional<unsigned int>
-    {
-        auto begin = m_columns.begin();
-        auto end   = m_columns.end();
-        auto itr   = std::find_if(begin, end,
-                                  [columnName](const Interface::UColumn& column)
-                                  {
-                                    return column->GetName() == columnName;
-                                });
-        if (itr == end)
-        {
-            return std::nullopt;
-        }
-        return std::make_optional<unsigned int>(std::distance(begin, itr));
-    }
-
-    auto Table::GetColumnIndexAssert(const std::string& columnName) const
-        -> const unsigned int
-    {
-        auto&& result = GetColumnIndex(columnName);
-        Utility::Assert(result != std::nullopt,
-                        "Table::GetColumnIndexAssert: column does not "
-                        "exist");
-        return *result;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto Table::GetColumn(const unsigned int index) const -> const IColumn&
-    {
-        return *m_columns.at(index);
-    }
-    auto Table::GetColumn(const unsigned int index) -> IColumn&
-    {
-        return *m_columns.at(index);
-    }
-
-    auto Table::GetColumn(const std::string& columnName) const -> const IColumn&
-    {
-        return (GetColumn(GetColumnIndexAssert(columnName)));
-    }
-    auto Table::GetColumn(const std::string& columnName) -> IColumn&
-    {
-        return (GetColumn(GetColumnIndexAssert(columnName)));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    void Table::RenameColumn(const std::string& oldColumnName,
-                             const std::string& newColumnName)
-    {
-        auto&& column = GetColumn(oldColumnName);
-        column.SetName(newColumnName);
-    }
-
-    auto Table::ColumnsCount() const -> const int
-    {
-        return m_columns.size();
-    }
-
-    auto Table::ListColumns() const -> UColumnNameList
-    {
-        UColumnNameList ulist = std::make_unique<Interface::ColumnNameList>();
-        for (auto&& column : m_columns)
-        {
-            ulist->push_back(column->GetName());
-        }
-        return ulist;
-    }
+       protected:
+        std::string m_name;
+        ColumnList m_columns;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Table::AssertColumnDoesNotExist(const std::string& columnName,
-                                         const std::string& message) const
+    auto CreateTable(const std::string& name) -> Interface::UTable
     {
-        auto&& result = GetColumnIndex(columnName);
-        Utility::Assert(result == std::nullopt,
-                        message + " Table::AssertColumnExist: column exist");
-    }
-
-    void Table::AssertColumnExist(const std::string& columnName,
-                                  const std::string& message) const
-    {
-        auto&& result = GetColumnIndex(columnName);
-        Utility::Assert(
-            result != std::nullopt,
-            message + " Table::AssertColumnExist: column does not exist");
+        return Table::Create(name);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

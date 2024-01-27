@@ -12,196 +12,218 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine
+namespace SQLEngine::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    DataBase::DataBase(const std::string& newname) : m_name{newname}, m_tables{}
-    {
-    }
+    using ITable         = Interface::ITable;
+    using UTable         = Interface::UTable;
+    using TableList      = Interface::TableList;
+    using UTableNameList = Interface::UTableNameList;
 
-    auto DataBase::Create(const std::string& newname) -> UDataBase
-    {
-        Interface::UDataBase udb{new DataBase{newname}};
-        return (udb);
-    }
+    using IDataBase = Interface::IDataBase;
+    using UDataBase = Interface::UDataBase;
 
-    auto DataBase::Copy() const -> UDataBase
-    {
-        return Copy(m_name);
-    }
+    using IQuery = Interface::IQuery;
 
-    auto DataBase::Copy(const std::string& newname) const -> UDataBase
+    //////////////////////////////////////////////////////////////////////
+
+    class DataBase : public Interface::IDataBase
     {
-        auto newtable = Create(newname);
-        for (auto&& table : m_tables)
+       protected:
+        DataBase(const std::string& newname) : m_name{newname}, m_tables{}
         {
-            newtable->AddTable(table->Copy(table->GetName()));
         }
-        return newtable;
-    }
 
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto DataBase::GetName() const -> const std::string&
-    {
-        return m_name;
-    }
-    void DataBase::SetName(const std::string& name)
-    {
-        m_name = name;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    void DataBase::AddTable(UTable table)
-    {
-        AssertTableNotExists(table->GetName(), "DataBase::AddTable:");
-        m_tables.push_back(std::move(table));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    void DataBase::RemoveTable(const std::string& tbname)
-    {
-        auto end    = m_tables.end();
-        auto result = std::remove_if(m_tables.begin(), end,
-                                     [tbname](const Interface::UTable& table)
-                                     {
-                                         return table->GetName() == tbname;
-                                     });
-        m_tables.erase(result, end);
-        Utility::Assert(result != end,
-                        "DataBase::RemoveTable: table does not exist");
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    void DataBase::RenameTable(const std::string& oldtbname,
-                               const std::string& newtbname)
-    {
-        auto&& table = GetTable(oldtbname);
-        table.SetName(newtbname);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto DataBase::GetTableIndex(const std::string& tbname) const
-        -> const std::optional<unsigned int>
-    {
-        auto begin = m_tables.begin();
-        auto end   = m_tables.end();
-        auto itr   = std::find_if(begin, end,
-                                  [tbname](const Interface::UTable& table)
-                                  {
-                                    return table->GetName() == tbname;
-                                });
-        if (itr == end)
+       public:
+        static auto Create(const std::string& newname) -> UDataBase
         {
-            return std::nullopt;
+            Interface::UDataBase udb{new DataBase{newname}};
+            return (udb);
         }
-        return std::make_optional<unsigned int>(std::distance(begin, itr));
-    }
 
-    auto DataBase::GetTableIndexAssert(const std::string& tbname,
-                                       const std::string& message) const
-        -> const unsigned int
-    {
-        auto&& result = GetTableIndex(tbname);
-        Utility::Assert(result != std::nullopt,
-                        message +
-                            " DataBase::GetTableIndexAssert: table does not "
-                            "exist");
-        return *result;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto DataBase::GetTable(const int index) const -> const ITable&
-    {
-        return *m_tables.at(index);
-    }
-    auto DataBase::GetTable(const int index) -> ITable&
-    {
-        return *m_tables.at(index);
-    }
-
-    auto DataBase::GetTable(const std::string& tbname) const -> const ITable&
-    {
-        return (
-            GetTable(GetTableIndexAssert(tbname, "DataBase::GetTable const")));
-    }
-    auto DataBase::GetTable(const std::string& tbname) -> ITable&
-    {
-        return (
-            GetTable(GetTableIndexAssert(tbname, "DataBase::GetTable const")));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto DataBase::TablesCount() const -> const int
-    {
-        return m_tables.size();
-    }
-
-    auto DataBase::ListTables() const -> UTableNameList
-    {
-        UTableNameList ulist = std::make_unique<Interface::TableNameList>();
-        for (auto&& table : m_tables)
+       public:
+        auto Copy() const -> UDataBase override
         {
-            ulist->push_back(table->GetName());
+            return Copy(m_name);
         }
-        return ulist;
-    }
 
-    auto DataBase::IsTableExists(const std::string& tbname) const -> bool
-    {
-        auto&& result = GetTableIndex(tbname);
-        return result != std::nullopt;
-    }
+        auto Copy(const std::string& newname) const -> UDataBase override
+        {
+            auto newtable = Create(newname);
+            for (auto&& table : m_tables)
+            {
+                newtable->AddTable(table->Copy(table->GetName()));
+            }
+            return newtable;
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+        auto GetName() const -> const std::string& override
+        {
+            return m_name;
+        }
+        void SetName(const std::string& name) override
+        {
+            m_name = name;
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        void AddTable(UTable table) override
+        {
+            AssertTableNotExists(table->GetName(), " AddTable:");
+            m_tables.push_back(std::move(table));
+        }
+        void RemoveTable(const std::string& tbname) override
+        {
+            auto end = m_tables.end();
+            auto result =
+                std::remove_if(m_tables.begin(), end,
+                               [tbname](const Interface::UTable& table)
+                               {
+                                   return table->GetName() == tbname;
+                               });
+            m_tables.erase(result, end);
+            Utility::Assert(result != end,
+                            " RemoveTable: table does not exist");
+        }
+        void RenameTable(const std::string& oldtbname,
+                         const std::string& newtbname) override
+        {
+            auto&& table = GetTable(oldtbname);
+            table.SetName(newtbname);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        auto TablesCount() const -> const int override
+        {
+            return m_tables.size();
+        }
+
+        auto ListTables() const -> UTableNameList override
+        {
+            UTableNameList ulist = std::make_unique<Interface::TableNameList>();
+            for (auto&& table : m_tables)
+            {
+                ulist->push_back(table->GetName());
+            }
+            return ulist;
+        }
+
+        auto IsTableExists(const std::string& tbname) const -> bool override
+        {
+            auto&& result = GetTableIndex(tbname);
+            return result != std::nullopt;
+        }
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        auto GetTable(const std::string& tbname) const -> const ITable& override
+        {
+            return (GetTable(GetTableIndexAssert(tbname, " GetTable const")));
+        }
+        auto GetTable(const std::string& tbname) -> ITable& override
+        {
+            return (GetTable(GetTableIndexAssert(tbname, " GetTable const")));
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        void Execute(const Interface::IQuery& query) override
+        {
+            // to do, after impl add tests
+            Interface::NotImplYet(" Execute(query)");
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       protected:
+        void AssertTableNotExists(const std::string& tbname,
+                                  const std::string& message) const
+        {
+            auto&& result = GetTableIndex(tbname);
+            Utility::Assert(result == std::nullopt,
+                            message + "  AssertTableNotExists: table exist");
+        }
+
+        void AssertTableExists(const std::string& tbname,
+                               const std::string& message) const
+        {
+            auto&& result = GetTableIndex(tbname);
+            Utility::Assert(
+                result != std::nullopt,
+                message + "  AssertTableExists: table does not exist");
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       protected:
+        auto GetTableIndex(const std::string& tbname) const
+            -> const std::optional<int>
+        {
+            auto begin = m_tables.begin();
+            auto end   = m_tables.end();
+            auto itr   = std::find_if(begin, end,
+                                      [tbname](const Interface::UTable& table)
+                                      {
+                                        return table->GetName() == tbname;
+                                    });
+            if (itr == end)
+            {
+                return std::nullopt;
+            }
+            return std::make_optional<int>(std::distance(begin, itr));
+        }
+
+        auto GetTableIndexAssert(const std::string& tbname,
+                                 const std::string& message) const -> const int
+        {
+            auto&& result = GetTableIndex(tbname);
+            Utility::Assert(result != std::nullopt,
+                            message +
+                                " GetTableIndexAssert: table does not "
+                                "exist");
+            return *result;
+        }
+
+       protected:
+        auto GetTable(const int index) const -> const ITable&
+        {
+            return *m_tables.at(index);
+        }
+        auto GetTable(const int index) -> ITable&
+        {
+            return *m_tables.at(index);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       protected:
+        std::string m_name;
+        TableList m_tables;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void DataBase::Execute(const Interface::IQuery& query)
+    auto CreateDataBase(const std::string& name) -> Interface::UDataBase
     {
-        // to do, after impl add tests
-        Interface::NotImplYet("DataBase::Execute(query)");
+        return DataBase::Create(name);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
-    void DataBase::AssertTableNotExists(const std::string& tbname,
-                                        const std::string& message) const
-    {
-        auto&& result = GetTableIndex(tbname);
-        Utility::Assert(
-            result == std::nullopt,
-            message + " DataBase::AssertTableNotExists: table exist");
-    }
-
-    void DataBase::AssertTableExists(const std::string& tbname,
-                                     const std::string& message) const
-    {
-        auto&& result = GetTableIndex(tbname);
-        Utility::Assert(
-            result != std::nullopt,
-            message + " DataBase::AssertTableExists: table does not exist");
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine
+}  // namespace SQLEngine::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

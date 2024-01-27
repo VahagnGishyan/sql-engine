@@ -3,110 +3,125 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "column.hpp"
-
+#include "database.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DataBaseNS
+namespace SQLEngine::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    Column::Column(const std::string& name,
-                   const Interface::DynamicType& type) :
-        m_name{name}, m_type{type}, m_elements{}
-    // , m_constraintList{nullptr}
-    {
-    }
+    using DynamicType       = Interface::DynamicType;
+    using DynamicValue      = Interface::DynamicValue;
+    using UDynamicValue     = Interface::UDynamicValue;
+    using ColumnElementList = Interface::ColumnElementList;
 
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto Column::Create(const std::string& name,
-                        const Interface::DynamicType& type)
-        -> Interface::UColumn
+    class Column : public Interface::IColumn
     {
-        Interface::UColumn ucolumn{
-            new Column{name, type}
-        };
-        return (ucolumn);
-    }
-
-    auto Column::Copy(const std::string& newname) const -> Interface::UColumn
-    {
-        auto&& newcolumn = Column::Create(newname, m_type);
-        for (auto&& item : m_elements)
+       protected:
+        Column(const std::string& name, const Interface::DynamicType& type) :
+            m_name{name}, m_type{type}, m_elements{}
+        // , m_constraintList{nullptr}
         {
-            newcolumn->AddElement(Interface::CopyUDynValue(item));
         }
-        return std::move(newcolumn);
-    }
 
-    auto Column::Copy() const -> Interface::UColumn
-    {
-        return Copy(m_name);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto Column::GetName() const -> const std::string&
-    {
-        return m_name;
-    }
-    void Column::SetName(const std::string& name)
-    {
-        m_name = name;
-    }
-
-    auto Column::GetSize() const -> unsigned int
-    {
-        return m_elements.size();
-    }
-
-    auto Column::GetType() const -> const Interface::DynamicType
-    {
-        return m_type;
-    }
-    void Column::SetType(const Interface::DynamicType& type)
-    {
-        m_type = type;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    void Column::AddElement(UDynamicValue element)
-    {
-        if (element != nullptr)
+       public:
+        static auto Create(const std::string& name,
+                           const Interface::DynamicType& type)
+            -> Interface::UColumn
         {
-            Interface::AssertDynamicValueTypeIs(*element, m_type);
+            Interface::UColumn ucolumn{
+                new Column{name, type}
+            };
+            return (ucolumn);
         }
-        m_elements.push_back(std::move(element));
-    }
 
-    auto Column::GetElement(const int& index) -> UDynamicValue&
-    {
-        return m_elements.at(index);
-    }
+       public:
+        auto Copy() const -> Interface::UColumn override
+        {
+            return Copy(m_name);
+        }
 
-    auto Column::GetElement(const int& index) const -> const UDynamicValue&
+        auto Copy(const std::string& newname) const
+            -> Interface::UColumn override
+        {
+            auto&& newcolumn = Create(newname, m_type);
+            for (auto&& item : m_elements)
+            {
+                newcolumn->AddElement(Interface::CopyUDynValue(item));
+            }
+            return std::move(newcolumn);
+        }
+
+       public:
+        auto GetName() const -> const std::string& override
+        {
+            return m_name;
+        }
+        void SetName(const std::string& name) override
+        {
+            m_name = name;
+        }
+
+        auto GetSize() const -> int override
+        {
+            return static_cast<int>(m_elements.size());
+        }
+
+       public:
+        auto GetType() const -> const Interface::DynamicType override
+        {
+            return m_type;
+        }
+        void SetType(const Interface::DynamicType& type) override
+        {
+            m_type = type;
+        }
+
+       public:
+        void AddElement(UDynamicValue element) override
+        {
+            if (element != nullptr)
+            {
+                Interface::AssertDynamicValueTypeIs(*element, m_type);
+            }
+            m_elements.push_back(std::move(element));
+        }
+        auto GetElement(const int& index) -> UDynamicValue& override
+        {
+            return m_elements.at(index);
+        }
+
+        auto GetElement(const int& index) const -> const UDynamicValue& override
+        {
+            return m_elements.at(index);
+        }
+
+       protected:
+        std::string m_name;
+        DynamicType m_type;
+        ColumnElementList m_elements;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateColumn(const std::string& name,
+                      const Interface::DynamicType& type) -> Interface::UColumn
     {
-        return m_elements.at(index);
+        return Column::Create(name, type);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DataBaseNS
+}  // namespace SQLEngine::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
