@@ -26,9 +26,9 @@ namespace SQLEngine::Interface
 
     class ITable;
 
-    using UTable    = std::unique_ptr<ITable>;
-    using ShTable   = std::shared_ptr<ITable>;
-    using TableList = std::vector<UTable>;
+    using UTable     = std::unique_ptr<ITable>;
+    using ShTable    = std::shared_ptr<ITable>;
+    using TableList  = std::vector<UTable>;
     using UTableList = std::unique_ptr<TableList>;
 
     using TableNameList   = std::vector<std::string>;
@@ -55,17 +55,17 @@ namespace SQLEngine::Interface
 
        public:
         virtual auto GetColumnIndex(const std::string& columnName) const
-            -> const std::optional<int> = 0;
-        virtual auto GetColumn(const int index) const
-            -> const IColumn&                                        = 0;
-        virtual auto GetColumn(const int index) -> IColumn& = 0;
+            -> const std::optional<int>                                 = 0;
+        virtual auto GetColumn(const int index) const -> const IColumn& = 0;
+        virtual auto GetColumn(const int index) -> IColumn&             = 0;
         virtual auto GetColumn(const std::string& columnName) const
             -> const IColumn&                                             = 0;
         virtual auto GetColumn(const std::string& columnName) -> IColumn& = 0;
 
        public:
-        virtual auto ColumnsCount() const -> const int      = 0;
-        virtual auto ListColumns() const -> UColumnNameList = 0;
+        virtual auto ColumnsCount() const -> const int                     = 0;
+        virtual auto ListColumns() const -> UColumnNameList                = 0;
+        virtual auto IsColumnExists(const std::string& name) const -> bool = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

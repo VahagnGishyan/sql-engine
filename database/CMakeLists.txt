@@ -12,7 +12,7 @@ set(SOURCES
     # column-constraint.cpp
     column.cpp
     database.cpp
-    # row-oriented-table.cpp
+    row-oriented-table.cpp
     table.cpp
 )
 

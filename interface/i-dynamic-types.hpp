@@ -97,6 +97,9 @@ namespace SQLEngine::Interface
     auto PROJECT_SHARED_EXPORT CopyUDynValue(const UDynamicValue& value)
         -> UDynamicValue;
 
+    auto PROJECT_SHARED_EXPORT AreValuesEqual(const UDynamicValue& lhs,
+                                              const UDynamicValue& rhs) -> bool;
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

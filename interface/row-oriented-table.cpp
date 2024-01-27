@@ -15,8 +15,7 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    IRowOrientedTable::ColumnInfo::ColumnInfo(const std::string& name,
-                                              const DynamicType& type) :
+    ColumnInfo::ColumnInfo(const std::string& name, const DynamicType& type) :
         name{name}, type{type}
     {
     }

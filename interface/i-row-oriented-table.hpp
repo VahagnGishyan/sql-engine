@@ -30,6 +30,16 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
+    struct PROJECT_SHARED_EXPORT ColumnInfo
+    {
+        ColumnInfo(const std::string& name, const DynamicType& type);
+        std::string name;
+        DynamicType type;
+    };
+    using ColumnInfoList = std::vector<ColumnInfo>;
+
+    //////////////////////////////////////////////////////////////////////
+
     /*
     Structure of the class RowOrientedTable
 
@@ -60,15 +70,6 @@ namespace SQLEngine::Interface
 
     class PROJECT_SHARED_EXPORT IRowOrientedTable : public IDBObject
     {
-       public:
-        struct ColumnInfo
-        {
-            ColumnInfo(const std::string& name, const DynamicType& type);
-            std::string name;
-            DynamicType type;
-        };
-        using ColumnInfoList = std::vector<ColumnInfo>;
-
        public:
         virtual auto Copy() const -> URowOrientedTable = 0;
 

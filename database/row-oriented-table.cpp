@@ -3,7 +3,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "column.hpp"
+#include "database.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ namespace SQLEngine::DataBase
     using UDynamicValue  = Interface::UDynamicValue;
     using ITable         = Interface::ITable;
     using UTable         = Interface::UTable;
-    using ColumnInfo     = IRowOrientedTable::ColumnInfo;
-    using ColumnInfoList = IRowOrientedTable::ColumnInfoList;
+    using ColumnInfo     = Interface::ColumnInfo;
+    using ColumnInfoList = Interface::ColumnInfoList;
 
     using Row  = std::vector<UDynamicValue>;
     using Data = std::vector<Row>;
@@ -55,7 +55,7 @@ namespace SQLEngine::DataBase
                            const ColumnInfoList& columns, const Data& data)
             -> Interface::URowOrientedTable
         {
-            const int columnsSize = columns.size();
+            const int columnsSize = static_cast<int>(columns.size());
 
             ColumnInfoList newlist{};
             Data newdata{};
@@ -84,7 +84,7 @@ namespace SQLEngine::DataBase
                            std::move(newdata)));
         }
 
-        static auto Create(const RowOrientedTable& table)
+        static auto Create(const RowOrientedTable& rowTable)
             -> Interface::URowOrientedTable
         {
             return Create(rowTable.m_tableName, rowTable.m_columns,
@@ -144,15 +144,13 @@ namespace SQLEngine::DataBase
             const int columnCount = ColumnsCount();
             const int rowCount    = RowsCount();
 
-            Interface::ColumnList columnList{};
-            columnList.reserve(columnCount);
             for (auto&& columnInfo : m_columns)
             {
-                columnList.push_back(
+                table->AddColumn(
                     DataBase::CreateColumn(columnInfo.name, columnInfo.type));
             }
 
-            for (int columnIndex = 0; columnCount; ++columnIndex)
+            for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex)
             {
                 auto&& column = table->GetColumn(columnIndex);
                 for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
@@ -168,11 +166,11 @@ namespace SQLEngine::DataBase
        public:
         auto RowsCount() const -> const int override
         {
-            return m_columns.size();
+            return static_cast<int>(m_data.size());
         }
         auto ColumnsCount() const -> const int override
         {
-            return m_tableName.size();
+            return static_cast<int>(m_columns.size());
         }
 
         auto GetTableName() const -> const std::string override

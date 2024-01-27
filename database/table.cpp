@@ -114,7 +114,8 @@ namespace SQLEngine::DataBase
             {
                 return std::nullopt;
             }
-            return std::make_optional<int>(std::distance(begin, itr));
+            return std::make_optional<int>(
+                static_cast<int>(std::distance(begin, itr)));
         }
         auto GetColumnIndexAssert(const std::string& columnName) const -> const
             int
@@ -149,7 +150,7 @@ namespace SQLEngine::DataBase
        public:
         auto ColumnsCount() const -> const int override
         {
-            return m_columns.size();
+            return static_cast<int>(m_columns.size());
         }
 
         auto ListColumns() const -> UColumnNameList override
@@ -161,6 +162,12 @@ namespace SQLEngine::DataBase
                 ulist->push_back(column->GetName());
             }
             return ulist;
+        }
+
+        auto IsColumnExists(const std::string& name) const -> bool override
+        {
+            auto&& result = GetColumnIndex(name);
+            return result != std::nullopt;
         }
 
        public:

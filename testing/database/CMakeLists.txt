@@ -8,6 +8,7 @@ set(SOURCES
     test-column.cpp
     test-table.cpp
     test-database.cpp
+    test-row-oriented-table.cpp
     utility.cpp
 )
 
