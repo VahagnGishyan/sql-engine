@@ -3,205 +3,213 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "row-oriented-table.hpp"
-
 #include "column.hpp"
-#include "table.hpp"
 #include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DataBaseNS
+namespace SQLEngine::DataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    RowOrientedTable::RowOrientedTable(std::string&& tableName,
-                                       ColumnInfoList&& columns, Data&& data) :
-        m_tableName{std::move(tableName)},
-        m_columns{std::move(columns)},
-        m_data{std::move(data)}
+    using DynamicValue   = Interface::DynamicValue;
+    using UDynamicValue  = Interface::UDynamicValue;
+    using ITable         = Interface::ITable;
+    using UTable         = Interface::UTable;
+    using ColumnInfo     = IRowOrientedTable::ColumnInfo;
+    using ColumnInfoList = IRowOrientedTable::ColumnInfoList;
+
+    using Row  = std::vector<UDynamicValue>;
+    using Data = std::vector<Row>;
+
+    class RowOrientedTable : public Interface::IRowOrientedTable
     {
-    }
+       protected:
+        //////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedDataBase::CreateTable(std::string&& tableName,
-                                  ColumnInfoList&& columns, Data&& data)
-        -> Interface::URowOrientedTable
-    {
-        auto urow = Interface::URowOrientedTable{
-            new RowOrientedTable{std::move(tableName), std::move(columns),
-                                 std::move(data)}
-        };
-        return (urow);
-    }
-
-    auto RowOrientedDataBase::CreateTable(const std::string& tableName,
-                                  const ColumnInfoList& columns,
-                                  const Data& data)
-        -> Interface::URowOrientedTable
-    {
-        const int columnsSize = columns.size();
-
-        ColumnInfoList newlist{};
-        Data newdata{};
-
-        for (auto&& columnInfo : columns)
+       protected:
+        RowOrientedTable(std::string&& tableName, ColumnInfoList&& columns,
+                         Data&& data) :
+            m_tableName{std::move(tableName)},
+            m_columns{std::move(columns)},
+            m_data{std::move(data)}
         {
-            newlist.emplace_back(columnInfo.name, columnInfo.type);
         }
 
-        for (auto&& row : data)
+       protected:
+        static auto Create(std::string&& tableName, ColumnInfoList&& columns,
+                           Data&& data) -> Interface::URowOrientedTable
         {
-            Row newrow{};
-            Utility::Assert(row.size() == columnsSize,
-                            "RowOrientedTable, row.size() == columnsSize");
-            newrow.reserve(columnsSize);
-            for (auto&& value : row)
+            auto urow = Interface::URowOrientedTable{
+                new RowOrientedTable{std::move(tableName), std::move(columns),
+                                     std::move(data)}
+            };
+            return (urow);
+        }
+
+        static auto Create(const std::string& tableName,
+                           const ColumnInfoList& columns, const Data& data)
+            -> Interface::URowOrientedTable
+        {
+            const int columnsSize = columns.size();
+
+            ColumnInfoList newlist{};
+            Data newdata{};
+
+            for (auto&& columnInfo : columns)
             {
-                newrow.push_back(Interface::CopyUDynValue(value));
+                newlist.emplace_back(columnInfo.name, columnInfo.type);
             }
-            newdata.push_back(std::move(newrow));
-        }
 
-        auto newName = tableName;
-
-        return (
-            Create(std::move(newName), std::move(newlist), std::move(newdata)));
-    }
-
-    auto RowOrientedDataBase::CreateTable(const RowOrientedTable& rowTable)
-        -> Interface::URowOrientedTable
-    {
-        return Create(rowTable.m_tableName, rowTable.m_columns,
-                      rowTable.m_data);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedDataBase::CreateTable(const Interface::ITable& table)
-        -> Interface::URowOrientedTable
-    {
-        ColumnInfoList columnInfoList{};
-        Data newdata{};
-
-        auto columnsCount = table.ColumnsCount();
-        for (int index = 0; index < columnsCount; ++index)
-        {
-            auto&& column = table.GetColumn(index);
-            columnInfoList.emplace_back(column.GetName(), column.GetType());
-        }
-
-        if (columnsCount != 0)
-        {
-            auto&& elementsCount = table.GetColumn(0).GetSize();
-            newdata.resize(elementsCount);
-
-            for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+            for (auto&& row : data)
             {
-                auto&& column = table.GetColumn(columnIndex);
-                for (int rowIndex = 0; rowIndex < elementsCount; ++rowIndex)
+                Row newrow{};
+                Utility::Assert(row.size() == columnsSize,
+                                "RowOrientedTable, row.size() == columnsSize");
+                newrow.reserve(columnsSize);
+                for (auto&& value : row)
                 {
-                    newdata[rowIndex].resize(columnsCount);
-                    auto&& columnElement = column.GetElement(rowIndex);
-                    newdata[rowIndex][columnIndex] =
-                        Interface::CopyUDynValue(columnElement);
+                    newrow.push_back(Interface::CopyUDynValue(value));
+                }
+                newdata.push_back(std::move(newrow));
+            }
+
+            auto newName = tableName;
+
+            return (Create(std::move(newName), std::move(newlist),
+                           std::move(newdata)));
+        }
+
+        static auto Create(const RowOrientedTable& table)
+            -> Interface::URowOrientedTable
+        {
+            return Create(rowTable.m_tableName, rowTable.m_columns,
+                          rowTable.m_data);
+        }
+
+       public:
+        static auto Create(const ITable& table) -> Interface::URowOrientedTable
+        {
+            ColumnInfoList columnInfoList{};
+            Data newdata{};
+
+            auto columnsCount = table.ColumnsCount();
+            for (int index = 0; index < columnsCount; ++index)
+            {
+                auto&& column = table.GetColumn(index);
+                columnInfoList.emplace_back(column.GetName(), column.GetType());
+            }
+
+            if (columnsCount != 0)
+            {
+                auto&& elementsCount = table.GetColumn(0).GetSize();
+                newdata.resize(elementsCount);
+
+                for (int columnIndex = 0; columnIndex < columnsCount;
+                     ++columnIndex)
+                {
+                    auto&& column = table.GetColumn(columnIndex);
+                    for (int rowIndex = 0; rowIndex < elementsCount; ++rowIndex)
+                    {
+                        newdata[rowIndex].resize(columnsCount);
+                        auto&& columnElement = column.GetElement(rowIndex);
+                        newdata[rowIndex][columnIndex] =
+                            Interface::CopyUDynValue(columnElement);
+                    }
                 }
             }
+
+            auto tableName = table.GetName();
+
+            return (Create(std::move(tableName), std::move(columnInfoList),
+                           std::move(newdata)));
         }
 
-        auto tableName = table.GetName();
-
-        return (Create(std::move(tableName), std::move(columnInfoList),
-                       std::move(newdata)));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedTable::Copy() const -> Interface::URowOrientedTable
-    {
-        auto urow = Interface::URowOrientedTable{Create(*this)};
-        return urow;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedDataBase::CreateTableTable() const -> Interface::UTable
-    {
-        auto table = DataBase::CreateTable(GetTableName());
-
-        const int columnCount = ColumnsCount();
-        const int rowCount    = RowsCount();
-
-        Interface::ColumnList columnList{};
-        columnList.reserve(columnCount);
-        for (auto&& columnInfo : m_columns)
+       public:
+        auto Copy() const -> Interface::URowOrientedTable override
         {
-            columnList.push_back(
-                DataBase::CreateColumn(columnInfo.name, columnInfo.type));
+            auto urow = Interface::URowOrientedTable{Create(*this)};
+            return urow;
         }
 
-        for (int columnIndex = 0; columnCount; ++columnIndex)
+       public:
+        auto CreateTable() const -> UTable override
         {
-            auto&& column = table->GetColumn(columnIndex);
-            for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+            auto table = DataBase::CreateTable(GetTableName());
+
+            const int columnCount = ColumnsCount();
+            const int rowCount    = RowsCount();
+
+            Interface::ColumnList columnList{};
+            columnList.reserve(columnCount);
+            for (auto&& columnInfo : m_columns)
             {
-                column.AddElement(
-                    Interface::CopyUDynValue(GetValue(rowIndex, columnIndex)));
+                columnList.push_back(
+                    DataBase::CreateColumn(columnInfo.name, columnInfo.type));
             }
+
+            for (int columnIndex = 0; columnCount; ++columnIndex)
+            {
+                auto&& column = table->GetColumn(columnIndex);
+                for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+                {
+                    column.AddElement(Interface::CopyUDynValue(
+                        GetValue(rowIndex, columnIndex)));
+                }
+            }
+
+            return table;
         }
 
-        return table;
+       public:
+        auto RowsCount() const -> const int override
+        {
+            return m_columns.size();
+        }
+        auto ColumnsCount() const -> const int override
+        {
+            return m_tableName.size();
+        }
+
+        auto GetTableName() const -> const std::string override
+        {
+            return m_tableName;
+        }
+        auto GetColumnInfoList() const -> const ColumnInfoList& override
+        {
+            return m_columns;
+        }
+
+       public:
+        auto GetValue(const int rowIndex, const int columnIndex) const
+            -> const UDynamicValue& override
+        {
+            return (m_data.at(rowIndex).at(columnIndex));
+        }
+
+       protected:
+        std::string m_tableName;
+        ColumnInfoList m_columns;
+        Data m_data;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateRowOrientedTable(const Interface::ITable& table)
+        -> Interface::URowOrientedTable
+
+    {
+        return RowOrientedTable::Create(table);
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedTable::RowsCount() const -> const int
-    {
-        return m_columns.size();
-    }
-    auto RowOrientedTable::ColumnsCount() const -> const int
-    {
-        return m_tableName.size();
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedTable::GetTableName() const -> const std::string
-    {
-        return m_tableName;
-    }
-
-    auto RowOrientedTable::GetColumnInfoList() const -> const ColumnInfoList&
-    {
-        return m_columns;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto RowOrientedTable::GetValue(const int rowIndex,
-                                    const int columnIndex) const
-        -> const UDynamicValue&
-    {
-        return (m_data.at(rowIndex).at(columnIndex));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DataBaseNS
+}  // namespace SQLEngine::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

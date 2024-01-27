@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "interface/i-database.hpp"
+#include "interface/i-row-oriented-table.hpp"
 #include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -31,6 +32,11 @@ namespace SQLEngine::DataBase
 
     auto PROJECT_SHARED_EXPORT CreateDataBase(const std::string& newname)
         -> Interface::UDataBase;
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
+        const Interface::ITable& table) -> Interface::URowOrientedTable;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

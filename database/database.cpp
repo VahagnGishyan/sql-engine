@@ -104,7 +104,7 @@ namespace SQLEngine::DataBase
        public:
         auto TablesCount() const -> const int override
         {
-            return m_tables.size();
+            return static_cast<int>(m_tables.size());
         }
 
         auto ListTables() const -> UTableNameList override
@@ -180,7 +180,8 @@ namespace SQLEngine::DataBase
             {
                 return std::nullopt;
             }
-            return std::make_optional<int>(std::distance(begin, itr));
+            return std::make_optional<int>(
+                static_cast<int>(std::distance(begin, itr)));
         }
 
         auto GetTableIndexAssert(const std::string& tbname,

@@ -30,6 +30,34 @@ namespace SQLEngine::Interface
 
     //////////////////////////////////////////////////////////////////////
 
+    /*
+    Structure of the class RowOrientedTable
+
+    RowOrientedTable contains the following information:
+
+    - Table name
+
+    - List of columns, where each column is represented by two fields: name
+        and data type. The order of columns corresponds to their order in
+    the table.
+
+    - Data
+        Data represents a list of Rows.
+        RowOrientedTable is also a list containing values of type
+    DynamicValue. Initially, the number of values in a RowOrientedTable
+    always corresponds to the number of elements in the list of columns. The
+    order of values in a RowOrientedTable is important. For example, the 3th
+    element in a row belongs to the column with number 3 in the list of
+    columns.
+
+    Functionality of RowOrientedTable:
+    * Can only be created from an existing table.
+    * Allows saving data in a Row-Oriented table.
+    * Ensures the ability to read data but NOT to modify it.
+    * Can create a table identical to the one from which it was created
+      based on the existing data.
+    */
+
     class PROJECT_SHARED_EXPORT IRowOrientedTable : public IDBObject
     {
        public:
