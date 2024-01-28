@@ -30,10 +30,9 @@ namespace SQLEngine::Application
         virtual ~Info() = default;
 
        public:
-        virtual auto GetName() const -> const std::string & = 0;
-        virtual auto GetDefaultAppData(
-            const bool createIfNotExists = true) const -> const std::string = 0;
-        virtual auto GetVersion() const -> const std::string              & = 0;
+        virtual auto GetName() const -> const std::string         & = 0;
+        virtual auto GetDefaultAppData() const -> const std::string = 0;
+        virtual auto GetVersion() const -> const std::string      & = 0;
     };
 
     using UInfo = std::unique_ptr<Info>;
