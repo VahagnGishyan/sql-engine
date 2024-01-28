@@ -9,7 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-db-manager-component.hpp"
+#include "interface/i-db-stream.hpp"
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -21,16 +22,12 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDBManagerInit : public IDBManagerComponent
-    {
-       public:
-        // virtual auto GetWorkDir() const -> const std::string = 0;
-        virtual auto GetName() const -> const std::string    = 0;
-    };
+    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONReader(const std::string& path,
+                                                       const std::string& name)
+        -> Interface::UDataBaseReader;
 
-    using UDBManagerInit  = std::unique_ptr<IDBManagerInit>;
-    using ShDBManagerInit = std::shared_ptr<IDBManagerInit>;
-    using WDBManagerInit  = std::weak_ptr<IDBManagerInit>;
+    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONWriter(const std::string& path)
+        -> Interface::UDataBaseWriter;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

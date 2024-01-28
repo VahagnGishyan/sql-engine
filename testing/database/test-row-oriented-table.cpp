@@ -191,7 +191,7 @@ TEST(RowOrientedTable, Copy)
 
 TEST(RowOrientedTable, CreateTable)
 {
-    auto inittable      = Testing::DataBase::CreateTable();
+    auto inittable  = Testing::DataBase::CreateTable();
     auto&& roTable  = DataBase::CreateRowOrientedTable(*inittable);
     auto&& newTable = roTable->CreateTable();
 

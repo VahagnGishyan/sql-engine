@@ -9,8 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "interface/i-db-manager-comps.hpp"
-#include "interface/i-db-manager.hpp"
+#include "interface/i-db-stream.hpp"
+#include "sharelib.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -22,11 +22,12 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IDBManagerFileStream : public IDBManager
-    {
-    };
+    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONReader(const std::string& path,
+                                                       const std::string& name)
+        -> Interface::UDataBaseReader;
 
-    using UDBManagerFileStream = std::unique_ptr<IDBManagerFileStream>;
+    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONWriter(const std::string& path)
+        -> Interface::UDataBaseWriter;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

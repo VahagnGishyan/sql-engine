@@ -7,11 +7,11 @@ project(sql-engine-db-manager)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(fmt REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 
 set(SOURCES
-    db-manager-info.cpp
-    db-manager-init.cpp
-    db-manager.cpp
+    db-local-json-reader.cpp
+    db-local-json-writer.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
@@ -27,6 +27,9 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-interface
     sql-engine-database
     fmt::fmt
+    Boost::boost
+    Boost::filesystem
+    Boost::log
 )
 
 ##########################################################
