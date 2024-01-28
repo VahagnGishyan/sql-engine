@@ -9,11 +9,16 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/core.h>
+
 #include <boost/optional/optional.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "database/database.hpp"
 #include "db-local-json-stream.hpp"
+#include "utility/core.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -25,34 +30,146 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class DataBaseWriter : public Interface::IDataBaseWriter
+    class DataBaseJSONWriter : public Interface::IDataBaseWriter
     {
        protected:
-        DataBaseWriter(const std::string& path) : m_path{path}
+        DataBaseJSONWriter(const std::string& path) : m_path{path}
         {
         }
 
        public:
         void Write(const Interface::IDataBase& database) const override
         {
-            Interface::NotImplYet("DataBaseWriter::Read()");
+            auto workdir = GetWorkDir(database);
 
-            /*
-            {
-                "table-name" : "name"
-                {
-                    
-                }
-            }
-            */
+            PrepareWorkDirectory(workdir);
+            WriteDataBaseInformation(workdir, database);
+            WriteTables(workdir, database);
         }
 
        public:
         static auto Create(const std::string& path)
             -> Interface::UDataBaseWriter
         {
-            Interface::UDataBaseWriter uwriter{new DataBaseWriter{path}};
+            Interface::UDataBaseWriter uwriter{new DataBaseJSONWriter{path}};
             return (uwriter);
+        }
+
+       protected:
+        virtual auto GetWorkDir(const Interface::IDataBase& database) const
+            -> const std::string
+        {
+            return fmt::format("{}/{}", m_path, database.GetName());
+        }
+        virtual void PrepareWorkDirectory(const std::string& path) const
+        {
+            Utility::MakeDir(path, Utility::Option::ExistOk{true},
+                             Utility::Option::CreateBaseDirectory{true});
+        }
+        virtual void WriteDataBaseInformation(
+            const std::string& workDir,
+            const Interface::IDataBase& database) const
+        {
+            //////////////////////////////////////////////////////////////
+
+            const std::string databaseName = database.GetName();
+            boost::property_tree::ptree pt;
+            pt.put("database-name", databaseName);
+            pt.put("access", "public");
+
+            //////////////////////////////////////////////////////////////
+
+            std::ostringstream oss;
+            boost::property_tree::json_parser::write_json(oss, pt);
+
+            //////////////////////////////////////////////////////////////
+
+            std::string jsonpath =
+                fmt::format("{}/{}.json", workDir, databaseName);
+            std::ofstream outputFile(jsonpath);
+
+            Utility::Assert(
+                outputFile.is_open(),
+                fmt::format("DataBaseJSONWriter::Write::"
+                            "WriteDataBaseInformation, can't open file {}",
+                            jsonpath));
+
+            outputFile << oss.str();
+        }
+        virtual void WriteTables(const std::string& workDir,
+                                 const Interface::IDataBase& database) const
+        {
+            boost::property_tree::ptree pt;
+            auto&& tableList = database.ListTables();
+            for (auto&& tableName : *tableList)
+            {
+                auto&& table   = database.GetTable(tableName);
+                auto&& rotable = DataBase::CreateRowOrientedTable(table);
+                WriteTable(workDir, *rotable);
+            }
+        }
+        virtual void WriteTable(const std::string& workDir,
+                                const Interface::IRowOrientedTable& table) const
+        {
+            boost::property_tree::ptree root;
+            boost::property_tree::ptree columns;
+            boost::property_tree::ptree rows;
+
+            //////////////////////////////////////////////////////////////
+
+            AddTableInfo(root, table);
+            AddColumns(columns, table);
+            AddRows(rows, table);
+
+            //////////////////////////////////////////////////////////////
+
+            root.add_child("columns", columns);
+            root.add_child("rows", rows);
+        }
+
+        virtual void AddTableInfo(
+            boost::property_tree::ptree& root,
+            const Interface::IRowOrientedTable& table) const
+        {
+            root.put("table-name", table.GetTableName());
+        }
+
+        virtual void AddColumns(boost::property_tree::ptree& root,
+                                const Interface::IRowOrientedTable& table) const
+        {
+            auto&& columnsInfo = table.GetColumnInfoList();
+            for (auto&& columnInfo : columnsInfo)
+            {
+                boost::property_tree::ptree columnsNode;
+                columnsNode.put("name", columnInfo.name);
+                columnsNode.put("type", Interface::GetDynamicTypeNameAsString(
+                                            columnInfo.type));
+
+                root.push_back(std::make_pair("", columnsNode));
+            }
+        }
+
+        virtual void AddRows(boost::property_tree::ptree& root,
+                             const Interface::IRowOrientedTable& table) const
+        {
+            auto rowCount      = table.RowsCount();
+            auto columnsCount  = table.ColumnsCount();
+            auto&& columnsInfo = table.GetColumnInfoList();
+
+            for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+            {
+                boost::property_tree::ptree rowNode;
+                for (int columnIndex = 0; columnIndex < columnsCount;
+                     ++columnIndex)
+                {
+                    auto&& value = table.GetValue(rowIndex, columnIndex);
+                    rowNode.push_back(std::make_pair(
+                        "", boost::property_tree::ptree(
+                                Interface::ConvertUDynValueToString(
+                                    value, columnsInfo[columnIndex].type))));
+                }
+                root.push_back(std::pair("", rowNode));
+            }
         }
 
        protected:
@@ -66,7 +183,7 @@ namespace SQLEngine::DBManager
     auto CreateDBLocalJSONWriter(const std::string& path)
         -> Interface::UDataBaseWriter
     {
-        return DataBaseWriter::Create(path);
+        return DataBaseJSONWriter::Create(path);
     }
 
     //////////////////////////////////////////////////////////////////////

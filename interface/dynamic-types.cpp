@@ -7,6 +7,7 @@
 
 #include <map>
 #include <stdexcept>
+#include <variant>
 
 #include "i-dynamic-types.hpp"
 #include "utility/core.hpp"
@@ -22,7 +23,7 @@ namespace SQLEngine
     //////////////////////////////////////////////////////////////////////
 
     auto Interface::GetDynamicTypeNameAsString(const DynamicType& type)
-        -> const std::string&
+        -> const std::string
     {
         static std::map<DynamicType, std::string> elements = {
             {DynamicType::Int,    "Unset" },
@@ -86,6 +87,36 @@ namespace SQLEngine
             return nullptr;
         }
         return std::make_unique<DynamicValue>(*value);
+    }
+
+    auto Interface::ConvertUDynValueToString(const UDynamicValue& value,
+                                             const DynamicType& type)
+        -> std::string
+    {
+        if (value == nullptr)
+        {
+            return "nullptr";
+        }
+
+        AssertDynamicValueTypeIs(*value, type);
+        if (type == Interface::DynamicType::String)
+        {
+            return std::get<std::string>(*value);
+        }
+
+        if (type == Interface::DynamicType::Int)
+        {
+            auto result = std::get<int>(*value);
+            return std::to_string(result);
+        }
+
+        if (type == Interface::DynamicType::Double)
+        {
+            auto result = std::get<double>(*value);
+            return std::to_string(result);
+        }
+
+        throw std::logic_error{"Unknown DynamicValue type"};
     }
 
     //////////////////////////////////////////////////////////////////////
