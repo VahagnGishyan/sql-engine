@@ -3,12 +3,6 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
 #include <fmt/core.h>
 
 #include <boost/optional/optional.hpp>
@@ -70,7 +64,11 @@ namespace SQLEngine::DBManager
         virtual void WriteInFile(const boost::property_tree::ptree& pt,
                                  const std::string& jsonfile) const
         {
+            Utility::AssertPathAbsolute(jsonfile);
             Utility::CheckFileExtension(jsonfile, ".json");
+            Utility::MakeDir(Utility::GetBaseDir(jsonfile),
+                             Utility::Option::ExistOk{true},
+                             Utility::Option::CreateBaseDirectory{true});
 
             std::ostringstream oss;
             boost::property_tree::json_parser::write_json(oss, pt);
@@ -137,7 +135,7 @@ namespace SQLEngine::DBManager
             //////////////////////////////////////////////////////////////
 
             std::string jsonpath =
-                fmt::format("{}/{}.json", workDir, table.GetTableName());
+                fmt::format("{}/tables/{}.json", workDir, table.GetTableName());
 
             WriteInFile(root, jsonpath);
         }
