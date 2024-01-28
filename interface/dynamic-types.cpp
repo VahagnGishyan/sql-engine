@@ -26,7 +26,6 @@ namespace SQLEngine
         -> const std::string
     {
         static std::map<DynamicType, std::string> elements = {
-            {DynamicType::Int,    "Unset" },
             {DynamicType::Int,    "Int"   },
             {DynamicType::Double, "Double"},
             {DynamicType::String, "String"},
