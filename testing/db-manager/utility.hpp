@@ -9,30 +9,24 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "interface/i-db-stream.hpp"
-#include "sharelib.hpp"
+#include "database/database.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBManager
+namespace SQLEngine::Testing::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONReader(const std::string& path,
-                                                       const std::string& name)
-        -> Interface::UDataBaseReader;
-
-    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONWriter(const std::string& path)
-        -> Interface::UDataBaseWriter;
+    auto CreateDataBase() -> SQLEngine::Interface::UDataBase;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DBManager
+}  // namespace SQLEngine::Testing::DataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

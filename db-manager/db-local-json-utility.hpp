@@ -16,18 +16,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Interface
+namespace SQLEngine::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
-    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONReader(const std::string& path,
-                                                       const std::string& name)
-        -> Interface::UDataBaseReader;
-
-    auto PROJECT_SHARED_EXPORT CreateDBLocalJSONWriter(const std::string& path)
-        -> Interface::UDataBaseWriter;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

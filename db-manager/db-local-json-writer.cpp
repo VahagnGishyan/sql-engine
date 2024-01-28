@@ -51,6 +51,7 @@ namespace SQLEngine::DBManager
         static auto Create(const std::string& path)
             -> Interface::UDataBaseWriter
         {
+            Utility::AssertPathAbsolute(path);
             Interface::UDataBaseWriter uwriter{new DataBaseJSONWriter{path}};
             return (uwriter);
         }
@@ -66,6 +67,24 @@ namespace SQLEngine::DBManager
             Utility::MakeDir(path, Utility::Option::ExistOk{true},
                              Utility::Option::CreateBaseDirectory{true});
         }
+        virtual void WriteInFile(const boost::property_tree::ptree& pt,
+                                 const std::string& jsonfile) const
+        {
+            Utility::CheckFileExtension(jsonfile, ".json");
+
+            std::ostringstream oss;
+            boost::property_tree::json_parser::write_json(oss, pt);
+
+            std::ofstream outputFile(jsonfile);
+
+            Utility::Assert(
+                outputFile.is_open(),
+                fmt::format("DataBaseJSONWriter::Write::"
+                            "WriteDataBaseInformation, can't open file {}",
+                            jsonfile));
+
+            outputFile << oss.str();
+        }
         virtual void WriteDataBaseInformation(
             const std::string& workDir,
             const Interface::IDataBase& database) const
@@ -79,27 +98,16 @@ namespace SQLEngine::DBManager
 
             //////////////////////////////////////////////////////////////
 
-            std::ostringstream oss;
-            boost::property_tree::json_parser::write_json(oss, pt);
+            std::string jsonpath =
+                fmt::format("{}/{}.json", workDir, databaseName);
 
             //////////////////////////////////////////////////////////////
 
-            std::string jsonpath =
-                fmt::format("{}/{}.json", workDir, databaseName);
-            std::ofstream outputFile(jsonpath);
-
-            Utility::Assert(
-                outputFile.is_open(),
-                fmt::format("DataBaseJSONWriter::Write::"
-                            "WriteDataBaseInformation, can't open file {}",
-                            jsonpath));
-
-            outputFile << oss.str();
+            WriteInFile(pt, jsonpath);
         }
         virtual void WriteTables(const std::string& workDir,
                                  const Interface::IDataBase& database) const
         {
-            boost::property_tree::ptree pt;
             auto&& tableList = database.ListTables();
             for (auto&& tableName : *tableList)
             {
@@ -125,6 +133,13 @@ namespace SQLEngine::DBManager
 
             root.add_child("columns", columns);
             root.add_child("rows", rows);
+
+            //////////////////////////////////////////////////////////////
+
+            std::string jsonpath =
+                fmt::format("{}/{}.json", workDir, table.GetTableName());
+
+            WriteInFile(root, jsonpath);
         }
 
         virtual void AddTableInfo(

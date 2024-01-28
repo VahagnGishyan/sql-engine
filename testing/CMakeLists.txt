@@ -10,6 +10,7 @@ set (TEST_SUBDIRS
     dir-preparator
 
     database
+    db-manager
 
     utility-core
     utility-filesystem
