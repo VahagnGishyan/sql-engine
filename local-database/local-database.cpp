@@ -22,7 +22,7 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::GetInfo() const -> const Interface::WDBObjectInfo
+    auto LocalDatabase::GetInfo() const -> const Interface::WDBObjectInfo
     {
         return m_info;
     }
@@ -31,20 +31,20 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Manager::Connect(const Interface::IDBManagerInit& data)
+    void LocalDatabase::Connect(const Interface::IDBManagerInit& data)
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::Connect(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::Connect(...)");
     }
-    void Manager::Disconnect()
+    void LocalDatabase::Disconnect()
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::Disconnect(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::Disconnect(...)");
     }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::DatabaseExists(const Interface::IDataBaseID& dbid) const -> bool
+    auto LocalDatabase::DatabaseExists(const Interface::IDataBaseID& dbid) const -> bool
     {
         auto&& opdb = GetDatabaseOptional(dbid);
         return (opdb != std::nullopt);
@@ -54,7 +54,7 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::ListDatabase() const -> Interface::UDataBaseIDList
+    auto LocalDatabase::ListDatabase() const -> Interface::UDataBaseIDList
     {
         auto&& dbidlist = std::make_unique<Interface::DataBaseIDList>();
         for (auto&& db : m_databases)
@@ -64,7 +64,7 @@ namespace SQLEngine::DBManager
         return std::move(dbidlist);
     }
 
-    auto Manager::ListConnectedDatabase() const -> Interface::UDataBaseIDList
+    auto LocalDatabase::ListConnectedDatabase() const -> Interface::UDataBaseIDList
     {
         auto&& dbidlist = std::make_unique<Interface::DataBaseIDList>();
         for (auto&& db : m_databases)
@@ -81,21 +81,21 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void Manager::AssertDBExists(const Interface::IDataBaseID& dbid) const
+    void LocalDatabase::AssertDBExists(const Interface::IDataBaseID& dbid) const
     {
         Utility::Assert(DatabaseExists(dbid),
                         fmt::format("Database with the name: {} does not exists.", dbid.GetName()));
     }
-    void Manager::AssertDBNotExists(const Interface::IDataBaseID& dbid) const
+    void LocalDatabase::AssertDBNotExists(const Interface::IDataBaseID& dbid) const
     {
         Utility::Assert(!DatabaseExists(dbid), fmt::format("Database with the same name: {} exists.", dbid.GetName()));
     }
-    void Manager::AssertDBConnected(const Interface::IDataBaseID& dbid) const
+    void LocalDatabase::AssertDBConnected(const Interface::IDataBaseID& dbid) const
     {
         Utility::Assert(DatabaseExists(dbid) && DatabaseConnected(dbid),
                         fmt::format("Database with the name: {} is not connected.", dbid.GetName()));
     }
-    void Manager::AssertDBNotConnected(const Interface::IDataBaseID& dbid) const
+    void LocalDatabase::AssertDBNotConnected(const Interface::IDataBaseID& dbid) const
     {
         Utility::Assert(DatabaseExists(dbid) && !DatabaseConnected(dbid),
                         fmt::format("Database with the name: {} is connected.", dbid.GetName()));
@@ -105,9 +105,9 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::CreateDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
+    auto LocalDatabase::CreateDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::CreateDatabase(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::CreateDatabase(...)");
         return Interface::WDataBase{};
         //     def create_database(self, name):
         //         # Create a new database with the given name
@@ -116,16 +116,16 @@ namespace SQLEngine::DBManager
         //         self.databases.append(name)
     }
 
-    void Manager::ConnectDatabase(const Interface::IDataBaseID& data)
+    void LocalDatabase::ConnectDatabase(const Interface::IDataBaseID& data)
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::ConnectDatabase(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::ConnectDatabase(...)");
         //     def connect(self, name):
         //         self.assert_db_not_connected(name)
         //         database = Database.create(name, self.get_work_dir(),
         //         connect=True) self.connected_dbs[name] = database return database
     }
 
-    auto Manager::DatabaseConnected(const Interface::IDataBaseID& dbid) const -> bool
+    auto LocalDatabase::DatabaseConnected(const Interface::IDataBaseID& dbid) const -> bool
     {
         auto&& opdb = GetDatabaseOptional(dbid);
         if (opdb == std::nullopt)
@@ -137,16 +137,16 @@ namespace SQLEngine::DBManager
         return db->IsConnected();
     }
 
-    auto Manager::GetDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
+    auto LocalDatabase::GetDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
     {
         AssertDBExists(dbid);
         auto&& opdb = GetDatabaseOptional(dbid);
         return *opdb;
     }
 
-    void Manager::DisconnectDatabase(const Interface::IDataBaseID& dbid)
+    void LocalDatabase::DisconnectDatabase(const Interface::IDataBaseID& dbid)
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::DisconnectDatabase(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::DisconnectDatabase(...)");
         //     def disconnect(self, dbparam):
         //         database = None
         //         name = None
@@ -163,9 +163,9 @@ namespace SQLEngine::DBManager
         //         del self.connected_dbs[name]
     }
 
-    void Manager::DropDatabase(const Interface::IDataBaseID& dbid)
+    void LocalDatabase::DropDatabase(const Interface::IDataBaseID& dbid)
     {
-        Interface::NotImplYet("db-manager.cpp, Manager::DropDatabase(...)");
+        Interface::NotImplYet("db-manager.cpp, LocalDatabase::DropDatabase(...)");
         //     def drop_database(self, name):
         //         self.assert_db_exists(name)
         //         self.assert_db_not_connected(name)
@@ -178,7 +178,7 @@ namespace SQLEngine::DBManager
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Manager::GetDatabaseOptional(const Interface::IDataBaseID& dbid) const -> std::optional<Interface::WDataBase>
+    auto LocalDatabase::GetDatabaseOptional(const Interface::IDataBaseID& dbid) const -> std::optional<Interface::WDataBase>
     {
         const auto end = m_databases.end();
         auto itr       = std::find_if(m_databases.begin(), end,
@@ -196,7 +196,7 @@ namespace SQLEngine::DBManager
 
     //////////////////////////////////////////////////////////////////////
 
-    void Manager::DisconnectAllDataBases()
+    void LocalDatabase::DisconnectAllDataBases()
     {
         for (auto&& db : m_databases)
         {

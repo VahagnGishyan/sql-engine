@@ -1,7 +1,7 @@
 ﻿
 cmake_minimum_required(VERSION 3.0)
 
-project(testing-db-manager)
+project(testing-local-database)
 
 set(SOURCES
     main.cpp
@@ -22,5 +22,6 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-utility
     sql-engine-app-info 
     sql-engine-database
-    sql-engine-db-manager
+    sql-engine-local-database
+
 )

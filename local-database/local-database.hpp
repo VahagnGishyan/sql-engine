@@ -28,7 +28,7 @@ namespace SQLEngine::DBManager
     // ConnectDataBase
     // DropDataBase
 
-    class Manager : public Interface::IDBManager
+    class LocalDatabase : public Interface::IDBManager
     {
        public:
        public:

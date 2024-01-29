@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 
 #include "app-info/application.hpp"
-#include "db-manager/db-local-json-stream.hpp"
+#include "local-database/db-local-json-stream.hpp"
 #include "fmt/core.h"
 #include "utility.hpp"
 #include "utility/core.hpp"

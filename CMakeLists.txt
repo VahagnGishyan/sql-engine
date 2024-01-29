@@ -19,7 +19,7 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 set (SUBDIRS
     app-info
     database
-    db-manager
+    local-database
     # db-stream
     # filestream
     interface

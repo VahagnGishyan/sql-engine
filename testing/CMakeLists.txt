@@ -9,8 +9,8 @@ find_package(GTest REQUIRED)
 set (TEST_SUBDIRS
     dir-preparator
 
+    local-database
     database
-    db-manager
 
     utility-core
     utility-filesystem
