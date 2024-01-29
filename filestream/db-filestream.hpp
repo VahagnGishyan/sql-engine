@@ -18,7 +18,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBManager
+namespace SQLEngine::LocalDataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -38,8 +38,8 @@ namespace SQLEngine::DBManager
         //     void LoadDataBase(IDataBase& database) const override;
 
         //    public:
-        //     void SaveDBManager(const IDBManager& dbmanager) const override;
-        //     void LoadDBManager(IDBManager& dbmanager) const override;
+        //     void SaveLocalDataBase(const ILocalDataBase& dbmanager) const override;
+        //     void LoadLocalDataBase(ILocalDataBase& dbmanager) const override;
 
         //    public:
         //     static auto Create() -> UFileStream;
@@ -48,7 +48,7 @@ namespace SQLEngine::DBManager
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DBManager
+}  // namespace SQLEngine::LocalDataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

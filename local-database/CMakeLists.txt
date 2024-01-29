@@ -12,6 +12,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 set(SOURCES
     db-local-json-reader.cpp
     db-local-json-writer.cpp
+    local-database.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 

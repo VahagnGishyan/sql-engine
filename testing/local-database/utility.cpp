@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::DBManager
+namespace SQLEngine::Testing::LocalDataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -129,7 +129,7 @@ namespace SQLEngine::Testing::DBManager
 
         //////////////////////////////////////////////////////////////////////
 
-        auto tables = Testing::DBManager::CreateListOfTables();
+        auto tables = Testing::LocalDataBase::CreateListOfTables();
 
         for (auto&& table : *tables)
         {
@@ -142,7 +142,7 @@ namespace SQLEngine::Testing::DBManager
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::DBManager
+}  // namespace SQLEngine::Testing::LocalDataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

@@ -6,10 +6,10 @@
 #include <gtest/gtest.h>
 
 #include "app-info/application.hpp"
+#include "fmt/core.h"
 #include "local-database/db-local-json-stream.hpp"
 #include "utility.hpp"
 #include "utility/core.hpp"
-#include "fmt/core.h"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -36,7 +36,7 @@ TEST(DataBaseJSONReader, InvalidCreation)
 {
     std::string nonexitingPath = "";
 
-    ASSERT_THROW(DBManager::CreateDBLocalJSONWriter(nonexitingPath),
+    ASSERT_THROW(LocalDataBase::CreateDBLocalJSONWriter(nonexitingPath),
                  std::exception);
 }
 
@@ -51,10 +51,10 @@ TEST(DataBaseJSONReader, Creation)
 
     auto&& workdir = Utility::GetDefaultDataPath();
 
-    ASSERT_NO_THROW(DBManager::CreateDBLocalJSONWriter(appWorkDir));
-    ASSERT_NO_THROW(DBManager::CreateDBLocalJSONWriter(workdir));
+    ASSERT_NO_THROW(LocalDataBase::CreateDBLocalJSONWriter(appWorkDir));
+    ASSERT_NO_THROW(LocalDataBase::CreateDBLocalJSONWriter(workdir));
 
-    auto&& writer = DBManager::CreateDBLocalJSONWriter(workdir);
+    auto&& writer = LocalDataBase::CreateDBLocalJSONWriter(workdir);
     ASSERT_NE(writer, nullptr);
 }
 
@@ -62,9 +62,9 @@ TEST(DataBaseJSONReader, Creation)
 
 TEST(DataBaseJSONReader, Writeing)
 {
-    auto&& workdir   = GetDefaultWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
-    auto&& database = Testing::DBManager::CreateDataBase();
+    auto&& workdir  = GetDefaultWorkDir();
+    auto&& writer   = LocalDataBase::CreateDBLocalJSONWriter(workdir);
+    auto&& database = Testing::LocalDataBase::CreateDataBase();
 
     //////////////////////////////////////////////////////////////////////
 

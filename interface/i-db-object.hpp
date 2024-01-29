@@ -56,7 +56,7 @@ namespace SQLEngine::Interface
     class IColumn;
     class ITable;
     class IDataBase;
-    class IDBManager;
+    class ILocalDataBase;
 
     //////////////////////////////////////////////////////////////////////
 

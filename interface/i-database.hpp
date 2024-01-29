@@ -65,6 +65,29 @@ namespace SQLEngine::Interface
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
+
+    class IConnectDataBase;
+
+    using UConnectDataBase    = std::unique_ptr<IConnectDataBase>;
+    using ShConnectDataBase   = std::shared_ptr<IConnectDataBase>;
+    using WConnectDataBase    = std::weak_ptr<IConnectDataBase>;
+    using ConnectDataBaseList = std::vector<ShConnectDataBase>;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class PROJECT_SHARED_EXPORT IConnectDataBase : public IDataBase
+    {
+       public:
+        virtual void Init(const std::string& newdbpath)    = 0;
+        virtual void Connect(const std::string& dbpath)    = 0;
+        virtual void Disconnect()                          = 0;
+        virtual void Disconnect(const std::string& dbpath) = 0;
+        virtual void Drop()                                = 0;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 }  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////

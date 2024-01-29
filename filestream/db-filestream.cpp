@@ -39,13 +39,13 @@ namespace SQLEngine
 
     // //////////////////////////////////////////////////////////////////////
 
-    // void FileStream::SaveDBManager(const IDBManager& dbmanager) const
+    // void FileStream::SaveLocalDataBase(const ILocalDataBase& dbmanager) const
     // {
-    //     NotImplYet("db-filestream::FileStream::SaveDBManager");
+    //     NotImplYet("db-filestream::FileStream::SaveLocalDataBase");
     // }
-    // void FileStream::LoadDBManager(IDBManager& dbmanager) const
+    // void FileStream::LoadLocalDataBase(ILocalDataBase& dbmanager) const
     // {
-    //     NotImplYet("db-filestream::FileStream::LoadDBManager");
+    //     NotImplYet("db-filestream::FileStream::LoadLocalDataBase");
     // }
 
     // //////////////////////////////////////////////////////////////////////

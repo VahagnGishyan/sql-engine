@@ -3,220 +3,225 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "db-manager.hpp"
+#include "local-database.hpp"
 
-#include <fmt/core.h>
-
-#include <algorithm>
-
-#include "logging/logging.hpp"
+#include "database/database.hpp"
+#include "db-local-json-stream.hpp"
 #include "utility/core.hpp"
+#include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DBManager
+namespace SQLEngine::LocalDataBase
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto LocalDatabase::GetInfo() const -> const Interface::WDBObjectInfo
+    using ITable         = Interface::ITable;
+    using UTable         = Interface::UTable;
+    using TableList      = Interface::TableList;
+    using UTableNameList = Interface::UTableNameList;
+
+    using IDataBase = Interface::IDataBase;
+    using UDataBase = Interface::UDataBase;
+
+    using IQuery = Interface::IQuery;
+
+    //////////////////////////////////////////////////////////////////////
+
+    class LocalJSONDatabase : public Interface::IConnectDataBase
     {
-        return m_info;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    void LocalDatabase::Connect(const Interface::IDBManagerInit& data)
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::Connect(...)");
-    }
-    void LocalDatabase::Disconnect()
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::Disconnect(...)");
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto LocalDatabase::DatabaseExists(const Interface::IDataBaseID& dbid) const -> bool
-    {
-        auto&& opdb = GetDatabaseOptional(dbid);
-        return (opdb != std::nullopt);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto LocalDatabase::ListDatabase() const -> Interface::UDataBaseIDList
-    {
-        auto&& dbidlist = std::make_unique<Interface::DataBaseIDList>();
-        for (auto&& db : m_databases)
+       public:
+        ~LocalJSONDatabase()
         {
-            dbidlist->push_back(db->GetID());
-        }
-        return std::move(dbidlist);
-    }
-
-    auto LocalDatabase::ListConnectedDatabase() const -> Interface::UDataBaseIDList
-    {
-        auto&& dbidlist = std::make_unique<Interface::DataBaseIDList>();
-        for (auto&& db : m_databases)
-        {
-            if (db->IsConnected())
-            {
-                dbidlist->push_back(db->GetID());
-            }
-        }
-        return std::move(dbidlist);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    void LocalDatabase::AssertDBExists(const Interface::IDataBaseID& dbid) const
-    {
-        Utility::Assert(DatabaseExists(dbid),
-                        fmt::format("Database with the name: {} does not exists.", dbid.GetName()));
-    }
-    void LocalDatabase::AssertDBNotExists(const Interface::IDataBaseID& dbid) const
-    {
-        Utility::Assert(!DatabaseExists(dbid), fmt::format("Database with the same name: {} exists.", dbid.GetName()));
-    }
-    void LocalDatabase::AssertDBConnected(const Interface::IDataBaseID& dbid) const
-    {
-        Utility::Assert(DatabaseExists(dbid) && DatabaseConnected(dbid),
-                        fmt::format("Database with the name: {} is not connected.", dbid.GetName()));
-    }
-    void LocalDatabase::AssertDBNotConnected(const Interface::IDataBaseID& dbid) const
-    {
-        Utility::Assert(DatabaseExists(dbid) && !DatabaseConnected(dbid),
-                        fmt::format("Database with the name: {} is connected.", dbid.GetName()));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto LocalDatabase::CreateDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::CreateDatabase(...)");
-        return Interface::WDataBase{};
-        //     def create_database(self, name):
-        //         # Create a new database with the given name
-        //         self.assert_db_not_exists(name)
-        //         new_database = Database.create(name, self.get_work_dir())
-        //         self.databases.append(name)
-    }
-
-    void LocalDatabase::ConnectDatabase(const Interface::IDataBaseID& data)
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::ConnectDatabase(...)");
-        //     def connect(self, name):
-        //         self.assert_db_not_connected(name)
-        //         database = Database.create(name, self.get_work_dir(),
-        //         connect=True) self.connected_dbs[name] = database return database
-    }
-
-    auto LocalDatabase::DatabaseConnected(const Interface::IDataBaseID& dbid) const -> bool
-    {
-        auto&& opdb = GetDatabaseOptional(dbid);
-        if (opdb == std::nullopt)
-        {
-            return false;
-        }
-        auto&& value = opdb.value();
-        auto&& db    = value.lock();
-        return db->IsConnected();
-    }
-
-    auto LocalDatabase::GetDatabase(const Interface::IDataBaseID& dbid) -> Interface::WDataBase
-    {
-        AssertDBExists(dbid);
-        auto&& opdb = GetDatabaseOptional(dbid);
-        return *opdb;
-    }
-
-    void LocalDatabase::DisconnectDatabase(const Interface::IDataBaseID& dbid)
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::DisconnectDatabase(...)");
-        //     def disconnect(self, dbparam):
-        //         database = None
-        //         name = None
-        //         if isinstance(dbparam, str):
-        //             name = dbparam
-        //             self.assert_db_connected(name)
-        //             database = self.connected_dbs[name]
-        //         elif isinstance(dbparam, Database):
-        //             database = dbparam
-        //             name = database.get_name()
-        //             self.assert_db_connected(name)
-
-        //         database.disconnect()
-        //         del self.connected_dbs[name]
-    }
-
-    void LocalDatabase::DropDatabase(const Interface::IDataBaseID& dbid)
-    {
-        Interface::NotImplYet("db-manager.cpp, LocalDatabase::DropDatabase(...)");
-        //     def drop_database(self, name):
-        //         self.assert_db_exists(name)
-        //         self.assert_db_not_connected(name)
-        //         database = Database.create(name, self.get_work_dir())
-        //         Database.destroy(database)
-        //         self.databases.remove(name)
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    auto LocalDatabase::GetDatabaseOptional(const Interface::IDataBaseID& dbid) const -> std::optional<Interface::WDataBase>
-    {
-        const auto end = m_databases.end();
-        auto itr       = std::find_if(m_databases.begin(), end,
-                                      [&dbid](const Interface::ShDataBase db)
-                                      {
-                                    return (db->GetDataBaseID().GetName() == dbid.GetName());
-                                });
-        if (itr == end)
-        {
-            return std::nullopt;
+            Disconnect();
         }
 
-        return std::make_optional<Interface::WDataBase>((*itr));
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    void LocalDatabase::DisconnectAllDataBases()
-    {
-        for (auto&& db : m_databases)
+       public:
+        void Init(const std::string& newdbpath) override
         {
-            if (db->IsConnected())
-            {
-                db->Disconnect();
-            }
+            AssertDisconnected();
+            Utility::MakeDir(newdbpath, Utility::Option::ExistOk{false},
+                             Utility::Option::CreateBaseDirectory{true});
+            m_database =
+                DataBase::CreateDataBase(Utility::ExtractFileName(newdbpath));
+            m_path = newdbpath;
         }
-    }
+        void Connect(const std::string& dbpath) override
+        {
+            AssertDisconnected();
+            auto reader = CreateDBLocalJSONReader(dbpath);
+            m_database  = reader->Read();
+            m_path      = dbpath;
+        }
+        void Disconnect() override
+        {
+            AssertConnected();
+            Disconnect(m_path);
+        }
+        void Disconnect(const std::string& workdir) override
+        {
+            AssertConnected();
+            SaveAt(workdir);
+            m_database = nullptr;
+            m_path     = "";
+        }
+        void Drop() override
+        {
+            AssertConnected();
+            Utility::RemoveDir(m_path);
+            m_database = nullptr;
+            m_path     = "";
+        }
+
+       protected:
+        void SaveAt(const std::string& path) const
+        {
+            auto writer = CreateDBLocalJSONWriter(path);
+            writer->Write(*m_database);
+        }
+
+       public:
+        auto Copy() const -> UDataBase override
+        {
+            AssertConnected();
+            return (m_database->Copy());
+        }
+
+        auto Copy(const std::string& newname) const -> UDataBase override
+        {
+            AssertConnected();
+            return (m_database->Copy(newname));
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+        auto GetName() const -> const std::string& override
+        {
+            AssertConnected();
+            return (m_database->GetName());
+        }
+        void SetName(const std::string& name) override
+        {
+            AssertConnected();
+            m_database->SetName(name);
+            std::string lastDir = m_path;
+
+            m_path = Utility::GetBaseDir(m_path) + '/' + name;
+            SaveAt(m_path);
+            Utility::RemoveDir(lastDir);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        void AddTable(UTable table) override
+        {
+            AssertConnected();
+            m_database->AddTable(std::move(table));
+        }
+        void RemoveTable(const std::string& tbname) override
+        {
+            AssertConnected();
+            m_database->RemoveTable(tbname);
+        }
+        void RenameTable(const std::string& oldtbname,
+                         const std::string& newtbname) override
+        {
+            AssertConnected();
+            m_database->RenameTable(oldtbname, newtbname);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        auto TablesCount() const -> const int override
+        {
+            AssertConnected();
+            return m_database->TablesCount();
+        }
+
+        auto ListTables() const -> UTableNameList override
+        {
+            AssertConnected();
+            return m_database->ListTables();
+        }
+
+        auto IsTableExists(const std::string& tbname) const -> bool override
+        {
+            AssertConnected();
+            return m_database->IsTableExists(tbname);
+        }
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        auto GetTable(const std::string& tbname) const -> const ITable& override
+        {
+            AssertConnected();
+            return m_database->GetTable(tbname);
+        }
+        auto GetTable(const std::string& tbname) -> ITable& override
+        {
+            AssertConnected();
+            return m_database->GetTable(tbname);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       public:
+        void Execute(const Interface::IQuery& query) override
+        {
+            AssertConnected();
+            return m_database->Execute(query);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+       protected:
+        void AssertConnected() const
+        {
+            Utility::Assert(m_database != nullptr,
+                            "LocalJSONDatabase::AssertConnected()");
+        }
+        void AssertDisconnected() const
+        {
+            Utility::Assert(m_database == nullptr,
+                            "LocalJSONDatabase::AssertDisconnected()");
+        }
+
+       public:
+        Interface::UDataBase m_database;
+        std::string m_path;
+    };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void DoSomething()
-    {
-        Logging::Signal("Hello from db-manager.");
-    }
+    // auto Init(const std::string& workdir) -> Interface::UConnectDataBase
+    // {
+    // }
+    // auto Connect(const std::string& workdir) -> Interface::UConnectDataBase
+    // {
+    // }
+    // void Disconnect(Interface::UConnectDataBase db)
+    // {
+    // }
+    // void Disconnect(Interface::UConnectDataBase db, const std::string&
+    // workdir)
+    // {
+    // }
+    // void Drop(Interface::UConnectDataBase db)
+    // {
+    // }
 
-}  // namespace SQLEngine::DBManager
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+}  // namespace SQLEngine::LocalDataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

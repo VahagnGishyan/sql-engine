@@ -22,17 +22,18 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // class PROJECT_SHARED_EXPORT IDBManager : public IDBObject
+    // class PROJECT_SHARED_EXPORT ILocalDataBase : public IDBObject
     // {
     //    public:
     //     virtual auto GetInfo() const -> const WDBObjectInfo = 0;
 
     //    public:
-    //     virtual void Connect(const Interface::IDBManagerInit& data) = 0;
+    //     virtual void Connect(const Interface::ILocalDataBaseInit& data) = 0;
     //     virtual void Disconnect()                                   = 0;
 
     //    public:
-    //     virtual auto DatabaseExists(const IDataBaseID& dbid) const -> bool = 0;
+    //     virtual auto DatabaseExists(const IDataBaseID& dbid) const -> bool =
+    //     0;
 
     //    public:
     //     virtual auto ListDatabase() const -> UDataBaseIDList          = 0;
@@ -45,16 +46,16 @@ namespace SQLEngine::Interface
     //     virtual void AssertDBNotConnected(const IDataBaseID& dbid) const = 0;
 
     //    public:
-    //     virtual auto CreateDatabase(const IDataBaseID& dbid) -> WDataBase = 0;
-    //     virtual void ConnectDatabase(const IDataBaseID& data)             = 0;
-    //     virtual auto DatabaseConnected(const IDataBaseID& dbid) const
+    //     virtual auto CreateDatabase(const IDataBaseID& dbid) -> WDataBase =
+    //     0; virtual void ConnectDatabase(const IDataBaseID& data) = 0; virtual
+    //     auto DatabaseConnected(const IDataBaseID& dbid) const
     //         -> bool                                                    = 0;
     //     virtual auto GetDatabase(const IDataBaseID& dbid) -> WDataBase = 0;
     //     virtual void DropDatabase(const IDataBaseID& dbid)             = 0;
     //     virtual void DisconnectDatabase(const IDataBaseID& dbid)       = 0;
     // };
 
-    // using UDBManagerData = std::unique_ptr<IDBManager>;
+    // using ULocalDataBaseData = std::unique_ptr<ILocalDataBase>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

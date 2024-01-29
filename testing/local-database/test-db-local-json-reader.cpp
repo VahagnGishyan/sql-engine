@@ -6,8 +6,8 @@
 #include <gtest/gtest.h>
 
 #include "app-info/application.hpp"
-#include "local-database/db-local-json-stream.hpp"
 #include "fmt/core.h"
+#include "local-database/db-local-json-stream.hpp"
 #include "utility.hpp"
 #include "utility/core.hpp"
 
@@ -36,7 +36,7 @@ TEST(DataBaseJSONWriter, InvalidCreation)
 {
     std::string nonexitingPath = "";
 
-    ASSERT_THROW(DBManager::CreateDBLocalJSONReader(nonexitingPath),
+    ASSERT_THROW(LocalDataBase::CreateDBLocalJSONReader(nonexitingPath),
                  std::exception);
 }
 
@@ -51,10 +51,10 @@ TEST(DataBaseJSONWriter, Creation)
 
     auto&& workdir = Utility::GetDefaultDataPath();
 
-    ASSERT_NO_THROW(DBManager::CreateDBLocalJSONReader(appWorkDir));
-    ASSERT_NO_THROW(DBManager::CreateDBLocalJSONReader(workdir));
+    ASSERT_NO_THROW(LocalDataBase::CreateDBLocalJSONReader(appWorkDir));
+    ASSERT_NO_THROW(LocalDataBase::CreateDBLocalJSONReader(workdir));
 
-    auto&& reader = DBManager::CreateDBLocalJSONReader(workdir);
+    auto&& reader = LocalDataBase::CreateDBLocalJSONReader(workdir);
     ASSERT_NE(reader, nullptr);
 }
 
@@ -63,14 +63,14 @@ TEST(DataBaseJSONWriter, Creation)
 TEST(DataBaseJSONWriter, Read)
 {
     auto&& workdir  = GetDefaultWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
-    auto&& database = Testing::DBManager::CreateDataBase();
+    auto&& writer   = LocalDataBase::CreateDBLocalJSONWriter(workdir);
+    auto&& database = Testing::LocalDataBase::CreateDataBase();
     ASSERT_NO_THROW(writer->Write(*database));
 
     //////////////////////////////////////////////////////////////////////
 
-    auto&& reader =
-        DBManager::CreateDBLocalJSONReader(workdir + '/' + database->GetName());
+    auto&& reader = LocalDataBase::CreateDBLocalJSONReader(workdir + '/' +
+                                                           database->GetName());
     ASSERT_NO_THROW(reader->Read());
 
     //////////////////////////////////////////////////////////////////////
@@ -81,14 +81,14 @@ TEST(DataBaseJSONWriter, Read)
 TEST(DataBaseJSONWriter, EqualityOfDBStruct)
 {
     auto&& workdir  = GetDefaultWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
-    auto&& database = Testing::DBManager::CreateDataBase();
+    auto&& writer   = LocalDataBase::CreateDBLocalJSONWriter(workdir);
+    auto&& database = Testing::LocalDataBase::CreateDataBase();
     ASSERT_NO_THROW(writer->Write(*database));
 
     //////////////////////////////////////////////////////////////////////
 
-    auto&& reader =
-        DBManager::CreateDBLocalJSONReader(workdir + '/' + database->GetName());
+    auto&& reader      = LocalDataBase::CreateDBLocalJSONReader(workdir + '/' +
+                                                                database->GetName());
     auto&& newdatabase = reader->Read();
 
     //////////////////////////////////////////////////////////////////////
@@ -114,14 +114,14 @@ TEST(DataBaseJSONWriter, EqualityOfDBStruct)
 TEST(DataBaseJSONWriter, EqualityOfTablesStruct)
 {
     auto&& workdir  = GetDefaultWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
-    auto&& database = Testing::DBManager::CreateDataBase();
+    auto&& writer   = LocalDataBase::CreateDBLocalJSONWriter(workdir);
+    auto&& database = Testing::LocalDataBase::CreateDataBase();
     ASSERT_NO_THROW(writer->Write(*database));
 
     //////////////////////////////////////////////////////////////////////
 
-    auto&& reader =
-        DBManager::CreateDBLocalJSONReader(workdir + '/' + database->GetName());
+    auto&& reader      = LocalDataBase::CreateDBLocalJSONReader(workdir + '/' +
+                                                                database->GetName());
     auto&& newdatabase = reader->Read();
 
     //////////////////////////////////////////////////////////////////////
@@ -151,14 +151,14 @@ TEST(DataBaseJSONWriter, EqualityOfTablesStruct)
 TEST(DataBaseJSONWriter, EqualityOfTablesData)
 {
     auto&& workdir  = GetDefaultWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
-    auto&& database = Testing::DBManager::CreateDataBase();
+    auto&& writer   = LocalDataBase::CreateDBLocalJSONWriter(workdir);
+    auto&& database = Testing::LocalDataBase::CreateDataBase();
     ASSERT_NO_THROW(writer->Write(*database));
 
     //////////////////////////////////////////////////////////////////////
 
-    auto&& reader =
-        DBManager::CreateDBLocalJSONReader(workdir + '/' + database->GetName());
+    auto&& reader      = LocalDataBase::CreateDBLocalJSONReader(workdir + '/' +
+                                                                database->GetName());
     auto&& newdatabase = reader->Read();
 
     //////////////////////////////////////////////////////////////////////
