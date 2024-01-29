@@ -21,23 +21,18 @@ using namespace SQLEngine;
 //
 //////////////////////////////////////////////////////////////////////////
 
-/**
- * ToDo
- * what if name of database and
- */
-
-auto GetLogWorkDir() -> std::string
+static auto GetDefaultWorkDir() -> std::string
 {
     auto&& info       = Application::GetInfo();
     auto&& appWorkDir = info.GetDefaultAppData();
-    return fmt::format("{}/{}", appWorkDir, "logging");
+    return fmt::format("{}/{}", appWorkDir, "testdir");
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(DataBaseJSONWriter, InvalidCreation)
+TEST(DataBaseJSONReader, InvalidCreation)
 {
     std::string nonexitingPath = "";
 
@@ -49,7 +44,7 @@ TEST(DataBaseJSONWriter, InvalidCreation)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(DataBaseJSONWriter, Creation)
+TEST(DataBaseJSONReader, Creation)
 {
     auto&& info       = Application::GetInfo();
     auto&& appWorkDir = info.GetDefaultAppData();
@@ -65,11 +60,13 @@ TEST(DataBaseJSONWriter, Creation)
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(DataBaseJSONWriter, Writeing)
+TEST(DataBaseJSONReader, Writeing)
 {
-    auto&& logdir   = GetLogWorkDir();
-    auto&& writer   = DBManager::CreateDBLocalJSONWriter(logdir);
+    auto&& workdir   = GetDefaultWorkDir();
+    auto&& writer   = DBManager::CreateDBLocalJSONWriter(workdir);
     auto&& database = Testing::DBManager::CreateDataBase();
+
+    //////////////////////////////////////////////////////////////////////
 
     ASSERT_NO_THROW(writer->Write(*database));
 }

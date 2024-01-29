@@ -1,4 +1,5 @@
 
+
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
@@ -9,47 +10,24 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "interface/i-database.hpp"
-#include "interface/i-row-oriented-table.hpp"
-#include "sharelib.hpp"
+#define TABLES_DIR_NAME std::string{"tables"}
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::DataBase
+namespace SQLEngine::DBManager
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto PROJECT_SHARED_EXPORT CreateColumn(const std::string& name,
-                                            const Interface::DynamicType& type)
-        -> Interface::UColumn;
-
-    auto PROJECT_SHARED_EXPORT CreateTable(const std::string& newname)
-        -> Interface::UTable;
-
-    auto PROJECT_SHARED_EXPORT CreateDataBase(const std::string& newname)
-        -> Interface::UDataBase;
-
-    //////////////////////////////////////////////////////////////////////
-
-    auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
-        std::string&& tableName, Interface::ColumnInfoList&& columns,
-        Interface::ROTRowList&& data) -> Interface::URowOrientedTable;
-
-    auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
-        const std::string& tableName, const Interface::ColumnInfoList& columns,
-        const Interface::ROTRowList& data) -> Interface::URowOrientedTable;
-
-    auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
-        const Interface::ITable& table) -> Interface::URowOrientedTable;
+    
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::DataBase
+}  // namespace SQLEngine::DBManager
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

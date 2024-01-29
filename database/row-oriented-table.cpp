@@ -3,6 +3,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/core.h>
+
 #include "database.hpp"
 #include "utility/core.hpp"
 
@@ -23,8 +25,8 @@ namespace SQLEngine::DataBase
     using ColumnInfo     = Interface::ColumnInfo;
     using ColumnInfoList = Interface::ColumnInfoList;
 
-    using Row  = std::vector<UDynamicValue>;
-    using Data = std::vector<Row>;
+    using Row  = Interface::ROTRow;
+    using Data = Interface::ROTRowList;
 
     class RowOrientedTable : public Interface::IRowOrientedTable
     {
@@ -38,9 +40,27 @@ namespace SQLEngine::DataBase
             m_columns{std::move(columns)},
             m_data{std::move(data)}
         {
+            const int columnCount = RowOrientedTable::ColumnsCount();
+            const int rowCount    = RowOrientedTable::RowsCount();
+
+            for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+            {
+                for (int columnIndex = 0; columnIndex < columnCount;
+                     ++columnIndex)
+                {
+                    if (m_data[rowIndex].size() != columnCount)
+                    {
+                        fmt::println("vahagn: data-size: {}, columns-count: {}",
+                                   m_data[rowIndex].size(), columnCount);
+                    }
+                    Utility::Assert(m_data[rowIndex].size() == columnCount,
+                                    "RowOrientedTable::RowOrientedTable, "
+                                    "row-element count != column count");
+                }
+            }
         }
 
-       protected:
+       public:
         static auto Create(std::string&& tableName, ColumnInfoList&& columns,
                            Data&& data) -> Interface::URowOrientedTable
         {
@@ -196,6 +216,23 @@ namespace SQLEngine::DataBase
     };
 
     //////////////////////////////////////////////////////////////////////
+
+    auto CreateRowOrientedTable(std::string&& tableName,
+                                ColumnInfoList&& columns, Data&& data)
+        -> Interface::URowOrientedTable
+
+    {
+        return RowOrientedTable::Create(std::move(tableName),
+                                        std::move(columns), std::move(data));
+    }
+
+    auto CreateRowOrientedTable(const std::string& tableName,
+                                const ColumnInfoList& columns, const Data& data)
+        -> Interface::URowOrientedTable
+
+    {
+        return RowOrientedTable::Create(tableName, columns, data);
+    }
 
     auto CreateRowOrientedTable(const Interface::ITable& table)
         -> Interface::URowOrientedTable

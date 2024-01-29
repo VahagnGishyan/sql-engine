@@ -251,12 +251,12 @@ TEST(DataBase, CopyWithOutNewName)
 
     //////////////////////////////////////////////////////////////////////
 
-    auto&& newtable = database->Copy();
+    auto&& newdatabase = database->Copy();
 
-    EXPECT_EQ(database->GetName(), newtable->GetName());
+    EXPECT_EQ(database->GetName(), newdatabase->GetName());
 
     auto&& tablesListOld = database->ListTables();
-    auto&& tablesListNew = newtable->ListTables();
+    auto&& tablesListNew = newdatabase->ListTables();
 
     ASSERT_NE(tablesListOld, nullptr);
     ASSERT_NE(tablesListNew, nullptr);

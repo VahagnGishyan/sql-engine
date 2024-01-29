@@ -24,9 +24,9 @@ namespace SQLEngine::Interface
 
     class IRowOrientedTable;
 
-    using URowOrientedTable  = std::unique_ptr<IRowOrientedTable>;
-    using ShRowOrientedTable = std::shared_ptr<IRowOrientedTable>;
-    using RowList            = std::vector<URowOrientedTable>;
+    using URowOrientedTable    = std::unique_ptr<IRowOrientedTable>;
+    using ShRowOrientedTable   = std::shared_ptr<IRowOrientedTable>;
+    using RowOrientedTableList = std::vector<URowOrientedTable>;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -37,6 +37,9 @@ namespace SQLEngine::Interface
         DynamicType type;
     };
     using ColumnInfoList = std::vector<ColumnInfo>;
+
+    using ROTRow     = std::vector<UDynamicValue>;
+    using ROTRowList = std::vector<ROTRow>;
 
     //////////////////////////////////////////////////////////////////////
 

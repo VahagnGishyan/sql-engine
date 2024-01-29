@@ -5,12 +5,12 @@
 
 #include <fmt/core.h>
 
-#include <boost/optional/optional.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 #include "database/database.hpp"
 #include "db-local-json-stream.hpp"
+#include "db-local-json-struct.hpp"
 #include "utility/core.hpp"
 #include "utility/filesystem.hpp"
 
@@ -135,7 +135,8 @@ namespace SQLEngine::DBManager
             //////////////////////////////////////////////////////////////
 
             std::string jsonpath =
-                fmt::format("{}/tables/{}.json", workDir, table.GetTableName());
+                fmt::format("{}/{}/{}.json", workDir, TABLES_DIR_NAME,
+                            table.GetTableName());
 
             WriteInFile(root, jsonpath);
         }

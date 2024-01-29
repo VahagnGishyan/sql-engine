@@ -5,6 +5,7 @@ project(testing-db-manager)
 
 set(SOURCES
     main.cpp
+    test-db-local-json-reader.cpp
     test-db-local-json-writer.cpp
     utility.cpp
 )

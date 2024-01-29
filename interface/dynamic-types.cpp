@@ -5,6 +5,7 @@
 
 #include <fmt/core.h>
 
+#include <algorithm>
 #include <map>
 #include <stdexcept>
 #include <variant>
@@ -22,15 +23,23 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Interface::GetDynamicTypeNameAsString(const DynamicType& type)
-        -> const std::string
+    static auto GetDynamicValuesAndStrings()
+        -> const std::map<Interface::DynamicType, std::string>&
     {
+        using namespace Interface;
         static std::map<DynamicType, std::string> elements = {
             {DynamicType::Int,    "Int"   },
             {DynamicType::Double, "Double"},
             {DynamicType::String, "String"},
         };
-        static auto end = elements.end();
+        return elements;
+    }
+
+    auto Interface::GetDynamicTypeNameAsString(const DynamicType& type)
+        -> const std::string
+    {
+        auto&& elements = GetDynamicValuesAndStrings();
+        auto end        = elements.end();
 
         auto pos = elements.find(type);
         Utility::Assert(
@@ -39,6 +48,24 @@ namespace SQLEngine
                 "GetDynamicTypeNameAsString, unknown DynamicType, id is [{}]",
                 (int)type));
         return pos->second;
+    }
+
+    auto Interface::ConvertStringToUDynValue(const std::string& type)
+        -> DynamicType
+    {
+        auto&& elements = GetDynamicValuesAndStrings();
+        auto end        = elements.end();
+
+        auto pos = std::find_if(elements.begin(), elements.end(),
+                                [&type](const auto& pair)
+                                {
+                                    return pair.second == type;
+                                });
+        Utility::Assert(
+            pos != end,
+            fmt::format("ConvertStringToUDynValue, unknown str type: {}",
+                        type));
+        return pos->first;
     }
 
     //////////////////////////////////////////////////////////////////////
