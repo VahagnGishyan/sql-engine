@@ -15,7 +15,7 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(IsPathExistsTest, ExistingPath)
+TEST(Utility, IsPathExistsTest_ExistingPath)
 {
     auto &&dir      = Peparation::GetTestDir();
     auto &&workdir  = dir.GetWorkDir();
@@ -32,21 +32,21 @@ TEST(IsPathExistsTest, ExistingPath)
     ASSERT_TRUE(IsPathExists(comp));
 }
 
-TEST(IsPathExistsTest, NonExistingPath)
+TEST(Utility, IsPathExistsTest_NonExistingPath)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsPathExists(nonExistingPath));
 }
 
-TEST(AssertPathExistsTest, ExistingPath)
+TEST(Utility, AssertPathExistsTest_ExistingPath)
 {
     auto &&dir     = Peparation::GetTestDir();
     auto &&workdir = dir.GetWorkDir();
     ASSERT_NO_THROW(AssertPathExists(workdir));
 }
 
-TEST(AssertPathExistsTest, NonExistingPath)
+TEST(Utility, AssertPathExistsTest_NonExistingPath)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();

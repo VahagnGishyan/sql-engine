@@ -31,7 +31,7 @@ namespace SQLEngine::Testing::Peparation
     auto TestDir::GetTestingWorkDir() -> const std::string
     {
         auto &&info = SQLEngine::Application::GetInfo();
-        return info.GetDefaultAppData(false) + "/testing";
+        return info.GetDefaultAppData() + "/testing";
     }
     auto TestDir::GetTestingName() -> const std::string
     {

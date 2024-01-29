@@ -15,14 +15,14 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(IsDirExistsTest, ExistingDir)
+TEST(Utility, IsDirExists_TestExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_TRUE(IsDirExists(existingDirPath));
 }
 
-TEST(IsDirExistsTest, NonExistingDir)
+TEST(Utility, IsDirExists_TestNonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
@@ -31,35 +31,35 @@ TEST(IsDirExistsTest, NonExistingDir)
     ASSERT_FALSE(IsDirExists(nonExistingDirPath));
 }
 
-TEST(AssertDirExistsTest, ExistingDir)
+TEST(Utility, AssertDirExistsTest_ExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_NO_THROW(AssertDirExists(existingDirPath));
 }
 
-TEST(AssertDirExistsTest, NonExistingDir)
+TEST(Utility, AssertDirExistsTest_NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertDirExists(nonExistingPath), std::exception);
 }
 
-TEST(AssertDirNotExistsTest, ExistingDir)
+TEST(Utility, AssertDirNotExistsTest_ExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_THROW(AssertDirNotExists(existingDirPath), std::exception);
 }
 
-TEST(AssertDirNotExistsTest, NonExistingDir)
+TEST(Utility, AssertDirNotExistsTest_NonExistingDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_NO_THROW(AssertDirNotExists(nonExistingPath));
 }
 
-TEST(AssertDirNotExistsTest, BaseDir)
+TEST(Utility, AssertDirNotExistsTest_BaseDir)
 {
     auto &&dir             = Peparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
@@ -70,7 +70,7 @@ TEST(AssertDirNotExistsTest, BaseDir)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(GetBaseDir, ExistingDir)
+TEST(Utility, GetBaseDir_ExistingDir)
 {
     auto &&dir = Peparation::GetTestDir();
     std::vector<std::string> list;
@@ -86,7 +86,7 @@ TEST(GetBaseDir, ExistingDir)
     }
 }
 
-TEST(GetBaseDir, NonExistingDir)
+TEST(Utility, GetBaseDir_NonExistingDir)
 {
     EXPECT_EQ(GetBaseDir("/path/to/some/directory/"), "/path/to/some");
     EXPECT_EQ(GetBaseDir("/path/to/some/directory"), "/path/to/some");
@@ -94,25 +94,25 @@ TEST(GetBaseDir, NonExistingDir)
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(GetBaseDir, EmptyPathTest)
+TEST(Utility, GetBaseDir_EmptyPathTest)
 {
     const std::string path = "";
     EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
-TEST(GetBaseDir, NoSlashesTest)
+TEST(Utility, GetBaseDir_NoSlashesTest)
 {
     const std::string path = "file.txt";
     EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
-TEST(GetBaseDir, SingleSlashTest)
+TEST(Utility, GetBaseDir_SingleSlashTest)
 {
     const std::string path = "/";
     EXPECT_THROW(GetBaseDir(path), std::exception);
 }
 
-TEST(GetBaseDir, RelativePathTest)
+TEST(Utility, GetBaseDir_RelativePathTest)
 {
     const std::string path = "../parent/child/file.txt";
     EXPECT_EQ(GetBaseDir(path), "../parent/child");

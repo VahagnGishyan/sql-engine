@@ -9,11 +9,11 @@ find_package(GTest REQUIRED)
 set (TEST_SUBDIRS
     dir-preparator
 
-    local-database
+    utility
     database
+    local-database
 
-    utility-core
-    utility-filesystem
+    runner
 )
 
 # set(FORMAT_FILES ${SOURCES} ${HEADERS})

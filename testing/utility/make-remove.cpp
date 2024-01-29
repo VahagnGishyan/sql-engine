@@ -18,7 +18,7 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(MakeAndRemoveDir, Success)
+TEST(Utility, MakeAndRemoveDir_Success)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -41,7 +41,7 @@ TEST(MakeAndRemoveDir, Success)
     EXPECT_FALSE(IsDirExists(testDir));
 }
 
-TEST(MakeDir, Failure)
+TEST(Utility, MakeDir_Failure)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -64,7 +64,7 @@ TEST(MakeDir, Failure)
     EXPECT_FALSE(IsDirExists(existingDir));
 }
 
-TEST(RemoveDir, Failure)
+TEST(Utility, RemoveDir_Failure)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -82,7 +82,7 @@ TEST(RemoveDir, Failure)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(MakeAndRemoveFile, Success)
+TEST(Utility, MakeAndRemoveFile_Success)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -102,7 +102,7 @@ TEST(MakeAndRemoveFile, Success)
     EXPECT_NO_THROW(RemoveFile(testFile));
 }
 
-TEST(MakeFile, Failure)
+TEST(Utility, MakeFile_Failure)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -126,7 +126,7 @@ TEST(MakeFile, Failure)
     EXPECT_FALSE(IsFileExists(existingFile));
 }
 
-TEST(RemoveFile, Failure)
+TEST(Utility, RemoveFile_Failure)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -145,7 +145,7 @@ TEST(RemoveFile, Failure)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(MakeDir, OptionExistOkExisting)
+TEST(Utility, MakeDir_OptionExistOkExisting)
 {
     auto &&testdir = Peparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
@@ -155,7 +155,7 @@ TEST(MakeDir, OptionExistOkExisting)
     EXPECT_THROW(MakeDir(workdir, Option::ExistOk{false}), std::exception);
 }
 
-TEST(MakeDir, OptionExistOkNonExisting)
+TEST(Utility, MakeDir_OptionExistOkNonExisting)
 {
     auto &&testdir       = Peparation::GetTestDir();
     auto nonExistingPath = testdir.GetNonExistingPath();
@@ -167,7 +167,7 @@ TEST(MakeDir, OptionExistOkNonExisting)
     ASSERT_NO_THROW(RemoveDir(nonExistingPath));
 }
 
-TEST(MakeDir, OptionCreateBaseDirectoryExisting)
+TEST(Utility, MakeDir_OptionCreateBaseDirectoryExisting)
 {
     auto &&testdir = Peparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
@@ -180,7 +180,7 @@ TEST(MakeDir, OptionCreateBaseDirectoryExisting)
                             Option::CreateBaseDirectory{true}));
 }
 
-TEST(MakeDir, OptionCreateBaseDirectoryNonExisting)
+TEST(Utility, MakeDir_OptionCreateBaseDirectoryNonExisting)
 {
     auto &&testdir                 = Peparation::GetTestDir();
     auto nonExistingPath           = testdir.GetNonExistingPath();
@@ -209,7 +209,7 @@ TEST(MakeDir, OptionCreateBaseDirectoryNonExisting)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(RemoveDir, OptionMustExist)
+TEST(Utility, RemoveDir_OptionMustExist)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -217,8 +217,7 @@ TEST(RemoveDir, OptionMustExist)
     const std::string testDir = emptydir + "/test-directory";
 
     ASSERT_FALSE(IsDirExists(testDir));
-    EXPECT_THROW(RemoveDir(testDir, Option::MustExist{true}),
-                 std::exception);
+    EXPECT_THROW(RemoveDir(testDir, Option::MustExist{true}), std::exception);
     EXPECT_NO_THROW(RemoveDir(testDir, Option::MustExist{false}));
 
     ASSERT_NO_THROW(MakeDir(testDir, Option::ExistOk{false}));

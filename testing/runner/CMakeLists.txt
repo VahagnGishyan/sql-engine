@@ -1,19 +1,10 @@
 ﻿
 cmake_minimum_required(VERSION 3.0)
 
-project(testing-utility-filesystem)
+project(testing-run)
 
 set(SOURCES
-    dir-exists.cpp
-    empty-dir.cpp
-    file-exists.cpp
-    file-extension.cpp
-    list-dir.cpp
     main.cpp
-    make-remove.cpp
-    options.cpp
-    path-exists.cpp
-    test-dir-preparation.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -25,7 +16,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} 
     fmt::fmt 
     gtest::gtest
-    sql-engine-app-info 
-    sql-engine-utility 
-    testing-dir-preparator
+    sql-engine-utility
+
+    testing-utility
+
+    testing-database
+    testing-local-database
 )

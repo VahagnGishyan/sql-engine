@@ -13,7 +13,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(UtilityCore, Environment)
+TEST(Utility, Core_Environment)
 {
     ASSERT_TRUE(SQLEngine::Utility::GetEnvironmentValue("PATH").size());
     // std::cout << "WorkDir is " << SQLEngine::Utility::GetDefaultDataPath() <<
@@ -22,19 +22,9 @@ TEST(UtilityCore, Environment)
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(UtilityCore, GetDefaultDataPath)
+TEST(Utility, Core_GetDefaultDataPath)
 {
     ASSERT_TRUE(SQLEngine::Utility::GetDefaultDataPath().size());
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-int main(int argc, char **argv)
-{
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }
 
 //////////////////////////////////////////////////////////////////////////

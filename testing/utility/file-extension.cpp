@@ -16,7 +16,7 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(AssertThrowFileExtensionTest, InvalidFileExtension)
+TEST(Utility, AssertThrowFileExtensionTest_InvalidFileExtension)
 {
     std::string filepath = "/path/to/file.txt";
     EXPECT_TRUE(CheckFileExtension(filepath, "txt"));
@@ -27,7 +27,7 @@ TEST(AssertThrowFileExtensionTest, InvalidFileExtension)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(CheckFileExtensionTest, ValidFileExtension)
+TEST(Utility, CheckFileExtensionTest_ValidFileExtension)
 {
     auto &&dir     = Peparation::GetTestDir();
     auto &&paeinfo = dir.GetValidFilePAEList();
@@ -41,7 +41,7 @@ TEST(CheckFileExtensionTest, ValidFileExtension)
     }
 }
 
-TEST(CheckFileExtensionTest, InvalidFileExtension)
+TEST(Utility, CheckFileExtensionTest_InvalidFileExtension)
 {
     auto &&dir     = Peparation::GetTestDir();
     auto &&paeinfo = dir.GetValidFilePAEList();
@@ -54,7 +54,7 @@ TEST(CheckFileExtensionTest, InvalidFileExtension)
     }
 }
 
-TEST(CheckFileExtensionTest, NonExistingFiles)
+TEST(Utility, CheckFileExtensionTest_NonExistingFiles)
 {
     auto &&dir     = Peparation::GetTestDir();
     auto &&paeinfo = dir.GetInvalidFilePAEList();

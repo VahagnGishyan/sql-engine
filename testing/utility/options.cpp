@@ -15,7 +15,7 @@ using namespace SQLEngine::Utility;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(Options, True)
+TEST(Utility, Options_True)
 {
     Option::IOption opTrue{true};
     // Option::ExistOk existokFalse{false};
@@ -29,7 +29,7 @@ TEST(Options, True)
     EXPECT_EQ(!opTrue, false);
 }
 
-TEST(Options, False)
+TEST(Utility, Options_False)
 {
     Option::IOption opTrue{false};
     // Option::ExistOk existokFalse{false};

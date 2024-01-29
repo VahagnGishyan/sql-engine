@@ -4,7 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 project(testing-database)
 
 set(SOURCES
-    main.cpp
+    run-test.cpp
+
     test-column.cpp
     test-table.cpp
     test-database.cpp
@@ -12,7 +13,9 @@ set(SOURCES
     utility.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_library (${PROJECT_NAME} SHARED  
+    ${SOURCES}
+) 
 
 target_compile_features   (${PROJECT_NAME} PRIVATE cxx_std_17)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

@@ -45,7 +45,7 @@ auto VecStrToStrForPrint(const std::vector<std::string> &list)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(ListDir, ValidDirectory)
+TEST(Utility, ListDir_ValidDirectory)
 {
     auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
@@ -77,7 +77,7 @@ TEST(ListDir, ValidDirectory)
     //  VecStrToStrForPrint(fileNinfo->filenameList));
 }
 
-TEST(ListDir, EmptyDirectory)
+TEST(Utility, ListDir_EmptyDirectory)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -95,7 +95,7 @@ TEST(ListDir, EmptyDirectory)
     ASSERT_TRUE(resultdir->empty());
 }
 
-TEST(ListDirsInDir, ValidDirectory)
+TEST(Utility, ListDirsInDir_ValidDirectory)
 {
     auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
@@ -121,7 +121,7 @@ TEST(ListDirsInDir, ValidDirectory)
     EXPECT_EQ(compList->size(), dirNinfo->dirnameList.size());
 }
 
-TEST(ListFilesInDir, ValidDirectory)
+TEST(Utility, ListFilesInDir_ValidDirectory)
 {
     auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
@@ -145,7 +145,7 @@ TEST(ListFilesInDir, ValidDirectory)
     EXPECT_EQ(compList->size(), fileNinfo->filenameList.size());
 }
 
-TEST(ListDir, NonExistentDirectory)
+TEST(Utility, ListDir_NonExistentDirectory)
 {
     auto &&testdir     = Peparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
@@ -159,7 +159,7 @@ TEST(ListDir, NonExistentDirectory)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(ListFilesInDir, ListFilesWithExtension)
+TEST(Utility, ListFilesInDir_ListFilesWithExtension)
 {
     auto &&testdir = Peparation::GetTestDir();
     auto &&paeinfo = testdir.GetValidFilePAEList();
@@ -178,7 +178,7 @@ TEST(ListFilesInDir, ListFilesWithExtension)
     }
 }
 
-TEST(ListFilesInDir, ListFilesWithExtensionEmptyDir)
+TEST(Utility, ListFilesInDir_ListFilesWithExtensionEmptyDir)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -189,7 +189,7 @@ TEST(ListFilesInDir, ListFilesWithExtensionEmptyDir)
     ASSERT_EQ(list->size(), 0);
 }
 
-TEST(ListFilesInDir, ListFilesWithNonExistentDir)
+TEST(Utility, ListFilesInDir_ListFilesWithNonExistentDir)
 {
     auto &&testdir     = Peparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
@@ -202,7 +202,7 @@ TEST(ListFilesInDir, ListFilesWithNonExistentDir)
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(ListDir, OptionFullPathsFalseValidDirectory)
+TEST(Utility, ListDir_OptionFullPathsFalseValidDirectory)
 {
     auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
@@ -239,7 +239,7 @@ TEST(ListDir, OptionFullPathsFalseValidDirectory)
     }
 }
 
-TEST(ListDir, OptionFullPathsTrueValidDirectory)
+TEST(Utility, ListDir_OptionFullPathsTrueValidDirectory)
 {
     auto &&testdir   = Peparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
@@ -268,7 +268,7 @@ TEST(ListDir, OptionFullPathsTrueValidDirectory)
     }
 }
 
-TEST(ListDir, OptionFullPathsFalseEmptyDirectory)
+TEST(Utility, ListDir_OptionFullPathsFalseEmptyDirectory)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
@@ -286,7 +286,7 @@ TEST(ListDir, OptionFullPathsFalseEmptyDirectory)
     ASSERT_TRUE(resultdir->empty());
 }
 
-TEST(ListDir, OptionFullPathsTrueEmptyDirectory)
+TEST(Utility, ListDir_OptionFullPathsTrueEmptyDirectory)
 {
     auto &&testdir  = Peparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
