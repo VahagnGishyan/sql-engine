@@ -34,8 +34,9 @@ namespace SQLEngine::Application
         }
         auto GetDefaultAppData() const -> const std::string override
         {
-            const std::string path =
-                Utility::GetDefaultDataPath() + '/' + GetName();
+            auto defaultPath = Utility::GetDefaultDataPath();
+            Utility::AssertDirExists(defaultPath);
+            const std::string path = defaultPath + '/' + GetName();
             Utility::MakeDir(path, Utility::Option::ExistOk{true},
                              Utility::Option::CreateBaseDirectory{true});
             return path;
