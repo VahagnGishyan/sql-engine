@@ -40,6 +40,10 @@ namespace SQLEngine::Utility
     auto GetBaseDir(const std::string &path,
                     const Option::MustExist &mustexist = Option::MustExist{
                         true}) -> const std::string;
+    PROJECT_SHARED_EXPORT
+    auto ExtractFileName(const std::string &path,
+                         const Option::MustExist &mustexist = Option::MustExist{
+                             true}) -> const std::string;
 
     PROJECT_SHARED_EXPORT
     void AssertFileExists(const std::string &path);
@@ -53,6 +57,9 @@ namespace SQLEngine::Utility
     PROJECT_SHARED_EXPORT
     auto CheckFileExtension(const std::string &path,
                             const std::string &extension) -> bool;
+    PROJECT_SHARED_EXPORT
+    void AssertFileExtension(const std::string &path,
+                            const std::string &extension);
 
     PROJECT_SHARED_EXPORT
     auto ListDir(const std::string &path,

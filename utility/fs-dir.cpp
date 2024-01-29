@@ -67,6 +67,21 @@ namespace SQLEngine
         return baseDir.string();
     }
 
+    auto Utility::ExtractFileName(const std::string &path,
+                                  const Option::MustExist &mustexist)
+        -> const std::string
+    {
+        if (mustexist == true)
+        {
+            Utility::AssertDirExists(path);
+        }
+
+        std::filesystem::path fspath(path);
+        return fspath.filename().string();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
     void Utility::AssertDirExists(const std::string &path)
     {
         Assert(IsDirExists(path), fmt::format("{} is not a directory.", path));

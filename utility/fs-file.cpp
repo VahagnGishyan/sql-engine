@@ -81,6 +81,14 @@ namespace SQLEngine
         return false;
     }
 
+    void Utility::AssertFileExtension(const std::string &path,
+                                      const std::string &extension)
+    {
+        Assert(CheckFileExtension(path, extension),
+               fmt::format("file: {} does not have the specified extension: {}",
+                           path, extension));
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     void Utility::MakeEmptyFile(const std::string &path,
