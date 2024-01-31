@@ -20,6 +20,6 @@ target_link_libraries(${PROJECT_NAME}
 
     testing-utility
 
-    testing-database
-    testing-local-database
+    # testing-database
+    # testing-local-database
 )
