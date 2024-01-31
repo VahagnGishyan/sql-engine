@@ -36,6 +36,7 @@ set(SOURCES
 
     local-database/test-db-local-json-reader.cpp
     local-database/test-db-local-json-writer.cpp
+    local-database/test-table-column.cpp
     local-database/utility.cpp
 )
 

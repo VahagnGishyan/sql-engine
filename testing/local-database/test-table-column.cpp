@@ -18,7 +18,7 @@ using namespace SQLEngine;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(Table, EmptyCreation)
+TEST(LocalDataBase, ColumnEmptyCreation)
 {
     const std::string name{"test-table"};
 
@@ -31,7 +31,7 @@ TEST(Table, EmptyCreation)
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(Table, EmptyCreation)
+TEST(LocalDataBase, TableEmptyCreation)
 {
     const std::string name{"test-table"};
 
