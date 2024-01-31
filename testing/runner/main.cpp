@@ -15,6 +15,10 @@
 
 int main(int argc, char **argv)
 {
+    /**
+     * The main purpose of this methods is to load the dll
+     * Without this methods, you will not be able to run tests
+     */
     SQLEngine::Testing::Utility::AddTests();
     SQLEngine::Testing::DataBase::AddTests();
     SQLEngine::Testing::LocalDataBase::AddTests();

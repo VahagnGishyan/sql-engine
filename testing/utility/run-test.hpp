@@ -15,12 +15,16 @@ namespace SQLEngine::Testing::Utility
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    /**
+     * The main purpose of this method is to load the dll
+     * Without this method, you will not be able to run tests
+     */
     void AddTests();
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::DataBase
+}  // namespace SQLEngine::Testing::Utility
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

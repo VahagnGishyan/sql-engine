@@ -57,14 +57,19 @@ namespace SQLEngine::LocalDataBase
             m_database  = reader->Read();
             m_path      = dbpath;
         }
-        void Disconnect() override
+        void Disconnect() noexcept override
         {
             AssertConnected();
             Disconnect(m_path);
         }
-        void Disconnect(const std::string& workdir) override
+        void Disconnect(const std::string& workdir) noexcept override
         {
             AssertConnected();
+            if (m_path != workdir)
+            {
+                Utility::RemoveDir(m_path);
+            }
+
             SaveAt(workdir);
             m_database = nullptr;
             m_path     = "";
@@ -201,22 +206,47 @@ namespace SQLEngine::LocalDataBase
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // auto Init(const std::string& workdir) -> Interface::UConnectDataBase
-    // {
-    // }
-    // auto Connect(const std::string& workdir) -> Interface::UConnectDataBase
-    // {
-    // }
-    // void Disconnect(Interface::UConnectDataBase db)
-    // {
-    // }
-    // void Disconnect(Interface::UConnectDataBase db, const std::string&
-    // workdir)
-    // {
-    // }
-    // void Drop(Interface::UConnectDataBase db)
-    // {
-    // }
+    auto CreateColumn(const std::string& name,
+                      const Interface::DynamicType& type) -> Interface::UColumn
+    {
+        return DataBase::CreateColumn(name, type);
+    }
+    auto CreateTable(const std::string& name) -> Interface::UTable
+    {
+        return DataBase::CreateTable(name);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto Init(const std::string& newdbpath) -> Interface::UConnectDataBase
+    {
+        Interface::UConnectDataBase database =
+            std::make_unique<LocalJSONDatabase>();
+        database->Init(newdbpath);
+        return database;
+    }
+    auto Connect(const std::string& dbpath) -> Interface::UConnectDataBase
+    {
+        Interface::UConnectDataBase database =
+            std::make_unique<LocalJSONDatabase>();
+        database->Connect(dbpath);
+        return database;
+    }
+    void Disconnect(Interface::UConnectDataBase db)
+    {
+        db->Disconnect();
+    }
+    void Disconnect(Interface::UConnectDataBase db,
+                    const std::string& newdbpath)
+    {
+        db->Disconnect(newdbpath);
+    }
+    void Drop(Interface::UConnectDataBase db)
+    {
+        db->Drop();
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

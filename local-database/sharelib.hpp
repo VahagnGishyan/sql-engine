@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#if defined DB_MANAGER_BUILD
+#if defined LOCAL_DATABASE_BUILD
 #define SHARE_LIB
 #endif
 

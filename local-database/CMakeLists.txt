@@ -15,11 +15,11 @@ set(SOURCES
     local-database.cpp
 )
 
-add_library (${PROJECT_NAME} SHARED #STATIC 
+add_library (${PROJECT_NAME} SHARED
     ${SOURCES}
 ) 
 
-add_compile_definitions(DB_MANAGER_BUILD)
+add_compile_definitions(LOCAL_DATABASE_BUILD)
 
 target_link_libraries(${PROJECT_NAME} 
     sql-engine-utility 

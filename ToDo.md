@@ -12,9 +12,11 @@
 - [x] database: column
 - [x] database: table
 - [x] database: database
-- [ ] database: row
-- [ ] db-manager: db-manager
-- [ ] db-manager: json-saver
+- [x] database: row
+- [x] local-database: json stream
+- [ ] local-database: local-database
+	- [x] temp: impl
+	- [ ] temp: test
 - [ ] sql-executor
 - [ ] cli-application
 - [ ] todo-application

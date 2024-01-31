@@ -23,11 +23,20 @@ namespace SQLEngine::LocalDataBase
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto Init(const std::string& newdbpath) -> Interface::UConnectDataBase;
-    auto Connect(const std::string& newdbpath) -> Interface::UConnectDataBase;
-    void Disconnect(Interface::UConnectDataBase db);
-    void Disconnect(Interface::UConnectDataBase db, const std::string& newdbpath);
-    void Drop(Interface::UConnectDataBase db);
+    auto PROJECT_SHARED_EXPORT CreateColumn(const std::string& name,
+                                            const Interface::DynamicType& type)
+        -> Interface::UColumn;
+    auto PROJECT_SHARED_EXPORT CreateTable(const std::string& newname)
+        -> Interface::UTable;
+
+    auto PROJECT_SHARED_EXPORT Init(const std::string& newdbpath)
+        -> Interface::UConnectDataBase;
+    auto PROJECT_SHARED_EXPORT Connect(const std::string& dbpath)
+        -> Interface::UConnectDataBase;
+    void PROJECT_SHARED_EXPORT Disconnect(Interface::UConnectDataBase db);
+    void PROJECT_SHARED_EXPORT Disconnect(Interface::UConnectDataBase db,
+                                          const std::string& newdbpath);
+    void PROJECT_SHARED_EXPORT Drop(Interface::UConnectDataBase db);
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
