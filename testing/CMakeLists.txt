@@ -75,13 +75,14 @@ target_include_directories(tester-database PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(tester-local-database
     local-database/test-db-local-json-reader.cpp
     local-database/test-db-local-json-writer.cpp
-    # local-database/test-local-database.cpp
+    local-database/test-local-database.cpp
     local-database/test-table-column.cpp
     local-database/utility.cpp
 )
 target_link_libraries(tester-local-database 
     fmt::fmt 
     gtest::gtest
+    sql-engine-utility
     sql-engine-interface
     sql-engine-local-database
 )

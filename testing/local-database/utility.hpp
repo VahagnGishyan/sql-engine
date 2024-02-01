@@ -23,10 +23,12 @@ namespace SQLEngine::Testing::LocalDataBase
 
     auto CreateDataBase() -> SQLEngine::Interface::UDataBase;
 
+    auto GetDefaultTestDir() -> const std::string;
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::DataBase
+}  // namespace SQLEngine::Testing::LocalDataBase
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

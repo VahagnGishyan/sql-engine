@@ -169,6 +169,17 @@ namespace SQLEngine
         }
     }
 
+    /* *
+     * temp
+     * untested function ClearDirectoryContent
+     */
+    void Utility::ClearDirectoryContent(const std::string &path)
+    {
+        AssertDirExists(path);
+        RemoveDir(path);
+        MakeDir(path);
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

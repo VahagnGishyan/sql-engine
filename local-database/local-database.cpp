@@ -59,8 +59,10 @@ namespace SQLEngine::LocalDataBase
         }
         void Disconnect() noexcept override
         {
-            AssertConnected();
-            Disconnect(m_path);
+            if (IsConnected())
+            {
+                Disconnect(m_path);
+            }
         }
         void Disconnect(const std::string& workdir) noexcept override
         {
@@ -85,7 +87,7 @@ namespace SQLEngine::LocalDataBase
        protected:
         void SaveAt(const std::string& path) const
         {
-            auto writer = CreateDBLocalJSONWriter(path);
+            auto writer = CreateDBLocalJSONWriter(Utility::GetBaseDir(path));
             writer->Write(*m_database);
         }
 
@@ -186,14 +188,18 @@ namespace SQLEngine::LocalDataBase
         //////////////////////////////////////////////////////////////////
 
        protected:
+        auto IsConnected() const -> bool
+        {
+            return (m_database != nullptr);
+        }
         void AssertConnected() const
         {
-            Utility::Assert(m_database != nullptr,
+            Utility::Assert(IsConnected() == true,
                             "LocalJSONDatabase::AssertConnected()");
         }
         void AssertDisconnected() const
         {
-            Utility::Assert(m_database == nullptr,
+            Utility::Assert(IsConnected() == false,
                             "LocalJSONDatabase::AssertDisconnected()");
         }
 
@@ -225,7 +231,8 @@ namespace SQLEngine::LocalDataBase
         Interface::UConnectDataBase database =
             std::make_unique<LocalJSONDatabase>();
         database->Init(newdbpath);
-        return database;
+        // return database;
+        return nullptr;
     }
     auto Connect(const std::string& dbpath) -> Interface::UConnectDataBase
     {

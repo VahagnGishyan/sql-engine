@@ -23,9 +23,9 @@ using namespace SQLEngine;
 
 static auto GetDefaultWorkDir() -> std::string
 {
-    auto&& info       = Application::GetInfo();
-    auto&& appWorkDir = info.GetDefaultAppData();
-    return fmt::format("{}/{}", appWorkDir, "testdir");
+    auto&& testdir = Testing::LocalDataBase::GetDefaultTestDir();
+    auto&& dbdir   = testdir + "/my-db-reader";
+    return dbdir;
 }
 
 //////////////////////////////////////////////////////////////////////////

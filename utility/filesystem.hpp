@@ -59,7 +59,7 @@ namespace SQLEngine::Utility
                             const std::string &extension) -> bool;
     PROJECT_SHARED_EXPORT
     void AssertFileExtension(const std::string &path,
-                            const std::string &extension);
+                             const std::string &extension);
 
     PROJECT_SHARED_EXPORT
     auto ListDir(const std::string &path,
@@ -94,12 +94,14 @@ namespace SQLEngine::Utility
     PROJECT_SHARED_EXPORT
     void RemoveDir(const std::string &path,
                    const Option::MustExist mustexist = Option::MustExist{true});
-
     PROJECT_SHARED_EXPORT
-    void MakeEmptyFile(const std::string &path,
-                       const Option::ExistOk existok = Option::ExistOk{false},
-                       const Option::CreateBaseDirectory &createbase =
-                           Option::CreateBaseDirectory{false});
+    void ClearDirectoryContent(const std::string &path);
+
+    PROJECT_SHARED_EXPORT void MakeEmptyFile(
+        const std::string &path,
+        const Option::ExistOk existok = Option::ExistOk{false},
+        const Option::CreateBaseDirectory &createbase =
+            Option::CreateBaseDirectory{false});
     PROJECT_SHARED_EXPORT
     void RemoveFile(const std::string &path,
                     const Option::MustExist mustexist = Option::MustExist{
