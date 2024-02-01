@@ -35,9 +35,27 @@ namespace SQLEngine::LocalDataBase
     class LocalJSONDatabase : public Interface::IConnectDataBase
     {
        public:
+        LocalJSONDatabase() : m_database{}, m_path{}
+        {
+        }
+
+       protected:
+        LocalJSONDatabase(UDataBase db, const std::string& path) :
+            m_database{std::move(db)}, m_path{path}
+        {
+            auto&& dbname = m_database->GetName();
+            auto&& fname  = Utility::ExtractFileName(m_path);
+            Utility::Assert(dbname == fname,
+                            "LocalJSONDatabase::LocalJSONDatabase(db, path)");
+        }
+
+       public:
         ~LocalJSONDatabase()
         {
-            Disconnect();
+            if (IsConnected())
+            {
+                Disconnect();
+            }
         }
 
        public:
@@ -57,14 +75,11 @@ namespace SQLEngine::LocalDataBase
             m_database  = reader->Read();
             m_path      = dbpath;
         }
-        void Disconnect() noexcept override
+        void Disconnect() override
         {
-            if (IsConnected())
-            {
-                Disconnect(m_path);
-            }
+            Disconnect(m_path);
         }
-        void Disconnect(const std::string& workdir) noexcept override
+        void Disconnect(const std::string& workdir) override
         {
             AssertConnected();
             if (m_path != workdir)
@@ -92,10 +107,16 @@ namespace SQLEngine::LocalDataBase
         }
 
        public:
-        auto Copy() const -> UDataBase override
+        auto Copy() const -> Interface::UDataBase override
         {
-            AssertConnected();
-            return (m_database->Copy());
+            return CopyConnectDataBase();
+        }
+        auto CopyConnectDataBase() const -> Interface::UConnectDataBase override
+        {
+            Interface::UConnectDataBase database{
+                new LocalJSONDatabase{m_database->Copy(), m_path}
+            };
+            return (database);
         }
 
         auto Copy(const std::string& newname) const -> UDataBase override
@@ -241,18 +262,22 @@ namespace SQLEngine::LocalDataBase
         database->Connect(dbpath);
         return database;
     }
-    void Disconnect(Interface::UConnectDataBase db)
+    void Disconnect(Interface::IConnectDataBase& db)
     {
-        db->Disconnect();
+        db.Disconnect();
     }
-    void Disconnect(Interface::UConnectDataBase db,
+    void Disconnect(Interface::IConnectDataBase& db,
                     const std::string& newdbpath)
     {
-        db->Disconnect(newdbpath);
+        db.Disconnect(newdbpath);
     }
-    void Drop(Interface::UConnectDataBase db)
+    void Drop(Interface::IConnectDataBase& db)
     {
-        db->Drop();
+        db.Drop();
+    }
+    void Drop(const std::string& newdbpath)
+    {
+        Utility::RemoveDir(newdbpath);
     }
 
     //////////////////////////////////////////////////////////////////////

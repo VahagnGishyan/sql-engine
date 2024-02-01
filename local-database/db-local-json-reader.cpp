@@ -45,17 +45,19 @@ namespace SQLEngine::LocalDataBase
                 database->AddTable(std::move(table));
             }
             return database;
-            return nullptr;
         }
         virtual auto GetTablesList(const std::string& tablesDir) const
             -> Interface::TableList
         {
             Interface::TableList list{};
-            auto&& tablesList = Utility::ListFilesInDir(
-                tablesDir, Utility::Option::FullPaths{true});
-            for (auto&& tableFile : *tablesList)
+            if (Utility::IsDirExists(tablesDir))
             {
-                list.push_back(GetTable(tableFile));
+                auto&& tablesList = Utility::ListFilesInDir(
+                    tablesDir, Utility::Option::FullPaths{true});
+                for (auto&& tableFile : *tablesList)
+                {
+                    list.push_back(GetTable(tableFile));
+                }
             }
             return list;
         }
