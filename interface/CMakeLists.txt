@@ -13,14 +13,8 @@ include_directories(
 )
 
 set(SOURCES
-    column.cpp
-    database.cpp
-    db-manager.cpp
     db-object.cpp
-    db-stream.cpp
     dynamic-types.cpp
-    row-oriented-table.cpp
-    table.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
