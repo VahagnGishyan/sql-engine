@@ -94,12 +94,36 @@ target_include_directories(tester-local-database PRIVATE ${CMAKE_CURRENT_SOURCE_
 #                                #
 ##################################
 
+add_executable(tester-query-executor
+    query-executor/main.cpp
+    query-executor/test-conditions.cpp
+)
+target_link_libraries(tester-query-executor
+    fmt::fmt 
+    gtest::gtest
+    sql-engine-utility
+    sql-engine-interface
+    sql-engine-query-executor
+)
+target_compile_features   (tester-query-executor PRIVATE cxx_std_17)
+target_include_directories(tester-query-executor PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(tester-query-executor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+##################################
+#                                #
+##################################
+
 add_test(NAME tester-utility
         COMMAND tester-utility)
+
 add_test(NAME tester-database
-         COMMAND tester-database)
+        COMMAND tester-database)
+
 add_test(NAME tester-local-database
         COMMAND tester-local-database)
+
+add_test(NAME tester-query-executor
+        COMMAND tester-query-executor)
 
 ##################################
 #                                #
