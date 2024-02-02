@@ -31,6 +31,8 @@ namespace SQLEngine::Interface
     using TableList  = std::vector<UTable>;
     using UTableList = std::unique_ptr<TableList>;
 
+    using RowIndexes = std::vector<int>;
+
     using TableNameList   = std::vector<std::string>;
     using UTableNameList  = std::unique_ptr<TableNameList>;
     using ShTableNameList = std::shared_ptr<TableNameList>;
@@ -63,6 +65,7 @@ namespace SQLEngine::Interface
         virtual auto GetColumn(const std::string& columnName) -> IColumn& = 0;
 
        public:
+        virtual auto RowsCount() const -> const int                        = 0;
         virtual auto ColumnsCount() const -> const int                     = 0;
         virtual auto ListColumns() const -> UColumnNameList                = 0;
         virtual auto IsColumnExists(const std::string& name) const -> bool = 0;

@@ -3,6 +3,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/core.h>
+
 #include "database.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
@@ -74,7 +76,7 @@ namespace SQLEngine::DataBase
             if (ColumnsCount() != 0)
             {
                 Utility::Assert(
-                    GetColumn(0).GetSize() == column->GetSize(),
+                    RowsCount() == column->GetSize(),
                     "AddColumn, columns count must be equal in table:");
             }
             m_columns.push_back(std::move(column));
@@ -151,6 +153,14 @@ namespace SQLEngine::DataBase
         auto ColumnsCount() const -> const int override
         {
             return static_cast<int>(m_columns.size());
+        }
+        auto RowsCount() const -> const int override
+        {
+            if (ColumnsCount() == 0)
+            {
+                return 0;
+            }
+            return m_columns[0]->GetSize();
         }
 
         auto ListColumns() const -> UColumnNameList override

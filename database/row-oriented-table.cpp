@@ -25,9 +25,9 @@ namespace SQLEngine::DataBase
     using ColumnInfo     = Interface::ColumnInfo;
     using ColumnInfoList = Interface::ColumnInfoList;
 
-    using ROTRowIndexes = Interface::ROTRowIndexes;
-    using Row           = Interface::ROTRow;
-    using Data          = Interface::ROTRowList;
+    // using ROTRowIndexes = Interface::ROTRowIndexes;
+    using Row  = Interface::ROTRow;
+    using Data = Interface::ROTRowList;
 
     struct RowOrientedTableParams
     {
@@ -85,7 +85,7 @@ namespace SQLEngine::DataBase
             const int columnsSize = static_cast<int>(columns.size());
 
             ColumnInfoList newlist = Interface::CopyColumns(columns);
-            Data newdata = Interface::CopyROTRowList(data, columnsSize);
+            Data newdata           = Interface::CopyRowList(data, columnsSize);
 
             RowOrientedTableParams params;
             params.tableName = tableName;
@@ -146,21 +146,21 @@ namespace SQLEngine::DataBase
         test
         this method is not tested
         */
-        auto CopyByIndexes(const ROTRowIndexes& indexes) const
-            -> Interface::URowOrientedTable override
-        {
-            const int columnsSize = static_cast<int>(m_columns.size());
+        // auto CopyByIndexes(const ROTRowIndexes& indexes) const
+        //     -> Interface::URowOrientedTable override
+        // {
+        //     const int columnsSize = static_cast<int>(m_columns.size());
 
-            ColumnInfoList newlist = Interface::CopyColumns(m_columns);
-            Data newdata =
-                Interface::CopyROTRowList(m_data, columnsSize, indexes);
+        //     ColumnInfoList newlist = Interface::CopyColumns(m_columns);
+        //     Data newdata =
+        //         Interface::CopyRowList(m_data, columnsSize, indexes);
 
-            RowOrientedTableParams params;
-            params.tableName = m_tableName;
-            params.columns   = std::move(newlist);
-            params.data      = std::move(newdata);
-            return (Create(params));
-        }
+        //     RowOrientedTableParams params;
+        //     params.tableName = m_tableName;
+        //     params.columns   = std::move(newlist);
+        //     params.data      = std::move(newdata);
+        //     return (Create(params));
+        // }
 
        public:
         auto CreateTable() const -> UTable override

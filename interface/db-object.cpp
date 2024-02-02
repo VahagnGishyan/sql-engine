@@ -41,17 +41,17 @@ namespace SQLEngine::Interface
         }
         return newlist;
     }
-    auto CopyROTRowList(const ROTRowList& data, const int columnsCount)
+    auto CopyRowList(const ROTRowList& data, const int columnsCount)
         -> ROTRowList
     {
-        ROTRowIndexes indexes;
+        RowIndexes indexes;
         indexes.resize(data.size());
         std::iota(indexes.begin(), indexes.end(), 0);
 
-        return CopyROTRowList(data, columnsCount, indexes);
+        return CopyRowList(data, columnsCount, indexes);
     }
-    auto CopyROTRowList(const ROTRowList& data, const int columnsCount,
-                        const ROTRowIndexes& indexes) -> ROTRowList
+    auto CopyRowList(const ROTRowList& data, const int columnsCount,
+                     const RowIndexes& indexes) -> ROTRowList
     {
         ROTRowList newdata{};
         for (auto&& rowIndex : indexes)

@@ -38,19 +38,17 @@ namespace SQLEngine::Interface
     };
     using ColumnInfoList = std::vector<ColumnInfo>;
 
-    using ROTRowIndexes = std::vector<int>;
-
     using ROTRow     = std::vector<UDynamicValue>;
     using ROTRowList = std::vector<ROTRow>;
 
     auto PROJECT_SHARED_EXPORT CopyColumns(const ColumnInfoList& columns)
         -> ColumnInfoList;
-    auto PROJECT_SHARED_EXPORT CopyROTRowList(const ROTRowList& data,
-                                              const int columnsCount)
+    auto PROJECT_SHARED_EXPORT CopyRowList(const ROTRowList& data,
+                                           const int columnsCount)
         -> ROTRowList;
-    auto PROJECT_SHARED_EXPORT CopyROTRowList(const ROTRowList& data,
-                                              const int columnsCount,
-                                              const ROTRowIndexes& indexes)
+    auto PROJECT_SHARED_EXPORT CopyRowList(const ROTRowList& data,
+                                           const int columnsCount,
+                                           const RowIndexes& indexes)
         -> ROTRowList;
 
     //////////////////////////////////////////////////////////////////////
@@ -87,8 +85,8 @@ namespace SQLEngine::Interface
     {
        public:
         virtual auto Copy() const -> URowOrientedTable = 0;
-        virtual auto CopyByIndexes(const ROTRowIndexes&) const
-            -> URowOrientedTable = 0;
+        // virtual auto CopyByIndexes(const ROTRowIndexes&) const
+        //     -> URowOrientedTable = 0;
 
        public:
         virtual auto CreateTable() const -> UTable = 0;
