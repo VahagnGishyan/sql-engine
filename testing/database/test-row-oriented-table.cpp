@@ -21,7 +21,7 @@ using namespace SQLEngine;
 
 TEST(RowOrientedTable, Creation)
 {
-    auto table     = Testing::DataBase::CreateTable();
+    auto table = Testing::DataBase::CreateTable();
     auto&& rotable = DataBase::CreateRowOrientedTable(*table);
 
     //////////////////////////////////////////////////////////////////////

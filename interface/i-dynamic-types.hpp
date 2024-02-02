@@ -32,10 +32,10 @@ namespace SQLEngine::Interface
         String
     };
 
-    auto PROJECT_SHARED_EXPORT GetDynamicTypeNameAsString(const DynamicType& type)
-        -> const std::string;
-    auto PROJECT_SHARED_EXPORT ConvertStringToUDynValue(
-        const std::string& type) -> DynamicType;
+    auto PROJECT_SHARED_EXPORT
+    GetDynamicTypeNameAsString(const DynamicType& type) -> const std::string;
+    auto PROJECT_SHARED_EXPORT
+    ConvertStringToUDynValue(const std::string& value) -> DynamicType;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -101,6 +101,8 @@ namespace SQLEngine::Interface
 
     auto PROJECT_SHARED_EXPORT ConvertUDynValueToString(
         const UDynamicValue& value, const DynamicType& type) -> std::string;
+    auto PROJECT_SHARED_EXPORT
+    ConvertUDynValueToString(const UDynamicValue& value) -> std::string;
 
     auto PROJECT_SHARED_EXPORT AreValuesEqual(const UDynamicValue& lhs,
                                               const UDynamicValue& rhs) -> bool;

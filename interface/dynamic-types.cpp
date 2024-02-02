@@ -145,6 +145,33 @@ namespace SQLEngine
         throw std::logic_error{"Unknown DynamicValue type"};
     }
 
+    auto Interface::ConvertUDynValueToString(const UDynamicValue& uvalue)
+        -> std::string
+    {
+        if (uvalue == nullptr)
+        {
+            return "nullptr";
+        }
+        auto&& value = *uvalue;
+
+        if (IsDynamicValueType(value, DynamicType::Int) == true)
+        {
+            return ConvertUDynValueToString(uvalue, DynamicType::Int);
+        }
+
+        if (IsDynamicValueType(value, DynamicType::Double) == true)
+        {
+            return ConvertUDynValueToString(uvalue, DynamicType::Double);
+        }
+
+        if (IsDynamicValueType(value, DynamicType::String) == true)
+        {
+            return ConvertUDynValueToString(uvalue, DynamicType::String);
+        }
+
+        throw std::logic_error{"Unknown DynamicValue type"};
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////

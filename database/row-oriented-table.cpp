@@ -25,8 +25,16 @@ namespace SQLEngine::DataBase
     using ColumnInfo     = Interface::ColumnInfo;
     using ColumnInfoList = Interface::ColumnInfoList;
 
-    using Row  = Interface::ROTRow;
-    using Data = Interface::ROTRowList;
+    using ROTRowIndexes = Interface::ROTRowIndexes;
+    using Row           = Interface::ROTRow;
+    using Data          = Interface::ROTRowList;
+
+    struct RowOrientedTableParams
+    {
+        std::string tableName;
+        ColumnInfoList columns;
+        Data data;
+    };
 
     class RowOrientedTable : public Interface::IRowOrientedTable
     {
@@ -34,11 +42,10 @@ namespace SQLEngine::DataBase
         //////////////////////////////////////////////////////////////////
 
        protected:
-        RowOrientedTable(std::string&& tableName, ColumnInfoList&& columns,
-                         Data&& data) :
-            m_tableName{std::move(tableName)},
-            m_columns{std::move(columns)},
-            m_data{std::move(data)}
+        RowOrientedTable(RowOrientedTableParams& params) :
+            m_tableName{std::move(params.tableName)},
+            m_columns{std::move(params.columns)},
+            m_data{std::move(params.data)}
         {
             const int columnCount = RowOrientedTable::ColumnsCount();
             const int rowCount    = RowOrientedTable::RowsCount();
@@ -51,7 +58,7 @@ namespace SQLEngine::DataBase
                     if (m_data[rowIndex].size() != columnCount)
                     {
                         fmt::println("vahagn: data-size: {}, columns-count: {}",
-                                   m_data[rowIndex].size(), columnCount);
+                                     m_data[rowIndex].size(), columnCount);
                     }
                     Utility::Assert(m_data[rowIndex].size() == columnCount,
                                     "RowOrientedTable::RowOrientedTable, "
@@ -61,47 +68,30 @@ namespace SQLEngine::DataBase
         }
 
        public:
-        static auto Create(std::string&& tableName, ColumnInfoList&& columns,
-                           Data&& data) -> Interface::URowOrientedTable
+        static auto Create(RowOrientedTableParams& params)
+            -> Interface::URowOrientedTable
         {
-            auto urow = Interface::URowOrientedTable{
-                new RowOrientedTable{std::move(tableName), std::move(columns),
-                                     std::move(data)}
-            };
+            auto urow =
+                Interface::URowOrientedTable{new RowOrientedTable{params}};
             return (urow);
         }
 
+       protected:
+       public:
         static auto Create(const std::string& tableName,
                            const ColumnInfoList& columns, const Data& data)
             -> Interface::URowOrientedTable
         {
             const int columnsSize = static_cast<int>(columns.size());
 
-            ColumnInfoList newlist{};
-            Data newdata{};
+            ColumnInfoList newlist = Interface::CopyColumns(columns);
+            Data newdata = Interface::CopyROTRowList(data, columnsSize);
 
-            for (auto&& columnInfo : columns)
-            {
-                newlist.emplace_back(columnInfo.name, columnInfo.type);
-            }
-
-            for (auto&& row : data)
-            {
-                Row newrow{};
-                Utility::Assert(row.size() == columnsSize,
-                                "RowOrientedTable, row.size() == columnsSize");
-                newrow.reserve(columnsSize);
-                for (auto&& value : row)
-                {
-                    newrow.push_back(Interface::CopyUDynValue(value));
-                }
-                newdata.push_back(std::move(newrow));
-            }
-
-            auto newName = tableName;
-
-            return (Create(std::move(newName), std::move(newlist),
-                           std::move(newdata)));
+            RowOrientedTableParams params;
+            params.tableName = tableName;
+            params.columns   = std::move(newlist);
+            params.data      = std::move(newdata);
+            return (Create(params));
         }
 
         static auto Create(const RowOrientedTable& rowTable)
@@ -143,10 +133,7 @@ namespace SQLEngine::DataBase
                 }
             }
 
-            auto tableName = table.GetName();
-
-            return (Create(std::move(tableName), std::move(columnInfoList),
-                           std::move(newdata)));
+            return (Create(table.GetName(), columnInfoList, newdata));
         }
 
        public:
@@ -154,6 +141,25 @@ namespace SQLEngine::DataBase
         {
             auto urow = Interface::URowOrientedTable{Create(*this)};
             return urow;
+        }
+        /*
+        test
+        this method is not tested
+        */
+        auto CopyByIndexes(const ROTRowIndexes& indexes) const
+            -> Interface::URowOrientedTable override
+        {
+            const int columnsSize = static_cast<int>(m_columns.size());
+
+            ColumnInfoList newlist = Interface::CopyColumns(m_columns);
+            Data newdata =
+                Interface::CopyROTRowList(m_data, columnsSize, indexes);
+
+            RowOrientedTableParams params;
+            params.tableName = m_tableName;
+            params.columns   = std::move(newlist);
+            params.data      = std::move(newdata);
+            return (Create(params));
         }
 
        public:
