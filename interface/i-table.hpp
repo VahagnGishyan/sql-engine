@@ -44,6 +44,11 @@ namespace SQLEngine::Interface
        public:
         virtual auto Copy() const -> UTable                           = 0;
         virtual auto Copy(const std::string& newname) const -> UTable = 0;
+        virtual auto CopyUsingRowIndexes(
+            const Interface::RowIndexes& indexes) const -> UTable = 0;
+        virtual auto CopyUsingRowIndexes(
+            const std::string& newname,
+            const Interface::RowIndexes& indexes) const -> UTable = 0;
 
        public:
         virtual auto GetName() const -> const std::string& = 0;

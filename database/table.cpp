@@ -5,6 +5,8 @@
 
 #include <fmt/core.h>
 
+#include <numeric>
+
 #include "database.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
@@ -51,10 +53,32 @@ namespace SQLEngine::DataBase
         }
         auto Copy(const std::string& newname) const -> UTable override
         {
+            Interface::RowIndexes indexes;
+            indexes.resize(RowsCount());
+            std::iota(indexes.begin(), indexes.end(), 0);
+
+            return (CopyUsingRowIndexes(newname, indexes));
+        }
+        auto CopyUsingRowIndexes(
+            const Interface::RowIndexes& indexes) const -> UTable override
+        {            
+            return (CopyUsingRowIndexes(m_name, indexes));
+        }
+        auto CopyUsingRowIndexes(
+            const std::string& newname,
+            const Interface::RowIndexes& indexes) const -> UTable override
+        {
             auto newtable = Create(newname);
             for (auto&& column : m_columns)
             {
-                newtable->AddColumn(column->Copy(column->GetName()));
+                auto&& newcolumn =
+                    CreateColumn(column->GetName(), column->GetType());
+                for (auto index : indexes)
+                {
+                    newcolumn->AddElement(
+                        Interface::CopyUDynValue(column->GetElement(index)));
+                }
+                newtable->AddColumn(std::move(newcolumn));
             }
             return newtable;
         }

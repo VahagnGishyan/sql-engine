@@ -9,7 +9,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "interface/i-row-oriented-table.hpp"
 #include "interface/i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,8 +32,13 @@ namespace SQLEngine::QueryExecutor
 
        public:
         virtual auto Copy() const -> UCondition = 0;
+
+       public:
+        // virtual auto GetColumnName() const -> const std::string = 0;
         virtual auto Check(const Interface::UDynamicValue& value) const
             -> bool = 0;
+        virtual void Check(const Interface::ITable&,
+                           Interface::RowIndexes& indexes) const = 0;
         // for debug
         virtual auto ToString() const -> const std::string = 0;
     };
