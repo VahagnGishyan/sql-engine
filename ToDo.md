@@ -14,10 +14,10 @@
 - [x] database: database
 - [x] database: row
 - [x] local-database: json stream
-- [ ] local-database: local-database
-	- [x] temp: impl
-	- [ ] temp: test
-- [ ] sql-executor
+- [x] local-database: local-database
+- [ ] query-executor
+	- [ ] condition
+	- [ ] operations
 - [ ] cli-application
 - [ ] todo-application
 - [ ] installer

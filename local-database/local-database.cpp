@@ -32,6 +32,11 @@ namespace SQLEngine::LocalDataBase
 
     //////////////////////////////////////////////////////////////////////
 
+    /*
+        temp,
+        add sql-executor here
+    */
+
     class LocalJSONDatabase : public Interface::IConnectDataBase
     {
        public:

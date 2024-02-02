@@ -25,7 +25,7 @@ set (SUBDIRS
     interface
     logging
     observer
-    # query-executor
+    query-executor
     # sql-engine
     # other
     utility

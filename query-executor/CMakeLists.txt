@@ -9,7 +9,8 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(fmt REQUIRED)
 
 set(SOURCES
-    executor.cpp
+    condition.cpp
+    # operations.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 
@@ -24,6 +25,7 @@ target_link_libraries(${PROJECT_NAME}
     sql-engine-utility 
     sql-engine-logging
     sql-engine-interface
+    sql-engine-database
 )
 
 ##########################################################
