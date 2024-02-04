@@ -16,7 +16,7 @@
 - [x] local-database: json stream
 - [x] local-database: local-database
 - [ ] query-executor
-	- [ ] condition
+	- [x] condition
 	- [ ] operations
 - [ ] cli-application
 - [ ] todo-application

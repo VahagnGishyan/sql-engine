@@ -6,6 +6,7 @@
 #include "condition.hpp"
 
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include <algorithm>
 #include <numeric>
@@ -113,7 +114,7 @@ namespace SQLEngine
                 m_left->Check(table, cyleft);
                 m_right->Check(table, cyright);
 
-                indexes = MergeAndSort(cyleft, cyleft);
+                indexes = MergeAndSort(cyleft, cyright);
             }
 
            public:
@@ -249,7 +250,7 @@ namespace SQLEngine
                 for (auto&& rowIndex : indexes)
                 {
                     auto&& value = column.GetElement(rowIndex);
-                    if (Check(value) == true)
+                    if (Check(value) == false)
                     {
                         rowIndex = -1;
                     }
@@ -262,7 +263,7 @@ namespace SQLEngine
                        Interface::RowIndexes& indexes) const override final
             {
                 auto&& column = table.GetColumn(m_columnName);
-                return Check(column, indexes);
+                Check(column, indexes);
             }
 
            protected:
@@ -343,7 +344,7 @@ namespace SQLEngine
                     return false;
                 }
 
-                return (*m_value > *value);
+                return (*value > *m_value);
             }
             auto ToString() const -> const std::string override
             {
@@ -592,8 +593,8 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto QueryExecutor::CheckCondition(const Interface::ITable& table,
-                                       const ICondition& condition)
+    auto QueryExecutor::AcceptCondition(const Interface::ITable& table,
+                                        const ICondition& condition)
         -> Interface::UTable
     {
         Interface::RowIndexes indexes;
@@ -601,6 +602,7 @@ namespace SQLEngine
         std::iota(indexes.begin(), indexes.end(), 0);
 
         condition.Check(table, indexes);
+        // fmt::println("QueryExecutor::AcceptCondition: indexes = {}", indexes);
         return table.CopyUsingRowIndexes(indexes);
     }
 

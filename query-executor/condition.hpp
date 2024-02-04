@@ -79,8 +79,8 @@ namespace SQLEngine::QueryExecutor
 
     //////////////////////////////////////////////////////////////////////
 
-    auto PROJECT_SHARED_EXPORT CheckCondition(const Interface::ITable&,
-                                              const ICondition&)
+    auto PROJECT_SHARED_EXPORT AcceptCondition(const Interface::ITable&,
+                                               const ICondition&)
         -> Interface::UTable;
 
     //////////////////////////////////////////////////////////////////////

@@ -173,9 +173,9 @@ TEST(Condition, GreaterThanInt)
     auto& condition = *ucondition;
 
     // Test integer greater than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
     EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
 }
 
 TEST(Condition, GreaterThanDouble)
@@ -190,8 +190,8 @@ TEST(Condition, GreaterThanDouble)
     auto& condition = *ucondition;
 
     // Test double greater than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
 }
 
 TEST(Condition, GreaterThanString)
@@ -206,9 +206,9 @@ TEST(Condition, GreaterThanString)
     auto& condition = *ucondition;
 
     // Test string greater than (based on lexicographical order)
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + " world")));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value + " world")));
     EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue("abc")));
+    EXPECT_FALSE(condition.Check(CreateUDynValue("abc")));
 }
 
 TEST(Condition, LessThanInt)
@@ -223,9 +223,9 @@ TEST(Condition, LessThanInt)
     auto& condition = *ucondition;
 
     // Test integer less than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
     EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
 }
 
 TEST(Condition, LessThanDouble)
@@ -240,9 +240,9 @@ TEST(Condition, LessThanDouble)
     auto& condition = *ucondition;
 
     // Test double less than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
     EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
 }
 
 TEST(Condition, LessThanString)
@@ -257,9 +257,9 @@ TEST(Condition, LessThanString)
     auto& condition = *ucondition;
 
     // Test string less than (based on lexicographical order)
-    EXPECT_FALSE(condition.Check(CreateUDynValue("abc")));
+    EXPECT_TRUE(condition.Check(CreateUDynValue("abc")));
     EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + " world")));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value + " world")));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -279,8 +279,8 @@ TEST(Condition, GreaterThanOrEqualInt)
 
     // Test integer greater than or equal to
     EXPECT_TRUE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
 }
 
 TEST(Condition, GreaterThanOrEqualDouble)
@@ -295,8 +295,8 @@ TEST(Condition, GreaterThanOrEqualDouble)
     auto& condition = *ucondition;
 
     // Test double greater than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
 }
 
 TEST(Condition, LessThanOrEqualInt)
@@ -311,9 +311,9 @@ TEST(Condition, LessThanOrEqualInt)
     auto& condition = *ucondition;
 
     // Test integer less than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
     EXPECT_TRUE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
 }
 
 TEST(Condition, LessThanOrEqualDouble)
@@ -328,8 +328,8 @@ TEST(Condition, LessThanOrEqualDouble)
     auto& condition = *ucondition;
 
     // Test double less than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
+    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
+    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -368,7 +368,7 @@ TEST(Condition, AndCases)
     EXPECT_FALSE(conditionAnd1.Check(CreateUDynValue(doubleValue)));
 
     EXPECT_FALSE(conditionAnd2.Check(CreateUDynValue(doubleValue)));
-    EXPECT_FALSE(conditionAnd2.Check(CreateUDynValue(stringValue)));
+    EXPECT_TRUE(conditionAnd2.Check(CreateUDynValue(stringValue)));
 }
 
 TEST(Condition, OrCases)
@@ -401,12 +401,12 @@ TEST(Condition, OrCases)
     // Test cases for CreateConditionOr
     EXPECT_TRUE(conditionOr1.Check(CreateUDynValue(intValue)));
     EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue)));
-    EXPECT_TRUE(conditionOr1.Check(CreateUDynValue(doubleValue - 1)));
-    EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue + 1)));
+    EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue - 1)));
+    EXPECT_TRUE(conditionOr1.Check(CreateUDynValue(doubleValue + 1)));
 
     EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue)));
-    EXPECT_TRUE(conditionOr1.Check(CreateUDynValue(doubleValue - 1)));
-    EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue + 1)));
+    EXPECT_FALSE(conditionOr1.Check(CreateUDynValue(doubleValue - 1)));
+    EXPECT_TRUE(conditionOr1.Check(CreateUDynValue(doubleValue + 1)));
     EXPECT_TRUE(conditionOr2.Check(CreateUDynValue(stringValue)));
 }
 

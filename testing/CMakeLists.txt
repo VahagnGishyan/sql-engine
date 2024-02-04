@@ -96,6 +96,7 @@ target_include_directories(tester-local-database PRIVATE ${CMAKE_CURRENT_SOURCE_
 
 add_executable(tester-query-executor
     query-executor/main.cpp
+    query-executor/test-conditions-table.cpp
     query-executor/test-conditions.cpp
 )
 target_link_libraries(tester-query-executor
@@ -103,6 +104,7 @@ target_link_libraries(tester-query-executor
     gtest::gtest
     sql-engine-utility
     sql-engine-interface
+    sql-engine-database
     sql-engine-query-executor
 )
 target_compile_features   (tester-query-executor PRIVATE cxx_std_17)

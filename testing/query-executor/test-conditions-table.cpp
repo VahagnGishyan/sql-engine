@@ -6,12 +6,14 @@
 #include <fmt/core.h>
 #include <gtest/gtest.h>
 
+#include "database/database.hpp"
 #include "query-executor/condition.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
+using namespace SQLEngine;
 using namespace SQLEngine::QueryExecutor;
 using namespace SQLEngine::Interface;
 
@@ -19,311 +21,265 @@ using namespace SQLEngine::Interface;
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST(Condition, EqualInt)
+class ConditionTable : public ::testing::Test
 {
-    std::string dummyName = "dummyName";
-    int value             = 4;
+   protected:
+    void SetUp() override
+    {
+        // Create a test table with columns
+        utable = DataBase::CreateTable("test-table-name");
 
-    auto ucondition = CreateConditionEqual(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
+        std::map<std::string, Interface::UDynamicValue> columnData;
 
-    auto& condition = *ucondition;
+        auto&& columnAge =
+            DataBase::CreateColumn("Age", Interface::DynamicType::Int);
+        auto&& columnSalary =
+            DataBase::CreateColumn("Salary", Interface::DynamicType::Double);
+        auto&& columnName =
+            DataBase::CreateColumn("Name", Interface::DynamicType::String);
 
-    // Test integer equality
-    EXPECT_TRUE(condition.Check(CreateUDynValue(4)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(0)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(-1)));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<int>::max())));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<int>::min())));
-    EXPECT_FALSE(condition.Check(nullptr));
-}
+        columnAge->AddElement(Interface::CreateUDynValue(25));
+        columnAge->AddElement(Interface::CreateUDynValue(30));
+        columnAge->AddElement(Interface::CreateUDynValue(30));
+        columnAge->AddElement(Interface::CreateUDynValue(35));
+        columnAge->AddElement(Interface::CreateUDynValue(30));
 
-TEST(Condition, EqualString)
+        columnSalary->AddElement(Interface::CreateUDynValue(50000.0));
+        columnSalary->AddElement(Interface::CreateUDynValue(60000.0));
+        columnSalary->AddElement(Interface::CreateUDynValue(60000.0));
+        columnSalary->AddElement(Interface::CreateUDynValue(75000.0));
+        columnSalary->AddElement(Interface::CreateUDynValue(60000.0));
+
+        columnName->AddElement(Interface::CreateUDynValue("Alice"));
+        columnName->AddElement(Interface::CreateUDynValue("Bob"));
+        columnName->AddElement(Interface::CreateUDynValue("Charlie"));
+        columnName->AddElement(Interface::CreateUDynValue("David"));
+        columnName->AddElement(Interface::CreateUDynValue("Eva"));
+
+        utable->AddColumn(std::move(columnAge));
+        utable->AddColumn(std::move(columnSalary));
+        utable->AddColumn(std::move(columnName));
+    }
+
+    void CheckResult(const Interface::ITable& newTable,
+                     const std::vector<int>& indexes)
+    {
+        if (utable->GetName() != newTable.GetName())
+        {
+            throw std::runtime_error{fmt::format(
+                "ConditionTable::CheckResult, ori-table-name: {} and "
+                "new-table-name: {} must be equal",
+                utable->GetName(), newTable.GetName())};
+        }
+        if (utable->ColumnsCount() != newTable.ColumnsCount())
+        {
+            throw std::runtime_error{fmt::format(
+                "ConditionTable::CheckResult, ori-table-size: {} and "
+                "new-table-size: {} must be equal",
+                utable->ColumnsCount(), newTable.ColumnsCount())};
+        }
+
+        auto columnSize = newTable.ColumnsCount();
+
+        for (int columnIndex = 0; columnIndex < columnSize; ++columnIndex)
+        {
+            auto&& oriColumn = utable->GetColumn(columnIndex);
+            auto&& newColumn = newTable.GetColumn(columnIndex);
+
+            if (oriColumn.GetName() != newColumn.GetName())
+            {
+                throw std::runtime_error{fmt::format(
+                    "ConditionTable::CheckResult, ori-column-name: {} and "
+                    "new-column-name: {} must be equal",
+                    oriColumn.GetName(), newColumn.GetName())};
+            }
+            if (oriColumn.GetType() != newColumn.GetType())
+            {
+                throw std::runtime_error{fmt::format(
+                    "ConditionTable::CheckResult, ori-column-type: {} and "
+                    "new-column-type: {} must be equal",
+                    Interface::GetDynamicTypeNameAsString(oriColumn.GetType()),
+                    Interface::GetDynamicTypeNameAsString(
+                        newColumn.GetType()))};
+            }
+            if (oriColumn.GetSize() < newColumn.GetSize())
+            {
+                throw std::runtime_error{
+                    fmt::format("ConditionTable::CheckResult, ori-column-size: "
+                                "{} must be greather then or equal to "
+                                "new-column-size: {}",
+                                oriColumn.GetSize(), newColumn.GetSize())};
+            }
+
+            int newIndex = -1;
+            for (auto oriIndex : indexes)
+            {
+                ++newIndex;
+                auto&& oriValue = oriColumn.GetElement(oriIndex);
+                auto&& newValue = newColumn.GetElement(newIndex);
+
+                if (Interface::AreValuesEqual(oriValue, newValue) == false)
+                {
+                    throw std::runtime_error{fmt::format(
+                        "ConditionTable::CheckResult, ori-value: {} and "
+                        "new-value: {} must be equal",
+                        Interface::ConvertUDynValueToString(oriValue),
+                        Interface::ConvertUDynValueToString(newValue))};
+                }
+            }
+        }
+    }
+
+    // Add your class members and necessary includes
+
+    Interface::UTable utable;
+};
+
+TEST_F(ConditionTable, EqualCondition)
 {
-    std::string dummyName = "dummyName";
-    std::string value     = "hello";
+    auto condition =
+        CreateConditionEqual("Age", Interface::CreateUDynValue(30));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{1, 2, 4};
 
-    auto ucondition = CreateConditionEqual(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
+    const int columnsCount = newTable->ColumnsCount();
+    // for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    // {
+    //     auto&& column = newTable->GetColumn(columnIndex);
+    //     fmt::println("Column: name = {}, size = {}, type = {}",
+    //                  column.GetName(), column.GetSize(),
+    //                  Interface::GetDynamicTypeNameAsString(column.GetType()));
 
-    auto& condition = *ucondition;
+    //     const int rowCount = column.GetSize();
+    //     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+    //     {
+    //         fmt::println("\tvalue[{}]: {}", rowIndex,
+    //                      Interface::ConvertUDynValueToString(
+    //                          column.GetElement(rowIndex)));
+    //     }
+    // }
 
-    // Test string equality
-    EXPECT_TRUE(condition.Check(CreateUDynValue("hello")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue("world")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue("")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue("!@#$%^&*()")));
-    EXPECT_FALSE(condition.Check(nullptr));
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
+
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-TEST(Condition, EqualNullptrCase)
+TEST_F(ConditionTable, NotEqualCondition)
 {
-    std::string dummyName = "dummyName";
+    auto condition =
+        CreateConditionNotEqual("Age", Interface::CreateUDynValue(30));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{0, 3};
 
-    auto ucondition = CreateConditionEqual(dummyName, nullptr);
-    ASSERT_NE(ucondition, nullptr);
-    auto& condition = *ucondition;
+    const int columnsCount = newTable->ColumnsCount();
 
-    // Test with nullptr
-    EXPECT_TRUE(condition.Check(nullptr));
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
 
-    EXPECT_FALSE(condition.Check(CreateUDynValue(1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(-1)));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<int>::max())));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<int>::min())));
-
-    EXPECT_FALSE(condition.Check(CreateUDynValue(3.141)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(3.139)));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<double>::max())));
-    EXPECT_FALSE(
-        condition.Check(CreateUDynValue(std::numeric_limits<double>::min())));
-
-    EXPECT_FALSE(condition.Check(CreateUDynValue("world")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue("")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue("!@#$%^&*()")));
-    EXPECT_TRUE(condition.Check(nullptr));
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-TEST(Condition, NotCases)
+TEST_F(ConditionTable, GreaterThanCondition)
 {
-    std::string dummyName = "dummyName";
-    int value             = 4;
-    auto condEqual = CreateConditionEqual(dummyName, CreateUDynValue(value));
+    auto condition =
+        CreateConditionGreaterThan("Age", Interface::CreateUDynValue(30));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{3};
 
-    auto condNotEq = CreateConditionNot(condEqual->Copy());
+    const int columnsCount = newTable->ColumnsCount();
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
 
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(0)) !=
-                condNotEq->Check(CreateUDynValue(0)));
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(1)) !=
-                condNotEq->Check(CreateUDynValue(1)));
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(2)) !=
-                condNotEq->Check(CreateUDynValue(2)));
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(3)) !=
-                condNotEq->Check(CreateUDynValue(3)));
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(-3)) !=
-                condNotEq->Check(CreateUDynValue(-3)));
-    EXPECT_TRUE(condEqual->Check(CreateUDynValue(564564)) !=
-                condNotEq->Check(CreateUDynValue(564564)));
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-TEST(Condition, NotEqualInt)
+TEST_F(ConditionTable, GreaterThanOrEqualToCondition)
 {
-    std::string dummyName = "dummyName";
-    int value             = 4;
+    auto condition = CreateConditionGreaterThanOrEqualTo(
+        "Age", Interface::CreateUDynValue(30));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{1, 2, 3, 4};
 
-    auto ucondition =
-        CreateConditionNotEqual(dummyName, CreateUDynValue(value));
+    const int columnsCount = newTable->ColumnsCount();
 
-    ASSERT_NE(ucondition, nullptr);
+    // for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    // {
+    //     auto&& column = newTable->GetColumn(columnIndex);
+    //     fmt::println("Column: name = {}, size = {}, type = {}",
+    //                  column.GetName(), column.GetSize(),
+    //                  Interface::GetDynamicTypeNameAsString(column.GetType()));
 
-    auto& condition = *ucondition;
+    //     const int rowCount = column.GetSize();
+    //     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+    //     {
+    //         fmt::println("\tvalue[{}]: {}", rowIndex,
+    //                      Interface::ConvertUDynValueToString(
+    //                          column.GetElement(rowIndex)));
+    //     }
+    // }
 
-    // Test integer inequality
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
+
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
 
-TEST(Condition, NotEqualString)
+TEST_F(ConditionTable, LessThanCondition)
 {
-    std::string dummyName = "dummyName";
-    std::string value     = "hello";
+    auto condition =
+        CreateConditionLessThan("Age", Interface::CreateUDynValue(35));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{0, 1, 2, 4};
 
-    auto ucondition =
-        CreateConditionNotEqual(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
+    const int columnsCount = newTable->ColumnsCount();
+    // for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    // {
+    //     auto&& column = newTable->GetColumn(columnIndex);
+    //     fmt::println("Column: name = {}, size = {}, type = {}",
+    //                  column.GetName(), column.GetSize(),
+    //                  Interface::GetDynamicTypeNameAsString(column.GetType()));
 
-    auto& condition = *ucondition;
+    //     const int rowCount = column.GetSize();
+    //     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+    //     {
+    //         fmt::println("\tvalue[{}]: {}", rowIndex,
+    //                      Interface::ConvertUDynValueToString(
+    //                          column.GetElement(rowIndex)));
+    //     }
+    // }
 
-    // Test string inequality
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + " world")));
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
+
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-TEST(Condition, GreaterThanInt)
+TEST_F(ConditionTable, LessThanOrEqualToCondition)
 {
-    std::string dummyName = "dummyName";
-    int value             = 4;
+    auto condition =
+        CreateConditionLessThanOrEqualTo("Age", Interface::CreateUDynValue(35));
+    auto&& newTable = QueryExecutor::AcceptCondition(*utable, *condition);
+    const std::vector<int> shouldBe{0, 1, 2, 3, 4};
 
-    auto ucondition =
-        CreateConditionGreaterThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
+    const int columnsCount = newTable->ColumnsCount();
+    for (int columnIndex = 0; columnIndex < columnsCount; ++columnIndex)
+    {
+        ASSERT_EQ(newTable->GetColumn(columnIndex).GetSize(), shouldBe.size());
+    }
 
-    auto& condition = *ucondition;
-
-    // Test integer greater than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
+    ASSERT_NO_THROW(CheckResult(*newTable, shouldBe));
 }
-
-TEST(Condition, GreaterThanDouble)
-{
-    std::string dummyName = "dummyName";
-    double value          = 4.0;
-
-    auto ucondition =
-        CreateConditionGreaterThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test double greater than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
-}
-
-TEST(Condition, GreaterThanString)
-{
-    std::string dummyName = "dummyName";
-    std::string value     = "hello";
-
-    auto ucondition =
-        CreateConditionGreaterThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test string greater than (based on lexicographical order)
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + " world")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue("abc")));
-}
-
-TEST(Condition, LessThanInt)
-{
-    std::string dummyName = "dummyName";
-    int value             = 4;
-
-    auto ucondition =
-        CreateConditionLessThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test integer less than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
-}
-
-TEST(Condition, LessThanDouble)
-{
-    std::string dummyName = "dummyName";
-    double value          = 4.0;
-
-    auto ucondition =
-        CreateConditionLessThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test double less than
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
-}
-
-TEST(Condition, LessThanString)
-{
-    std::string dummyName = "dummyName";
-    std::string value     = "hello";
-
-    auto ucondition =
-        CreateConditionLessThan(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test string less than (based on lexicographical order)
-    EXPECT_FALSE(condition.Check(CreateUDynValue("abc")));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + " world")));
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
-
-TEST(Condition, GreaterThanOrEqualInt) {
-    std::string dummyName = "dummyName";
-    int value = 4;
-
-    auto ucondition = CreateConditionGreaterThanOrEqualTo(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test integer greater than or equal to
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 1)));
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 1)));
-}
-
-TEST(Condition, GreaterThanOrEqualDouble) {
-    std::string dummyName = "dummyName";
-    double value = 4.0;
-
-    auto ucondition = CreateConditionGreaterThanOrEqualTo(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test double greater than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value + 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value - 0.1)));
-}
-
-TEST(Condition, LessThanOrEqualInt) {
-    std::string dummyName = "dummyName";
-    int value = 4;
-
-    auto ucondition = CreateConditionLessThanOrEqualTo(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test integer less than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 1)));
-}
-
-TEST(Condition, LessThanOrEqualDouble) {
-    std::string dummyName = "dummyName";
-    double value = 4.0;
-
-    auto ucondition = CreateConditionLessThanOrEqualTo(dummyName, CreateUDynValue(value));
-    ASSERT_NE(ucondition, nullptr);
-
-    auto& condition = *ucondition;
-
-    // Test double less than or equal to
-    EXPECT_FALSE(condition.Check(CreateUDynValue(value - 0.1)));
-    EXPECT_TRUE(condition.Check(CreateUDynValue(value + 0.1)));
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 //
