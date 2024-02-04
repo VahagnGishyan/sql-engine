@@ -5,8 +5,6 @@
 
 #include <fmt/core.h>
 
-#include <numeric>
-
 #include "database.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
@@ -53,20 +51,18 @@ namespace SQLEngine::DataBase
         }
         auto Copy(const std::string& newname) const -> UTable override
         {
-            Interface::RowIndexes indexes;
-            indexes.resize(RowsCount());
-            std::iota(indexes.begin(), indexes.end(), 0);
-
+            Interface::RowIndexes indexes =
+                Interface::CreateRowIndexes(RowsCount());
             return (CopyUsingRowIndexes(newname, indexes));
         }
-        auto CopyUsingRowIndexes(
-            const Interface::RowIndexes& indexes) const -> UTable override
-        {            
+        auto CopyUsingRowIndexes(const Interface::RowIndexes& indexes) const
+            -> UTable override
+        {
             return (CopyUsingRowIndexes(m_name, indexes));
         }
-        auto CopyUsingRowIndexes(
-            const std::string& newname,
-            const Interface::RowIndexes& indexes) const -> UTable override
+        auto CopyUsingRowIndexes(const std::string& newname,
+                                 const Interface::RowIndexes& indexes) const
+            -> UTable override
         {
             auto newtable = Create(newname);
             for (auto&& column : m_columns)
@@ -122,6 +118,36 @@ namespace SQLEngine::DataBase
                                });
             m_columns.erase(result, end);
             return result != end;
+        }
+
+       public:
+        void AddRow(const Interface::Row& row) override
+        {
+            for (auto&& column : m_columns)
+            {
+                Utility::Assert(
+                    column->GetSize() == row.size(),
+                    "Table::AddRow(row) row.size must be eq to columns.size");
+
+                for (auto&& cell : row)
+                {
+                    column->AddElement(Interface::CopyUDynValue(cell));
+                }
+            }
+        }
+        void RemoveRow(const int rowIndex) override
+        {
+            for (auto&& column : m_columns)
+            {
+                column->RemoveElement(rowIndex);
+            }
+        }
+        void RemoveRow(const Interface::RowIndexes indexes) override
+        {
+            for (auto&& index : indexes)
+            {
+                RemoveRow(index);
+            }
         }
 
        public:

@@ -102,6 +102,11 @@ namespace SQLEngine::DataBase
             return m_elements.at(index);
         }
 
+        void RemoveElement(const int index) override
+        {
+            m_elements.erase(m_elements.begin() + index);
+        }
+
        protected:
         std::string m_name;
         DynamicType m_type;

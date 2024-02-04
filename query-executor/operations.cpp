@@ -7,6 +7,7 @@
 
 #include <fmt/core.h>
 
+#include "condition.hpp"
 #include "logging/logging.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -22,71 +23,139 @@ namespace SQLEngine::QueryExecutor
     class InsertInto : public IOperation
     {
        public:
-        InsertInto(Interface::ColumnList list) : m_columns{std::move(list)}
+        InsertInto(Interface::URowList list) : m_data{std::move(list)}
         {
         }
 
-        void Execute(Interface::ITable& table) const override
+        auto Execute(const Interface::ITable& table) const
+            -> Interface::UTable override
         {
-            for (auto&& column : m_columns)
+            auto newTable = table.Copy();
+            for (auto&& row : *m_data)
             {
-                table.AddColumn(column->Copy());
+                newTable->AddRow(row);
             }
+            return newTable;
         }
 
-        auto ToString(Interface::ITable& table) const -> const std::string
+        auto ToString() const -> const std::string override
         {
             return "InsertInto";
         }
 
        protected:
-        Interface::ColumnList m_columns;
+        Interface::URowList m_data;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateOpInsertInto(Interface::URowList row) -> UOperation
+    {
+        return std::make_unique<InsertInto>(std::move(row));
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    class ConditionalOperation : public IOperation
+    {
+       public:
+        ConditionalOperation(UCondition condition) :
+            m_condition{std::move(condition)}
+        {
+        }
+
+       public:
+        virtual auto Execute(const Interface::ITable& table,
+                             Interface::RowIndexes& indexes) const
+            -> Interface::UTable = 0;
+
+        auto Execute(const Interface::ITable& table) const
+            -> Interface::UTable override
+        {
+            Interface::RowIndexes indexes{};
+            if (m_condition != nullptr)
+            {
+                indexes = m_condition->Apply(table);
+            }
+            else
+            {
+                indexes = Interface::CreateRowIndexes(table.RowsCount());    
+            }
+            return Execute(table, indexes);
+        }
+
+       protected:
+        UCondition m_condition;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    template <typename Function>
-    auto GetIndexesIf(const Interface::ITable& table, Function func)
-    {
-        std::vector<int> indexes;
-        const int size = table.ColumnsCount();
-        for (int index = 0; index < size; ++index)
-        {
-            auto&& column = table.GetColumn(index);
-            if (func(column) == true)
-            {
-                indexes.push_back(index);
-            }
-        }
-        return (indexes);
-    }
-
-    class ConditionalBasedOperation : public IOperation
+    class Select : public ConditionalOperation
     {
        public:
-        ConditionalBasedOperation(Interface::ColumnList list) :
-            m_columns{std::move(list)}
+        Select(Interface::UColumnList columns, UCondition condition = nullptr) :
+            ConditionalOperation(std::move(condition)),
+            m_columns{std::move(columns)}
         {
         }
 
-        void Execute(Interface::ITable& table) const override
+       public:
+        auto Execute(const Interface::ITable& table,
+                     Interface::RowIndexes& indexes) const
+            -> Interface::UTable override
         {
-            for (auto&& column : m_columns)
-            {
-                table.AddColumn(column->Copy());
-            }
+            return table.CopyUsingRowIndexes(indexes);
         }
 
-        auto ToString(Interface::ITable& table) const -> const std::string
+       public:
+        auto ToString() const -> const std::string override
         {
-            return "InsertInto";
+            return "Select";
         }
 
        protected:
-        Interface::ColumnList m_columns;
+        Interface::UColumnList m_columns;
     };
+
+    // class Select(ConditionalBasedOperation):
+    // def __init__(self, column_list: list[Column], condition: Condition =
+    // None):
+    //     super().__init__(condition)
+    //     self.column_list = column_list
+
+    // def execute(self, table: Table) -> Table:
+    //     if not self.column_list:
+    //         raise ValueError("No columns selected in the query.")
+
+    //     if self.column_list[0] == "*":
+    //         self.column_list = table.list_columns()
+
+    //     index_list = self.get_filtered_indexes(table)
+
+    //     result = Table("ResultTable")
+
+    //     for column_name in self.column_list:
+    //         column: Column = table.get_column_by_name(column_name).copy()
+    //         column.elements = [column.elements[index] for index in
+    //         index_list] result.insert_column(column)
+
+    //     return result
+
+    // # for debug
+    // def print(self):
+    //     console.PrintInfo("[Select]")
+    //     print(f"column-list: {self.column_list}")
+    //     if self.condition:
+    //         print(f"condition: ", end="")
+    //         self.condition.print()
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

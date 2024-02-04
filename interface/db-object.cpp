@@ -41,23 +41,19 @@ namespace SQLEngine::Interface
         }
         return newlist;
     }
-    auto CopyRowList(const ROTRowList& data, const int columnsCount)
-        -> ROTRowList
+    auto CopyRowList(const RowList& data, const int columnsCount) -> RowList
     {
-        RowIndexes indexes;
-        indexes.resize(data.size());
-        std::iota(indexes.begin(), indexes.end(), 0);
-
+        RowIndexes indexes = Interface::CreateRowIndexes(data.size());
         return CopyRowList(data, columnsCount, indexes);
     }
-    auto CopyRowList(const ROTRowList& data, const int columnsCount,
-                     const RowIndexes& indexes) -> ROTRowList
+    auto CopyRowList(const RowList& data, const int columnsCount,
+                     const RowIndexes& indexes) -> RowList
     {
-        ROTRowList newdata{};
+        RowList newdata{};
         for (auto&& rowIndex : indexes)
         {
             auto&& row = data[rowIndex];
-            ROTRow newrow{};
+            Row newrow{};
             Utility::Assert(row.size() == columnsCount,
                             "RowOrientedTable, row.size() == columnsSize");
             newrow.reserve(columnsCount);
@@ -69,6 +65,18 @@ namespace SQLEngine::Interface
         }
         return newdata;
     }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateRowIndexes(const int size) -> RowIndexes
+    {
+        RowIndexes indexes;
+        indexes.resize(size);
+        std::iota(indexes.begin(), indexes.end(), 0);
+
+        return indexes;
+    }
+
 }  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////

@@ -79,7 +79,7 @@ namespace SQLEngine::LocalDataBase
 
             std::string tableName = pt.get<std::string>("table-name");
             Interface::ColumnInfoList columnInfoList{};
-            Interface::ROTRowList list;
+            Interface::RowList list;
 
             //////////////////////////////////////////////////////////////
 
@@ -112,13 +112,13 @@ namespace SQLEngine::LocalDataBase
                 columnInfoList.emplace_back(columnName, columnType);
             }
         }
-        virtual void AccessRows(Interface::ROTRowList& list,
+        virtual void AccessRows(Interface::RowList& list,
                                 const Interface::ColumnInfoList& columnInfoList,
                                 const boost::property_tree::ptree& rowsJS) const
         {
             for (auto&& row : rowsJS)
             {
-                Interface::ROTRow rowNode{};
+                Interface::Row rowNode{};
                 rowNode.reserve(columnInfoList.size());
                 int columnIndex = -1;
                 for (const auto& cell : row.second)

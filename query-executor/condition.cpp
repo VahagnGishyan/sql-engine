@@ -32,7 +32,23 @@ namespace SQLEngine
     {
         using QueryExecutor::UCondition;
 
-        class And : public QueryExecutor::ICondition
+        class Condition : public QueryExecutor::ICondition
+        {
+           public:
+            virtual auto Apply(const Interface::ITable& table) const
+                -> Interface::RowIndexes
+            {
+                auto indexes = Interface::CreateRowIndexes(table.RowsCount());
+                Apply(table, indexes);
+                return indexes;
+            }
+
+           public:
+            virtual void Apply(const Interface::ITable&,
+                               Interface::RowIndexes& indexes) const = 0;
+        };
+
+        class And : public Condition
         {
            public:
             using ICondition::Check;
@@ -59,11 +75,13 @@ namespace SQLEngine
             {
                 return (m_left->Check(value) && m_right->Check(value));
             }
-            void Check(const Interface::ITable& table,
+            void Apply(const Interface::ITable& table,
                        Interface::RowIndexes& indexes) const override final
             {
-                m_left->Check(table, indexes);
-                m_right->Check(table, indexes);
+                auto cyleft  = m_left->Apply(table);
+                auto cyright = m_right->Apply(table);
+
+                indexes = CreateIntersectionVector(cyleft, cyright);
             }
 
             auto ToString() const -> const std::string override
@@ -73,13 +91,35 @@ namespace SQLEngine
             }
 
            protected:
+            auto CreateIntersectionVector(const Interface::RowIndexes& cyleft,
+                                          const Interface::RowIndexes& cyright)
+                const -> Interface::RowIndexes
+            {
+                Interface::RowIndexes vector3;
+
+                // Sort vectors for efficient intersection
+                Interface::RowIndexes sortedVector1 = cyleft;
+                Interface::RowIndexes sortedVector2 = cyright;
+                std::sort(sortedVector1.begin(), sortedVector1.end());
+                std::sort(sortedVector2.begin(), sortedVector2.end());
+
+                // Use std::set_intersection to find common elements
+                std::set_intersection(
+                    sortedVector1.begin(), sortedVector1.end(),
+                    sortedVector2.begin(), sortedVector2.end(),
+                    std::back_inserter(vector3));
+
+                return vector3;
+            }
+
+           protected:
             UCondition m_left;
             UCondition m_right;
         };
 
         //////////////////////////////////////////////////////////////////////
 
-        class Or : public QueryExecutor::ICondition
+        class Or : public Condition
         {
            public:
             Or(UCondition left, UCondition right) :
@@ -103,18 +143,12 @@ namespace SQLEngine
             {
                 return (m_left->Check(value) || m_right->Check(value));
             }
-            void Check(const Interface::ITable& table,
+            void Apply(const Interface::ITable& table,
                        Interface::RowIndexes& indexes) const override final
             {
-                auto cyleft =
-                    Interface::RowIndexes{indexes.begin(), indexes.end()};
-                auto cyright =
-                    Interface::RowIndexes{indexes.begin(), indexes.end()};
-
-                m_left->Check(table, cyleft);
-                m_right->Check(table, cyright);
-
-                indexes = MergeAndSort(cyleft, cyright);
+                auto cyleft  = m_left->Apply(table);
+                auto cyright = m_right->Apply(table);
+                indexes      = MergeAndSort(cyleft, cyright);
             }
 
            public:
@@ -155,7 +189,7 @@ namespace SQLEngine
 
         //////////////////////////////////////////////////////////////////////
 
-        class Not : public QueryExecutor::ICondition
+        class Not : public Condition
         {
            public:
             Not(UCondition condition) : m_condition{std::move(condition)}
@@ -178,14 +212,10 @@ namespace SQLEngine
             {
                 return !(m_condition->Check(value));
             }
-            void Check(const Interface::ITable& table,
+            void Apply(const Interface::ITable& table,
                        Interface::RowIndexes& indexes) const override final
             {
-                auto falseResults =
-                    Interface::RowIndexes{indexes.begin(), indexes.end()};
-
-                m_condition->Check(table, falseResults);
-
+                auto falseResults = m_condition->Apply(table);
                 RemoveElementsInSecond(indexes, falseResults);
             }
 
@@ -227,7 +257,7 @@ namespace SQLEngine
         //
         //////////////////////////////////////////////////////////////////////
 
-        class ComparisonCondition : public QueryExecutor::ICondition
+        class ComparisonCondition : public Condition
         {
            public:
             using QueryExecutor::ICondition::Check;
@@ -259,7 +289,7 @@ namespace SQLEngine
                 auto&& itr = std::remove(indexes.begin(), indexes.end(), -1);
                 indexes.erase(itr, indexes.end());
             }
-            void Check(const Interface::ITable& table,
+            void Apply(const Interface::ITable& table,
                        Interface::RowIndexes& indexes) const override final
             {
                 auto&& column = table.GetColumn(m_columnName);
@@ -358,7 +388,7 @@ namespace SQLEngine
         //
         //////////////////////////////////////////////////////////////////////
 
-        class ReusingComparison : public QueryExecutor::ICondition
+        class ReusingComparison : public Condition
         {
            public:
             ReusingComparison(UCondition condition) :
@@ -375,10 +405,10 @@ namespace SQLEngine
             {
                 return m_condition->Check(value);
             }
-            void Check(const Interface::ITable& table,
+            void Apply(const Interface::ITable& table,
                        Interface::RowIndexes& indexes) const override final
             {
-                return m_condition->Check(table, indexes);
+                indexes = m_condition->Apply(table);
             }
 
            protected:
@@ -593,18 +623,18 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto QueryExecutor::AcceptCondition(const Interface::ITable& table,
-                                        const ICondition& condition)
-        -> Interface::UTable
-    {
-        Interface::RowIndexes indexes;
-        indexes.resize(table.RowsCount());
-        std::iota(indexes.begin(), indexes.end(), 0);
+    // auto QueryExecutor::ApplyCondition(const Interface::ITable& table,
+    //                                    const ICondition& condition)
+    //     -> Interface::UTable
+    // {
+    //     Interface::RowIndexes indexes =
+    //     Interface::CreateRowIndexes(table.RowsCount());
 
-        condition.Check(table, indexes);
-        // fmt::println("QueryExecutor::AcceptCondition: indexes = {}", indexes);
-        return table.CopyUsingRowIndexes(indexes);
-    }
+    //     condition.Apply(table, indexes);
+    //     // fmt::println("QueryExecutor::ApplyCondition: indexes = {}",
+    //     // indexes);
+    //     return table.CopyUsingRowIndexes(indexes);
+    // }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

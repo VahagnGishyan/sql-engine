@@ -31,11 +31,26 @@ namespace SQLEngine::QueryExecutor
         virtual ~IOperation() = default;
 
        public:
-        virtual void Execute(Interface::ITable& table) const = 0;
+        virtual auto Execute(const Interface::ITable& table) const
+            -> Interface::UTable = 0;
         // for debug
-        virtual auto ToString(Interface::ITable& table) const
-            -> const std::string = 0;
+        virtual auto ToString() const -> const std::string = 0;
     };
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    auto PROJECT_SHARED_EXPORT CreateOpInsertInto(Interface::URowList row)
+        -> UOperation;
+
+    // class InsertIntoSettings
+    // {
+    //    public:
+    //     virtual ~InsertIntoSettings() = default;
+
+    //    public:
+    // };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

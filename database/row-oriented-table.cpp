@@ -26,8 +26,8 @@ namespace SQLEngine::DataBase
     using ColumnInfoList = Interface::ColumnInfoList;
 
     // using ROTRowIndexes = Interface::ROTRowIndexes;
-    using Row  = Interface::ROTRow;
-    using Data = Interface::ROTRowList;
+    using Row  = Interface::Row;
+    using Data = Interface::RowList;
 
     struct RowOrientedTableParams
     {

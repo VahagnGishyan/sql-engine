@@ -10,7 +10,7 @@ find_package(fmt REQUIRED)
 
 set(SOURCES
     condition.cpp
-    # operations.cpp
+    operations.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 

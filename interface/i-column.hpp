@@ -29,6 +29,7 @@ namespace SQLEngine::Interface
     using UColumn    = std::unique_ptr<IColumn>;
     using ShColumn   = std::shared_ptr<IColumn>;
     using ColumnList = std::vector<UColumn>;
+    using UColumnList    = std::unique_ptr<ColumnList>;
 
     using ColumnElementList = std::vector<std::unique_ptr<DynamicValue>>;
 
@@ -47,7 +48,7 @@ namespace SQLEngine::Interface
        public:
         virtual auto GetName() const -> const std::string& = 0;
         virtual void SetName(const std::string& name)      = 0;
-        virtual auto GetSize() const -> int       = 0;
+        virtual auto GetSize() const -> int                = 0;
 
        public:
         virtual void SetType(const DynamicType& type)     = 0;
@@ -57,7 +58,8 @@ namespace SQLEngine::Interface
         virtual void AddElement(UDynamicValue element)              = 0;
         virtual auto GetElement(const int& index) -> UDynamicValue& = 0;
         virtual auto GetElement(const int& index) const
-            -> const UDynamicValue& = 0;
+            -> const UDynamicValue&                 = 0;
+        virtual void RemoveElement(const int index) = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

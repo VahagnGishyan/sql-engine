@@ -35,10 +35,9 @@ namespace SQLEngine::QueryExecutor
         virtual auto Copy() const -> UCondition = 0;
 
        public:
-        virtual auto Check(const Interface::UDynamicValue& value) const
-            -> bool                                              = 0;
-        virtual void Check(const Interface::ITable&,
-                           Interface::RowIndexes& indexes) const = 0;
+        virtual bool Check(const Interface::UDynamicValue& value) const = 0;
+        virtual auto Apply(const Interface::ITable&) const
+            -> Interface::RowIndexes = 0;
 
        public:
         // for debug
@@ -79,9 +78,9 @@ namespace SQLEngine::QueryExecutor
 
     //////////////////////////////////////////////////////////////////////
 
-    auto PROJECT_SHARED_EXPORT AcceptCondition(const Interface::ITable&,
-                                               const ICondition&)
-        -> Interface::UTable;
+    // auto PROJECT_SHARED_EXPORT ApplyCondition(const Interface::ITable&,
+    //                                           const ICondition&)
+    //     -> Interface::UTable;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

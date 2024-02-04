@@ -37,11 +37,11 @@ namespace SQLEngine::DataBase
 
     auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
         std::string&& tableName, Interface::ColumnInfoList&& columns,
-        Interface::ROTRowList&& data) -> Interface::URowOrientedTable;
+        Interface::RowList&& data) -> Interface::URowOrientedTable;
 
     auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
         const std::string& tableName, const Interface::ColumnInfoList& columns,
-        const Interface::ROTRowList& data) -> Interface::URowOrientedTable;
+        const Interface::RowList& data) -> Interface::URowOrientedTable;
 
     auto PROJECT_SHARED_EXPORT CreateRowOrientedTable(
         const Interface::ITable& table) -> Interface::URowOrientedTable;
