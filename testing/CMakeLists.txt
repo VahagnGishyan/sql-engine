@@ -96,8 +96,11 @@ target_include_directories(tester-local-database PRIVATE ${CMAKE_CURRENT_SOURCE_
 
 add_executable(tester-query-executor
     query-executor/main.cpp
+
     query-executor/test-conditions-table.cpp
     query-executor/test-conditions.cpp
+
+    query-executor/test-operation-insert-into.cpp
 )
 target_link_libraries(tester-query-executor
     fmt::fmt 
