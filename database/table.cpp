@@ -142,7 +142,7 @@ namespace SQLEngine::DataBase
                 column->RemoveElement(rowIndex);
             }
         }
-        void RemoveRow(const Interface::RowIndexes indexes) override
+        void RemoveRow(const Interface::RowIndexes& indexes) override
         {
             for (auto&& index : indexes)
             {

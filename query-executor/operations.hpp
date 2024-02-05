@@ -9,6 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <map>
+
+#include "condition.hpp"
 #include "interface/i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,24 +36,36 @@ namespace SQLEngine::QueryExecutor
        public:
         virtual auto Execute(const Interface::ITable& table) const
             -> Interface::UTable = 0;
-        // for debug
-        virtual auto ToString() const -> const std::string = 0;
     };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto PROJECT_SHARED_EXPORT CreateOpInsertInto(Interface::URowList row)
+    using InsertIntoData =
+        std::map<std::string, std::vector<Interface::UDynamicValue>>;
+
+    auto PROJECT_SHARED_EXPORT CreateOpInsertInto(InsertIntoData row)
         -> UOperation;
 
-    // class InsertIntoSettings
-    // {
-    //    public:
-    //     virtual ~InsertIntoSettings() = default;
+    //////////////////////////////////////////////////////////////////////
 
-    //    public:
-    // };
+    auto PROJECT_SHARED_EXPORT CreateOpSelect(Interface::ColumnNameList columns,
+                                              UCondition condition)
+        -> UOperation;
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto PROJECT_SHARED_EXPORT CreateOpDelete(UCondition condition)
+        -> UOperation;
+
+    //////////////////////////////////////////////////////////////////////
+
+    using UpdateData = std::map<std::string, Interface::UDynamicValue>;
+
+    auto PROJECT_SHARED_EXPORT CreateOpUpdate(UpdateData values,
+                                              UCondition condition)
+        -> UOperation;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

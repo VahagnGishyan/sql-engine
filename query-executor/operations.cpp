@@ -8,7 +8,9 @@
 #include <fmt/core.h>
 
 #include "condition.hpp"
+#include "database/database.hpp"
 #include "logging/logging.hpp"
+#include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -20,36 +22,54 @@ namespace SQLEngine::QueryExecutor
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    // ColumnNameAndValue::ColumnNameAndValue(
+    //     const std::string& columnName, const Interface::UDynamicValue&
+    //     uvalue) : columnName{columnName},
+    //     uvalue{Interface::CopyUDynValue(uvalue)}
+    // {
+    // }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
     class InsertInto : public IOperation
     {
        public:
-        InsertInto(Interface::URowList list) : m_data{std::move(list)}
+        InsertInto(InsertIntoData list) : m_data{std::move(list)}
         {
+            Utility::Assert(m_data.size() != 0,
+                            "InsertInto::InsertInto(list), list is empty");
         }
 
         auto Execute(const Interface::ITable& table) const
             -> Interface::UTable override
         {
+            Utility::Assert(
+                m_data.size() == table.ColumnsCount(),
+                fmt::format("InsertInto::Execute, data.size = {} and "
+                            "table.column-size = {} should be equal",
+                            m_data.size(), table.ColumnsCount()));
+
             auto newTable = table.Copy();
-            for (auto&& row : *m_data)
+            for (auto&& columnData : m_data)
             {
-                newTable->AddRow(row);
+                auto&& column = newTable->GetColumn(columnData.first /*name*/);
+                for (auto&& cell : columnData.second /*list of dynamic values*/)
+                {
+                    column.AddElement(Interface::CopyUDynValue(cell));
+                }
             }
             return newTable;
         }
 
-        auto ToString() const -> const std::string override
-        {
-            return "InsertInto";
-        }
-
        protected:
-        Interface::URowList m_data;
+        InsertIntoData m_data;
     };
 
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateOpInsertInto(Interface::URowList row) -> UOperation
+    auto CreateOpInsertInto(InsertIntoData row) -> UOperation
     {
         return std::make_unique<InsertInto>(std::move(row));
     }
@@ -68,7 +88,7 @@ namespace SQLEngine::QueryExecutor
 
        public:
         virtual auto Execute(const Interface::ITable& table,
-                             Interface::RowIndexes& indexes) const
+                             const Interface::RowIndexes& indexes) const
             -> Interface::UTable = 0;
 
         auto Execute(const Interface::ITable& table) const
@@ -81,7 +101,7 @@ namespace SQLEngine::QueryExecutor
             }
             else
             {
-                indexes = Interface::CreateRowIndexes(table.RowsCount());    
+                indexes = Interface::CreateRowIndexes(table.RowsCount());
             }
             return Execute(table, indexes);
         }
@@ -97,7 +117,7 @@ namespace SQLEngine::QueryExecutor
     class Select : public ConditionalOperation
     {
        public:
-        Select(Interface::UColumnList columns, UCondition condition = nullptr) :
+        Select(Interface::ColumnNameList columns, UCondition condition) :
             ConditionalOperation(std::move(condition)),
             m_columns{std::move(columns)}
         {
@@ -105,57 +125,108 @@ namespace SQLEngine::QueryExecutor
 
        public:
         auto Execute(const Interface::ITable& table,
-                     Interface::RowIndexes& indexes) const
+                     const Interface::RowIndexes& indexes) const
             -> Interface::UTable override
         {
-            return table.CopyUsingRowIndexes(indexes);
-        }
-
-       public:
-        auto ToString() const -> const std::string override
-        {
-            return "Select";
+            auto newTable = DataBase::CreateTable(table.GetName());
+            for (auto&& columnName : m_columns)
+            {
+                newTable->AddColumn(table.GetColumn(columnName).Copy());
+            }
+            return newTable->CopyUsingRowIndexes(indexes);
         }
 
        protected:
-        Interface::UColumnList m_columns;
+        Interface::ColumnNameList m_columns;
     };
 
-    // class Select(ConditionalBasedOperation):
-    // def __init__(self, column_list: list[Column], condition: Condition =
-    // None):
-    //     super().__init__(condition)
-    //     self.column_list = column_list
+    //////////////////////////////////////////////////////////////////////
 
-    // def execute(self, table: Table) -> Table:
-    //     if not self.column_list:
-    //         raise ValueError("No columns selected in the query.")
-
-    //     if self.column_list[0] == "*":
-    //         self.column_list = table.list_columns()
-
-    //     index_list = self.get_filtered_indexes(table)
-
-    //     result = Table("ResultTable")
-
-    //     for column_name in self.column_list:
-    //         column: Column = table.get_column_by_name(column_name).copy()
-    //         column.elements = [column.elements[index] for index in
-    //         index_list] result.insert_column(column)
-
-    //     return result
-
-    // # for debug
-    // def print(self):
-    //     console.PrintInfo("[Select]")
-    //     print(f"column-list: {self.column_list}")
-    //     if self.condition:
-    //         print(f"condition: ", end="")
-    //         self.condition.print()
+    auto CreateOpSelect(Interface::ColumnNameList columns, UCondition condition)
+        -> UOperation
+    {
+        return std::make_unique<Select>(std::move(columns),
+                                        std::move(condition));
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
+
+    class Delete : public ConditionalOperation
+    {
+       public:
+        Delete(UCondition condition) :
+            ConditionalOperation(std::move(condition))
+        {
+            Utility::Assert(condition != nullptr,
+                            "Operation::Delete, condition is nullptr");
+        }
+
+       public:
+        auto Execute(const Interface::ITable& table,
+                     const Interface::RowIndexes& indexes) const
+            -> Interface::UTable override
+        {
+            auto newTable = table.Copy();
+            newTable->RemoveRow(indexes);
+            return newTable;
+        }
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateOpDelete(UCondition condition) -> UOperation
+    {
+        return std::make_unique<Delete>(std::move(condition));
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    class Update : public ConditionalOperation
+    {
+       public:
+        Update(UpdateData values, UCondition condition) :
+            ConditionalOperation(std::move(condition)),
+            m_values{std::move(values)}
+        {
+        }
+
+       public:
+        auto Execute(const Interface::ITable& table,
+                     const Interface::RowIndexes& indexes) const
+            -> Interface::UTable override
+        {
+            Utility::Assert(m_values.size() == table.ColumnsCount(),
+                            "Update::Execute, values.size and "
+                            "table.column-size should be equal");
+
+            auto newTable = table.Copy();
+            for (auto&& columninfo : m_values)
+            {
+                auto&& column = newTable->GetColumn(columninfo.first /*name*/);
+                for (auto&& index : indexes)
+                {
+                    column.GetElement(index) = Interface::CopyUDynValue(
+                        columninfo.second /*dynamic values*/);
+                }
+            }
+            return newTable;
+        }
+
+       protected:
+        UpdateData m_values;
+    };
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto CreateOpUpdate(UpdateData values, UCondition condition) -> UOperation
+    {
+        return std::make_unique<Update>(std::move(values),
+                                        std::move(condition));
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

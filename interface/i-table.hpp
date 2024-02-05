@@ -33,10 +33,10 @@ namespace SQLEngine::Interface
 
     using RowIndexes = std::vector<int>;
 
-    using Row     = std::vector<UDynamicValue>;
-    using URow    = std::unique_ptr<Row>;
-    using RowList = std::vector<Row>;
-    using URowList    = std::unique_ptr<RowList>;
+    using Row      = std::vector<UDynamicValue>;
+    using URow     = std::unique_ptr<Row>;
+    using RowList  = std::vector<Row>;
+    using URowList = std::unique_ptr<RowList>;
 
     using TableNameList   = std::vector<std::string>;
     using UTableNameList  = std::unique_ptr<TableNameList>;
@@ -66,9 +66,9 @@ namespace SQLEngine::Interface
                                   const std::string& newColumnName) = 0;
 
        public:
-        virtual void AddRow(const Row& row)                     = 0;
+        virtual void AddRow(const Row& row)               = 0;
         virtual void RemoveRow(const int rowIndex)        = 0;
-        virtual void RemoveRow(const RowIndexes indexes) = 0;
+        virtual void RemoveRow(const RowIndexes& indexes) = 0;
 
        public:
         virtual auto GetColumnIndex(const std::string& columnName) const
