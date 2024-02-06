@@ -121,6 +121,9 @@ namespace SQLEngine::QueryExecutor
             ConditionalOperation(std::move(condition)),
             m_columns{std::move(columns)}
         {
+            Utility::Assert(m_columns.size(),
+                            "Select::Select(column-name-list), "
+                            "column-name-list must not be empty");
         }
 
        public:

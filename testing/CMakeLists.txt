@@ -101,6 +101,7 @@ add_executable(tester-query-executor
     query-executor/test-conditions.cpp
 
     query-executor/test-operation-insert-into.cpp
+    query-executor/test-operation-select.cpp
 )
 target_link_libraries(tester-query-executor
     fmt::fmt 
