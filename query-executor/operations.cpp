@@ -202,7 +202,7 @@ namespace SQLEngine::QueryExecutor
                      const Interface::RowIndexes& indexes) const
             -> Interface::UTable override
         {
-            Utility::Assert(m_values.size() == table.ColumnsCount(),
+            Utility::Assert(m_values.size() <= table.ColumnsCount(),
                             "Update::Execute, values.size and "
                             "table.column-size should be equal");
 
