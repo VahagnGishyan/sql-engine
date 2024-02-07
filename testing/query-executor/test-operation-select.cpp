@@ -281,6 +281,41 @@ TEST_F(OperationSelect, AgeGreaterThan30)
 
 //////////////////////////////////////////////////////////////////////////
 
+TEST_F(OperationSelect, AgeLessThanOrEqualTo30)
+{
+    //////////////////////////////////////////////////////////////////////
+    // Choose some columns from the table
+    ColumnNameList columnNameList{"Age", "Salary", "Name"};
+
+    // Create some conditions
+    // Example: Select rows where Age is greater than 30
+    int greaterThan = 30;
+    auto condition  = CreateConditionLessThanOrEqualTo("Age", CreateUDynValue(30));
+
+    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
+    auto resultTable = selectOp->Execute(*utable);
+    //////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////
+    // create table should be
+    auto indexes = GetCheckedRowIndexes<int>(GetAgeColumnData(),
+                                             [greaterThan](int value)
+                                             {
+                                                 return (value <= greaterThan);
+                                             });
+    //////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////
+    // Create a test table with columns
+    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
+    //////////////////////////////////////////////////////////////////////
+
+    // Check tables equality
+    ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 TEST_F(OperationSelect, OnlySalaryAndName)
 {
     //////////////////////////////////////////////////////////////////////
