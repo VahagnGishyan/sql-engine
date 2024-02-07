@@ -162,7 +162,7 @@ namespace SQLEngine::QueryExecutor
         Delete(UCondition condition) :
             ConditionalOperation(std::move(condition))
         {
-            Utility::Assert(condition != nullptr,
+            Utility::Assert(m_condition != nullptr,
                             "Operation::Delete, condition is nullptr");
         }
 

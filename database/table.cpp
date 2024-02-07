@@ -144,7 +144,11 @@ namespace SQLEngine::DataBase
         }
         void RemoveRow(const Interface::RowIndexes& indexes) override
         {
-            for (auto&& index : indexes)
+            Interface::RowIndexes reversedIndexes{indexes.begin(),
+                                                  indexes.end()};
+            std::reverse(reversedIndexes.begin(), reversedIndexes.end());
+
+            for (auto index : reversedIndexes)
             {
                 RemoveRow(index);
             }

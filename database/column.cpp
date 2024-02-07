@@ -104,6 +104,8 @@ namespace SQLEngine::DataBase
 
         void RemoveElement(const int index) override
         {
+            Utility::Assert(m_elements.size() > index,
+                            "Column::RemoveElement(index), index out of range");
             m_elements.erase(m_elements.begin() + index);
         }
 
