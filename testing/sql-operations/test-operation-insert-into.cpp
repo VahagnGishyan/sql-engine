@@ -14,7 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using namespace SQLEngine;
-using namespace SQLEngine::QueryExecutor;
+using namespace SQLEngine::SQLOperations;
 using namespace SQLEngine::Interface;
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ TEST_F(OperationInsertInto, SingleRow)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutor::InsertIntoData values{};
+        SQLOperations::InsertIntoData values{};
         values["Age"].push_back(Interface::CreateUDynValue(40));
         values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
         values["Name"].push_back(Interface::CreateUDynValue("Frank"));
@@ -171,7 +171,7 @@ TEST_F(OperationInsertInto, MultipleRows)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutor::InsertIntoData values{};
+        SQLOperations::InsertIntoData values{};
 
         // Adding multiple values for each column
         values["Age"].push_back(Interface::CreateUDynValue(40));
@@ -213,7 +213,7 @@ TEST_F(OperationInsertInto, EmptyRows)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutor::InsertIntoData values{};
+        SQLOperations::InsertIntoData values{};
         return values;
     };
 
@@ -229,7 +229,7 @@ TEST_F(OperationInsertInto, InvalidCases)
     {
         auto GetSingleRow = []()
         {
-            QueryExecutor::InsertIntoData values{};
+            SQLOperations::InsertIntoData values{};
             values["UnknownCase"].push_back(Interface::CreateUDynValue(40));
             values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
             values["Name"].push_back(Interface::CreateUDynValue("Frank"));
@@ -243,7 +243,7 @@ TEST_F(OperationInsertInto, InvalidCases)
     {
         auto GetSingleRow = []()
         {
-            QueryExecutor::InsertIntoData values{};
+            SQLOperations::InsertIntoData values{};
             values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
             values["Name"].push_back(Interface::CreateUDynValue("Frank"));
             return values;

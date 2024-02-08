@@ -23,15 +23,15 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT IQueryExecutor : public IDBObject
+    class PROJECT_SHARED_EXPORT ISQLOperations : public IDBObject
     {
        public:
         void Execute(IDataBase& database, const IQuery& query);
     };
 
-    using UQueryExecutor    = std::unique_ptr<IQueryExecutor>;
-    using ShQueryExecutor   = std::shared_ptr<IQueryExecutor>;
-    using QueryExecutorList = std::vector<ShQueryExecutor>;
+    using USQLOperations    = std::unique_ptr<ISQLOperations>;
+    using ShSQLOperations   = std::shared_ptr<ISQLOperations>;
+    using SQLOperationsList = std::vector<ShSQLOperations>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
