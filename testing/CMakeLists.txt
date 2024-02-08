@@ -94,28 +94,28 @@ target_include_directories(tester-local-database PRIVATE ${CMAKE_CURRENT_SOURCE_
 #                                #
 ##################################
 
-add_executable(tester-query-executor
-    query-executor/main.cpp
+add_executable(tester-sql-operations
+    sql-operations/main.cpp
 
-    query-executor/test-conditions-table.cpp
-    query-executor/test-conditions.cpp
+    sql-operations/test-conditions-table.cpp
+    sql-operations/test-conditions.cpp
 
-    query-executor/test-operation-insert-into.cpp
-    query-executor/test-operation-select.cpp
-    query-executor/test-operation-delete.cpp
-    query-executor/test-operation-update.cpp
+    sql-operations/test-operation-insert-into.cpp
+    sql-operations/test-operation-select.cpp
+    sql-operations/test-operation-delete.cpp
+    sql-operations/test-operation-update.cpp
 )
-target_link_libraries(tester-query-executor
+target_link_libraries(tester-sql-operations
     fmt::fmt 
     gtest::gtest
     sql-engine-utility
     sql-engine-interface
     sql-engine-database
-    sql-engine-query-executor
+    sql-engine-sql-operations
 )
-target_compile_features   (tester-query-executor PRIVATE cxx_std_17)
-target_include_directories(tester-query-executor PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(tester-query-executor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features   (tester-sql-operations PRIVATE cxx_std_17)
+target_include_directories(tester-sql-operations PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(tester-sql-operations PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 ##################################
 #                                #
@@ -130,8 +130,8 @@ add_test(NAME tester-database
 add_test(NAME tester-local-database
         COMMAND tester-local-database)
 
-add_test(NAME tester-query-executor
-        COMMAND tester-query-executor)
+add_test(NAME tester-sql-operations
+        COMMAND tester-sql-operations)
 
 ##################################
 #                                #

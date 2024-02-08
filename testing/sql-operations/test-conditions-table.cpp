@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 #include "database/database.hpp"
-#include "query-executor/condition.hpp"
+#include "sql-operations/condition.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //

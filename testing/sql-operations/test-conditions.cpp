@@ -6,7 +6,7 @@
 #include <fmt/core.h>
 #include <gtest/gtest.h>
 
-#include "query-executor/condition.hpp"
+#include "sql-operations/condition.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //

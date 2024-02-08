@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 
 #include "database/database.hpp"
-#include "query-executor/operations.hpp"
+#include "sql-operations/operations.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
