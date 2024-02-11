@@ -16,24 +16,20 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::SQLOperations
+namespace SQLEngine::QueryExecutors
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // ColumnNameAndValue::ColumnNameAndValue(
-    //     const std::string& columnName, const Interface::UDynamicValue&
-    //     uvalue) : columnName{columnName},
-    //     uvalue{Interface::CopyUDynValue(uvalue)}
-    // {
-    // }
+    using IQueryExecutor = Interface::IQueryExecutor;
+    using UQueryExecutor = Interface::UQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class InsertInto : public IOperation
+    class InsertInto : public IQueryExecutor
     {
        public:
         InsertInto(InsertIntoData list) : m_data{std::move(list)}
@@ -69,7 +65,7 @@ namespace SQLEngine::SQLOperations
 
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateOpInsertInto(InsertIntoData row) -> UOperation
+    auto CreateOpInsertInto(InsertIntoData row) -> UQueryExecutor
     {
         return std::make_unique<InsertInto>(std::move(row));
     }
@@ -78,7 +74,7 @@ namespace SQLEngine::SQLOperations
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class ConditionalOperation : public IOperation
+    class ConditionalOperation : public IQueryExecutor
     {
        public:
         ConditionalOperation(UCondition condition) :
@@ -146,7 +142,7 @@ namespace SQLEngine::SQLOperations
     //////////////////////////////////////////////////////////////////////
 
     auto CreateOpSelect(Interface::ColumnNameList columns, UCondition condition)
-        -> UOperation
+        -> UQueryExecutor
     {
         return std::make_unique<Select>(std::move(columns),
                                         std::move(condition));
@@ -179,7 +175,7 @@ namespace SQLEngine::SQLOperations
 
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateOpDelete(UCondition condition) -> UOperation
+    auto CreateOpDelete(UCondition condition) -> UQueryExecutor
     {
         return std::make_unique<Delete>(std::move(condition));
     }
@@ -225,7 +221,8 @@ namespace SQLEngine::SQLOperations
 
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateOpUpdate(UpdateData values, UCondition condition) -> UOperation
+    auto CreateOpUpdate(UpdateData values, UCondition condition)
+        -> UQueryExecutor
     {
         return std::make_unique<Update>(std::move(values),
                                         std::move(condition));
@@ -234,7 +231,7 @@ namespace SQLEngine::SQLOperations
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::SQLOperations
+}  // namespace SQLEngine::QueryExecutors
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

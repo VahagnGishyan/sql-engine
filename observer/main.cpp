@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <regex>
 #include <variant>
 #include <vector>
 
@@ -28,15 +29,66 @@ namespace SQLEngine::Observer
     //
     //////////////////////////////////////////////////////////////////////////
 
+    std::vector<std::string> Lex(const std::string &query)
+    {
+        // Define regular expressions for various SQL components
+        std::string keywords =
+            "(SELECT|INSERT|UPDATE|DELETE|FROM|INTO|SET|VALUES|WHERE)";
+        std::string identifiers = "(\\w+(-\\w+)*)";
+        std::string strings     = "'(.*?)'";
+        std::string numbers     = "(\\d+)";
+        std::string operators   = "([=<>]+)";
+        std::string punctuation = "([*(),;])";
+
+        // Combine regular expressions into a single pattern
+        std::string pattern = keywords + "|" + identifiers + "|" + strings +
+                              "|" + numbers + "|" + operators + "|" +
+                              punctuation;
+
+        // Use std::regex_iterator to tokenize the query
+        std::regex tokenRegex(pattern, std::regex::icase);
+        std::sregex_iterator iter(query.begin(), query.end(), tokenRegex);
+        std::sregex_iterator end;
+
+        // Store the tokens in a vector
+        std::vector<std::string> tokens;
+        for (; iter != end; ++iter)
+        {
+            for (size_t i = 1; i < iter->size(); ++i)
+            {
+                if ((*iter)[i].matched)
+                {
+                    tokens.push_back((*iter)[i].str());
+                }
+            }
+        }
+
+        // Remove semicolon if it exists
+        if (!tokens.empty() && tokens.back() == ";")
+        {
+            tokens.pop_back();
+        }
+
+        return tokens;
+    }
+
     int Main(const int count, char **values)
     {
-        using DynamicValue = std::variant<int, double, std::string>;
+        // std::string query = "SELECT * FROM table WHERE column = 'value';";
+        std::string query =
+            "SELECT * FROM table WHERE column = 'string value' AND "
+            "another_column = 'second value';";
 
-        DynamicValue value = 4.0;
-        auto result        = std::get<double>(value);
-        fmt::println("result: {}", result);
+        std::vector<std::string> tokens = Lex(query);
 
-        return (0);
+        // Print the tokens
+        for (const auto &token : tokens)
+        {
+            std::cout << token << " ";
+        }
+        std::cout << std::endl;
+
+        return 0;
     }
 
     //////////////////////////////////////////////////////////////////////////

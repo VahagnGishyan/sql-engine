@@ -10,6 +10,7 @@
 #include "i-db-manager.hpp"
 #include "i-db-object.hpp"
 #include "i-db-stream.hpp"
+#include "i-query-executor.hpp"
 #include "i-row-oriented-table.hpp"
 #include "i-table.hpp"
 #include "utility/core.hpp"

@@ -12,32 +12,14 @@
 #include <map>
 
 #include "condition.hpp"
-#include "interface/i-table.hpp"
+#include "interface/i-query-executor.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::SQLOperations
+namespace SQLEngine::QueryExecutors
 {
-    //////////////////////////////////////////////////////////////////////
-    //                                                                  //
-    //////////////////////////////////////////////////////////////////////
-
-    class IOperation;
-
-    using UOperation = std::unique_ptr<IOperation>;
-
-    class IOperation
-    {
-       public:
-        virtual ~IOperation() = default;
-
-       public:
-        virtual auto Execute(const Interface::ITable& table) const
-            -> Interface::UTable = 0;
-    };
-
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -46,18 +28,18 @@ namespace SQLEngine::SQLOperations
         std::map<std::string, std::vector<Interface::UDynamicValue>>;
 
     auto PROJECT_SHARED_EXPORT CreateOpInsertInto(InsertIntoData row)
-        -> UOperation;
+        -> Interface::UQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
 
     auto PROJECT_SHARED_EXPORT CreateOpSelect(Interface::ColumnNameList columns,
                                               UCondition condition)
-        -> UOperation;
+        -> Interface::UQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
 
     auto PROJECT_SHARED_EXPORT CreateOpDelete(UCondition condition)
-        -> UOperation;
+        -> Interface::UQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -65,12 +47,12 @@ namespace SQLEngine::SQLOperations
 
     auto PROJECT_SHARED_EXPORT CreateOpUpdate(UpdateData values,
                                               UCondition condition)
-        -> UOperation;
+        -> Interface::UQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::SQLOperations
+}  // namespace SQLEngine::QueryExecutors
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

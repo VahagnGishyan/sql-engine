@@ -26,7 +26,7 @@ namespace SQLEngine::DataBase
     using IDataBase = Interface::IDataBase;
     using UDataBase = Interface::UDataBase;
 
-    using IQuery = Interface::IQuery;
+    using IQueryExecutor = Interface::IQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -137,7 +137,7 @@ namespace SQLEngine::DataBase
         //////////////////////////////////////////////////////////////////
 
        public:
-        void Execute(const Interface::IQuery& query) override
+        void Execute(const Interface::IQueryExecutor& query) override
         {
             // to do, after impl add tests
             Interface::NotImplYet(" Execute(query)");

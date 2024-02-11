@@ -9,9 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "i-database.hpp"
-#include "i-db-object.hpp"
-#include "i-query.hpp"
+#include "interface/i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -23,15 +21,31 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class PROJECT_SHARED_EXPORT ISQLOperations : public IDBObject
+    class PROJECT_SHARED_EXPORT IQueryExecutor : public IDBObject
     {
        public:
-        void Execute(IDataBase& database, const IQuery& query);
+        virtual ~IQueryExecutor() = default;
+
+       public:
+        virtual auto Execute(const ITable& table) const -> UTable = 0;
     };
 
-    using USQLOperations    = std::unique_ptr<ISQLOperations>;
-    using ShSQLOperations   = std::shared_ptr<ISQLOperations>;
-    using SQLOperationsList = std::vector<ShSQLOperations>;
+    using UQueryExecutor = std::unique_ptr<IQueryExecutor>;
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    // class PROJECT_SHARED_EXPORT IQueryParser : public IDBObject
+    // {
+    //    public:
+    //     virtual ~IQueryParser() = default;
+
+    //    public:
+    //     virtual auto Create() const -> UQueryExecutor = 0;
+    // };
+
+    // using UQueryParser = std::unique_ptr<IQueryParser>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

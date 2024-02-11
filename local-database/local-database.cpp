@@ -28,7 +28,7 @@ namespace SQLEngine::LocalDataBase
     using IDataBase = Interface::IDataBase;
     using UDataBase = Interface::UDataBase;
 
-    using IQuery = Interface::IQuery;
+    using IQueryExecutor = Interface::IQueryExecutor;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -205,7 +205,7 @@ namespace SQLEngine::LocalDataBase
         //////////////////////////////////////////////////////////////////
 
        public:
-        void Execute(const Interface::IQuery& query) override
+        void Execute(const Interface::IQueryExecutor& query) override
         {
             AssertConnected();
             return m_database->Execute(query);
