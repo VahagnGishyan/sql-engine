@@ -26,15 +26,17 @@
 #define OP_INSERT_INTO "insert-into"
 #define OP_INSERT_INTO_TABLE "table-name"
 #define OP_INSERT_INTO_ROW "row"
-#define OP_INSERT_INTO_CELL_NAME "column"
-#define OP_INSERT_INTO_CELL_VALUE "value"
+#define OP_INSERT_INTO_COLUMN_NAME "column"
+#define OP_INSERT_INTO_COLUMN_TYPE "type"
+#define OP_INSERT_INTO_COLUMN_VALUES "values"
 
 //////////////////////////////////////////////////////////////////////////
 
 #define OP_UPDATE "update"
 #define OP_UPDATE_TABLE "table-name"
 #define OP_UPDATE_ROW "row"
-#define OP_UPDATE_CELL_NAME "column"
+#define OP_UPDATE_CELL_COLUMN "column"
+#define OP_UPDATE_CELL_TYPE "type"
 #define OP_UPDATE_CELL_VALUE "value"
 #define OP_UPDATE_WHERE "where"
 

@@ -107,7 +107,7 @@ namespace SQLEngine::QueryParser
     //             auto&& columnName    =
     //             column.second.get<std::string>("name"); auto&& strColumnType
     //             = column.second.get<std::string>("type"); auto&& columnType =
-    //                 Interface::ConvertStringToUDynValue(strColumnType);
+    //                 Interface::ConvertStringToDynamicType(strColumnType);
     //             columnInfoList.emplace_back(columnName, columnType);
     //         }
     //     }
@@ -251,7 +251,53 @@ namespace SQLEngine::QueryParser
     auto CreateQueryInsertIntoFromJSONFile(
         const boost::property_tree::ptree& arguments) -> Interface::UQuery
     {
-        return nullptr;
+        const std::string tableName =
+            arguments.get<std::string>(OP_INSERT_INTO_TABLE);
+
+        Query::InsertIntoData rows{};
+        for (const auto& column : arguments.get_child(OP_INSERT_INTO_ROW))
+        {
+            std::string columnName =
+                column.second.get<std::string>(OP_INSERT_INTO_COLUMN_NAME);
+            std::string columnType =
+                column.second.get<std::string>(OP_INSERT_INTO_COLUMN_TYPE);
+
+            auto dynType = Interface::ConvertStringToDynamicType(columnType);
+
+            for (const auto& value :
+                 column.second.get_child(OP_INSERT_INTO_COLUMN_VALUES))
+            {
+                if (dynType == Interface::DynamicType::Int)
+                {
+                    Interface::GetDynamicType<Interface::DynamicType::Int>::type
+                        cellValue = value.second.get<Interface::GetDynamicType<
+                            Interface::DynamicType::Int>::type>("");
+                    rows[columnName].push_back(
+                        Interface::CreateUDynValue(cellValue));
+                }
+                if (dynType == Interface::DynamicType::Double)
+                {
+                    Interface::GetDynamicType<
+                        Interface::DynamicType::Double>::type cellValue =
+                        value.second.get<Interface::GetDynamicType<
+                            Interface::DynamicType::Double>::type>("");
+                    rows[columnName].push_back(
+                        Interface::CreateUDynValue(cellValue));
+                }
+                if (dynType == Interface::DynamicType::String)
+                {
+                    Interface::GetDynamicType<
+                        Interface::DynamicType::String>::type cellValue =
+                        value.second.get<Interface::GetDynamicType<
+                            Interface::DynamicType::String>::type>("");
+                    rows[columnName].push_back(
+                        Interface::CreateUDynValue(cellValue));
+                }
+            }
+        }
+
+        return Query::CreateQuery(tableName,
+                                  Query::CreateOpInsertInto(std::move(rows)));
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -259,7 +305,49 @@ namespace SQLEngine::QueryParser
     auto CreateQueryUpdateFromJSONFile(
         const boost::property_tree::ptree& arguments) -> Interface::UQuery
     {
-        return nullptr;
+        Query::UpdateData data{};
+        const std::string tableName =
+            arguments.get<std::string>(OP_UPDATE_TABLE);
+
+        for (const auto& cell : arguments.get_child(OP_INSERT_INTO_ROW))
+        {
+            std::string columnName =
+                cell.second.get<std::string>(OP_UPDATE_CELL_COLUMN);
+            std::string columnType =
+                cell.second.get<std::string>(OP_UPDATE_CELL_TYPE);
+            std::string value =
+                cell.second.get<std::string>(OP_UPDATE_CELL_VALUE);
+
+            auto dynType = Interface::ConvertStringToDynamicType(columnType);
+            if (dynType == Interface::DynamicType::Int)
+            {
+                Interface::GetDynamicType<Interface::DynamicType::Int>::type
+                    cellValue    = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::Int>::type>("");
+                data[columnName] = Interface::CreateUDynValue(cellValue);
+            }
+            if (dynType == Interface::DynamicType::Double)
+            {
+                Interface::GetDynamicType<Interface::DynamicType::Double>::type
+                    cellValue    = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::Double>::type>("");
+                data[columnName] = Interface::CreateUDynValue(cellValue);
+            }
+            if (dynType == Interface::DynamicType::String)
+            {
+                Interface::GetDynamicType<Interface::DynamicType::String>::type
+                    cellValue    = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::String>::type>("");
+                data[columnName] = Interface::CreateUDynValue(cellValue);
+            }
+        }
+
+        auto&& condition =
+            CreateCondition(arguments.get_child(OP_UPDATE_WHERE));
+
+        return Query::CreateQuery(
+            tableName,
+            Query::CreateOpUpdate(std::move(data), std::move(condition)));
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -267,7 +355,13 @@ namespace SQLEngine::QueryParser
     auto CreateQueryDeleteFromJSONFile(
         const boost::property_tree::ptree& arguments) -> Interface::UQuery
     {
-        return nullptr;
+        const std::string tableName =
+            arguments.get<std::string>(OP_DELETE_FROM);
+        auto&& condition =
+            CreateCondition(arguments.get_child(OP_DELETE_WHERE));
+
+        return Query::CreateQuery(tableName,
+                                  Query::CreateOpDelete(std::move(condition)));
     }
 
     //////////////////////////////////////////////////////////////////////

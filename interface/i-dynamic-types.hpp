@@ -35,7 +35,7 @@ namespace SQLEngine::Interface
     auto PROJECT_SHARED_EXPORT
     GetDynamicTypeNameAsString(const DynamicType& type) -> const std::string;
     auto PROJECT_SHARED_EXPORT
-    ConvertStringToUDynValue(const std::string& value) -> DynamicType;
+    ConvertStringToDynamicType(const std::string& value) -> DynamicType;
 
     //////////////////////////////////////////////////////////////////////
 

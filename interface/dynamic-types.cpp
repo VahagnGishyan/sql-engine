@@ -50,7 +50,7 @@ namespace SQLEngine
         return pos->second;
     }
 
-    auto Interface::ConvertStringToUDynValue(const std::string& type)
+    auto Interface::ConvertStringToDynamicType(const std::string& type)
         -> DynamicType
     {
         auto&& elements = GetDynamicValuesAndStrings();
@@ -63,7 +63,7 @@ namespace SQLEngine
                                 });
         Utility::Assert(
             pos != end,
-            fmt::format("ConvertStringToUDynValue, unknown str type: {}",
+            fmt::format("ConvertStringToDynamicType, unknown str type: {}",
                         type));
         return pos->first;
     }

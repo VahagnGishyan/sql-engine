@@ -108,7 +108,7 @@ namespace SQLEngine::LocalDataBase
                 auto&& columnName    = column.second.get<std::string>("name");
                 auto&& strColumnType = column.second.get<std::string>("type");
                 auto&& columnType =
-                    Interface::ConvertStringToUDynValue(strColumnType);
+                    Interface::ConvertStringToDynamicType(strColumnType);
                 columnInfoList.emplace_back(columnName, columnType);
             }
         }
