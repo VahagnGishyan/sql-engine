@@ -7,21 +7,21 @@
 #include <gtest/gtest.h>
 
 #include "database/database.hpp"
-#include "sql-operations/operations.hpp"
+#include "query/executors.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
 using namespace SQLEngine;
-using namespace SQLEngine::QueryExecutors;
+using namespace SQLEngine::Query;
 using namespace SQLEngine::Interface;
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-class OperationSelect : public ::testing::Test
+class OperationDelete : public ::testing::Test
 {
    protected:
     void SetUp() override
@@ -91,55 +91,12 @@ class OperationSelect : public ::testing::Test
     //////////////////////////////////////////////////////////////////////
 
    protected:
-    auto CreateShouldBeTable(const ColumnNameList& columnNameList,
-                             const RowIndexes& indexes) -> UTable
+    auto CreateShouldBeTable(const UCondition& condition) -> UTable
     {
-        auto shouldBeTable = DataBase::CreateTable("test-table-name");
-        auto&& columnAge =
-            DataBase::CreateColumn("Age", Interface::DynamicType::Int);
-        auto&& columnSalary =
-            DataBase::CreateColumn("Salary", Interface::DynamicType::Double);
-        auto&& columnName =
-            DataBase::CreateColumn("Name", Interface::DynamicType::String);
-
-        //////////////////////////////////////////////////////////////////////
-        auto&& columnAgeData    = GetAgeColumnData();
-        auto&& columnSalaryData = GetSalaryColumnData();
-        auto&& columnNameData   = GetNameColumnData();
-        //////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////////////
-        for (auto index : indexes)
-        {
-            columnAge->AddElement(
-                Interface::CreateUDynValue(columnAgeData[index]));
-            columnSalary->AddElement(
-                Interface::CreateUDynValue(columnSalaryData[index]));
-            columnName->AddElement(
-                Interface::CreateUDynValue(columnNameData[index]));
-        }
-        //////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////////////
-        if (std::find(columnNameList.begin(), columnNameList.end(), "Age") !=
-            columnNameList.end())
-        {
-            shouldBeTable->AddColumn(std::move(columnAge));
-        }
-        if (std::find(columnNameList.begin(), columnNameList.end(), "Salary") !=
-            columnNameList.end())
-        {
-            shouldBeTable->AddColumn(std::move(columnSalary));
-        }
-        if (std::find(columnNameList.begin(), columnNameList.end(), "Name") !=
-            columnNameList.end())
-        {
-            shouldBeTable->AddColumn(std::move(columnName));
-        }
-        // should be table is already created
-        //////////////////////////////////////////////////////////////////////
-
-        return shouldBeTable;
+        auto reverse = CreateConditionNot(condition->Copy());
+        auto selectOp =
+            CreateOpSelect(*utable->ListColumns(), std::move(reverse));
+        return selectOp->Execute(*utable);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -223,217 +180,123 @@ class OperationSelect : public ::testing::Test
 //
 //////////////////////////////////////////////////////////////////////////
 
-template <typename Type>
-auto GetCheckedRowIndexes(
-    const std::vector<Type>& array,
-    const std::function<bool(const Type& value)> condition) -> RowIndexes
-{
-    auto indexes = CreateRowIndexes(array.size());
-    for (auto&& index : indexes)
-    {
-        if (condition(array[index]) == false)
-        {
-            index = -1;
-        }
-    }
-    auto pos = std::remove(indexes.begin(), indexes.end(), -1);
-    indexes.erase(pos, indexes.end());
-    return indexes;
-}
-
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, AgeGreaterThan30)
+TEST_F(OperationDelete, AgeGreaterThan30)
 {
     //////////////////////////////////////////////////////////////////////
-    // Choose some columns from the table
-    ColumnNameList columnNameList{"Age", "Salary", "Name"};
-
     // Create some conditions
     // Example: Select rows where Age is greater than 30
     int greaterThan = 30;
     auto condition  = CreateConditionGreaterThan("Age", CreateUDynValue(30));
 
-    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
-    auto resultTable = selectOp->Execute(*utable);
+    auto deleteOp    = CreateOpDelete(condition->Copy());
+    auto resultTable = deleteOp->Execute(*utable);
     //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
     // create table should be
-    auto indexes = GetCheckedRowIndexes<int>(GetAgeColumnData(),
-                                             [greaterThan](int value)
-                                             {
-                                                 return (value > greaterThan);
-                                             });
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // Create a test table with columns
-    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
-    //////////////////////////////////////////////////////////////////////
-
+    auto shouldBeTable = CreateShouldBeTable(condition->Copy());
     // Check tables equality
     ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, AgeLessThanOrEqualTo30)
+TEST_F(OperationDelete, AgeLessThanOrEqualTo30)
 {
     //////////////////////////////////////////////////////////////////////
-    // Choose some columns from the table
-    ColumnNameList columnNameList{"Age", "Salary", "Name"};
-
     // Create some conditions
     // Example: Select rows where Age is greater than 30
     int greaterThan = 30;
     auto condition =
         CreateConditionLessThanOrEqualTo("Age", CreateUDynValue(30));
 
-    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
-    auto resultTable = selectOp->Execute(*utable);
+    auto deleteOp    = CreateOpDelete(condition->Copy());
+    auto resultTable = deleteOp->Execute(*utable);
     //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
     // create table should be
-    auto indexes = GetCheckedRowIndexes<int>(GetAgeColumnData(),
-                                             [greaterThan](int value)
-                                             {
-                                                 return (value <= greaterThan);
-                                             });
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // Create a test table with columns
-    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
-    //////////////////////////////////////////////////////////////////////
-
+    auto shouldBeTable = CreateShouldBeTable(condition->Copy());
     // Check tables equality
     ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, OnlySalaryAndName)
+TEST_F(OperationDelete, OnlySalaryAndName)
 {
     //////////////////////////////////////////////////////////////////////
-    // Choose some columns from the table
-    ColumnNameList columnNameList{"Salary", "Name"};
-
     // Create some conditions
     // Example: Select rows where Age is greater than 30
     int greaterThan = 30;
     auto condition  = CreateConditionGreaterThan("Age", CreateUDynValue(30));
 
-    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
-    auto resultTable = selectOp->Execute(*utable);
+    auto deleteOp    = CreateOpDelete(condition->Copy());
+    auto resultTable = deleteOp->Execute(*utable);
     //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
     // create table should be
-    auto indexes = GetCheckedRowIndexes<int>(GetAgeColumnData(),
-                                             [greaterThan](int value)
-                                             {
-                                                 return (value > greaterThan);
-                                             });
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // Create a test table with columns
-    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
-    //////////////////////////////////////////////////////////////////////
-
+    auto shouldBeTable = CreateShouldBeTable(condition->Copy());
     // Check tables equality
     ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, UserDavid)
+TEST_F(OperationDelete, UserDavid)
 {
     //////////////////////////////////////////////////////////////////////
-    ColumnNameList columnNameList{"Age", "Salary", "Name"};
     auto equalvalue = "David";
     auto condition  = CreateConditionEqual("Name", CreateUDynValue(equalvalue));
+
+    auto deleteOp    = CreateOpDelete(condition->Copy());
+    auto resultTable = deleteOp->Execute(*utable);
     //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
-    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
-    auto resultTable = selectOp->Execute(*utable);
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // create table should be
-    auto indexes =
-        GetCheckedRowIndexes<std::string>(GetNameColumnData(),
-                                          [equalvalue](const std::string& value)
-                                          {
-                                              return (value == equalvalue);
-                                          });
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // Create a test table with columns
-    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
-    //////////////////////////////////////////////////////////////////////
-
-    // Check tables equality
+    auto shouldBeTable = CreateShouldBeTable(condition->Copy());
     ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, NotUserDavid)
+TEST_F(OperationDelete, NotUserDavid)
 {
     //////////////////////////////////////////////////////////////////////
-    ColumnNameList columnNameList{"Age", "Salary", "Name"};
     auto equalvalue = "David";
     auto condition =
         CreateConditionNotEqual("Name", CreateUDynValue(equalvalue));
+
+    auto deleteOp = CreateOpDelete(condition->Copy());
+    ASSERT_NE(deleteOp, nullptr);
+    ASSERT_NE(utable, nullptr);
+    auto resultTable = deleteOp->Execute(*utable);
     //////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////
-    auto selectOp    = CreateOpSelect(columnNameList, std::move(condition));
-    auto resultTable = selectOp->Execute(*utable);
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // create table should be
-    auto indexes =
-        GetCheckedRowIndexes<std::string>(GetNameColumnData(),
-                                          [equalvalue](const std::string& value)
-                                          {
-                                              return (value != equalvalue);
-                                          });
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    // Create a test table with columns
-    auto shouldBeTable = CreateShouldBeTable(columnNameList, indexes);
-    //////////////////////////////////////////////////////////////////////
-
-    // Check tables equality
+    auto shouldBeTable = CreateShouldBeTable(condition->Copy());
     ASSERT_NO_THROW(CheckTables(*resultTable, *shouldBeTable));
+    //////////////////////////////////////////////////////////////////////
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-TEST_F(OperationSelect, EmptyColumnNames)
+TEST_F(OperationDelete, NullCondition)
 {
     //////////////////////////////////////////////////////////////////////
-    ColumnNameList columnNameList{};
-    auto equalvalue = "David";
-    auto condition =
-        CreateConditionNotEqual("Name", CreateUDynValue(equalvalue));
-    //////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////
-    ASSERT_THROW(CreateOpSelect(columnNameList, std::move(condition)),
-                 std::exception);
+    auto condition = nullptr;
+    ASSERT_THROW(CreateOpDelete(condition), std::exception);
     //////////////////////////////////////////////////////////////////////
 }
 

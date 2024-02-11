@@ -7,14 +7,14 @@
 #include <gtest/gtest.h>
 
 #include "database/database.hpp"
-#include "sql-operations/operations.hpp"
+#include "query/executors.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
 using namespace SQLEngine;
-using namespace SQLEngine::QueryExecutors;
+using namespace SQLEngine::Query;
 using namespace SQLEngine::Interface;
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ TEST_F(OperationInsertInto, SingleRow)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutors::InsertIntoData values{};
+        Query::InsertIntoData values{};
         values["Age"].push_back(Interface::CreateUDynValue(40));
         values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
         values["Name"].push_back(Interface::CreateUDynValue("Frank"));
@@ -171,7 +171,7 @@ TEST_F(OperationInsertInto, MultipleRows)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutors::InsertIntoData values{};
+        Query::InsertIntoData values{};
 
         // Adding multiple values for each column
         values["Age"].push_back(Interface::CreateUDynValue(40));
@@ -213,7 +213,7 @@ TEST_F(OperationInsertInto, EmptyRows)
 {
     auto GetSingleRow = []()
     {
-        QueryExecutors::InsertIntoData values{};
+        Query::InsertIntoData values{};
         return values;
     };
 
@@ -229,7 +229,7 @@ TEST_F(OperationInsertInto, InvalidCases)
     {
         auto GetSingleRow = []()
         {
-            QueryExecutors::InsertIntoData values{};
+            Query::InsertIntoData values{};
             values["UnknownCase"].push_back(Interface::CreateUDynValue(40));
             values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
             values["Name"].push_back(Interface::CreateUDynValue("Frank"));
@@ -243,7 +243,7 @@ TEST_F(OperationInsertInto, InvalidCases)
     {
         auto GetSingleRow = []()
         {
-            QueryExecutors::InsertIntoData values{};
+            Query::InsertIntoData values{};
             values["Salary"].push_back(Interface::CreateUDynValue(80000.0));
             values["Name"].push_back(Interface::CreateUDynValue("Frank"));
             return values;

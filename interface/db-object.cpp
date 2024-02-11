@@ -10,7 +10,7 @@
 #include "i-db-manager.hpp"
 #include "i-db-object.hpp"
 #include "i-db-stream.hpp"
-#include "i-query-executor.hpp"
+#include "i-query.hpp"
 #include "i-row-oriented-table.hpp"
 #include "i-table.hpp"
 #include "utility/core.hpp"
@@ -78,6 +78,23 @@ namespace SQLEngine::Interface
         return indexes;
     }
 
+    //////////////////////////////////////////////////////////////////////
+
+    void IQuery::Execute(IDataBase& database) const
+    {
+        auto&& tablename = GetTableName();
+        auto&& table = database.GetTable(tablename);
+
+        auto&& executor = GetQueryExecutor();
+        auto&& newTable = executor->Execute(table);
+
+        database.RemoveTable(tablename);
+        database.AddTable(std::move(newTable));
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////////////////////////
 }  // namespace SQLEngine::Interface
 
 //////////////////////////////////////////////////////////////////////////

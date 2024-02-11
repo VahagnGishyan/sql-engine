@@ -3,12 +3,11 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "operations.hpp"
-
 #include <fmt/core.h>
 
 #include "condition.hpp"
 #include "database/database.hpp"
+#include "executors.hpp"
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
 
@@ -16,7 +15,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::QueryExecutors
+namespace SQLEngine::Query
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -51,7 +50,8 @@ namespace SQLEngine::QueryExecutors
             for (auto&& columnData : m_data)
             {
                 auto&& column = newTable->GetColumn(columnData.first /*name*/);
-                for (auto&& cell : columnData.second /*list of dynamic values*/)
+                for (auto&& cell :
+                     columnData.second /*vector of dynamic values*/)
                 {
                     column.AddElement(Interface::CopyUDynValue(cell));
                 }
@@ -59,11 +59,30 @@ namespace SQLEngine::QueryExecutors
             return newTable;
         }
 
+        auto Copy() -> UQueryExecutor override
+        {
+            return CreateOpInsertInto(CopyInsertIntoData(m_data));
+        }
+
        protected:
         InsertIntoData m_data;
     };
 
     //////////////////////////////////////////////////////////////////////
+
+    auto CopyInsertIntoData(const InsertIntoData& original) -> InsertIntoData
+    {
+        InsertIntoData newdata{};
+        for (auto&& columnData : original)
+        {
+            auto&& newrow = newdata[columnData.first];
+            for (auto&& cell : columnData.second /*vector of dynamic values*/)
+            {
+                newrow.push_back(Interface::CopyUDynValue(cell));
+            }
+        }
+        return newdata;
+    }
 
     auto CreateOpInsertInto(InsertIntoData row) -> UQueryExecutor
     {
@@ -135,6 +154,11 @@ namespace SQLEngine::QueryExecutors
             return newTable->CopyUsingRowIndexes(indexes);
         }
 
+        auto Copy() -> UQueryExecutor override
+        {
+            return CreateOpSelect(m_columns, m_condition->Copy());
+        }
+
        protected:
         Interface::ColumnNameList m_columns;
     };
@@ -170,6 +194,11 @@ namespace SQLEngine::QueryExecutors
             auto newTable = table.Copy();
             newTable->RemoveRow(indexes);
             return newTable;
+        }
+
+        auto Copy() -> UQueryExecutor override
+        {
+            return CreateOpDelete(m_condition->Copy());
         }
     };
 
@@ -215,11 +244,28 @@ namespace SQLEngine::QueryExecutors
             return newTable;
         }
 
+        auto Copy() -> UQueryExecutor override
+        {
+            return CreateOpUpdate(CopyUpdateData(m_values),
+                                  m_condition->Copy());
+        }
+
        protected:
         UpdateData m_values;
     };
 
     //////////////////////////////////////////////////////////////////////
+
+    auto CopyUpdateData(const UpdateData& original) -> UpdateData
+    {
+        UpdateData newdata{};
+        for (auto&& columninfo : original)
+        {
+            newdata[columninfo.first] =
+                Interface::CopyUDynValue(columninfo.second);
+        }
+        return newdata;
+    }
 
     auto CreateOpUpdate(UpdateData values, UCondition condition)
         -> UQueryExecutor
@@ -231,7 +277,7 @@ namespace SQLEngine::QueryExecutors
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::QueryExecutors
+}  // namespace SQLEngine::Query
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

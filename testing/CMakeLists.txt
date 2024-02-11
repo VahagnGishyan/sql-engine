@@ -3,7 +3,7 @@
 #                                #
 ##################################
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.15)
 project(run-tests)
 enable_testing()
 
@@ -94,28 +94,28 @@ target_include_directories(tester-local-database PRIVATE ${CMAKE_CURRENT_SOURCE_
 #                                #
 ##################################
 
-add_executable(tester-sql-operations
-    sql-operations/main.cpp
+add_executable(tester-query
+    query/main.cpp
 
-    sql-operations/test-conditions-table.cpp
-    sql-operations/test-conditions.cpp
+    query/test-conditions-table.cpp
+    query/test-conditions.cpp
 
-    sql-operations/test-operation-insert-into.cpp
-    sql-operations/test-operation-select.cpp
-    sql-operations/test-operation-delete.cpp
-    sql-operations/test-operation-update.cpp
+    query/test-operation-insert-into.cpp
+    query/test-operation-select.cpp
+    query/test-operation-delete.cpp
+    query/test-operation-update.cpp
 )
-target_link_libraries(tester-sql-operations
+target_link_libraries(tester-query
     fmt::fmt 
     gtest::gtest
     sql-engine-utility
     sql-engine-interface
     sql-engine-database
-    sql-engine-sql-operations
+    sql-engine-query
 )
-target_compile_features   (tester-sql-operations PRIVATE cxx_std_17)
-target_include_directories(tester-sql-operations PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(tester-sql-operations PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features   (tester-query PRIVATE cxx_std_17)
+target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 ##################################
 #                                #
@@ -130,8 +130,8 @@ add_test(NAME tester-database
 add_test(NAME tester-local-database
         COMMAND tester-local-database)
 
-add_test(NAME tester-sql-operations
-        COMMAND tester-sql-operations)
+add_test(NAME tester-query
+        COMMAND tester-query)
 
 ##################################
 #                                #

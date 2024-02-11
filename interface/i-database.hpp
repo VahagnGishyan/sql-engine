@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "i-db-object.hpp"
-#include "i-query-executor.hpp"
+#include "i-query.hpp"
 #include "i-table.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,9 +57,6 @@ namespace SQLEngine::Interface
         virtual auto GetTable(const std::string& tbname) -> ITable& = 0;
         virtual auto GetTable(const std::string& tbname) const
             -> const ITable& = 0;
-
-       public:
-        virtual void Execute(const IQueryExecutor& executor) = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

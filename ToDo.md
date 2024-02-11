@@ -15,7 +15,7 @@
 - [x] database: row
 - [x] local-database: json stream
 - [x] local-database: local-database
-- [ ] sql-operations
+- [ ] query
 	- [x] condition
 	- [ ] operations
 - [ ] cli-application

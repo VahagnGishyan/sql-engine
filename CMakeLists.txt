@@ -25,8 +25,8 @@ set (SUBDIRS
     interface
     logging
     observer
-    sql-operations
-    # query-parser
+    query
+    query-parser
     # sql-engine
     # other
     utility

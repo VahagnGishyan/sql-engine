@@ -2,7 +2,7 @@
 # Set the minimum required version of CMake
 cmake_minimum_required(VERSION 3.5)
 
-project(sql-engine-sql-operations)
+project(sql-engine-query)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -11,6 +11,7 @@ find_package(fmt REQUIRED)
 set(SOURCES
     condition.cpp
     operations.cpp
+    query.cpp
 )
 
 add_library (${PROJECT_NAME} SHARED #STATIC 

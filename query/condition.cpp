@@ -30,9 +30,9 @@ namespace SQLEngine
 
     namespace
     {
-        using QueryExecutors::UCondition;
+        using Query::UCondition;
 
-        class Condition : public QueryExecutors::ICondition
+        class Condition : public Query::ICondition
         {
            public:
             virtual auto Apply(const Interface::ITable& table) const
@@ -260,7 +260,7 @@ namespace SQLEngine
         class ComparisonCondition : public Condition
         {
            public:
-            using QueryExecutors::ICondition::Check;
+            using Query::ICondition::Check;
 
            public:
             ComparisonCondition(const std::string columnName,
@@ -565,55 +565,55 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto QueryExecutors::CreateConditionAnd(UCondition left, UCondition right)
+    auto Query::CreateConditionAnd(UCondition left, UCondition right)
         -> UCondition
     {
         return And::Create(std::move(left), std::move(right));
     }
-    auto QueryExecutors::CreateConditionOr(UCondition left, UCondition right)
+    auto Query::CreateConditionOr(UCondition left, UCondition right)
         -> UCondition
     {
         return Or::Create(std::move(left), std::move(right));
     }
-    auto QueryExecutors::CreateConditionNot(UCondition condition) -> UCondition
+    auto Query::CreateConditionNot(UCondition condition) -> UCondition
     {
         return Not::Create(std::move(condition));
     }
 
     //////////////////////////////////////////////////////////////////////
 
-    auto QueryExecutors::CreateConditionEqual(const std::string columnName,
+    auto Query::CreateConditionEqual(const std::string columnName,
                                              const UDynamicValue& value)
         -> UCondition
     {
         return Equal::Create(columnName, value);
     }
-    auto QueryExecutors::CreateConditionNotEqual(const std::string columnName,
+    auto Query::CreateConditionNotEqual(const std::string columnName,
                                                 const UDynamicValue& value)
         -> UCondition
     {
         return NotEqual::Create(columnName, value);
     }
 
-    auto QueryExecutors::CreateConditionGreaterThan(const std::string columnName,
+    auto Query::CreateConditionGreaterThan(const std::string columnName,
                                                    const UDynamicValue& value)
         -> UCondition
     {
         return GreaterThan::Create(columnName, value);
     }
-    auto QueryExecutors::CreateConditionLessThan(const std::string columnName,
+    auto Query::CreateConditionLessThan(const std::string columnName,
                                                 const UDynamicValue& value)
         -> UCondition
     {
         return LessThan::Create(columnName, value);
     }
 
-    auto QueryExecutors::CreateConditionGreaterThanOrEqualTo(
+    auto Query::CreateConditionGreaterThanOrEqualTo(
         const std::string columnName, const UDynamicValue& value) -> UCondition
     {
         return GreaterThanOrEqualTo::Create(columnName, value);
     }
-    auto QueryExecutors::CreateConditionLessThanOrEqualTo(
+    auto Query::CreateConditionLessThanOrEqualTo(
         const std::string columnName, const UDynamicValue& value) -> UCondition
     {
         return LessThanOrEqualTo::Create(columnName, value);
@@ -623,7 +623,7 @@ namespace SQLEngine
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // auto QueryExecutors::ApplyCondition(const Interface::ITable& table,
+    // auto Query::ApplyCondition(const Interface::ITable& table,
     //                                    const ICondition& condition)
     //     -> Interface::UTable
     // {
@@ -631,7 +631,7 @@ namespace SQLEngine
     //     Interface::CreateRowIndexes(table.RowsCount());
 
     //     condition.Apply(table, indexes);
-    //     // fmt::println("QueryExecutors::ApplyCondition: indexes = {}",
+    //     // fmt::println("Query::ApplyCondition: indexes = {}",
     //     // indexes);
     //     return table.CopyUsingRowIndexes(indexes);
     // }

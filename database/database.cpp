@@ -136,15 +136,6 @@ namespace SQLEngine::DataBase
 
         //////////////////////////////////////////////////////////////////
 
-       public:
-        void Execute(const Interface::IQueryExecutor& query) override
-        {
-            // to do, after impl add tests
-            Interface::NotImplYet(" Execute(query)");
-        }
-
-        //////////////////////////////////////////////////////////////////
-
        protected:
         void AssertTableNotExists(const std::string& tbname,
                                   const std::string& message) const

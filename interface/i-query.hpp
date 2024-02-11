@@ -21,6 +21,11 @@ namespace SQLEngine::Interface
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    class IQueryExecutor;
+    using UQueryExecutor = std::unique_ptr<IQueryExecutor>;
+
+    //////////////////////////////////////////////////////////////////////
+
     class PROJECT_SHARED_EXPORT IQueryExecutor : public IDBObject
     {
        public:
@@ -28,24 +33,25 @@ namespace SQLEngine::Interface
 
        public:
         virtual auto Execute(const ITable& table) const -> UTable = 0;
+        virtual auto Copy() -> UQueryExecutor                     = 0;
     };
-
-    using UQueryExecutor = std::unique_ptr<IQueryExecutor>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // class PROJECT_SHARED_EXPORT IQueryParser : public IDBObject
-    // {
-    //    public:
-    //     virtual ~IQueryParser() = default;
+    class PROJECT_SHARED_EXPORT IQuery : public IDBObject
+    {
+       public:
+        virtual ~IQuery() = default;
 
-    //    public:
-    //     virtual auto Create() const -> UQueryExecutor = 0;
-    // };
+       public:
+        virtual void Execute(IDataBase& database) const;
+        virtual auto GetTableName() const -> const std::string  = 0;
+        virtual auto GetQueryExecutor() const -> UQueryExecutor = 0;
+    };
 
-    // using UQueryParser = std::unique_ptr<IQueryParser>;
+    using UQuery = std::unique_ptr<IQuery>;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

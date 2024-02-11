@@ -12,13 +12,13 @@
 #include <map>
 
 #include "condition.hpp"
-#include "interface/i-query-executor.hpp"
+#include "interface/i-query.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::QueryExecutors
+namespace SQLEngine::Query
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -26,6 +26,9 @@ namespace SQLEngine::QueryExecutors
 
     using InsertIntoData =
         std::map<std::string, std::vector<Interface::UDynamicValue>>;
+
+    auto PROJECT_SHARED_EXPORT
+    CopyInsertIntoData(const InsertIntoData& original) -> InsertIntoData;
 
     auto PROJECT_SHARED_EXPORT CreateOpInsertInto(InsertIntoData row)
         -> Interface::UQueryExecutor;
@@ -45,6 +48,9 @@ namespace SQLEngine::QueryExecutors
 
     using UpdateData = std::map<std::string, Interface::UDynamicValue>;
 
+    auto PROJECT_SHARED_EXPORT CopyUpdateData(const UpdateData& original)
+        -> UpdateData;
+
     auto PROJECT_SHARED_EXPORT CreateOpUpdate(UpdateData values,
                                               UCondition condition)
         -> Interface::UQueryExecutor;
@@ -52,7 +58,15 @@ namespace SQLEngine::QueryExecutors
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::QueryExecutors
+
+    auto PROJECT_SHARED_EXPORT CreateQuery(const std::string& tablename,
+                                           Interface::UQueryExecutor condition)
+        -> Interface::UQuery;
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+}  // namespace SQLEngine::Query
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
