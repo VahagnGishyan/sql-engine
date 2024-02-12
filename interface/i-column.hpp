@@ -26,10 +26,10 @@ namespace SQLEngine::Interface
 
     class IColumn;
 
-    using UColumn    = std::unique_ptr<IColumn>;
-    using ShColumn   = std::shared_ptr<IColumn>;
-    using ColumnList = std::vector<UColumn>;
-    using UColumnList    = std::unique_ptr<ColumnList>;
+    using UColumn     = std::unique_ptr<IColumn>;
+    using ShColumn    = std::shared_ptr<IColumn>;
+    using ColumnList  = std::vector<UColumn>;
+    using UColumnList = std::unique_ptr<ColumnList>;
 
     using ColumnElementList = std::vector<std::unique_ptr<DynamicValue>>;
 
@@ -55,6 +55,7 @@ namespace SQLEngine::Interface
         virtual auto GetType() const -> const DynamicType = 0;
 
        public:
+        virtual void AddElement(const DynamicValue& element)        = 0;
         virtual void AddElement(UDynamicValue element)              = 0;
         virtual auto GetElement(const int& index) -> UDynamicValue& = 0;
         virtual auto GetElement(const int& index) const

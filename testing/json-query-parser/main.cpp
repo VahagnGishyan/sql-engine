@@ -3,38 +3,42 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/core.h>
 #include <gtest/gtest.h>
 
-#include "testing/utility/test-dir-preparation.hpp"
+#include "app-info/application.hpp"
+#include "dir-preparation.hpp"
 #include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing
+namespace SQLEngine::Testing::JSONQueryParser
 {
     class TestDirPeparation
     {
        protected:
         TestDirPeparation()
         {
-            ClearRemainingTempFiles();
+            m_path = Application::GetInfo().GetDefaultAppData() +
+                     "/test-json-query-parer";
+            ClearRemainingTempFilesAt(m_path);
             // Create test directory
-            auto &&dir = Peparation::GetTestDirManager();
-            dir.Create();
+            SQLEngine::Testing::JSONQueryParser::Peparation::InitAt(m_path);
+            std::cout << "test-json-query-parser-dir:     " << m_path
+                      << std::endl;
         }
         ~TestDirPeparation()
         {
-            // Destroy test directory
-            ClearRemainingTempFiles();
+            // // Destroy test directory
+            // ClearRemainingTempFilesAt(m_path);
         }
 
-        static void ClearRemainingTempFiles()
+       protected:
+        static void ClearRemainingTempFilesAt(const std::string &path)
         {
-            auto &&testdir  = Peparation::TestDir::GetTestingWorkDir();
-            auto &&testname = Peparation::TestDir::GetTestingName();
-            SQLEngine::Utility::RemoveDir(testdir,
+            SQLEngine::Utility::RemoveDir(path,
                                           Utility::Option::MustExist{false});
         }
 
@@ -44,11 +48,12 @@ namespace SQLEngine::Testing
         static void SetUp()
         {
             static TestDirPeparation obj;
-            auto &&dir = Peparation::GetTestDir();
-            std::cout << "testing-dir:     " << dir.GetWorkDir() << std::endl;
         }
+
+       protected:
+        std::string m_path;
     };
-}  // namespace SQLEngine::Testing
+}  // namespace SQLEngine::Testing::JSONQueryParser
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -56,9 +61,20 @@ namespace SQLEngine::Testing
 
 int main(int argc, char **argv)
 {
-    SQLEngine::Testing::TestDirPeparation::SetUp();
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    try
+    {
+        SQLEngine::Testing::JSONQueryParser::TestDirPeparation::SetUp();
+        testing::InitGoogleTest(&argc, argv);
+        return RUN_ALL_TESTS();
+    }
+    catch (const std::exception &e)
+    {
+        fmt::println(
+            "tester-json-query-parser::main() UNHANDLED EXCEPTION: message: "
+            "{}",
+            e.what());
+        return 1;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////

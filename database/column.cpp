@@ -84,6 +84,10 @@ namespace SQLEngine::DataBase
         }
 
        public:
+        void AddElement(const DynamicValue& element) override
+        {
+            AddElement(Interface::CreateUDynValue(element));
+        }
         void AddElement(UDynamicValue element) override
         {
             if (element != nullptr)

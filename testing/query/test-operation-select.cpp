@@ -29,8 +29,6 @@ class OperationSelect : public ::testing::Test
         // Create a test table with columns
         utable = DataBase::CreateTable("test-table-name");
 
-        std::map<std::string, Interface::UDynamicValue> columnData;
-
         auto&& columnAge =
             DataBase::CreateColumn("Age", Interface::DynamicType::Int);
         auto&& columnSalary =

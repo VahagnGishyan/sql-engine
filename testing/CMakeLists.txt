@@ -121,6 +121,36 @@ target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 #                                #
 ##################################
 
+add_executable(tester-json-query-parser
+    json-query-parser/dir-preparation.cpp
+    json-query-parser/main.cpp
+    json-query-parser/preparation-create-database.cpp
+
+    json-query-parser/preparation-create-delete-queries.cpp
+    json-query-parser/preparation-create-insert-into-queries.cpp
+    json-query-parser/preparation-create-select-queries.cpp
+    json-query-parser/preparation-create-update-queries.cpp
+
+    json-query-parser/preparator-directory.cpp
+)
+target_link_libraries(tester-json-query-parser
+    fmt::fmt 
+    gtest::gtest
+    sql-engine-utility
+    sql-engine-interface
+    sql-engine-database
+    sql-engine-local-database
+    sql-engine-query
+    sql-engine-query-parser
+)
+target_compile_features   (tester-query PRIVATE cxx_std_17)
+target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+##################################
+#                                #
+##################################
+
 add_test(NAME tester-utility
         COMMAND tester-utility)
 
@@ -132,6 +162,9 @@ add_test(NAME tester-local-database
 
 add_test(NAME tester-query
         COMMAND tester-query)
+
+add_test(NAME tester-json-query-parser
+        COMMAND tester-json-query-parser)
 
 ##################################
 #                                #
