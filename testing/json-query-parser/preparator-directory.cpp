@@ -50,6 +50,14 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         }
 
        public:
+        auto GetDatabase() const -> Interface::UDataBase
+        {
+            auto dbdir  = GetDataBaseDir();
+            auto reader = LocalDataBase::CreateDBLocalJSONReader(dbdir);
+            return reader->Read();
+        }
+
+       public:
         auto GetInsertIntoJSONFileExample() const -> const std::string override
         {
             return (*m_insertIntoPaths).at(0);
@@ -68,7 +76,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         }
 
        public:
-        auto GetSelectIntoJSONExamples() const
+        auto GetInsertJSONExamples() const
             -> const std::shared_ptr<std::vector<std::string>> override
         {
             return m_insertIntoPaths;
@@ -106,9 +114,13 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         {
             return fmt::format("{}/update-dir", m_path);
         }
+        auto GetDataBaseName() const -> const std::string
+        {
+            return "test-todo-database";
+        }
         auto GetDataBaseDir() const -> const std::string
         {
-            return fmt::format("{}/database-dir", m_path);
+            return fmt::format("{}/{}", m_path, GetDataBaseName());
         }
 
        protected:
@@ -124,7 +136,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             //////////////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////////////
-            CreateDatabaseAt(dir.GetDataBaseDir());
+            CreateDatabaseAt(Utility::GetBaseDir(dir.GetDataBaseDir()),
+                             dir.GetDataBaseName());
             //////////////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////////////
@@ -132,6 +145,10 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             m_updatePaths     = CreateUpdateQueries(dir.GetUpdateDir());
             m_selectPaths     = CreateSelectQueries(dir.GetSelectDir());
             m_deletePaths     = CreateDeleteQueries(dir.GetDeleteDir());
+            //////////////////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////////////
+            
             //////////////////////////////////////////////////////////////////
         }
 
@@ -155,7 +172,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

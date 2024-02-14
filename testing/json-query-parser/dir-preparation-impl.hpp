@@ -25,7 +25,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void CreateDatabaseAt(const std::string& path);
+    void CreateDatabaseAt(const std::string& path, const std::string& dbName);
 
     auto CreateInsertIntoQueries(const std::string& dir)
         -> std::shared_ptr<std::vector<std::string>>;
@@ -38,13 +38,25 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     //////////////////////////////////////////////////////////////////////
 
+    // auto SaveDeleteResult(const std::string& dir)
+    //     -> std::shared_ptr<std::vector<std::string>>;
+    // auto CreateUpdateQueries(const std::string& dir)
+    //     -> std::shared_ptr<std::vector<std::string>>;
+    // auto CreateSelectQueries(const std::string& dir)
+    //     -> std::shared_ptr<std::vector<std::string>>;
+    // auto CreateDeleteQueries(const std::string& dir)
+    //     -> std::shared_ptr<std::vector<std::string>>;
+
+    //////////////////////////////////////////////////////////////////////
+
     class IPreparedDir
     {
        public:
         virtual ~IPreparedDir() = default;
 
        public:
-        virtual auto GetEmptyDir() const -> const std::string      = 0;
+        virtual auto GetEmptyDir() const -> const std::string    = 0;
+        virtual auto GetDatabase() const -> Interface::UDataBase = 0;
 
        public:
         virtual auto GetInsertIntoJSONFileExample() const
@@ -54,7 +66,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         virtual auto GetDeleteJSONFileExample() const -> const std::string = 0;
 
        public:
-        virtual auto GetSelectIntoJSONExamples() const
+        virtual auto GetInsertJSONExamples() const
             -> const std::shared_ptr<std::vector<std::string>> = 0;
         virtual auto GetUpdateJSONExamples() const
             -> const std::shared_ptr<std::vector<std::string>> = 0;
@@ -71,7 +83,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

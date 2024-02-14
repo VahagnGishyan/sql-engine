@@ -125,13 +125,23 @@ add_executable(tester-json-query-parser
     json-query-parser/dir-preparation.cpp
     json-query-parser/main.cpp
     json-query-parser/preparation-create-database.cpp
-
     json-query-parser/preparation-create-delete-queries.cpp
     json-query-parser/preparation-create-insert-into-queries.cpp
     json-query-parser/preparation-create-select-queries.cpp
     json-query-parser/preparation-create-update-queries.cpp
-
     json-query-parser/preparator-directory.cpp
+
+    # json-query-parser/preparation-result-delete-categories.cpp
+    # json-query-parser/preparation-result-delete-taskcategories.cpp
+    # json-query-parser/preparation-result-delete-tasks.cpp
+
+    # json-query-parser/preparation-result-insert-categories.cpp
+    # json-query-parser/preparation-result-insert-taskcategories.cpp
+    # json-query-parser/preparation-result-insert-tasks.cpp
+
+
+    # tests
+    json-query-parser/test-delete-query.cpp
 )
 target_link_libraries(tester-json-query-parser
     fmt::fmt 
@@ -142,6 +152,7 @@ target_link_libraries(tester-json-query-parser
     sql-engine-local-database
     sql-engine-query
     sql-engine-query-parser
+    sql-engine-debug-db
 )
 target_compile_features   (tester-query PRIVATE cxx_std_17)
 target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

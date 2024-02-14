@@ -21,7 +21,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -40,53 +40,97 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                              Utility::Option::CreateBaseDirectory{false});
 
             Utility::AssertDirEmpty(path);
-            s_peparator = CreatePreparedDir(path);
+            s_peparator = Peparation::CreatePreparedDir(path);
         }
 
-        static auto GetPreparedDir() -> const IPreparedDir&
+        static auto GetPreparedDir() -> const Peparation::IPreparedDir&
         {
             return *s_peparator;
         }
 
        protected:
-        static UPreparedDir s_peparator;
+        static Peparation::UPreparedDir s_peparator;
     };
 
-    UPreparedDir PreparedDirWrapper::s_peparator = nullptr;
+    Peparation::UPreparedDir PreparedDirWrapper::s_peparator = nullptr;
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void InitAt(const std::string& path)
+    void Peparation::InitAt(const std::string& path)
     {
         PreparedDirWrapper::InitAt(path);
     }
 
-    auto GetEmptyDir() -> const std::string
+    auto Peparation::GetEmptyDir() -> const std::string
     {
         auto&& dir = PreparedDirWrapper::GetPreparedDir();
         return dir.GetEmptyDir();
     }
 
-    auto GetSelectIntoJSONFileExample() -> const std::string;
-    auto GetUpdateJSONFileExample() -> const std::string;
-    auto GetSelectJSONFileExample() -> const std::string;
-    auto GetDeleteJSONFileExample() -> const std::string;
+    //////////////////////////////////////////////////////////////////////
 
-    auto GetSelectIntoJSONExamples()
-        -> const std::shared_ptr<std::vector<std::string>>;
-    auto GetUpdateJSONExamples()
-        -> const std::shared_ptr<std::vector<std::string>>;
-    auto GetSelectJSONExamples()
-        -> const std::shared_ptr<std::vector<std::string>>;
-    auto GetDeleteJSONExamples()
-        -> const std::shared_ptr<std::vector<std::string>>;
+    auto Peparation::GetDatabase() -> Interface::UDataBase
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetDatabase();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto Peparation::GetInsertJSONFileExample() -> const std::string
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetInsertIntoJSONFileExample();
+    }
+    auto Peparation::GetUpdateJSONFileExample() -> const std::string
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetUpdateJSONFileExample();
+    }
+    auto Peparation::GetSelectJSONFileExample() -> const std::string
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetSelectJSONFileExample();
+    }
+    auto Peparation::GetDeleteJSONFileExample() -> const std::string
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetDeleteJSONFileExample();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
+    auto Peparation::GetInsertJSONExamples()
+        -> const std::shared_ptr<std::vector<std::string>>
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetInsertJSONExamples();
+    }
+    auto Peparation::GetUpdateJSONExamples()
+        -> const std::shared_ptr<std::vector<std::string>>
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetUpdateJSONExamples();
+    }
+    auto Peparation::GetSelectJSONExamples()
+        -> const std::shared_ptr<std::vector<std::string>>
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetSelectJSONExamples();
+    }
+    auto Peparation::GetDeleteJSONExamples()
+        -> const std::shared_ptr<std::vector<std::string>>
+    {
+        auto&& dir = PreparedDirWrapper::GetPreparedDir();
+        return dir.GetDeleteJSONExamples();
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

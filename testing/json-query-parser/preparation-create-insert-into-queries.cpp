@@ -8,6 +8,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
+#include <sstream>
 
 #include "database/database.hpp"
 #include "dir-preparation.hpp"
@@ -26,100 +27,132 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto AddElements = [](boost::property_tree::ptree& rowArray,
-                          const std::string& columnName,
-                          const std::string& type, const auto& values)
+    auto WriteInFile(const std::string& context, const std::string& path,
+                     const std::string& name) -> std::string
     {
-        boost::property_tree::ptree row;
+        auto jsonpath = fmt::format("{}/{}.json", path, name);
 
-        row.put("column", "task-id");
-        row.put("type", "Int");
+        Utility::MakeEmptyFile(jsonpath);
+        std::ofstream outputFile(jsonpath);
+        Utility::Assert(
+            outputFile.is_open(),
+            fmt::format("SQLEngine::Testing::JSONQueryParser::Peparation::"
+                        "WriteInFile(), can't open file: {}",
+                        jsonpath));
+        outputFile << context;
+        return jsonpath;
+    }
 
-        boost::property_tree::ptree nodevalues;
-        for (auto&& value : values)
-        {
-            nodevalues.put("", value);
-        }
-        row.add_child("values", nodevalues);
-
-        rowArray.push_back(std::make_pair("", row));
-    };
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     auto CreateInsertIntoQueryTasks(const std::string& dir) -> std::string
     {
-        // Create the JSON structure
-        boost::property_tree::ptree json;
+        std::string jsonString = R"(
+            {
+                "operation": "insert-into",
+                "arguments": {
+                    "table-name": "tasks-table",
+                    "row": [
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                4,
+                                5,
+                                6
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                1,
+                                2,
+                                3
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                "Prepare Presentation",
+                                "Grocery Shopping",
+                                "Run 5K"
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                "Create slides for the meeting",
+                                "Buy groceries for the week",
+                                "Go for a 5-kilometer run in the park"
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                "2024-03-10 14:00:00",
+                                "2024-02-15 12:30:00",
+                                "2024-03-01 07:30:00"
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                "Incomplete",
+                                "Incomplete",
+                                "Incomplete"
+                            ]
+                        }
+                    ]
+                }
+            }
+        )";
 
-        // Create the "insert-into" operation
-        json.put("operation", "insert-into");
-
-        // Create the "arguments" subtree
-        boost::property_tree::ptree arguments;
-
-        // Populate "arguments" subtree
-        arguments.put("table-name", "Tasks");
-
-        // Create the "row" array
-        boost::property_tree::ptree rowArray;
-
-        AddElements(rowArray, "task-id", "Int", std::vector<int>{4, 5, 6});
-        AddElements(rowArray, "user-id", "Int", std::vector<int>{1, 2, 3});
-        AddElements(rowArray, "title", "String",
-                    std::vector<std::string>{"Prepare Presentation",
-                                             "Grocery Shopping", "Run 5K"});
-        AddElements(
-            rowArray, "description", "String",
-            std::vector<std::string>{"Create slides for the meeting",
-                                     "Buy groceries for the week",
-                                     "Go for a 5-kilometer run in the park"});
-        AddElements(rowArray, "due-date", "String",
-                    std::vector<std::string>{"2024-03-10 14:00:00",
-                                             "2024-02-15 12:30:00",
-                                             "2024-03-01 07:30:00"});
-        AddElements(
-            rowArray, "status", "String",
-            std::vector<std::string>{"Incomplete", "Incomplete", "Incomplete"});
-
-        arguments.add_child("row", rowArray);
-        json.add_child("arguments", arguments);
-
-        auto jsonpath = fmt::format("{}/{}", dir, "insert_into_tasks.json");
-        // Write the JSON to a file
-        boost::property_tree::write_json(jsonpath, json);
-        return jsonpath;
+        std::string tableName = "insert_into_tasks";
+        return WriteInFile(jsonString, dir, tableName);
     }
 
     //////////////////////////////////////////////////////////////////////
 
     auto CreateInsertIntoQueryCategories(const std::string& dir) -> std::string
     {
-        // Create the JSON structure
-        boost::property_tree::ptree json;
+        std::string jsonString = R"(
+            {
+                "operation": "insert-into",
+                "arguments": {
+                    "table-name": "categories-table",
+                    "row": [
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                4,
+                                5,
+                                6
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                "Hobbies",
+                                "Education",
+                                "Family"
+                            ]
+                        }
+                    ]
+                }
+            }
+        )";
 
-        // Create the "insert-into" operation
-        json.put("operation", "insert-into");
-
-        // Create the "arguments" subtree
-        boost::property_tree::ptree arguments;
-
-        // Populate "arguments" subtree
-        arguments.put("table-name", "Categories");
-
-        // Create the "row" array
-        boost::property_tree::ptree rowArray;
-
-        AddElements(rowArray, "category-id", "Int", std::vector<int>{4, 5, 6});
-        AddElements(rowArray, "category-name", "String",
-                    std::vector<std::string>{"Hobbies", "Education", "Family"});
-
-        arguments.add_child("row", rowArray);
-        json.add_child("arguments", arguments);
-
-        auto jsonpath =
-            fmt::format("{}/{}", dir, "insert_into_categories.json");
-        // Write the JSON to a file
-        boost::property_tree::write_json(jsonpath, json);
-        return jsonpath;
+        std::string tableName = "insert_into_categories";
+        return WriteInFile(jsonString, dir, tableName);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -127,32 +160,37 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     auto CreateInsertIntoQueryTaskCategories(const std::string& dir)
         -> std::string
     {
-        // Create the JSON structure
-        boost::property_tree::ptree json;
+        std::string jsonString = R"(
+            {
+                "operation": "insert-into",
+                "arguments": {
+                    "table-name": "task-categories-table",
+                    "row": [
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                4,
+                                5,
+                                6
+                            ]
+                        },
+                        {
+                            "column": "task-id",
+                            "type": "Int",
+                            "values": [
+                                4,
+                                5,
+                                6
+                            ]
+                        }
+                    ]
+                }
+            }
+        )";
 
-        // Create the "insert-into" operation
-        json.put("operation", "insert-into");
-
-        // Create the "arguments" subtree
-        boost::property_tree::ptree arguments;
-
-        // Populate "arguments" subtree
-        arguments.put("table-name", "TaskCategories");
-
-        // Create the "row" array
-        boost::property_tree::ptree rowArray;
-
-        AddElements(rowArray, "task-id", "Int", std::vector<int>{4, 5, 6});
-        AddElements(rowArray, "category-id", "Int", std::vector<int>{4, 5, 6});
-
-        arguments.add_child("row", rowArray);
-        json.add_child("arguments", arguments);
-
-        auto jsonpath =
-            fmt::format("{}/{}", dir, "insert_into_taskcategories.json");
-        // Write the JSON to a file
-        boost::property_tree::write_json(jsonpath, json);
-        return jsonpath;
+        std::string tableName = "insert_into_taskcategories";
+        return WriteInFile(jsonString, dir, tableName);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -172,7 +210,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

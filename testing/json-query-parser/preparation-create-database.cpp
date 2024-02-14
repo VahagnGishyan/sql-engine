@@ -158,9 +158,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     //////////////////////////////////////////////////////////////////////
 
-    void CreateDatabaseAt(const std::string& path)
+    void CreateDatabaseAt(const std::string& path, const std::string& dbName)
     {
-        auto database = DataBase::CreateDataBase("test-todo-database");
+        auto database = DataBase::CreateDataBase(dbName);
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

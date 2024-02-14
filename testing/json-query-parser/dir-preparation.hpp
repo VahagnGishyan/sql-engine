@@ -31,12 +31,12 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     auto GetEmptyDir() -> const std::string;
 
-    auto GetSelectIntoJSONFileExample() -> const std::string;
+    auto GetInsertJSONFileExample() -> const std::string;
     auto GetUpdateJSONFileExample() -> const std::string;
     auto GetSelectJSONFileExample() -> const std::string;
     auto GetDeleteJSONFileExample() -> const std::string;
 
-    auto GetSelectIntoJSONExamples()
+    auto GetInsertJSONExamples()
         -> const std::shared_ptr<std::vector<std::string>>;
     auto GetUpdateJSONExamples()
         -> const std::shared_ptr<std::vector<std::string>>;

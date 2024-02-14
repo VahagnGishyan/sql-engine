@@ -37,7 +37,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         boost::property_tree::ptree arguments;
 
         // Populate "arguments" subtree
-        arguments.put("from", "Tasks");
+        arguments.put("from", "tasks-table");
 
         // Create the "where" subtree
         boost::property_tree::ptree whereSubtree;
@@ -75,7 +75,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         boost::property_tree::ptree arguments;
 
         // Populate "arguments" subtree
-        arguments.put("from", "Categories");
+        arguments.put("from", "categories-table");
 
         // Create the "where" subtree
         boost::property_tree::ptree whereSubtree;
@@ -113,7 +113,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         boost::property_tree::ptree arguments;
 
         // Populate "arguments" subtree
-        arguments.put("from", "TaskCategories");
+        arguments.put("from", "task-categories-table");
 
         // Create the "where" subtree
         boost::property_tree::ptree whereSubtree;
@@ -154,7 +154,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
