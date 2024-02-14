@@ -78,6 +78,16 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             auto&& status = DataBase::CreateColumn(
                 "status", Interface::DynamicType::String);
 
+            taskID->AddElement(Interface::CreateUDynValue(1));
+            userID->AddElement(Interface::CreateUDynValue(1));
+            title->AddElement(
+                Interface::CreateUDynValue("Complete SQL Tutorial"));
+            description->AddElement(Interface::CreateUDynValue(
+                "Learn SQL basics and advanced queries"));
+            dueDate->AddElement(
+                Interface::CreateUDynValue("2024-02-29 18:00:00"));
+            status->AddElement(Interface::CreateUDynValue("Incomplete"));
+
             taskID->AddElement(Interface::CreateUDynValue(2));
             userID->AddElement(Interface::CreateUDynValue(2));
             title->AddElement(Interface::CreateUDynValue("Read a Book"));
@@ -95,6 +105,34 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             dueDate->AddElement(
                 Interface::CreateUDynValue("2024-02-20 07:00:00"));
             status->AddElement(Interface::CreateUDynValue("Complete"));
+
+            taskID->AddElement(Interface::CreateUDynValue(4));
+            userID->AddElement(Interface::CreateUDynValue(1));
+            title->AddElement(
+                Interface::CreateUDynValue("Prepare Presentation"));
+            description->AddElement(
+                Interface::CreateUDynValue("Create slides for the meeting"));
+            dueDate->AddElement(
+                Interface::CreateUDynValue("2024-03-10 14:00:00"));
+            status->AddElement(Interface::CreateUDynValue("Incomplete"));
+
+            taskID->AddElement(Interface::CreateUDynValue(5));
+            userID->AddElement(Interface::CreateUDynValue(1));
+            title->AddElement(Interface::CreateUDynValue("Grocery Shopping"));
+            description->AddElement(
+                Interface::CreateUDynValue("Buy groceries for the week"));
+            dueDate->AddElement(
+                Interface::CreateUDynValue("2024-02-15 12:30:00"));
+            status->AddElement(Interface::CreateUDynValue("Incomplete"));
+
+            taskID->AddElement(Interface::CreateUDynValue(6));
+            userID->AddElement(Interface::CreateUDynValue(1));
+            title->AddElement(Interface::CreateUDynValue("Run 5K"));
+            description->AddElement(Interface::CreateUDynValue(
+                "Go for a 5-kilometer run in the park"));
+            dueDate->AddElement(
+                Interface::CreateUDynValue("2024-03-01 07:30:00"));
+            status->AddElement(Interface::CreateUDynValue("Incomplete"));
 
             table->AddColumn(std::move(taskID));
             table->AddColumn(std::move(userID));
@@ -166,9 +204,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveDeleteResultTasks(const std::string& path)
+    void SaveInsertResultTasks(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("insert_into_taskcategories");
+        auto database = DataBase::CreateDataBase("insert_into_tasks");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

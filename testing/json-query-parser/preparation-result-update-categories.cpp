@@ -126,22 +126,11 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 "category-name", Interface::DynamicType::String);
 
             categoryID->AddElement(Interface::CreateUDynValue(1));
-            categoryName->AddElement(Interface::CreateUDynValue("Work"));
-
+            categoryName->AddElement(Interface::CreateUDynValue("Work (Updated)"));
             categoryID->AddElement(Interface::CreateUDynValue(2));
             categoryName->AddElement(Interface::CreateUDynValue("Personal"));
-
             categoryID->AddElement(Interface::CreateUDynValue(3));
             categoryName->AddElement(Interface::CreateUDynValue("Health"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(4));
-            categoryName->AddElement(Interface::CreateUDynValue("Hobbies"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(5));
-            categoryName->AddElement(Interface::CreateUDynValue("Education"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(6));
-            categoryName->AddElement(Interface::CreateUDynValue("Family"));
 
             table->AddColumn(std::move(categoryID));
             table->AddColumn(std::move(categoryName));
@@ -181,9 +170,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveInsertResultCategories(const std::string& path)
+    void SaveUpdateResultCategories(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("insert_into_categories");
+        auto database = DataBase::CreateDataBase("update_into_categories");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

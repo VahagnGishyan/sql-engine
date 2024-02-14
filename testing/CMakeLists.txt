@@ -122,8 +122,10 @@ target_include_directories(tester-query PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 ##################################
 
 add_executable(tester-json-query-parser
-    json-query-parser/dir-preparation.cpp
+    ##################################
     json-query-parser/main.cpp
+    ##################################
+    json-query-parser/dir-preparation.cpp
     json-query-parser/preparation-create-database.cpp
     json-query-parser/preparation-create-delete-queries.cpp
     json-query-parser/preparation-create-insert-into-queries.cpp
@@ -131,14 +133,23 @@ add_executable(tester-json-query-parser
     json-query-parser/preparation-create-update-queries.cpp
     json-query-parser/preparator-directory.cpp
 
-    # json-query-parser/preparation-result-delete-categories.cpp
-    # json-query-parser/preparation-result-delete-taskcategories.cpp
-    # json-query-parser/preparation-result-delete-tasks.cpp
+    ##################################
+    json-query-parser/preparation-result-delete-categories.cpp
+    json-query-parser/preparation-result-delete-taskcategories.cpp
+    json-query-parser/preparation-result-delete-tasks.cpp
 
-    # json-query-parser/preparation-result-insert-categories.cpp
-    # json-query-parser/preparation-result-insert-taskcategories.cpp
-    # json-query-parser/preparation-result-insert-tasks.cpp
+    json-query-parser/preparation-result-insert-categories.cpp
+    json-query-parser/preparation-result-insert-taskcategories.cpp
+    json-query-parser/preparation-result-insert-tasks.cpp
 
+    json-query-parser/preparation-result-select-categories.cpp
+    json-query-parser/preparation-result-select-taskcategories.cpp
+    json-query-parser/preparation-result-select-tasks.cpp
+
+    json-query-parser/preparation-result-update-categories.cpp
+    json-query-parser/preparation-result-update-taskcategories.cpp
+    json-query-parser/preparation-result-update-tasks.cpp
+    ##################################
 
     # tests
     json-query-parser/test-delete-query.cpp

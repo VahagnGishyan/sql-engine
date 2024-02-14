@@ -38,14 +38,21 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     //////////////////////////////////////////////////////////////////////
 
-    // auto SaveDeleteResult(const std::string& dir)
-    //     -> std::shared_ptr<std::vector<std::string>>;
-    // auto CreateUpdateQueries(const std::string& dir)
-    //     -> std::shared_ptr<std::vector<std::string>>;
-    // auto CreateSelectQueries(const std::string& dir)
-    //     -> std::shared_ptr<std::vector<std::string>>;
-    // auto CreateDeleteQueries(const std::string& dir)
-    //     -> std::shared_ptr<std::vector<std::string>>;
+    void SaveDeleteResultCategories(const std::string& path);
+    void SaveDeleteResultTaskcategories(const std::string& path);
+    void SaveDeleteResultTasks(const std::string& path);
+
+    void SaveInsertResultCategories(const std::string& path);
+    void SaveInsertResultTaskcategories(const std::string& path);
+    void SaveInsertResultTasks(const std::string& path);
+
+    void SaveSelectResultCategories(const std::string& path);
+    void SaveSelectResultTaskcategories(const std::string& path);
+    void SaveSelectResultTasks(const std::string& path);
+
+    void SaveUpdateResultCategories(const std::string& path);
+    void SaveUpdateResultTaskcategories(const std::string& path);
+    void SaveUpdateResultTasks(const std::string& path);
 
     //////////////////////////////////////////////////////////////////////
 

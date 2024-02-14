@@ -28,6 +28,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     namespace
     {
+
         auto CreateUsersTable() -> Interface::UTable
         {
             auto table = DataBase::CreateTable("users-table");
@@ -127,21 +128,10 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
             categoryID->AddElement(Interface::CreateUDynValue(1));
             categoryName->AddElement(Interface::CreateUDynValue("Work"));
-
             categoryID->AddElement(Interface::CreateUDynValue(2));
             categoryName->AddElement(Interface::CreateUDynValue("Personal"));
-
             categoryID->AddElement(Interface::CreateUDynValue(3));
             categoryName->AddElement(Interface::CreateUDynValue("Health"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(4));
-            categoryName->AddElement(Interface::CreateUDynValue("Hobbies"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(5));
-            categoryName->AddElement(Interface::CreateUDynValue("Education"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(6));
-            categoryName->AddElement(Interface::CreateUDynValue("Family"));
 
             table->AddColumn(std::move(categoryID));
             table->AddColumn(std::move(categoryName));
@@ -181,9 +171,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveInsertResultCategories(const std::string& path)
+    void SaveSelectResultTaskcategories(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("insert_into_categories");
+        auto database = DataBase::CreateDataBase("select_into_taskcategories");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

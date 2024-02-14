@@ -28,6 +28,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
     namespace
     {
+
         auto CreateUsersTable() -> Interface::UTable
         {
             auto table = DataBase::CreateTable("users-table");
@@ -75,8 +76,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 "description", Interface::DynamicType::String);
             auto&& dueDate = DataBase::CreateColumn(
                 "due-date", Interface::DynamicType::String);
-            auto&& status = DataBase::CreateColumn(
-                "status", Interface::DynamicType::String);
 
             taskID->AddElement(Interface::CreateUDynValue(1));
             userID->AddElement(Interface::CreateUDynValue(1));
@@ -86,7 +85,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 "Learn SQL basics and advanced queries"));
             dueDate->AddElement(
                 Interface::CreateUDynValue("2024-02-29 18:00:00"));
-            status->AddElement(Interface::CreateUDynValue("Incomplete"));
 
             taskID->AddElement(Interface::CreateUDynValue(2));
             userID->AddElement(Interface::CreateUDynValue(2));
@@ -95,7 +93,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 Interface::CreateUDynValue("Finish \"The Great Gatsby\""));
             dueDate->AddElement(
                 Interface::CreateUDynValue("2024-03-15 20:30:00"));
-            status->AddElement(Interface::CreateUDynValue("Incomplete"));
 
             taskID->AddElement(Interface::CreateUDynValue(3));
             userID->AddElement(Interface::CreateUDynValue(3));
@@ -104,14 +101,12 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 Interface::CreateUDynValue("Go for a jog in the park"));
             dueDate->AddElement(
                 Interface::CreateUDynValue("2024-02-20 07:00:00"));
-            status->AddElement(Interface::CreateUDynValue("Complete"));
 
             table->AddColumn(std::move(taskID));
             table->AddColumn(std::move(userID));
             table->AddColumn(std::move(title));
             table->AddColumn(std::move(description));
             table->AddColumn(std::move(dueDate));
-            table->AddColumn(std::move(status));
 
             return table;
         }
@@ -127,21 +122,10 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
             categoryID->AddElement(Interface::CreateUDynValue(1));
             categoryName->AddElement(Interface::CreateUDynValue("Work"));
-
             categoryID->AddElement(Interface::CreateUDynValue(2));
             categoryName->AddElement(Interface::CreateUDynValue("Personal"));
-
             categoryID->AddElement(Interface::CreateUDynValue(3));
             categoryName->AddElement(Interface::CreateUDynValue("Health"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(4));
-            categoryName->AddElement(Interface::CreateUDynValue("Hobbies"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(5));
-            categoryName->AddElement(Interface::CreateUDynValue("Education"));
-
-            categoryID->AddElement(Interface::CreateUDynValue(6));
-            categoryName->AddElement(Interface::CreateUDynValue("Family"));
 
             table->AddColumn(std::move(categoryID));
             table->AddColumn(std::move(categoryName));
@@ -181,9 +165,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveInsertResultCategories(const std::string& path)
+    void SaveSelectResultCategories(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("insert_into_categories");
+        auto database = DataBase::CreateDataBase("select_into_categories");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

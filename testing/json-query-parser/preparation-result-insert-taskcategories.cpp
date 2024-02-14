@@ -78,6 +78,16 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             auto&& status = DataBase::CreateColumn(
                 "status", Interface::DynamicType::String);
 
+            taskID->AddElement(Interface::CreateUDynValue(1));
+            userID->AddElement(Interface::CreateUDynValue(1));
+            title->AddElement(
+                Interface::CreateUDynValue("Complete SQL Tutorial"));
+            description->AddElement(Interface::CreateUDynValue(
+                "Learn SQL basics and advanced queries"));
+            dueDate->AddElement(
+                Interface::CreateUDynValue("2024-02-29 18:00:00"));
+            status->AddElement(Interface::CreateUDynValue("Incomplete"));
+
             taskID->AddElement(Interface::CreateUDynValue(2));
             userID->AddElement(Interface::CreateUDynValue(2));
             title->AddElement(Interface::CreateUDynValue("Read a Book"));
@@ -152,6 +162,12 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             taskID->AddElement(3);
             categoryID->AddElement(3);
 
+            taskID->AddElement(4);
+            categoryID->AddElement(4);
+
+            taskID->AddElement(5);
+            categoryID->AddElement(5);
+
             taskID->AddElement(6);
             categoryID->AddElement(6);
 
@@ -166,7 +182,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveDeleteResultTasks(const std::string& path)
+    void SaveInsertResultTaskcategories(const std::string& path)
     {
         auto database = DataBase::CreateDataBase("insert_into_taskcategories");
 

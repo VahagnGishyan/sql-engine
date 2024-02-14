@@ -170,7 +170,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void SaveDeleteResultTasks(const std::string& path)
+    void SaveDeleteResultCategories(const std::string& path)
     {
         auto database = DataBase::CreateDataBase("delete_categories");
 

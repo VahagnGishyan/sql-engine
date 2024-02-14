@@ -38,19 +38,9 @@ TEST(DeleteQuery, ExampleOfDeleteQuery)
     //////////////////////////////////////////////////////////////////////
     auto&& query = QueryParser::CreateFromJSONFile(deleteQueryExample);
     DebugDB::PrintDataBase(*database);
-
     query->Execute(*database);
     //////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////
-    auto filename = Utility::ExtractName(deleteQueryExample,
-                                         Utility::Option::MustExist{false});
-    filename      = Utility::RemoveExtensionFromFilename(
-        filename, Utility::Option::MustExist{false});
-
-    database->SetName(filename);
-    auto writer = LocalDataBase::CreateDBLocalJSONWriter(workdir + "/output");
-    writer->Write(*database);
 }
 
 //////////////////////////////////////////////////////////////////////////

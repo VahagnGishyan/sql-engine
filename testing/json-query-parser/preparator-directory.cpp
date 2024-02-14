@@ -122,6 +122,10 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         {
             return fmt::format("{}/{}", m_path, GetDataBaseName());
         }
+        auto GetResultDir() const -> const std::string
+        {
+            return fmt::format("{}/result-dir", m_path);
+        }
 
        protected:
         void InitJSONQueryWorkDir(const PreparedDir& dir)
@@ -148,7 +152,21 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             //////////////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////////////
-            
+            SaveDeleteResultCategories(GetResultDir());
+            SaveDeleteResultTaskcategories(GetResultDir());
+            SaveDeleteResultTasks(GetResultDir());
+
+            SaveInsertResultCategories(GetResultDir());
+            SaveInsertResultTaskcategories(GetResultDir());
+            SaveInsertResultTasks(GetResultDir());
+
+            SaveSelectResultCategories(GetResultDir());
+            SaveSelectResultTaskcategories(GetResultDir());
+            SaveSelectResultTasks(GetResultDir());
+
+            SaveUpdateResultCategories(GetResultDir());
+            SaveUpdateResultTaskcategories(GetResultDir());
+            SaveUpdateResultTasks(GetResultDir());
             //////////////////////////////////////////////////////////////////
         }
 
