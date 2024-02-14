@@ -21,7 +21,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -36,7 +36,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         std::ofstream outputFile(jsonpath);
         Utility::Assert(
             outputFile.is_open(),
-            fmt::format("SQLEngine::Testing::JSONQueryParser::Peparation::"
+            fmt::format("SQLEngine::Testing::JSONQueryParser::Preparation::"
                         "WriteInFile(), can't open file: {}",
                         jsonpath));
         outputFile << context;
@@ -65,7 +65,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
+                            "column": "user-id",
                             "type": "Int",
                             "values": [
                                 1,
@@ -74,8 +74,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
-                            "type": "Int",
+                            "column": "title",
+                            "type": "String",
                             "values": [
                                 "Prepare Presentation",
                                 "Grocery Shopping",
@@ -83,8 +83,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
-                            "type": "Int",
+                            "column": "description",
+                            "type": "String",
                             "values": [
                                 "Create slides for the meeting",
                                 "Buy groceries for the week",
@@ -92,8 +92,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
-                            "type": "Int",
+                            "column": "due-date",
+                            "type": "String",
                             "values": [
                                 "2024-03-10 14:00:00",
                                 "2024-02-15 12:30:00",
@@ -101,8 +101,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
-                            "type": "Int",
+                            "column": "status",
+                            "type": "String",
                             "values": [
                                 "Incomplete",
                                 "Incomplete",
@@ -129,7 +129,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                     "table-name": "categories-table",
                     "row": [
                         {
-                            "column": "task-id",
+                            "column": "category-id",
                             "type": "Int",
                             "values": [
                                 4,
@@ -138,8 +138,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
-                            "type": "Int",
+                            "column": "category-name",
+                            "type": "String",
                             "values": [
                                 "Hobbies",
                                 "Education",
@@ -176,7 +176,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                             ]
                         },
                         {
-                            "column": "task-id",
+                            "column": "category-id",
                             "type": "Int",
                             "values": [
                                 4,
@@ -210,7 +210,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

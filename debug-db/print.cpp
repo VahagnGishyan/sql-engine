@@ -30,7 +30,8 @@ namespace SQLEngine
             list.push_back(
                 "column-type: " +
                 Interface::GetDynamicTypeNameAsString(column.GetType()));
-            list.push_back("column-size: " + column.GetSize());
+
+            list.push_back(fmt::format("column-size: {}", column.GetSize()));
 
             const int size = column.GetSize();
             std::vector<std::string> elements;

@@ -20,7 +20,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -125,8 +125,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             auto&& categoryName = DataBase::CreateColumn(
                 "category-name", Interface::DynamicType::String);
 
-            categoryID->AddElement(Interface::CreateUDynValue(1));
-            categoryName->AddElement(Interface::CreateUDynValue("Work"));
+            // categoryID->AddElement(Interface::CreateUDynValue(1));
+            // categoryName->AddElement(Interface::CreateUDynValue("Work"));
             categoryID->AddElement(Interface::CreateUDynValue(2));
             categoryName->AddElement(Interface::CreateUDynValue("Personal"));
             categoryID->AddElement(Interface::CreateUDynValue(3));
@@ -147,11 +147,11 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             auto&& categoryID = DataBase::CreateColumn(
                 "category-id", Interface::DynamicType::Int);
 
-            // taskID->AddElement(1);
-            // categoryID->AddElement(1);
+            taskID->AddElement(1);
+            categoryID->AddElement(1);
 
-            // taskID->AddElement(1);
-            // categoryID->AddElement(2);
+            taskID->AddElement(1);
+            categoryID->AddElement(2);
 
             taskID->AddElement(2);
             categoryID->AddElement(2);
@@ -186,7 +186,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

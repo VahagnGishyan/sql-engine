@@ -177,9 +177,11 @@ namespace SQLEngine::DataBase
             int
         {
             auto&& result = GetColumnIndex(columnName);
-            Utility::Assert(result != std::nullopt,
-                            "GetColumnIndexAssert: column does not "
-                            "exist");
+            Utility::Assert(
+                result != std::nullopt,
+                fmt::format("GetColumnIndexAssert: column by name {} does not "
+                            "exist",
+                            columnName));
             return *result;
         }
 

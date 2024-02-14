@@ -20,7 +20,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -187,7 +187,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

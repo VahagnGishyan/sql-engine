@@ -42,9 +42,9 @@ namespace SQLEngine::Query
         {
             Utility::Assert(
                 m_data.size() == table.ColumnsCount(),
-                fmt::format("InsertInto::Execute, data.size = {} and "
-                            "table.column-size = {} should be equal",
-                            m_data.size(), table.ColumnsCount()));
+                fmt::format("InsertInto::Execute, and table.column-size = {} "
+                            "data.size = {} should be equal",
+                            table.ColumnsCount(), m_data.size()));
 
             auto newTable = table.Copy();
             for (auto&& columnData : m_data)

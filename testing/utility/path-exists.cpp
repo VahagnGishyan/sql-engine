@@ -17,7 +17,7 @@ using namespace SQLEngine::Utility;
 
 TEST(Utility, IsPathExistsTest_ExistingPath)
 {
-    auto &&dir      = Peparation::GetTestDir();
+    auto &&dir      = Preparation::GetTestDir();
     auto &&workdir  = dir.GetWorkDir();
     auto &&emptydir = dir.GetEmptyDirPath();
     auto &&file1    = dir.GetFile1Path();
@@ -34,21 +34,21 @@ TEST(Utility, IsPathExistsTest_ExistingPath)
 
 TEST(Utility, IsPathExistsTest_NonExistingPath)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsPathExists(nonExistingPath));
 }
 
 TEST(Utility, AssertPathExistsTest_ExistingPath)
 {
-    auto &&dir     = Peparation::GetTestDir();
+    auto &&dir     = Preparation::GetTestDir();
     auto &&workdir = dir.GetWorkDir();
     ASSERT_NO_THROW(AssertPathExists(workdir));
 }
 
 TEST(Utility, AssertPathExistsTest_NonExistingPath)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertPathExists(nonExistingPath), std::exception);
 }

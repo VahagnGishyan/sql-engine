@@ -47,7 +47,7 @@ auto VecStrToStrForPrint(const std::vector<std::string> &list)
 
 TEST(Utility, ListDir_ValidDirectory)
 {
-    auto &&testdir   = Peparation::GetTestDir();
+    auto &&testdir   = Preparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
     auto &&dirNpath  = testdir.GetDirNPath();
     auto &&compPath  = testdir.GetCompDirPath();
@@ -79,7 +79,7 @@ TEST(Utility, ListDir_ValidDirectory)
 
 TEST(Utility, ListDir_EmptyDirectory)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto result = ListDir(emptydir);
@@ -97,7 +97,7 @@ TEST(Utility, ListDir_EmptyDirectory)
 
 TEST(Utility, ListDirsInDir_ValidDirectory)
 {
-    auto &&testdir   = Peparation::GetTestDir();
+    auto &&testdir   = Preparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
     auto &&dirNpath  = testdir.GetDirNPath();
     auto &&compPath  = testdir.GetCompDirPath();
@@ -123,7 +123,7 @@ TEST(Utility, ListDirsInDir_ValidDirectory)
 
 TEST(Utility, ListFilesInDir_ValidDirectory)
 {
-    auto &&testdir   = Peparation::GetTestDir();
+    auto &&testdir   = Preparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
     auto &&dirNpath  = testdir.GetDirNPath();
     auto &&compPath  = testdir.GetCompDirPath();
@@ -147,7 +147,7 @@ TEST(Utility, ListFilesInDir_ValidDirectory)
 
 TEST(Utility, ListDir_NonExistentDirectory)
 {
-    auto &&testdir     = Peparation::GetTestDir();
+    auto &&testdir     = Preparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
 
     ASSERT_THROW(ListDir(nonExisting), std::exception);
@@ -161,7 +161,7 @@ TEST(Utility, ListDir_NonExistentDirectory)
 
 TEST(Utility, ListFilesInDir_ListFilesWithExtension)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir = Preparation::GetTestDir();
     auto &&paeinfo = testdir.GetValidFilePAEList();
 
     auto &&path = paeinfo->dirpath;
@@ -180,7 +180,7 @@ TEST(Utility, ListFilesInDir_ListFilesWithExtension)
 
 TEST(Utility, ListFilesInDir_ListFilesWithExtensionEmptyDir)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto &&extension = ".txt";
@@ -191,7 +191,7 @@ TEST(Utility, ListFilesInDir_ListFilesWithExtensionEmptyDir)
 
 TEST(Utility, ListFilesInDir_ListFilesWithNonExistentDir)
 {
-    auto &&testdir     = Peparation::GetTestDir();
+    auto &&testdir     = Preparation::GetTestDir();
     auto &&nonExisting = testdir.GetNonExistingPath();
 
     auto &&extension = ".txt";
@@ -204,7 +204,7 @@ TEST(Utility, ListFilesInDir_ListFilesWithNonExistentDir)
 
 TEST(Utility, ListDir_OptionFullPathsFalseValidDirectory)
 {
-    auto &&testdir   = Peparation::GetTestDir();
+    auto &&testdir   = Preparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
     auto &&dirNpath  = testdir.GetDirNPath();
     auto &&compPath  = testdir.GetCompDirPath();
@@ -241,7 +241,7 @@ TEST(Utility, ListDir_OptionFullPathsFalseValidDirectory)
 
 TEST(Utility, ListDir_OptionFullPathsTrueValidDirectory)
 {
-    auto &&testdir   = Peparation::GetTestDir();
+    auto &&testdir   = Preparation::GetTestDir();
     auto &&fileNpath = testdir.GetFileNPath();
     auto &&dirNpath  = testdir.GetDirNPath();
     auto &&compPath  = testdir.GetCompDirPath();
@@ -270,7 +270,7 @@ TEST(Utility, ListDir_OptionFullPathsTrueValidDirectory)
 
 TEST(Utility, ListDir_OptionFullPathsFalseEmptyDirectory)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto result = ListDir(emptydir, Option::FullPaths{false});
@@ -288,7 +288,7 @@ TEST(Utility, ListDir_OptionFullPathsFalseEmptyDirectory)
 
 TEST(Utility, ListDir_OptionFullPathsTrueEmptyDirectory)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     auto result = ListDir(emptydir, Option::FullPaths{true});

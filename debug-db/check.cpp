@@ -103,6 +103,11 @@ namespace SQLEngine
         }
         if (actualColumn.GetType() != shouldbeColumn.GetType())
         {
+            fmt::println("DebugDB::CheckColumn(), actual-column");
+            PrintColumn(actualColumn);
+            fmt::println("DebugDB::CheckColumn(), should-be-column");
+            PrintColumn(shouldbeColumn);
+
             throw std::runtime_error{fmt::format(
                 "DebugDB::CheckResult, actual-column-type: {} and "
                 "should-be-column-type: {} must be equal",
@@ -112,6 +117,11 @@ namespace SQLEngine
         }
         if (actualColumn.GetSize() != shouldbeColumn.GetSize())
         {
+            fmt::println("DebugDB::CheckColumn(), actual-column");
+            PrintColumn(actualColumn);
+            fmt::println("DebugDB::CheckColumn(), should-be-column");
+            PrintColumn(shouldbeColumn);
+
             throw std::runtime_error{
                 fmt::format("DebugDB::CheckResult, actual-column-size: "
                             "{} must be equal to "
@@ -127,6 +137,11 @@ namespace SQLEngine
 
             if (Interface::AreValuesEqual(actualValue, shouldbeValue) == false)
             {
+                fmt::println("DebugDB::CheckColumn(), actual-column");
+                PrintColumn(actualColumn);
+                fmt::println("DebugDB::CheckColumn(), should-be-column");
+                PrintColumn(shouldbeColumn);
+
                 throw std::runtime_error{fmt::format(
                     "DebugDB::CheckResult, actual-value: {} and "
                     "should-be-value: {} must be equal",
@@ -148,6 +163,11 @@ namespace SQLEngine
         }
         if (actual.ColumnsCount() != shouldBe.ColumnsCount())
         {
+            fmt::println("DebugDB::CheckTables(), actual-list = {}",
+                         *actual.ListColumns());
+            fmt::println("DebugDB::CheckDatabase(), should-be-list = {}",
+                         *shouldBe.ListColumns());
+
             throw std::runtime_error{
                 fmt::format("DebugDB::CheckResult, actual-table-size: {} and "
                             "should-be-table-size: {} must be equal",
@@ -176,6 +196,11 @@ namespace SQLEngine
         }
         if (actual.TablesCount() != shouldBe.TablesCount())
         {
+            fmt::println("DebugDB::CheckDatabase(), actual-list = {}",
+                         *actual.ListTables());
+            fmt::println("DebugDB::CheckDatabase(), should-be-list = {}",
+                         *shouldBe.ListTables());
+
             throw std::runtime_error{fmt::format(
                 "DebugDB::CheckResult, actual-database-size: {} and "
                 "should-be-database-size: {} must be equal",

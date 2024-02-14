@@ -17,14 +17,14 @@ using namespace SQLEngine::Utility;
 
 TEST(Utility, IsFileExistsTest_ExistingFile)
 {
-    auto &&dir              = Peparation::GetTestDir();
+    auto &&dir              = Preparation::GetTestDir();
     auto &&existingFilePath = dir.GetEmptyFilePath();
     ASSERT_TRUE(IsFileExists(existingFilePath));
 }
 
 TEST(Utility, IsFileExistsTest_NonExistingFile)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&workdir         = dir.GetWorkDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsFileExists(nonExistingPath));
@@ -34,28 +34,28 @@ TEST(Utility, IsFileExistsTest_NonExistingFile)
 
 TEST(Utility, AssertFileExistsTest_ExistingFile)
 {
-    auto &&dir              = Peparation::GetTestDir();
+    auto &&dir              = Preparation::GetTestDir();
     auto &&existingFilePath = dir.GetEmptyFilePath();
     ASSERT_NO_THROW(AssertFileExists(existingFilePath));
 }
 
 TEST(Utility, AssertFileExistsTest_NonExistingFile)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertFileExists(nonExistingPath), std::exception);
 }
 
 TEST(Utility, AssertFileNotExistsTest_ExistingFile)
 {
-    auto &&dir              = Peparation::GetTestDir();
+    auto &&dir              = Preparation::GetTestDir();
     auto &&existingFilePath = dir.GetEmptyFilePath();
     ASSERT_THROW(AssertFileNotExists(existingFilePath), std::exception);
 }
 
 TEST(Utility, AssertFileNotExistsTest_NonExistingFile)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_NO_THROW(AssertFileNotExists(nonExistingPath));
 }

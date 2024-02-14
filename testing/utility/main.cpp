@@ -21,7 +21,7 @@ namespace SQLEngine::Testing
         {
             ClearRemainingTempFiles();
             // Create test directory
-            auto &&dir = Peparation::GetTestDirManager();
+            auto &&dir = Preparation::GetTestDirManager();
             dir.Create();
         }
         ~TestDirPeparation()
@@ -32,8 +32,8 @@ namespace SQLEngine::Testing
 
         static void ClearRemainingTempFiles()
         {
-            auto &&testdir  = Peparation::TestDir::GetTestingWorkDir();
-            auto &&testname = Peparation::TestDir::GetTestingName();
+            auto &&testdir  = Preparation::TestDir::GetTestingWorkDir();
+            auto &&testname = Preparation::TestDir::GetTestingName();
             SQLEngine::Utility::RemoveDir(testdir,
                                           Utility::Option::MustExist{false});
         }
@@ -44,7 +44,7 @@ namespace SQLEngine::Testing
         static void SetUp()
         {
             static TestDirPeparation obj;
-            auto &&dir = Peparation::GetTestDir();
+            auto &&dir = Preparation::GetTestDir();
             std::cout << "testing-dir:     " << dir.GetWorkDir() << std::endl;
         }
     };

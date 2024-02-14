@@ -152,7 +152,7 @@ add_executable(tester-json-query-parser
     ##################################
 
     # tests
-    json-query-parser/test-delete-query.cpp
+    json-query-parser/tests.cpp
 )
 target_link_libraries(tester-json-query-parser
     fmt::fmt 

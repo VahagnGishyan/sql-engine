@@ -21,7 +21,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -47,6 +47,10 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         {
             std::string path = fmt::format("{}/empty-dir", m_path);
             return path;
+        }
+        auto GetResultDir() const -> const std::string override
+        {
+            return fmt::format("{}/result-dir", m_path);
         }
 
        public:
@@ -122,10 +126,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
         {
             return fmt::format("{}/{}", m_path, GetDataBaseName());
         }
-        auto GetResultDir() const -> const std::string
-        {
-            return fmt::format("{}/result-dir", m_path);
-        }
 
        protected:
         void InitJSONQueryWorkDir(const PreparedDir& dir)
@@ -190,7 +190,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

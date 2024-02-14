@@ -17,14 +17,14 @@ using namespace SQLEngine::Utility;
 
 TEST(Utility, IsDirExists_TestExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_TRUE(IsDirExists(existingDirPath));
 }
 
 TEST(Utility, IsDirExists_TestNonExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_FALSE(IsDirExists(nonExistingPath));
     std::string nonExistingDirPath = "/path/to/nonexisting/dir.txt";
@@ -33,35 +33,35 @@ TEST(Utility, IsDirExists_TestNonExistingDir)
 
 TEST(Utility, AssertDirExistsTest_ExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_NO_THROW(AssertDirExists(existingDirPath));
 }
 
 TEST(Utility, AssertDirExistsTest_NonExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_THROW(AssertDirExists(nonExistingPath), std::exception);
 }
 
 TEST(Utility, AssertDirNotExistsTest_ExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&existingDirPath = dir.GetEmptyDirPath();
     ASSERT_THROW(AssertDirNotExists(existingDirPath), std::exception);
 }
 
 TEST(Utility, AssertDirNotExistsTest_NonExistingDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_NO_THROW(AssertDirNotExists(nonExistingPath));
 }
 
 TEST(Utility, AssertDirNotExistsTest_BaseDir)
 {
-    auto &&dir             = Peparation::GetTestDir();
+    auto &&dir             = Preparation::GetTestDir();
     auto &&nonExistingPath = dir.GetNonExistingPath();
     ASSERT_NO_THROW(AssertDirNotExists(nonExistingPath));
 }
@@ -72,7 +72,7 @@ TEST(Utility, AssertDirNotExistsTest_BaseDir)
 
 TEST(Utility, GetBaseDir_ExistingDir)
 {
-    auto &&dir = Peparation::GetTestDir();
+    auto &&dir = Preparation::GetTestDir();
     std::vector<std::string> list;
     list.reserve(5);
     list.push_back(dir.GetCompDirPath());

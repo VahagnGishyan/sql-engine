@@ -20,7 +20,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -159,9 +159,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
             taskID->AddElement(3);
             categoryID->AddElement(3);
 
-            taskID->AddElement(3);
-            categoryID->AddElement(3);
-
             taskID->AddElement(4);
             categoryID->AddElement(4);
 
@@ -198,7 +195,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

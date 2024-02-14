@@ -25,7 +25,7 @@ namespace SQLEngine::Testing::JSONQueryParser
                      "/test-json-query-parer";
             ClearRemainingTempFilesAt(m_path);
             // Create test directory
-            SQLEngine::Testing::JSONQueryParser::Peparation::InitAt(m_path);
+            SQLEngine::Testing::JSONQueryParser::Preparation::InitAt(m_path);
             std::cout << "test-json-query-parser-dir:     " << m_path
                       << std::endl;
         }

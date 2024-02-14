@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -30,6 +30,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     auto GetDatabase() -> Interface::UDataBase;
 
     auto GetEmptyDir() -> const std::string;
+    auto GetResultDir() -> const std::string;
 
     auto GetInsertJSONFileExample() -> const std::string;
     auto GetUpdateJSONFileExample() -> const std::string;
@@ -48,7 +49,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

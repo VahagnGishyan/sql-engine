@@ -229,6 +229,19 @@ namespace SQLEngine::QueryParser
             }
         }
 
+        // fmt::println("vgihsyan-insert-parser: rows = [");
+        // for (auto&& element : rows)
+        // {
+        //     std::vector<std::string> strvalues{};
+        //     auto&& values = element.second;
+        //     for (auto&& value : values)
+        //     {
+        //         strvalues.push_back(Interface::ConvertUDynValueToString(value));
+        //     }
+        //     fmt::println("\t{}: {}", element.first, strvalues);
+        // }
+        // fmt::println("]");
+
         return Query::CreateQuery(tableName,
                                   Query::CreateOpInsertInto(std::move(rows)));
     }

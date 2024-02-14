@@ -29,7 +29,7 @@ TEST(Utility, AssertThrowFileExtensionTest_InvalidFileExtension)
 
 TEST(Utility, CheckFileExtensionTest_ValidFileExtension)
 {
-    auto &&dir     = Peparation::GetTestDir();
+    auto &&dir     = Preparation::GetTestDir();
     auto &&paeinfo = dir.GetValidFilePAEList();
     auto &&path    = paeinfo->dirpath;
     for (auto &&item : paeinfo->paelist)
@@ -43,7 +43,7 @@ TEST(Utility, CheckFileExtensionTest_ValidFileExtension)
 
 TEST(Utility, CheckFileExtensionTest_InvalidFileExtension)
 {
-    auto &&dir     = Peparation::GetTestDir();
+    auto &&dir     = Preparation::GetTestDir();
     auto &&paeinfo = dir.GetValidFilePAEList();
     auto &&path    = paeinfo->dirpath;
     for (auto &&item : paeinfo->paelist)
@@ -56,7 +56,7 @@ TEST(Utility, CheckFileExtensionTest_InvalidFileExtension)
 
 TEST(Utility, CheckFileExtensionTest_NonExistingFiles)
 {
-    auto &&dir     = Peparation::GetTestDir();
+    auto &&dir     = Preparation::GetTestDir();
     auto &&paeinfo = dir.GetInvalidFilePAEList();
     auto &&path    = paeinfo->dirpath;
     for (auto &&item : paeinfo->paelist)

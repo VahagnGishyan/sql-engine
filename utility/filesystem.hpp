@@ -47,7 +47,7 @@ namespace SQLEngine::Utility
     PROJECT_SHARED_EXPORT
     auto RemoveExtensionFromFilename(
         const std::string &filename,
-        const Option::MustExist &mustexist = Option::MustExist{true})
+        const Option::MustExist &mustexist = Option::MustExist{false})
         -> const std::string;
 
     PROJECT_SHARED_EXPORT

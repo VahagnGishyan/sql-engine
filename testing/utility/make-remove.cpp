@@ -20,7 +20,7 @@ using namespace SQLEngine::Utility;
 
 TEST(Utility, MakeAndRemoveDir_Success)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testDir = emptydir + "/test-directory";
@@ -43,7 +43,7 @@ TEST(Utility, MakeAndRemoveDir_Success)
 
 TEST(Utility, MakeDir_Failure)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string existingDir = emptydir + "/existing_directory";
@@ -66,7 +66,7 @@ TEST(Utility, MakeDir_Failure)
 
 TEST(Utility, RemoveDir_Failure)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testDir = emptydir + "/test-directory";
@@ -84,7 +84,7 @@ TEST(Utility, RemoveDir_Failure)
 
 TEST(Utility, MakeAndRemoveFile_Success)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testFile = emptydir + "test-file.txt";
@@ -104,7 +104,7 @@ TEST(Utility, MakeAndRemoveFile_Success)
 
 TEST(Utility, MakeFile_Failure)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     // Define an existing file path for testing (change it as needed)
@@ -128,7 +128,7 @@ TEST(Utility, MakeFile_Failure)
 
 TEST(Utility, RemoveFile_Failure)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     // Define an existing file path for testing (change it as needed)
@@ -147,7 +147,7 @@ TEST(Utility, RemoveFile_Failure)
 
 TEST(Utility, MakeDir_OptionExistOkExisting)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir = Preparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
 
     ASSERT_TRUE(IsDirExists(workdir));
@@ -157,7 +157,7 @@ TEST(Utility, MakeDir_OptionExistOkExisting)
 
 TEST(Utility, MakeDir_OptionExistOkNonExisting)
 {
-    auto &&testdir       = Peparation::GetTestDir();
+    auto &&testdir       = Preparation::GetTestDir();
     auto nonExistingPath = testdir.GetNonExistingPath();
 
     ASSERT_FALSE(IsDirExists(nonExistingPath));
@@ -169,7 +169,7 @@ TEST(Utility, MakeDir_OptionExistOkNonExisting)
 
 TEST(Utility, MakeDir_OptionCreateBaseDirectoryExisting)
 {
-    auto &&testdir = Peparation::GetTestDir();
+    auto &&testdir = Preparation::GetTestDir();
     auto workdir   = testdir.GetWorkDir();
 
     ASSERT_TRUE(IsDirExists(workdir));
@@ -182,7 +182,7 @@ TEST(Utility, MakeDir_OptionCreateBaseDirectoryExisting)
 
 TEST(Utility, MakeDir_OptionCreateBaseDirectoryNonExisting)
 {
-    auto &&testdir                 = Peparation::GetTestDir();
+    auto &&testdir                 = Preparation::GetTestDir();
     auto nonExistingPath           = testdir.GetNonExistingPath();
     auto nonExistingChilds         = "/path/to/child/dir";
     auto nonExistingPathWithChilds = nonExistingPath + nonExistingChilds;
@@ -211,7 +211,7 @@ TEST(Utility, MakeDir_OptionCreateBaseDirectoryNonExisting)
 
 TEST(Utility, RemoveDir_OptionMustExist)
 {
-    auto &&testdir  = Peparation::GetTestDir();
+    auto &&testdir  = Preparation::GetTestDir();
     auto &&emptydir = testdir.GetEmptyDirPath();
 
     const std::string testDir = emptydir + "/test-directory";

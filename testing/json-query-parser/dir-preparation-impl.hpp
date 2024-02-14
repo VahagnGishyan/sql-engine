@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -63,6 +63,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
 
        public:
         virtual auto GetEmptyDir() const -> const std::string    = 0;
+        virtual auto GetResultDir() const -> const std::string   = 0;
         virtual auto GetDatabase() const -> Interface::UDataBase = 0;
 
        public:
@@ -90,7 +91,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //

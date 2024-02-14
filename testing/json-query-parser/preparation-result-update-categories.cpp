@@ -20,7 +20,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-namespace SQLEngine::Testing::JSONQueryParser::Peparation
+namespace SQLEngine::Testing::JSONQueryParser::Preparation
 {
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -126,7 +126,8 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
                 "category-name", Interface::DynamicType::String);
 
             categoryID->AddElement(Interface::CreateUDynValue(1));
-            categoryName->AddElement(Interface::CreateUDynValue("Work (Updated)"));
+            categoryName->AddElement(
+                Interface::CreateUDynValue("Work (Updated)"));
             categoryID->AddElement(Interface::CreateUDynValue(2));
             categoryName->AddElement(Interface::CreateUDynValue("Personal"));
             categoryID->AddElement(Interface::CreateUDynValue(3));
@@ -186,7 +187,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Peparation
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-}  // namespace SQLEngine::Testing::JSONQueryParser::Peparation
+}  // namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
