@@ -20,8 +20,6 @@ set (SUBDIRS
     app-info
     database
     local-database
-    # db-stream
-    # filestream
     interface
     logging
     observer
@@ -29,6 +27,7 @@ set (SUBDIRS
     query-parser
     # sql-engine
     # other
+    debug-db
     utility
 )
 

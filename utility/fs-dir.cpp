@@ -67,17 +67,31 @@ namespace SQLEngine
         return baseDir.string();
     }
 
-    auto Utility::ExtractFileName(const std::string &path,
-                                  const Option::MustExist &mustexist)
+    // temp, untested
+    auto Utility::ExtractName(const std::string &path,
+                              const Option::MustExist &mustexist)
         -> const std::string
     {
         if (mustexist == true)
         {
-            Utility::AssertDirExists(path);
+            Utility::AssertPathExists(path);
         }
 
         std::filesystem::path fspath(path);
         return fspath.filename().string();
+    }
+
+    // temp, untested
+    auto Utility::RemoveExtensionFromFilename(
+        const std::string &filename, const Option::MustExist &mustexist)
+        -> const std::string
+    {
+        if (mustexist == true)
+        {
+            Utility::AssertFileExists(filename);
+        }
+        // Get the stem of the file (removes extension)
+        return fs::path(filename).stem().string();
     }
 
     //////////////////////////////////////////////////////////////////////

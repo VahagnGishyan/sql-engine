@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -11,6 +12,7 @@
 #include "json-queries-template.hpp"
 #include "parsers.hpp"
 #include "query/executors.hpp"
+#include "utility/core.hpp"
 #include "utility/filesystem.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,194 +25,111 @@ namespace SQLEngine::QueryParser
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // class DataBaseReader : public Interface::IDataBaseReader
-    // {
-    //    protected:
-    //     DataBaseReader(const std::string& path) : m_path{path}
-    //     {
-    //     }
+    auto CreateCondition(const boost::property_tree::ptree& root)
+        -> Query::UCondition;
 
-    //    public:
-    //     auto Read() const -> Interface::UDataBase override
-    //     {
-    //         const std::string dbname = Utility::ExtractFileName(m_path);
-    //         const std::string tablesDir =
-    //             fmt::format("{}/{}/", m_path, TABLES_DIR_NAME);
-    //         Interface::TableList tables = GetTablesList(tablesDir);
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
-    //         auto database = DataBase::CreateDataBase(dbname);
-    //         for (auto&& table : tables)
-    //         {
-    //             database->AddTable(std::move(table));
-    //         }
-    //         return database;
-    //     }
-    //     virtual auto GetTablesList(const std::string& tablesDir) const
-    //         -> Interface::TableList
-    //     {
-    //         Interface::TableList list{};
-    //         if (Utility::IsDirExists(tablesDir))
-    //         {
-    //             auto&& tablesList = Utility::ListFilesInDir(
-    //                 tablesDir, Utility::Option::FullPaths{true});
-    //             for (auto&& tableFile : *tablesList)
-    //             {
-    //                 list.push_back(GetTable(tableFile));
-    //             }
-    //         }
-    //         return list;
-    //     }
-    //     virtual auto GetTable(const std::string& tablePath) const
-    //         -> Interface::UTable
-    //     {
-    //         Utility::AssertPathAbsolute(tablePath);
-    //         Utility::AssertFileExists(tablePath);
-    //         Utility::AssertFileExtension(tablePath, ".json");
+    auto CreateCondition(const std::string& condstr,
+                         const boost::property_tree::ptree& root)
+        -> Query::UCondition
+    {
+        auto columnName = root.get<std::string>(COND_COMPARISON_COLUMN);
+        auto columnType = root.get<std::string>(COND_COMPARISON_TYPE);
+        SQLEngine::Interface::UDynamicValue value{};
 
-    //         //////////////////////////////////////////////////////////////
+        auto dynType = Interface::ConvertStringToDynamicType(columnType);
+        if (dynType == Interface::DynamicType::Int)
+        {
+            Interface::GetDynamicType<Interface::DynamicType::Int>::type
+                cellValue = root.get<Interface::GetDynamicType<
+                    Interface::DynamicType::Int>::type>(COND_COMPARISON_VALUE);
+            value         = Interface::CreateUDynValue(cellValue);
+        }
+        if (dynType == Interface::DynamicType::Double)
+        {
+            Interface::GetDynamicType<Interface::DynamicType::Double>::type
+                cellValue = root.get<Interface::GetDynamicType<
+                    Interface::DynamicType::Double>::type>(
+                    COND_COMPARISON_VALUE);
+            value = Interface::CreateUDynValue(cellValue);
+        }
+        if (dynType == Interface::DynamicType::String)
+        {
+            Interface::GetDynamicType<Interface::DynamicType::String>::type
+                cellValue = root.get<Interface::GetDynamicType<
+                    Interface::DynamicType::String>::type>(
+                    COND_COMPARISON_VALUE);
+            value = Interface::CreateUDynValue(cellValue);
+        }
 
-    //         // Create a property tree
-    //         boost::property_tree::ptree pt;
-    //         // Parse the JSON file
-    //         boost::property_tree::read_json(tablePath, pt);
+        if (condstr == CONDITION_NAME_EQUAL)
+        {
+            return Query::CreateConditionEqual(columnName, value);
+        }
+        if (condstr == CONDITION_NAME_NOT_EQUAL)
+        {
+            return Query::CreateConditionNotEqual(columnName, value);
+        }
+        if (condstr == CONDITION_NAME_GREATER_THAN)
+        {
+            return Query::CreateConditionGreaterThan(columnName, value);
+        }
+        if (condstr == CONDITION_NAME_LESS_THAN)
+        {
+            return Query::CreateConditionLessThan(columnName, value);
+        }
+        if (condstr == CONDITION_NAME_GREATER_THAN_OR_EQUAL)
+        {
+            return Query::CreateConditionGreaterThanOrEqualTo(columnName,
+                                                              value);
+        }
+        if (condstr == CONDITION_NAME_LESS_THAN_OR_EQUAL)
+        {
+            return Query::CreateConditionLessThanOrEqualTo(columnName, value);
+        }
 
-    //         //////////////////////////////////////////////////////////////
+        throw std::logic_error{fmt::format(
+            "CreateCondition(cond-name, root): Unknown condition name: {}",
+            condstr)};
+    }
 
-    //         std::string tableName = pt.get<std::string>("table-name");
-    //         Interface::ColumnInfoList columnInfoList{};
-    //         Interface::RowList list;
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
-    //         //////////////////////////////////////////////////////////////
+    auto CreateConditionAnd(const boost::property_tree::ptree& root)
+        -> Query::UCondition
+    {
+        auto left  = CreateCondition(root.get_child(
+            fmt::format("{}.{}", CONDITION_ARGS, CONDITION_LOGICAL_ARG_LEFT)));
+        auto right = CreateCondition(root.get_child(
+            fmt::format("{}.{}", CONDITION_ARGS, CONDITION_LOGICAL_ARG_RIGHT)));
 
-    //         // Access columns
-    //         auto&& columns = pt.get_child("columns");
-    //         AccessColumns(columnInfoList, columns);
+        return Query::CreateConditionAnd(std::move(left), std::move(right));
+    }
 
-    //         // Access rows
-    //         auto&& rowsJS = pt.get_child("rows");
-    //         AccessRows(list, columnInfoList, rowsJS);
+    //////////////////////////////////////////////////////////////////////
 
-    //         //////////////////////////////////////////////////////////////
+    auto CreateConditionOr(const boost::property_tree::ptree& root)
+        -> Query::UCondition
+    {
+        auto left = CreateCondition(root.get_child(CONDITION_LOGICAL_ARG_LEFT));
+        auto right =
+            CreateCondition(root.get_child(CONDITION_LOGICAL_ARG_RIGHT));
 
-    //         auto&& rotable = DataBase::CreateRowOrientedTable(
-    //             std::move(tableName), std::move(columnInfoList),
-    //             std::move(list));
+        return Query::CreateConditionOr(std::move(left), std::move(right));
+    }
 
-    //         return rotable->CreateTable();
-    //     }
-    //     virtual void AccessColumns(
-    //         Interface::ColumnInfoList& columnInfoList,
-    //         const boost::property_tree::ptree& columns) const
-    //     {
-    //         for (auto&& column : columns)
-    //         {
-    //             auto&& columnName    =
-    //             column.second.get<std::string>("name"); auto&& strColumnType
-    //             = column.second.get<std::string>("type"); auto&& columnType =
-    //                 Interface::ConvertStringToDynamicType(strColumnType);
-    //             columnInfoList.emplace_back(columnName, columnType);
-    //         }
-    //     }
-    //     virtual void AccessRows(Interface::RowList& list,
-    //                             const Interface::ColumnInfoList&
-    //                             columnInfoList, const
-    //                             boost::property_tree::ptree& rowsJS) const
-    //     {
-    //         for (auto&& row : rowsJS)
-    //         {
-    //             Interface::Row rowNode{};
-    //             rowNode.reserve(columnInfoList.size());
-    //             int columnIndex = -1;
-    //             for (const auto& cell : row.second)
-    //             {
-    //                 ++columnIndex;
+    //////////////////////////////////////////////////////////////////////
 
-    //                 auto type  = columnInfoList[columnIndex].type;
-    //                 auto value = GetValue(cell.second, type);
-
-    //                 rowNode.push_back(std::move(value));
-    //             }
-    //             list.push_back(std::move(rowNode));
-    //         }
-    //     }
-    //     virtual auto GetValue(const boost::property_tree::ptree& value,
-    //                           const Interface::DynamicType& type) const
-    //         -> Interface::UDynamicValue
-    //     {
-    //         auto&& strvalue = value.get_value<std::string>();
-    //         if ((strvalue == "nullptr") || (strvalue == "null"))
-    //         {
-    //             return nullptr;
-    //         }
-
-    //         Interface::DynamicValue dvalue;
-    //         switch (type)
-    //         {
-    //             case Interface::DynamicType::Int:
-    //                 dvalue = value.get_value<Interface::GetDynamicType<
-    //                     Interface::DynamicType::Int>::type>();
-    //                 break;
-    //             case Interface::DynamicType::Double:
-    //                 dvalue = value.get_value<Interface::GetDynamicType<
-    //                     Interface::DynamicType::Double>::type>();
-    //                 break;
-    //             case Interface::DynamicType::String:
-    //                 dvalue = value.get_value<Interface::GetDynamicType<
-    //                     Interface::DynamicType::String>::type>();
-    //                 break;
-    //             default:
-    //                 throw std::logic_error{"Unknown DynamicValue type"};
-    //         }
-    //         return Interface::CreateUDynValue(dvalue);
-    //     }
-
-    //    public:
-    //     static auto Create(const std::string& path)
-    //         -> Interface::UDataBaseReader
-    //     {
-    //         Utility::AssertPathAbsolute(path);
-    //         Utility::AssertDirExists(path);
-
-    //         Interface::UDataBaseReader ureader{new DataBaseReader{path}};
-    //         return (ureader);
-    //     }
-
-    //    protected:
-    //     std::string m_path;
-    // };
-
-    /*
-    # INSERT INTO employees (first_name, last_name, job_title, salary)
-    # VALUES ('John', 'Doe', 'Software Engineer', 75000);
-    #    """
-    */
-
-    // auto GetTable(const std::string& tablePath) const -> Interface::UTable
-    // {
-    //     //////////////////////////////////////////////////////////////
-
-    //     std::string tableName = pt.get<std::string>("table-name");
-    //     Interface::ColumnInfoList columnInfoList{};
-    //     Interface::RowList list;
-
-    //     //////////////////////////////////////////////////////////////
-
-    //     // Access columns
-    //     auto&& columns = pt.get_child("columns");
-    //     AccessColumns(columnInfoList, columns);
-
-    //     // Access rows
-    //     auto&& rowsJS = pt.get_child("rows");
-    //     AccessRows(list, columnInfoList, rowsJS);
-
-    //     //////////////////////////////////////////////////////////////
-
-    //     auto&& rotable = DataBase::CreateRowOrientedTable(
-    //         std::move(tableName), std::move(columnInfoList),
-    //         std::move(list));
-
-    //     return rotable->CreateTable();
-    // }
+    auto CreateConditionNot(const boost::property_tree::ptree& root)
+        -> Query::UCondition
+    {
+        return Query::CreateConditionNot(CreateCondition(root));
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
@@ -219,7 +138,21 @@ namespace SQLEngine::QueryParser
     auto CreateCondition(const boost::property_tree::ptree& root)
         -> Query::UCondition
     {
-        return nullptr;
+        auto condName = root.get<std::string>(CONDITION_NAME);
+        auto&& args   = root.get_child(CONDITION_ARGS);
+        if (condName == CONDITION_NAME_AND)
+        {
+            return CreateConditionAnd(args);
+        }
+        if (condName == CONDITION_NAME_OR)
+        {
+            return CreateConditionOr(args);
+        }
+        if (condName == CONDITION_NAME_NOT)
+        {
+            return CreateConditionNot(args);
+        }
+        return CreateCondition(condName, args);
     }
 
     //////////////////////////////////////////////////////////////////////

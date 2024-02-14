@@ -41,9 +41,14 @@ namespace SQLEngine::Utility
                     const Option::MustExist &mustexist = Option::MustExist{
                         true}) -> const std::string;
     PROJECT_SHARED_EXPORT
-    auto ExtractFileName(const std::string &path,
-                         const Option::MustExist &mustexist = Option::MustExist{
-                             true}) -> const std::string;
+    auto ExtractName(const std::string &path,
+                     const Option::MustExist &mustexist = Option::MustExist{
+                         true}) -> const std::string;
+    PROJECT_SHARED_EXPORT
+    auto RemoveExtensionFromFilename(
+        const std::string &filename,
+        const Option::MustExist &mustexist = Option::MustExist{true})
+        -> const std::string;
 
     PROJECT_SHARED_EXPORT
     void AssertFileExists(const std::string &path);

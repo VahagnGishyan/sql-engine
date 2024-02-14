@@ -7,6 +7,7 @@
 
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
+#include <fmt/core.h>
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -127,11 +128,15 @@ namespace SQLEngine::DataBase
        public:
         auto GetTable(const std::string& tbname) const -> const ITable& override
         {
-            return (GetTable(GetTableIndexAssert(tbname, " GetTable const")));
+            return (GetTable(GetTableIndexAssert(
+                tbname,
+                fmt::format("GetTable(table-name: {}) const", tbname))));
         }
         auto GetTable(const std::string& tbname) -> ITable& override
         {
-            return (GetTable(GetTableIndexAssert(tbname, " GetTable const")));
+            return (GetTable(GetTableIndexAssert(
+                tbname,
+                fmt::format("GetTable(table-name: {}) const", tbname))));
         }
 
         //////////////////////////////////////////////////////////////////

@@ -34,7 +34,7 @@ namespace SQLEngine::LocalDataBase
        public:
         auto Read() const -> Interface::UDataBase override
         {
-            const std::string dbname = Utility::ExtractFileName(m_path);
+            const std::string dbname = Utility::ExtractName(m_path);
             const std::string tablesDir =
                 fmt::format("{}/{}/", m_path, TABLES_DIR_NAME);
             Interface::TableList tables = GetTablesList(tablesDir);

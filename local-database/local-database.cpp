@@ -49,7 +49,7 @@ namespace SQLEngine::LocalDataBase
             m_database{std::move(db)}, m_path{path}
         {
             auto&& dbname = m_database->GetName();
-            auto&& fname  = Utility::ExtractFileName(m_path);
+            auto&& fname  = Utility::ExtractName(m_path);
             Utility::Assert(dbname == fname,
                             "LocalJSONDatabase::LocalJSONDatabase(db, path)");
         }
@@ -70,7 +70,7 @@ namespace SQLEngine::LocalDataBase
             Utility::MakeDir(newdbpath, Utility::Option::ExistOk{false},
                              Utility::Option::CreateBaseDirectory{true});
             m_database =
-                DataBase::CreateDataBase(Utility::ExtractFileName(newdbpath));
+                DataBase::CreateDataBase(Utility::ExtractName(newdbpath));
             m_path = newdbpath;
         }
         void Connect(const std::string& dbpath) override

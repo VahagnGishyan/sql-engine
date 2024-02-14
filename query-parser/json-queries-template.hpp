@@ -53,7 +53,22 @@
 #define CONDITION_NAME "condition"
 #define CONDITION_ARGS "arguments"
 #define COND_COMPARISON_COLUMN "column-name"
+#define COND_COMPARISON_TYPE "type"
 #define COND_COMPARISON_VALUE "value"
+
+#define CONDITION_NAME_AND "and"
+#define CONDITION_NAME_OR "or"
+#define CONDITION_NAME_NOT "not"
+
+#define CONDITION_NAME_EQUAL "equal"
+#define CONDITION_NAME_NOT_EQUAL "not-equal"
+#define CONDITION_NAME_GREATER_THAN "greater-than"
+#define CONDITION_NAME_LESS_THAN "less-than"
+#define CONDITION_NAME_GREATER_THAN_OR_EQUAL "greater-than-or-equal"
+#define CONDITION_NAME_LESS_THAN_OR_EQUAL "less-than-or-equal"
+
+#define CONDITION_LOGICAL_ARG_LEFT "left"
+#define CONDITION_LOGICAL_ARG_RIGHT "right"
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
