@@ -98,15 +98,6 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
                 Interface::CreateUDynValue("2024-03-15 20:30:00"));
             status->AddElement(Interface::CreateUDynValue("Incomplete"));
 
-            taskID->AddElement(Interface::CreateUDynValue(3));
-            userID->AddElement(Interface::CreateUDynValue(3));
-            title->AddElement(Interface::CreateUDynValue("Exercise"));
-            description->AddElement(
-                Interface::CreateUDynValue("Go for a jog in the park"));
-            dueDate->AddElement(
-                Interface::CreateUDynValue("2024-02-20 07:00:00"));
-            status->AddElement(Interface::CreateUDynValue("Complete"));
-
             table->AddColumn(std::move(taskID));
             table->AddColumn(std::move(userID));
             table->AddColumn(std::move(title));
@@ -173,7 +164,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
     void SaveSelectResultTasks(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("select_into_tasks");
+        auto database = DataBase::CreateDataBase("select_tasks");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

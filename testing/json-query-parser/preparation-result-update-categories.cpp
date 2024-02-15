@@ -173,7 +173,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
     void SaveUpdateResultCategories(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("update_into_categories");
+        auto database = DataBase::CreateDataBase("update_categories");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

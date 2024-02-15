@@ -173,7 +173,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
     void SaveUpdateResultTasks(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("update_into_tasks");
+        auto database = DataBase::CreateDataBase("update_tasks");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

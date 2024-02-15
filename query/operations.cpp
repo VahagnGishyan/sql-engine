@@ -156,7 +156,12 @@ namespace SQLEngine::Query
 
         auto Copy() -> UQueryExecutor override
         {
-            return CreateOpSelect(m_columns, m_condition->Copy());
+            UCondition copy{};
+            if (m_condition != nullptr)
+            {
+                copy =  m_condition->Copy();
+            }
+            return CreateOpSelect(m_columns, std::move(copy));
         }
 
        protected:

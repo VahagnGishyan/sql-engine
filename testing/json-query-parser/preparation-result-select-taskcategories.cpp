@@ -173,7 +173,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
     void SaveSelectResultTaskcategories(const std::string& path)
     {
-        auto database = DataBase::CreateDataBase("select_into_taskcategories");
+        auto database = DataBase::CreateDataBase("select_taskcategories");
 
         database->AddTable(CreateUsersTable());
         database->AddTable(CreateTasksTable());

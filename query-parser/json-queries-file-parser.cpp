@@ -171,8 +171,12 @@ namespace SQLEngine::QueryParser
         const std::string tableName =
             arguments.get<std::string>(OP_SELECT_FROM);
 
-        auto&& condition =
-            CreateCondition(arguments.get_child(OP_SELECT_WHERE));
+        auto&& opCond = arguments.get_child_optional(OP_SELECT_WHERE);
+        Query::UCondition condition;
+        if (opCond.has_value())
+        {
+            condition = CreateCondition(*opCond);
+        }
 
         return Query::CreateQuery(
             tableName,

@@ -64,7 +64,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
         // Create the "arguments" subtree within "where"
         boost::property_tree::ptree whereArguments;
         whereArguments.put("column-name", "status");
-        whereArguments.put("type", "Enum");
+        whereArguments.put("type", "String");
         whereArguments.put("value", "Incomplete");
 
         whereSubtree.add_child("arguments", whereArguments);
@@ -73,8 +73,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
         json.add_child("arguments", arguments);
 
-        auto jsonpath =
-            fmt::format("{}/{}", dir, "select_tasks_incomplete.json");
+        auto jsonpath = fmt::format("{}/{}", dir, "select_tasks.json");
         // Write the JSON to a file
         boost::property_tree::write_json(jsonpath, json);
         return jsonpath;
@@ -105,12 +104,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
         arguments.add_child("columns", columnsArray);
 
-        // Set "where" to null
-        arguments.put_child("where", boost::property_tree::ptree());
-
         json.add_child("arguments", arguments);
 
-        auto jsonpath = fmt::format("{}/{}", dir, "select_categories_all.json");
+        auto jsonpath = fmt::format("{}/{}", dir, "select_categories.json");
         // Write the JSON to a file
         boost::property_tree::write_json(jsonpath, json);
         return jsonpath;
@@ -141,13 +137,9 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
         arguments.add_child("columns", columnsArray);
 
-        // Set "where" to null
-        arguments.put_child("where", boost::property_tree::ptree());
-
         json.add_child("arguments", arguments);
 
-        auto jsonpath =
-            fmt::format("{}/{}", dir, "select_taskcategories_all.json");
+        auto jsonpath = fmt::format("{}/{}", dir, "select_taskcategories.json");
         // Write the JSON to a file
         boost::property_tree::write_json(jsonpath, json);
         return jsonpath;
