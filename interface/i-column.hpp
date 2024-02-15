@@ -55,9 +55,10 @@ namespace SQLEngine::Interface
         virtual auto GetType() const -> const DynamicType = 0;
 
        public:
-        virtual void AddElement(const DynamicValue& element)        = 0;
-        virtual void AddElement(UDynamicValue element)              = 0;
-        virtual auto GetElement(const int& index) -> UDynamicValue& = 0;
+        virtual void AddElement(const DynamicValue& element)            = 0;
+        virtual void AddElement(UDynamicValue element)                  = 0;
+        virtual void SetElement(const int& index, const DynamicValue&)  = 0;
+        virtual void SetElement(const int& index, UDynamicValue) = 0;
         virtual auto GetElement(const int& index) const
             -> const UDynamicValue&                 = 0;
         virtual void RemoveElement(const int index) = 0;

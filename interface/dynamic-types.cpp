@@ -100,6 +100,30 @@ namespace SQLEngine
         Utility::Assert(IsDynamicValueType(value, type),
                         "Interface::AssertDynamicValueTypeIs()");
     }
+    auto Interface::GetRealType(const DynamicValue& value) -> DynamicType
+    {
+        if (IsDynamicValueType(value, DynamicType::Int))
+        {
+            return DynamicType::Int;
+        }
+        if (IsDynamicValueType(value, DynamicType::Double))
+        {
+            return DynamicType::Double;
+        }
+        if (IsDynamicValueType(value, DynamicType::String))
+        {
+            return DynamicType::String;
+        }
+
+        throw std::logic_error{
+            "Interface::GetRealType: Unknown DynamicValue type"};
+    }
+    auto Interface::GetRealType(const UDynamicValue& value) -> DynamicType
+    {
+        Utility::Assert(value != nullptr,
+                        "Interface::GetRealType(value), value is nullptr");
+        return GetRealType(*value);
+    }
 
     auto Interface::CreateUDynValue(const DynamicValue& value) -> UDynamicValue
     {

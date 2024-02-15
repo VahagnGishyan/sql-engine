@@ -3,6 +3,10 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
+#include <fmt/core.h>
+
+#include <stdexcept>
+
 #include "database.hpp"
 #include "utility/core.hpp"
 
@@ -92,13 +96,37 @@ namespace SQLEngine::DataBase
         {
             if (element != nullptr)
             {
-                Interface::AssertDynamicValueTypeIs(*element, m_type);
+                Utility::Assert(Interface::IsDynamicValueType(*element, m_type),
+                                "AddElement(UDynamicValue element)");
             }
             m_elements.push_back(std::move(element));
         }
-        auto GetElement(const int& index) -> UDynamicValue& override
+
+        // temp, untestes
+        void SetElement(const int& index, const DynamicValue& element) override
         {
-            return m_elements.at(index);
+            SetElement(index, Interface::CreateUDynValue(element));
+        }
+        void SetElement(const int& index, UDynamicValue element) override
+        {
+            if (element != nullptr)
+            {
+                if (Interface::IsDynamicValueType(*element, m_type) == false)
+                {
+                    auto&& strElement =
+                        Interface::ConvertUDynValueToString(element);
+                    auto&& strExpectedType =
+                        Interface::GetDynamicTypeNameAsString(m_type);
+                    auto&& strActualType =
+                        Interface::GetDynamicTypeNameAsString(
+                            Interface::GetRealType(element));
+                    throw std::logic_error{fmt::format(
+                        "SetElement(UDynamicValue element = {}), "
+                        "expected-type = {}, actual-type = {}",
+                        strElement, strExpectedType, strActualType)};
+                }
+            }
+            m_elements.at(index) = std::move(element);
         }
 
         auto GetElement(const int& index) const -> const UDynamicValue& override

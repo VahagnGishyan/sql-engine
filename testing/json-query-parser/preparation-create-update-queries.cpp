@@ -52,7 +52,7 @@ namespace SQLEngine::Testing::JSONQueryParser::Preparation
 
         boost::property_tree::ptree row2;
         row2.put("column", "due-date");
-        row2.put("type", "DateTime");
+        row2.put("type", "String");
         row2.put("value", "2024-03-05 12:00:00");
         rowArray.push_back(std::make_pair("", row2));
 

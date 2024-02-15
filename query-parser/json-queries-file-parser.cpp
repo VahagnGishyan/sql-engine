@@ -265,32 +265,42 @@ namespace SQLEngine::QueryParser
                 cell.second.get<std::string>(OP_UPDATE_CELL_COLUMN);
             std::string columnType =
                 cell.second.get<std::string>(OP_UPDATE_CELL_TYPE);
-            std::string value =
-                cell.second.get<std::string>(OP_UPDATE_CELL_VALUE);
+            // fmt::println("vgishyan-update: value = {}.", value);
 
             auto dynType = Interface::ConvertStringToDynamicType(columnType);
             if (dynType == Interface::DynamicType::Int)
             {
                 Interface::GetDynamicType<Interface::DynamicType::Int>::type
-                    cellValue    = cell.second.get<Interface::GetDynamicType<
-                        Interface::DynamicType::Int>::type>("");
+                    cellValue = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::Int>::type>(
+                        OP_UPDATE_CELL_VALUE);
                 data[columnName] = Interface::CreateUDynValue(cellValue);
             }
-            if (dynType == Interface::DynamicType::Double)
+            else if (dynType == Interface::DynamicType::Double)
             {
                 Interface::GetDynamicType<Interface::DynamicType::Double>::type
-                    cellValue    = cell.second.get<Interface::GetDynamicType<
-                        Interface::DynamicType::Double>::type>("");
+                    cellValue = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::Double>::type>(
+                        OP_UPDATE_CELL_VALUE);
                 data[columnName] = Interface::CreateUDynValue(cellValue);
             }
-            if (dynType == Interface::DynamicType::String)
+            else if (dynType == Interface::DynamicType::String)
             {
                 Interface::GetDynamicType<Interface::DynamicType::String>::type
-                    cellValue    = cell.second.get<Interface::GetDynamicType<
-                        Interface::DynamicType::String>::type>("");
+                    cellValue = cell.second.get<Interface::GetDynamicType<
+                        Interface::DynamicType::String>::type>(
+                        OP_UPDATE_CELL_VALUE);
                 data[columnName] = Interface::CreateUDynValue(cellValue);
             }
         }
+
+        // fmt::println("vgihsyan-update-parser: data = [");
+        // for (auto&& element : data)
+        // {
+        // fmt::println("\t{}: {}", element.first,
+        //              Interface::ConvertUDynValueToString(element.second));
+        // }
+        // fmt::println("]");
 
         auto&& condition =
             CreateCondition(arguments.get_child(OP_UPDATE_WHERE));

@@ -91,6 +91,11 @@ namespace SQLEngine::Interface
 
     bool PROJECT_SHARED_EXPORT IsDynamicValueType(const DynamicValue& value,
                                                   const DynamicType& type);
+    auto PROJECT_SHARED_EXPORT GetRealType(const DynamicValue& value)
+        -> DynamicType;
+    auto PROJECT_SHARED_EXPORT GetRealType(const UDynamicValue& value)
+        -> DynamicType;
+
     void PROJECT_SHARED_EXPORT AssertDynamicValueTypeIs(
         const DynamicValue& value, const DynamicType& type);
 

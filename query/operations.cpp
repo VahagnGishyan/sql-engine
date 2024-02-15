@@ -159,7 +159,7 @@ namespace SQLEngine::Query
             UCondition copy{};
             if (m_condition != nullptr)
             {
-                copy =  m_condition->Copy();
+                copy = m_condition->Copy();
             }
             return CreateOpSelect(m_columns, std::move(copy));
         }
@@ -242,8 +242,12 @@ namespace SQLEngine::Query
                 auto&& column = newTable->GetColumn(columninfo.first /*name*/);
                 for (auto&& index : indexes)
                 {
-                    column.GetElement(index) = Interface::CopyUDynValue(
-                        columninfo.second /*dynamic values*/);
+                    // fmt::println(
+                    //     "vgishyan: [{}] = {}.", index,
+                    //     Interface::ConvertUDynValueToString(columninfo.second));
+                    column.SetElement(
+                        index, Interface::CopyUDynValue(
+                                   columninfo.second /*dynamic values*/));
                 }
             }
             return newTable;

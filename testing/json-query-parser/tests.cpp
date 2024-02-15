@@ -103,17 +103,17 @@ TEST(JSONQueryParser, SelectQuery)
 //
 //////////////////////////////////////////////////////////////////////////
 
-// TEST(JSONQueryParser, UpdateQuery)
-// {
-//     auto workdir  = Utility::GetBaseDir(Preparation::GetEmptyDir());
-//     auto database = Preparation::GetDatabase();
-//     auto&& list   = Preparation::GetUpdateJSONExamples();
-//     for (auto&& queryPath : *list)
-//     {
-//         fmt::println("vgishyan: path = {}", Utility::ExtractName(queryPath));
-//         EXPECT_NO_THROW(CheckQuery(*database, queryPath));
-//     }
-// }
+TEST(JSONQueryParser, UpdateQuery)
+{
+    auto workdir  = Utility::GetBaseDir(Preparation::GetEmptyDir());
+    auto database = Preparation::GetDatabase();
+    auto&& list   = Preparation::GetUpdateJSONExamples();
+    for (auto&& queryPath : *list)
+    {
+        // fmt::println("vgishyan: path = {}", Utility::ExtractName(queryPath));
+        EXPECT_NO_THROW(CheckQuery(*database, queryPath));
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 //

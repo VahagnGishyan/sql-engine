@@ -7,8 +7,7 @@
 #include <fmt/ranges.h>
 
 #include "debug-db.hpp"
-
-// #include "utility/core.hpp"
+#include "utility/core.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -134,6 +133,19 @@ namespace SQLEngine
         {
             auto&& actualValue   = actualColumn.GetElement(rowIndex);
             auto&& shouldbeValue = shouldbeColumn.GetElement(rowIndex);
+
+            auto actualValueType   = Interface::GetRealType(actualValue);
+            auto shouldbeValueType = Interface::GetRealType(shouldbeValue);
+
+            Utility::Assert(actualValueType == actualColumn.GetType(),
+                            "DebugDB::CheckColumn, actualValueType != "
+                            "actualColumn.GetType()");
+            Utility::Assert(shouldbeValueType == shouldbeColumn.GetType(),
+                            "DebugDB::CheckColumn, shouldbeValueType != "
+                            "shouldbeColumn.GetType()");
+            Utility::Assert(actualValueType == shouldbeValueType,
+                            "DebugDB::CheckColumn, actualValueType != "
+                            "shouldbeValueType");
 
             if (Interface::AreValuesEqual(actualValue, shouldbeValue) == false)
             {

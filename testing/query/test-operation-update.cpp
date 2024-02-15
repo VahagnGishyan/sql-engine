@@ -104,7 +104,7 @@ class OperationUpdate : public ::testing::Test
         {
             for (int index : indexes)
             {
-                column.GetElement(index) = CopyUDynValue(updatedValue);
+                column.SetElement(index, CopyUDynValue(updatedValue));
             }
         };
         //////////////////////////////////////////////////////////////////////
