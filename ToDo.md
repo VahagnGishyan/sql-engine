@@ -15,9 +15,8 @@
 - [x] database: row
 - [x] local-database: json stream
 - [x] local-database: local-database
-- [ ] query
-	- [x] condition
-	- [ ] operations
+- [x] query
+- [x] json-query-parser
 - [ ] cli-application
 - [ ] todo-application
 - [ ] installer
