@@ -80,6 +80,16 @@ namespace SQLEngine::LocalDataBase
             m_database  = reader->Read();
             m_path      = dbpath;
         }
+
+        bool IsConnected() const override
+        {
+            return (m_database != nullptr);
+        }
+        void AssertConnected() const override
+        {
+            Utility::Assert(IsConnected() == true,
+                            "LocalJSONDatabase::AssertConnected()");
+        }
         void Disconnect() override
         {
             Disconnect(m_path);
@@ -205,15 +215,6 @@ namespace SQLEngine::LocalDataBase
         //////////////////////////////////////////////////////////////////
 
        protected:
-        auto IsConnected() const -> bool
-        {
-            return (m_database != nullptr);
-        }
-        void AssertConnected() const
-        {
-            Utility::Assert(IsConnected() == true,
-                            "LocalJSONDatabase::AssertConnected()");
-        }
         void AssertDisconnected() const
         {
             Utility::Assert(IsConnected() == false,
