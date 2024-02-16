@@ -18,6 +18,7 @@ include(${CMAKE_SOURCE_DIR}/config/cmake/user-settings.cmake)
 
 set (SUBDIRS
     app-info
+    cli
     database
     local-database
     interface
