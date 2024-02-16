@@ -7,7 +7,6 @@
 
 #include "i-column.hpp"
 #include "i-database.hpp"
-#include "i-db-manager.hpp"
 #include "i-db-object.hpp"
 #include "i-db-stream.hpp"
 #include "i-query.hpp"
