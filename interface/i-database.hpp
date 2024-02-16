@@ -77,6 +77,8 @@ namespace SQLEngine::Interface
        public:
         virtual void Init(const std::string& newdbpath)    = 0;
         virtual void Connect(const std::string& dbpath)    = 0;
+        virtual bool IsConnected() const                   = 0;
+        virtual void AssertConnected() const               = 0;
         virtual void Disconnect()                          = 0;
         virtual void Disconnect(const std::string& dbpath) = 0;
         virtual void Drop()                                = 0;
