@@ -113,12 +113,15 @@ namespace SQLEngine::LocalDataBase
             m_database = nullptr;
             m_path     = "";
         }
-
-       protected:
-        void SaveAt(const std::string& path) const
+        void SaveAt(const std::string& workdir) override
         {
-            auto writer = CreateDBLocalJSONWriter(Utility::GetBaseDir(path));
+            auto writer = CreateDBLocalJSONWriter(Utility::GetBaseDir(workdir));
             writer->Write(*m_database);
+        }
+
+        auto GetWorkDirPath() const -> std::string override
+        {
+            return m_path;
         }
 
        public:
@@ -246,16 +249,25 @@ namespace SQLEngine::LocalDataBase
 
     auto Init(const std::string& newdbpath) -> Interface::UConnectDataBase
     {
-        Interface::UConnectDataBase database =
-            std::make_unique<LocalJSONDatabase>();
+        Interface::UConnectDataBase database = Create();
         database->Init(newdbpath);
         // return database;
         return nullptr;
     }
-    auto Connect(const std::string& dbpath) -> Interface::UConnectDataBase
+    auto Create() -> Interface::UConnectDataBase
     {
         Interface::UConnectDataBase database =
             std::make_unique<LocalJSONDatabase>();
+        return database;
+    }
+    void SaveAt(Interface::IConnectDataBase& db, const std::string& dbpath)
+    {
+        db.SaveAt(dbpath);
+    }
+
+    auto Connect(const std::string& dbpath) -> Interface::UConnectDataBase
+    {
+        Interface::UConnectDataBase database = Create();
         database->Connect(dbpath);
         return database;
     }

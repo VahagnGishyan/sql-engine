@@ -33,6 +33,9 @@ namespace SQLEngine::LocalDataBase
         -> Interface::UConnectDataBase;
     auto PROJECT_SHARED_EXPORT Connect(const std::string& dbpath)
         -> Interface::UConnectDataBase;
+    auto PROJECT_SHARED_EXPORT Create() -> Interface::UConnectDataBase;
+    void PROJECT_SHARED_EXPORT SaveAt(Interface::IConnectDataBase& db,
+                                      const std::string& dbpath);
     void PROJECT_SHARED_EXPORT Disconnect(Interface::IConnectDataBase& db);
     void PROJECT_SHARED_EXPORT Disconnect(Interface::IConnectDataBase& db,
                                           const std::string& newdbpath);

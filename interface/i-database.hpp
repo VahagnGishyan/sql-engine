@@ -82,9 +82,11 @@ namespace SQLEngine::Interface
         virtual void Disconnect()                          = 0;
         virtual void Disconnect(const std::string& dbpath) = 0;
         virtual void Drop()                                = 0;
+        virtual void SaveAt(const std::string& dbpath)     = 0;
 
        public:
         virtual auto CopyConnectDataBase() const -> UConnectDataBase = 0;
+        virtual auto GetWorkDirPath() const -> std::string           = 0;
     };
 
     //////////////////////////////////////////////////////////////////////

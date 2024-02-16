@@ -9,8 +9,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <map>
-
 #include "interface/i-database.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -22,6 +20,13 @@ namespace SQLEngine::DebugDB
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
+
+    auto PROJECT_SHARED_EXPORT ColumnToStrList(const Interface::IColumn& column)
+        -> std::vector<std::string>;
+    auto PROJECT_SHARED_EXPORT TableToStrList(const Interface::ITable& column)
+        -> std::vector<std::string>;
+    auto PROJECT_SHARED_EXPORT DataBaseToStrList(const Interface::IDataBase& column)
+        -> std::vector<std::string>;
 
     void PROJECT_SHARED_EXPORT PrintColumn(const Interface::IColumn&);
     void PROJECT_SHARED_EXPORT PrintTable(const Interface::ITable&);

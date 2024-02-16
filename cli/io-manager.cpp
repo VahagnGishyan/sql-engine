@@ -25,7 +25,7 @@ namespace SQLEngine::CLI
         std::cout << prompt << ": ";
         std::vector<std::string> tokens;
 
-        std::string word;
+        std::string word           = "--";
         char symbol                = '\0';
         constexpr char enterSymbol = '\n';
         while (symbol = std::cin.get())

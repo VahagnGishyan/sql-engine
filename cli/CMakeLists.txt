@@ -11,6 +11,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 
 set(SOURCES
     cli-app-manager.cpp
+    cli-operations.cpp
     main.cpp
     input-parser.cpp
     io-manager.cpp
@@ -29,10 +30,10 @@ target_link_libraries(${PROJECT_NAME}
 
     sql-engine-utility
     sql-engine-logging
-    # sql-engine-interface
-    # sql-engine-table
-    # sql-engine-db-db
-    # sql-engine-db-manager
+    sql-engine-interface
+    sql-engine-local-database
+    sql-engine-debug-db
+    sql-engine-query-parser
 )
 
 ##########################################################

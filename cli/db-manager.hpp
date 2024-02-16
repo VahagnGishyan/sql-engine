@@ -19,13 +19,13 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class DBManager : 
-    {
-       public:
-        virtual ~DBManager() = default;
+    // class DBManager : 
+    // {
+    //    public:
+    //     virtual ~DBManager() = default;
 
-       public:
-    };
+    //    public:
+    // };
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

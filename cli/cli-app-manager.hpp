@@ -19,16 +19,6 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    // class Manager
-    // {
-    //    public:
-    //     Manager();
-    //     virtual ~Manager() = default;
-
-    //    public:
-    //     Interface::UConnectDataBase udatabase;
-    // };
-
     class IOManager final
     {
        public:
@@ -44,8 +34,30 @@ namespace SQLEngine::CLI
         auto SetEndValue(const std::string& value);
 
        protected:
-        std::string m_endValue = /*default-end-value*/ "close";
+        std::string m_endValue = /*default-end-value*/ "--close";
     };
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    class Operation
+    {
+       public:
+        virtual ~Operation() = default;
+
+       public:
+        virtual auto ExecuteFor(Interface::IConnectDataBase& db) const
+            -> std::vector<std::string> = 0;
+    };
+
+    using UOperation = std::unique_ptr<Operation>;
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+    UOperation ParseInput(const std::vector<std::string>& arguments);
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
