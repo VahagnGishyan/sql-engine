@@ -19,14 +19,32 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    class Manager
+    // class Manager
+    // {
+    //    public:
+    //     Manager();
+    //     virtual ~Manager() = default;
+
+    //    public:
+    //     Interface::UConnectDataBase udatabase;
+    // };
+
+    class IOManager final
     {
        public:
-        Manager();
-        virtual ~Manager() = default;
+        auto ReadUserInput(const std::string& prompt) const
+            -> const std::vector<std::string>;
+        void Print(const std::string& prompt) const;
+        void PrintLine(const std::string& prompt) const;
+        void PrintMessage(const std::vector<std::string>& content) const;
 
        public:
-        Interface::UConnectDataBase udatabase;
+        auto IsEnd(const std::vector<std::string>& input) const -> bool;
+        auto GetEndValue() const -> const std::string;
+        auto SetEndValue(const std::string& value);
+
+       protected:
+        std::string m_endValue = /*default-end-value*/ "close";
     };
 
     //////////////////////////////////////////////////////////////////////

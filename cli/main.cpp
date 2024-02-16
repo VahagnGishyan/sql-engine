@@ -16,6 +16,8 @@
 #include <boost/program_options.hpp>
 #include <optional>
 
+#include "cli-app-manager.hpp"
+
 //////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////
@@ -61,7 +63,8 @@ namespace SQLEngine::CLI
     //         execute cli-operations
     //     */
     //    ParseInput(count, values);
-    int Main(const int count, char **values)
+
+    void Parse(const int count, char **values)
     {
         assert(count != 1);
 
@@ -267,6 +270,22 @@ namespace SQLEngine::CLI
                       << "print-column: " << fmt::format("{}", values)
                       << std::endl;
         }
+    }
+
+    int Main(const int count, char **values)
+    {
+        IOManager io;
+
+        while(true)
+        {
+            auto&& input = io.ReadUserInput("Input: ");
+            if (io.IsEnd(input) == true)
+            {
+                break;
+            }
+
+            io.PrintLine(fmt::format("Your input is: {}", input));
+        };
 
         return 0;
     }

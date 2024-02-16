@@ -22,8 +22,8 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    void ParseInput(const std::vector<std::string>& arguments);
     void ParseInput(const int count, char **values);
+    void ParseInput(const std::vector<std::string>& arguments);
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //

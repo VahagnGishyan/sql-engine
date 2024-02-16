@@ -13,6 +13,7 @@ set(SOURCES
     cli-app-manager.cpp
     main.cpp
     input-parser.cpp
+    io-manager.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
