@@ -27,6 +27,7 @@ namespace SQLEngine::CLI
         void Print(const std::string& prompt) const;
         void PrintLine(const std::string& prompt) const;
         void PrintMessage(const std::vector<std::string>& content) const;
+        void PrintError(const std::string& prompt) const;
 
        public:
         auto IsEnd(const std::vector<std::string>& input) const -> bool;

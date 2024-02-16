@@ -44,15 +44,23 @@ namespace SQLEngine::CLI
 
         while (true)
         {
-            auto &&input = io.ReadUserInput(GetDBName(*db));
-            if (io.IsEnd(input) == true)
+            try
             {
-                break;
-            }
+                auto &&input = io.ReadUserInput(GetDBName(*db));
+                if (io.IsEnd(input) == true)
+                {
+                    break;
+                }
 
-            auto command  = ParseInput(input);
-            auto &&result = command->ExecuteFor(*db);
-            io.PrintMessage(result);
+                auto command  = ParseInput(input);
+                auto &&result = command->ExecuteFor(*db);
+                io.PrintMessage(result);
+            }
+            catch (std::exception &err)
+            {
+                io.PrintError(
+                    fmt::format("Catch exception, message is {}", err.what()));
+            }
         };
 
         return 0;

@@ -29,7 +29,6 @@ namespace SQLEngine::CLI
             fmt::print(fg(fmt::color::green), "{}: ", prompt);
             // fmt::print(fg(fmt::color::blue), "{}: ", prompt);
             // fmt::print(fg(fmt::color::purple), "{}: ", prompt);
-            
         }
         std::vector<std::string> tokens;
 
@@ -55,13 +54,13 @@ namespace SQLEngine::CLI
 
         return tokens;
     }
-    void IOManager::Print(const std::string& prompt) const
+    void IOManager::Print(const std::string& message) const
     {
-        fmt::print(fg(fmt::color::yellow), prompt);
+        fmt::print(fg(fmt::color::yellow), message);
     }
-    void IOManager::PrintLine(const std::string& prompt) const
+    void IOManager::PrintLine(const std::string& message) const
     {
-        fmt::print(fg(fmt::color::yellow), "{}\n", prompt);
+        fmt::print(fg(fmt::color::yellow), "{}\n", message);
     }
 
     void IOManager::PrintMessage(const std::vector<std::string>& content) const
@@ -70,6 +69,10 @@ namespace SQLEngine::CLI
         {
             PrintLine(line);
         }
+    }
+    void IOManager::PrintError(const std::string& message) const
+    {
+        fmt::print(fg(fmt::color::red), "{}\n", message);
     }
 
     auto IOManager::IsEnd(const std::vector<std::string>& input) const -> bool
