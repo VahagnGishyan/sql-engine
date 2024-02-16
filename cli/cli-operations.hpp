@@ -48,7 +48,7 @@ namespace SQLEngine::CLI
                                const std::string& newColumnName) -> UOperation;
         auto TableListColumns(const std::string& tableName) -> UOperation;
 
-        auto Execute(const std::string& path) -> UOperation;
+        auto ExecuteJSON(const std::string& path) -> UOperation;
 
         auto PrintDataBase() -> UOperation;
         auto PrintTable(const std::string& tableName) -> UOperation;

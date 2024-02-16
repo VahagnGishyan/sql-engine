@@ -5,7 +5,7 @@
 
 #include "cli-app-manager.hpp"
 
-// #include <fmt/core.h>
+#include <fmt/ranges.h>
 #include <iostream>
 #include <sstream>
 

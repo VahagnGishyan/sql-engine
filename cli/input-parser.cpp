@@ -89,8 +89,6 @@ namespace SQLEngine::CLI
             desc.add_options()("execute-json", po::value<std::string>(),
                                "Executes json-query, args: json-path");
 
-            desc.add_options()("execute", po::value<std::string>(), "path");
-
             desc.add_options()("print-database", "Prints DataBase");
             desc.add_options()("print-table", po::value<std::string>(),
                                "Prints table, args: table-name");
@@ -108,23 +106,19 @@ namespace SQLEngine::CLI
 
         void CheckInput(const std::vector<std::string>& arguments)
         {
-            assert(arguments.empty() == false);
+            Utility::Assert(
+                arguments.empty() == false,
+                fmt::format("input-parser.cpp, CheckInput(arguments: {}): "
+                            "arguments.empty() == true",
+                            arguments));
         }
 
         void CheckParsedData(const po::variables_map& vmap)
         {
-            assert(vmap.empty() == false);
+            Utility::Assert(vmap.empty() == false,
+                            "input-parser.cpp, CheckParsedData(vmap): "
+                            "arguments.empty() == true");
         }
-
-        //////////////////////////////////////////////////////////////////
-        //                                                              //
-        //////////////////////////////////////////////////////////////////
-
-        using jbdh = std::function<std::vector<std::string>()>;
-
-        class OperationMethod : Operation
-        {
-        };
 
         //////////////////////////////////////////////////////////////////
         //                                                              //
@@ -217,9 +211,12 @@ namespace SQLEngine::CLI
 
         if (vm.count("rename-table"))
         {
-            auto values =
-                vm["rename-table"].as<std::vector<std::string>>();
-            assert(values.size() == 2);
+            auto values = vm["rename-table"].as<std::vector<std::string>>();
+            Utility::Assert((values.size() == 2),
+                            fmt::format("input-parser.cpp, operation: "
+                                        "rename-table, values: {}"
+                                        "values.count must be 2",
+                                        arguments));
             return CreateOp::RenameTable(values[0], values[1]);
         }
         if (vm.count("list-tables"))
@@ -231,21 +228,33 @@ namespace SQLEngine::CLI
         {
             const auto values =
                 vm["table-add-column"].as<std::vector<std::string>>();
-            assert(values.size() == 3);
+            Utility::Assert(values.size() == 3,
+                            fmt::format("input-parser.cpp, operation: "
+                                        "table-add-column, values: {}"
+                                        "values.count must be 3",
+                                        arguments));
             return CreateOp::TableAddColumn(values[0], values[1], values[2]);
         }
         if (vm.count("table-drop-column"))
         {
             const auto values =
                 vm["table-drop-column"].as<std::vector<std::string>>();
-            assert(values.size() == 2);
+            Utility::Assert(values.size() == 2,
+                            fmt::format("input-parser.cpp, operation: "
+                                        "table-drop-column, values: {}"
+                                        "values.count must be 2",
+                                        arguments));
             return CreateOp::TableDropColumn(values[0], values[1]);
         }
         if (vm.count("table-rename-column"))
         {
             const auto values =
                 vm["table-rename-column"].as<std::vector<std::string>>();
-            assert(values.size() == 3);
+            Utility::Assert(values.size() == 3,
+                            fmt::format("input-parser.cpp, operation: "
+                                        "table-rename-column, values: {}"
+                                        "values.count must be 3",
+                                        arguments));
             return CreateOp::TableRenameColumn(values[0], values[1], values[2]);
         }
         if (vm.count("table-list-columns"))
@@ -254,10 +263,10 @@ namespace SQLEngine::CLI
             return CreateOp::TableListColumns(value);
         }
 
-        if (vm.count("execute"))
+        if (vm.count("execute-json"))
         {
-            const auto path = vm["execute"].as<std::string>();
-            return CreateOp::Execute(path);
+            const auto path = vm["execute-json"].as<std::string>();
+            return CreateOp::ExecuteJSON(path);
         }
 
         if (vm.count("print-database"))
@@ -273,9 +282,15 @@ namespace SQLEngine::CLI
         {
             const auto values =
                 vm["print-column"].as<std::vector<std::string>>();
-            assert(values.size() == 2);
+            Utility::Assert(values.size() == 2,
+                            fmt::format("input-parser.cpp, operation: "
+                                        "print-column, values: {}"
+                                        "values.count must be 2",
+                                        arguments));
             return CreateOp::PrintColumn(values[0], values[1]);
         }
+
+        throw std::invalid_argument{"input-parser.cpp, unknown command"};
     }
 
     //////////////////////////////////////////////////////////////////////

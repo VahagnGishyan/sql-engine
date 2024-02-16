@@ -88,7 +88,7 @@ namespace SQLEngine::LocalDataBase
         void AssertConnected() const override
         {
             Utility::Assert(IsConnected() == true,
-                            "LocalJSONDatabase::AssertConnected()");
+                            "LocalJSONDatabase, database is not connected");
         }
         void Disconnect() override
         {
@@ -220,8 +220,9 @@ namespace SQLEngine::LocalDataBase
        protected:
         void AssertDisconnected() const
         {
-            Utility::Assert(IsConnected() == false,
-                            "LocalJSONDatabase::AssertDisconnected()");
+            Utility::Assert(
+                IsConnected() == false,
+                "LocalJSONDatabase, database has already connected");
         }
 
        public:

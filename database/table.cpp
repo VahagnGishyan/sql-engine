@@ -86,6 +86,7 @@ namespace SQLEngine::DataBase
         }
         void SetName(const std::string& name) override
         {
+            Utility::Assert(name.size(), "table.cpp, name is empty");
             m_name = name;
         }
 

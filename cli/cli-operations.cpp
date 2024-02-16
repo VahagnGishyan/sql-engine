@@ -58,7 +58,8 @@ namespace SQLEngine::CLI
                 auto&& workdir = db.GetWorkDirPath();
                 if (workdir.size())
                 {
-                    data.push_back(fmt::format("database-work-dir: {}", workdir));
+                    data.push_back(
+                        fmt::format("database-work-dir: {}", workdir));
                 }
                 else
                 {
@@ -176,7 +177,7 @@ namespace SQLEngine::CLI
             {
                 db.SaveAt(m_path);
                 return std::vector<std::string>{
-                    "Database has been successfully disconnected!"};
+                    "Database has been successfully saved!"};
             }
 
            protected:
@@ -314,8 +315,9 @@ namespace SQLEngine::CLI
             auto ExecuteFor(Interface::IConnectDataBase& db) const
                 -> std::vector<std::string> override
             {
-                auto listDataBase = CreateOp::ListTables();
-                return listDataBase->ExecuteFor(db);
+                auto list = db.ListTables();
+                return std::vector<std::string>{
+                    fmt::format("tables-list: {}", *list)};
             }
         };
 
@@ -405,7 +407,9 @@ namespace SQLEngine::CLI
             TableRenameColumn(const std::string& tableName,
                               const std::string& columnName,
                               const std::string& newColumnName) :
-                m_tableName{tableName}, m_columnName{columnName}
+                m_tableName{tableName},
+                m_columnName{columnName},
+                m_columnNewName{newColumnName}
             {
             }
 
@@ -460,7 +464,7 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-    auto CreateOp::Execute(const std::string& path) -> UOperation
+    auto CreateOp::ExecuteJSON(const std::string& path) -> UOperation
     {
         class Execute : public Operation
         {
@@ -477,7 +481,7 @@ namespace SQLEngine::CLI
                 query->Execute(db);
 
                 auto tableName = query->GetTableName();
-                auto print = CreateOp::PrintTable(tableName);
+                auto print     = CreateOp::PrintTable(tableName);
                 return print->ExecuteFor(db);
             }
 
@@ -550,7 +554,7 @@ namespace SQLEngine::CLI
             auto ExecuteFor(Interface::IConnectDataBase& db) const
                 -> std::vector<std::string> override
             {
-                auto&& table = db.GetTable(m_tableName);
+                auto&& table  = db.GetTable(m_tableName);
                 auto&& column = table.GetColumn(m_columnName);
                 return DebugDB::ColumnToStrList(column);
             }

@@ -5,9 +5,10 @@
 
 #include "database.hpp"
 
+#include <fmt/core.h>
+
 #include "logging/logging.hpp"
 #include "utility/core.hpp"
-#include <fmt/core.h>
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -69,6 +70,7 @@ namespace SQLEngine::DataBase
         }
         void SetName(const std::string& name) override
         {
+            Utility::Assert(name.size(), "database.cpp, name is empty");
             m_name = name;
         }
 
