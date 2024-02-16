@@ -22,6 +22,21 @@ namespace SQLEngine::CLI
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
+    auto GetDBName(const Interface::IConnectDataBase &db) -> std::string
+    {
+        std::string name = "cli";
+        if (db.IsConnected())
+        {
+            name = db.GetName();
+        }
+
+        return name;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
     int Main(const int count, char **values)
     {
         IOManager io;
@@ -29,14 +44,14 @@ namespace SQLEngine::CLI
 
         while (true)
         {
-            auto &&input = io.ReadUserInput("your-command: ");
+            auto &&input = io.ReadUserInput(GetDBName(*db));
             if (io.IsEnd(input) == true)
             {
                 break;
             }
 
-            auto command = ParseInput(input);
-            auto&& result = command->ExecuteFor(*db);
+            auto command  = ParseInput(input);
+            auto &&result = command->ExecuteFor(*db);
             io.PrintMessage(result);
         };
 
@@ -57,13 +72,7 @@ int main(const int argc, char **argv)
     int returnKey = 1;
     try
     {
-        SQLEngine::Logging::Init();
-        SQLEngine::Logging::Info("Program cli.");
-        SQLEngine::Logging::Signal("Start Main().");
-        SQLEngine::Logging::Signal(
-            fmt::format("log-dir: {}", SQLEngine::Logging::GetLogPath()));
         returnKey = SQLEngine::CLI::Main(argc, argv);
-        SQLEngine::Logging::Signal("Close Main().");
     }
     catch (std::exception &err)
     {

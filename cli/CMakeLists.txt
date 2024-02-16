@@ -10,11 +10,10 @@ find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 
 set(SOURCES
-    cli-app-manager.cpp
     cli-operations.cpp
-    main.cpp
     input-parser.cpp
     io-manager.cpp
+    main.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
