@@ -1,7 +1,5 @@
 # SQL Engine Library
 
-## Status: Prototype for Pre-Production
-
 **Start Date:** October 11, 2023  
 **End Date:** October 24, 2023
 
